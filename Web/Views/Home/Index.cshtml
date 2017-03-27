@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Pixel.Kidsparties.Core.Arrangement>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<ul>
+    @foreach (var arrangement in Model)
+    {
+        <li>@Html.DisplayFor(modelItem => arrangement.Name)</li>
+    }
+</ul>

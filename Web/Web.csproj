@@ -9,6 +9,18 @@
     <AssemblyName>Pixel.Kidsparties.Web</AssemblyName>
     <RootNamespace>Pixel.Kidsparties.Web</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\material.css" />
+    <Content Include="wwwroot\css\material.min.css" />
+    <Content Include="wwwroot\css\material.min.css.map" />
+    <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
+    <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
+    <Content Include="wwwroot\images\parkour-goteborg.jpg" />
+    <Content Include="wwwroot\js\material.js" />
+    <Content Include="wwwroot\js\material.min.js" />
+    <Content Include="wwwroot\js\material.min.js.map" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
@@ -21,7 +33,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>

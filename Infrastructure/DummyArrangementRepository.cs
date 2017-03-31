@@ -20,8 +20,7 @@ namespace Pixel.Kidsparties.Infrastructure
                     Name = "Laserdome",
                     Latitude = 56.689355,
                     Longitude = 12.8682093,
-                    CategoryCity = "Halmstad",
-                    CategoryCounty = "Halland"
+                    CategoryCity = "Halmstad"
                 },
                 new Arrangement
                 {
@@ -29,8 +28,7 @@ namespace Pixel.Kidsparties.Infrastructure
                     Name = "Parkour",
                     Latitude = 57.6906169,
                     Longitude = 11.9152949,
-                    CategoryCity = "Göteborg",
-                    CategoryCounty = "Göteborg"
+                    CategoryCity = "Göteborg"
                 },
                 new Arrangement
                 {
@@ -38,10 +36,8 @@ namespace Pixel.Kidsparties.Infrastructure
                     Name = "Laserdome",
                     Latitude = 57.6006462,
                     Longitude = 11.9772345,
-                    CategoryCity = "Göteborg",
-                    CategoryCounty = "Göteborg"
+                    CategoryCity = "Göteborg"
                 },
-
             };
         }
 

@@ -31,8 +31,5 @@ namespace Pixel.Kidsparties.Core
 
         [Required]
         public string CategoryCity { get; set; }
-
-        [Required]
-        public string CategoryCounty { get; set; }
     }
 }

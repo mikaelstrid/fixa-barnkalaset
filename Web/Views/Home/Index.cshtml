@@ -4,9 +4,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<ul>
-    @foreach (var arrangement in Model)
+<div class="mdl-color--accent">
+    <div class="column mdl-color-text--white mdl-typography--text-center">
+        <h1 class="mdl-typography--display-4 pixel-typography--line-height-dobuble">Vi hjälper dig hitta det perfekta barnkalaset!</h1>
+    </div>
+</div>    
+
+<div class="mdl-grid">
+    @*@foreach (var arrangement in Model)
     {
-        <li>@Html.DisplayFor(modelItem => arrangement.Name)</li>
-    }
-</ul>
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone">@Html.DisplayFor(modelItem => arrangement.Name)</div>
+
+    }*@
+    
+    @*https://codepen.io/arnaudin/pen/RPvjwz*@
+</div>

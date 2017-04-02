@@ -1,0 +1,26 @@
+﻿@model Pixel.Kidsparties.Core.Arrangement
+
+<div class="layout--column">
+    <h5 class="mdl-color-text--primary">@Html.DisplayFor(m => m.CategoryCity)</h5>
+    <h1 class="mdl-typography--display-2 typography--font-family-brand">@Html.DisplayFor(m => m.Name)</h1>
+    <p class="mdl-typography--title">@Html.DisplayFor(m => m.Pitch)</p>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col  mdl-cell--4-col-tablet">
+            @Html.Raw(Model.Description)
+        </div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+            <p>
+                @Html.DisplayFor(m => m.StreetAddress)<br/>
+                @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)<br />
+                @Html.DisplayFor(m => m.PhoneNumber)<br />
+                @Html.DisplayFor(m => m.EmailAddress)<br />
+            </p>
+            <iframe height="450"
+                    frameborder="0"
+                    style="border: 0"
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA-1An_ssW4GatkmUNB7SLRfWETWpyiyCM&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>

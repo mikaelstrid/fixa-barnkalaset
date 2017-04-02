@@ -1,42 +1,24 @@
-﻿.demo-card-square.mdl-card {
-    width: 320px;
-    /*height: 320px;*/
+﻿.card-arrangement {
+    width: 228px;
+    height: 280px;
     float: left;
     margin: 1rem;
     position: relative;
 }
 
-/*.demo-card-square.mdl-card:hover {
-    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
-}*/
-
-.demo-card-square > .mdl-card__title {
-    /*color: #fff;
-    background: #03a9f4;*/
-}
-
-.demo-card-square > .mdl-card__media > img {
-    width: 100%;
-}
-
-/*.demo-card-square > .mdl-card__accent {
-    background: #ff9800;
-}*/
-
-.demo-card-square2.mdl-card {
-    width: 320px;
-    height: 320px;
-    float: left;
-    margin: 1rem;
-    position: relative;
-}
-
-.demo-card-square2 > .mdl-card__title {
+.card-arrangement > .mdl-card__title {
     color: #fff;
     /*https://css-tricks.com/design-considerations-text-images/*/
+    /*https://css-tricks.com/css3-gradients/*/
     /*background: url('/images/laserdome-goteborg.jpg') bottom right 15% no-repeat #46B6AC;*/
     /*background-image: url('/images/laserdome-goteborg.jpg');*/
     /*background: linear-gradient( rgba(20,20,20, .5), rgba(20,20,20, .5)), url('/images/laserdome-goteborg.jpg');*/
     background: linear-gradient( to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4) 80%), url('/images/laserdome-goteborg.jpg');
     background-size: cover;
+}
+
+.card-arrangement > .mdl-card__supporting-text {
+    padding: 0;
+    margin: 16px;
+    height: 54px;
 }

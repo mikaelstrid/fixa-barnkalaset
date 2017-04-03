@@ -25,6 +25,7 @@ namespace Pixel.Kidsparties.Web.Controllers
             return View(new ArrangementIndexViewModel
             {
                 CityName = cityName,
+                CitySlug = citySlug,
                 Arrangements = arrangements
             });
         }
@@ -41,6 +42,7 @@ namespace Pixel.Kidsparties.Web.Controllers
     public class ArrangementIndexViewModel
     {
         public string CityName { get; set; }
+        public string CitySlug { get; set; }
         public IEnumerable<Arrangement> Arrangements { get; set; }
     }
 }

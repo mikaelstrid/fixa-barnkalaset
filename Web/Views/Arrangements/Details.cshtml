@@ -1,7 +1,9 @@
 ﻿@model Pixel.Kidsparties.Core.Arrangement
 
 <div class="layout--column">
-    <h5 class="mdl-color-text--primary">@Html.DisplayFor(m => m.CategoryCity)</h5>
+    <h5 class="mdl-color-text--primary">
+        @Html.ActionLink(Model.CategoryCity, "Index")
+    </h5>
     <h1 class="mdl-typography--display-2 typography--font-family-brand">@Html.DisplayFor(m => m.Name)</h1>
     <p class="mdl-typography--title">@Html.DisplayFor(m => m.Pitch)</p>
     <div class="mdl-grid">

@@ -19,5 +19,12 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
         {
             return View(_arrangementRepository.GetAll());
         }
+
+        [Route("{id}")]
+        public IActionResult Details(int id)
+        {
+            return View(_arrangementRepository.GetById(id));
+        }
+
     }
 }

@@ -13,7 +13,7 @@
             @Html.DisplayFor(m => arrangement.Pitch)
         </div>
         <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--accent mdl-js-button mdl-js-ripple-effect" href="@Url.Action("Details", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">
+            <a class="mdl-button mdl-button--accent mdl-js-button mdl-js-ripple-effect" href="@Url.Action("Edit", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">
                 Läs mer
             </a>
         </div>

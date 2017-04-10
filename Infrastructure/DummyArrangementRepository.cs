@@ -26,6 +26,7 @@ namespace Pixel.Kidsparties.Infrastructure
                     StreetAddress = "Slottsmöllan",
                     PostalCode = "302 31",
                     PostalCity = "Halmstad",
+                    Country = "SE",
                     PhoneNumber = "035-21 47 00",
                     EmailAddress = "halmstad@aktivitetscenter.nu"
                 },
@@ -41,6 +42,7 @@ namespace Pixel.Kidsparties.Infrastructure
                     StreetAddress = "Backavägen 6",
                     PostalCode = "417 05",
                     PostalCity = "Göteborg",
+                    Country = "SE",
                     PhoneNumber = "0723-95 28 58",
                     EmailAddress = "info@fearlessmovement.se",
                     Pitch = "Vill du fira din födelsedag med världens coolaste sport?",
@@ -58,6 +60,7 @@ namespace Pixel.Kidsparties.Infrastructure
                     StreetAddress = "Grafiska vägen 32",
                     PostalCode = "412 63",
                     PostalCity = "Göteborg",
+                    Country = "SE",
                     PhoneNumber = "031-155105",
                     EmailAddress = "gbg@laserdome.se",
                     Pitch = "Världens bästa barnkalas!",

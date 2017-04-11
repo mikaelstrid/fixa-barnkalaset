@@ -110,5 +110,7 @@ namespace Pixel.Kidsparties.Infrastructure
             if (citySlug.Equals("halmstad")) return "Halmstad";
             return null;
         }
+
+        public int GetNextId() => _arrangements.Max(a => a.Id) + 1;
     }
 }

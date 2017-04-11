@@ -11,5 +11,6 @@ namespace Pixel.Kidsparties.Core.Interfaces
         void AddOrUpdate(Arrangement arrangement);
         void Remove(int id);
         string GetCityName(string citySlug);
+        int GetNextId();
     }
 }

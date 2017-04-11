@@ -21,6 +21,30 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
             return View(_arrangementRepository.GetAll());
         }
 
+        [Route("skapa")]
+        public IActionResult Create(int id)
+        {
+            return View(new Arrangement
+            {
+                Id = _arrangementRepository.GetNextId(),
+                Country = "SE"
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("skapa")]
+        public IActionResult Create([Bind("Id,Name,Slug,CategoryCity,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,Country,PhoneNumber,EmailAddress,Latitude,Longitude")] Arrangement arrangement)
+        {
+            if (ModelState.IsValid)
+            {
+                _arrangementRepository.AddOrUpdate(arrangement);
+                return RedirectToAction("Index");
+            }
+
+            return View(arrangement);
+        }
+
         [Route("{id}/andra")]
         public IActionResult Edit(int id)
         {
@@ -30,7 +54,7 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id}/andra")]
-        public IActionResult Edit(int id, [Bind("Id,Name,Slug,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,Country,PhoneNumber,EmailAddress,Latitude,Longitude")] Arrangement arrangement)
+        public IActionResult Edit(int id, [Bind("Id,Name,Slug,CategoryCity,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,Country,PhoneNumber,EmailAddress,Latitude,Longitude")] Arrangement arrangement)
         {
             if (id != arrangement.Id) return NotFound();
 

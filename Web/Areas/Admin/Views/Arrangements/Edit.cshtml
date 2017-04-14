@@ -1,5 +1,10 @@
 ﻿@model Pixel.Kidsparties.Core.Arrangement
 
+@section Header
+{
+    <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+}
+
 <h1>Ändra arrangemang</h1>
 
 <form class="ui form" asp-action="Edit">
@@ -63,5 +68,6 @@
 @section Scripts {
     <script>
         $('select.dropdown').dropdown();
+        CKEDITOR.replace('Description');
     </script>
 }

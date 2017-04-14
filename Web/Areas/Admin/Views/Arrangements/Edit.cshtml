@@ -5,65 +5,68 @@
     <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
 }
 
-<h1>Ändra arrangemang</h1>
+<div class="ui main container text">
 
-<form class="ui form" asp-action="Edit">
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="Country" />
-    <div class="field">
-        <label asp-for="Name"></label>
-        <input type="text" asp-for="Name">
-    </div>
-    <div class="field">
-        <label asp-for="Slug"></label>
-        <input type="text" asp-for="Slug">
-    </div>
-    <div class="field">
-        <label asp-for="CategoryCity"></label>
-        <input type="text" asp-for="CategoryCity">
-    </div>
-    <div class="field">
-        <label asp-for="Pitch"></label>
-        <textarea rows="2" asp-for="Pitch"></textarea>
-    </div>
-    <div class="field">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description"></textarea>
-    </div>
-    <div class="field">
-        <label asp-for="CoverImage"></label>
-        <input type="text" asp-for="CoverImage">
-    </div>
-    <div class="field">
-        <label asp-for="StreetAddress"></label>
-        <input type="text" asp-for="StreetAddress">
-    </div>
-    <div class="field">
-        <label asp-for="PostalCode"></label>
-        <input type="text" asp-for="PostalCode">
-    </div>
-    <div class="field">
-        <label asp-for="PostalCity"></label>
-        <input type="text" asp-for="PostalCity">
-    </div>
-    <div class="field">
-        <label asp-for="PhoneNumber"></label>
-        <input type="text" asp-for="PhoneNumber">
-    </div>
-    <div class="field">
-        <label asp-for="EmailAddress"></label>
-        <input type="text" asp-for="EmailAddress">
-    </div>
-    <div class="field">
-        <label asp-for="Latitude"></label>
-        <input type="text" asp-for="Latitude">
-    </div>
-    <div class="field">
-        <label asp-for="Longitude"></label>
-        <input type="text" asp-for="Longitude">
-    </div>
-    <button class="ui button" type="submit">Spara</button>
-</form>
+    <h1>Ändra arrangemang</h1>
+
+    <form class="ui form" asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Country" />
+        <div class="field">
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name">
+        </div>
+        <div class="field">
+            <label asp-for="Slug"></label>
+            <input type="text" asp-for="Slug">
+        </div>
+        <div class="field">
+            <label asp-for="CategoryCity"></label>
+            <input type="text" asp-for="CategoryCity">
+        </div>
+        <div class="field">
+            <label asp-for="Pitch"></label>
+            <textarea rows="2" asp-for="Pitch"></textarea>
+        </div>
+        <div class="field">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description"></textarea>
+        </div>
+        <div class="field">
+            <label asp-for="CoverImage"></label>
+            <input type="text" asp-for="CoverImage">
+        </div>
+        <div class="field">
+            <label asp-for="StreetAddress"></label>
+            <input type="text" asp-for="StreetAddress">
+        </div>
+        <div class="field">
+            <label asp-for="PostalCode"></label>
+            <input type="text" asp-for="PostalCode">
+        </div>
+        <div class="field">
+            <label asp-for="PostalCity"></label>
+            <input type="text" asp-for="PostalCity">
+        </div>
+        <div class="field">
+            <label asp-for="PhoneNumber"></label>
+            <input type="text" asp-for="PhoneNumber">
+        </div>
+        <div class="field">
+            <label asp-for="EmailAddress"></label>
+            <input type="text" asp-for="EmailAddress">
+        </div>
+        <div class="field">
+            <label asp-for="Latitude"></label>
+            <input type="text" asp-for="Latitude">
+        </div>
+        <div class="field">
+            <label asp-for="Longitude"></label>
+            <input type="text" asp-for="Longitude">
+        </div>
+        <button class="ui button" type="submit">Spara</button>
+    </form>
+</div>
 
 @section Scripts {
     <script>

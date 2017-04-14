@@ -1,26 +1,29 @@
 ﻿@model IEnumerable<Pixel.Kidsparties.Core.Arrangement>
 
-<h1>Arrangemang</h1>
-<table class="ui table">
-    <thead>
-    <tr>
-        <th>Namn</th>
-        <th>Stad</th>
-        <th>Pitch</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var arrangement in Model)
-    {
-        <tr>
-            <td>@arrangement.Name</td>
-            <td>@arrangement.CategoryCity</td>
-            <td>@arrangement.Pitch</td>
-            <td><a asp-action="Edit" asp-route-id="@arrangement.Id">Ändra</a></td>
-        </tr>
-    }
-    </tbody>
-</table>
-<a asp-action="Create">Lägg till ny</a>
+<div class="ui main container">
 
+    <h1>Arrangemang</h1>
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>Stad</th>
+                <th>Pitch</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var arrangement in Model)
+            {
+                <tr>
+                    <td>@arrangement.Name</td>
+                    <td>@arrangement.CategoryCity</td>
+                    <td>@arrangement.Pitch</td>
+                    <td><a asp-action="Edit" asp-route-id="@arrangement.Id">Ändra</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="Create">Lägg till ny</a>
+
+</div>

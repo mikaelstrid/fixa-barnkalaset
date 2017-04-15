@@ -11,15 +11,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/js\site.js" />
+    <Content Remove="wwwroot/js\site.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\css\nice-select.css" />
     <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
     <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
     <Content Include="wwwroot\images\parkour-goteborg.jpg" />
-    <Content Include="wwwroot\js\jquery.nice-select.js" />
     <Content Include="wwwroot\js\jquery.nice-select.min.js" />
     <Content Include="wwwroot\js\material.js" />
     <Content Include="wwwroot\js\material.min.js" />
     <Content Include="wwwroot\js\material.min.js.map" />
+    <Content Include="wwwroot\lib\jquery.nice-select.js" />
+    <Content Include="wwwroot\lib\jquery.nice-select.min.js" />
+    <Content Include="wwwroot\lib\material.js" />
+    <Content Include="wwwroot\lib\material.min.js" />
+    <Content Include="wwwroot\lib\material.min.js.map" />
+    <Content Include="wwwroot\lib\material.purple-deep_orange.min.css" />
+    <Content Include="wwwroot\lib\nice-select.css" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
@@ -35,9 +46,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>

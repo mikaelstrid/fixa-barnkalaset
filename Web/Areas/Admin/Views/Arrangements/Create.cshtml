@@ -69,8 +69,13 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/utilities/slugify.js"></script>
     <script>
-        $('select.dropdown').dropdown();
-        CKEDITOR.replace('Description');
+        $("select.dropdown").dropdown();
+        CKEDITOR.replace("Description");
+
+        $("#Name").change(function() {
+            $("#Slug").val(slugify($(this).val()));
+        });
     </script>
 }

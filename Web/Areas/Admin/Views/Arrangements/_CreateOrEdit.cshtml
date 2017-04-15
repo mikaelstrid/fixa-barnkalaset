@@ -2,55 +2,83 @@
 
 <input type="hidden" asp-for="Id" />
 <input type="hidden" asp-for="Country" />
-<div class="field">
-    <label asp-for="Name"></label>
-    <input type="text" asp-for="Name">
+
+<h3 class="ui top attached header">
+    Namn
+</h3>
+<div class="ui bottom attached segment">
+    <div class="field">
+        <label asp-for="Name"></label>
+        <input type="text" asp-for="Name">
+    </div>
+    <div class="field">
+        <label asp-for="Slug"></label>
+        <input type="text" asp-for="Slug">
+    </div>
+    <div class="field">
+        <label asp-for="CategoryCity"></label>
+        <input type="text" asp-for="CategoryCity">
+    </div>
+    <div class="field">
+        <label asp-for="CoverImage"></label>
+        <input type="text" asp-for="CoverImage">
+    </div>
 </div>
-<div class="field">
-    <label asp-for="Slug"></label>
-    <input type="text" asp-for="Slug">
+
+<h3 class="ui top attached header">
+    Beskrivning
+</h3>
+<div class="ui bottom attached segment">
+    <div class="field">
+        <label asp-for="Pitch"></label>
+        <textarea rows="2" asp-for="Pitch"></textarea>
+    </div>
+    <div class="field">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description"></textarea>
+    </div>
 </div>
-<div class="field">
-    <label asp-for="CategoryCity"></label>
-    <input type="text" asp-for="CategoryCity">
+
+<h3 class="ui top attached header">
+    Adress
+</h3>
+<div class="ui bottom attached segment">
+    <div class="field">
+        <label asp-for="StreetAddress"></label>
+        <input type="text" asp-for="StreetAddress">
+    </div>
+    <div class="fields">
+        <div class="four wide field">
+            <label asp-for="PostalCode"></label>
+            <input type="text" asp-for="PostalCode">
+        </div>
+        <div class="twelve wide field">
+            <label asp-for="PostalCity"></label>
+            <input type="text" asp-for="PostalCity">
+        </div>
+    </div>
+    <div class="field">
+        <label asp-for="PhoneNumber"></label>
+        <input type="text" asp-for="PhoneNumber">
+    </div>
+    <div class="field">
+        <label asp-for="EmailAddress"></label>
+        <input type="text" asp-for="EmailAddress">
+    </div>
 </div>
-<div class="field">
-    <label asp-for="Pitch"></label>
-    <textarea rows="2" asp-for="Pitch"></textarea>
-</div>
-<div class="field">
-    <label asp-for="Description"></label>
-    <textarea asp-for="Description"></textarea>
-</div>
-<div class="field">
-    <label asp-for="CoverImage"></label>
-    <input type="text" asp-for="CoverImage">
-</div>
-<div class="field">
-    <label asp-for="StreetAddress"></label>
-    <input type="text" asp-for="StreetAddress">
-</div>
-<div class="field">
-    <label asp-for="PostalCode"></label>
-    <input type="text" asp-for="PostalCode">
-</div>
-<div class="field">
-    <label asp-for="PostalCity"></label>
-    <input type="text" asp-for="PostalCity">
-</div>
-<div class="field">
-    <label asp-for="PhoneNumber"></label>
-    <input type="text" asp-for="PhoneNumber">
-</div>
-<div class="field">
-    <label asp-for="EmailAddress"></label>
-    <input type="text" asp-for="EmailAddress">
-</div>
-<div class="field">
-    <label asp-for="Latitude"></label>
-    <input type="text" asp-for="Latitude">
-</div>
-<div class="field">
-    <label asp-for="Longitude"></label>
-    <input type="text" asp-for="Longitude">
+
+<h3 class="ui top attached header">
+    Karta
+</h3>
+<div class="ui bottom attached segment">
+    <div class="fields">
+        <div class="eight wide field">
+            <label asp-for="Latitude"></label>
+            <input type="text" asp-for="Latitude">
+        </div>
+        <div class="eight wide field">
+            <label asp-for="Longitude"></label>
+            <input type="text" asp-for="Longitude">
+        </div>
+    </div>
 </div>

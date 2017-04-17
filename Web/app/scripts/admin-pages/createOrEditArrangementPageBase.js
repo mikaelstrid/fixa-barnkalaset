@@ -1,14 +1,7 @@
-var CreateOrEditArrangementPage = (function () {
-    function CreateOrEditArrangementPage() {
+var CreateOrEditArrangementPageBase = (function () {
+    function CreateOrEditArrangementPageBase() {
     }
-    CreateOrEditArrangementPage.prototype.initPage = function () {
-        $("#Name").change(function () {
-            $("#Slug").val(slugify($(this).val()));
-        });
-        $("select.dropdown").dropdown();
-        CKEDITOR.replace("Description");
-    };
-    CreateOrEditArrangementPage.prototype.initMap = function () {
+    CreateOrEditArrangementPageBase.prototype.initMap = function () {
         var _this = this;
         this.mapElement = $("#map")[0];
         this.geocoder = new google.maps.Geocoder();
@@ -16,6 +9,9 @@ var CreateOrEditArrangementPage = (function () {
             zoom: 4,
             center: { lat: 63.0, lng: 17.0 }
         });
+        if (this.initialLatitude && this.initialLongitude) {
+            this.updateMap(new google.maps.LatLng(this.initialLatitude, this.initialLongitude));
+        }
         $("#btnGetCoordinatesFromAddress").click(function () {
             var lookupAddress = _this.getLookupAddress();
             _this.geocoder.geocode({ 'address': lookupAddress }, function (results, status) {
@@ -30,15 +26,14 @@ var CreateOrEditArrangementPage = (function () {
             return false;
         });
     };
-    CreateOrEditArrangementPage.prototype.getLookupAddress = function () {
+    CreateOrEditArrangementPageBase.prototype.getLookupAddress = function () {
         var streetAddress = $("#StreetAddress").val();
         var postalCode = $("#PostalCode").val();
         var postalCity = $("#PostalCity").val();
         var lookupAddress = streetAddress + ", " + postalCode + " " + postalCity;
-        console.log("getLookupAddress: " + lookupAddress);
         return lookupAddress;
     };
-    CreateOrEditArrangementPage.prototype.updateMap = function (location) {
+    CreateOrEditArrangementPageBase.prototype.updateMap = function (location) {
         var _this = this;
         if (this.marker) {
             this.marker.setPosition(location);
@@ -56,10 +51,10 @@ var CreateOrEditArrangementPage = (function () {
         }
         this.map.setCenter(location);
     };
-    CreateOrEditArrangementPage.prototype.updateLatLngTextboxes = function (location) {
+    CreateOrEditArrangementPageBase.prototype.updateLatLngTextboxes = function (location) {
         $("#Latitude").val(location.lat().toLocaleString(undefined, { maximumFractionDigits: 14 }));
         $("#Longitude").val(location.lng().toLocaleString(undefined, { maximumFractionDigits: 14 }));
     };
-    return CreateOrEditArrangementPage;
+    return CreateOrEditArrangementPageBase;
 }());
-//# sourceMappingURL=createOrEditArrangementPage.js.map
+//# sourceMappingURL=createOrEditArrangementPageBase.js.map

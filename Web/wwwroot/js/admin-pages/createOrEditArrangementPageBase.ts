@@ -1,4 +1,4 @@
-class CreateOrEditArrangementPage {
+abstract class CreateOrEditArrangementPageBase {
 
     private mapElement: HTMLElement;
 
@@ -6,13 +6,8 @@ class CreateOrEditArrangementPage {
     private marker: google.maps.Marker;
     private geocoder: google.maps.Geocoder;
 
-    initPage() {
-        $("#Name").change(function () {
-            $("#Slug").val(slugify($(this).val()));
-        });
-        $("select.dropdown").dropdown();
-        CKEDITOR.replace("Description");
-    }
+    protected initialLatitude: number;
+    protected initialLongitude: number;
 
     private initMap() {
         this.mapElement = $("#map")[0];
@@ -22,6 +17,10 @@ class CreateOrEditArrangementPage {
             zoom: 4,
             center: { lat: 63.0, lng: 17.0 }
         });
+
+        if (this.initialLatitude && this.initialLongitude) {
+            this.updateMap(new google.maps.LatLng(this.initialLatitude, this.initialLongitude));
+        }
 
         $("#btnGetCoordinatesFromAddress").click(() => {
             const lookupAddress = this.getLookupAddress();
@@ -42,7 +41,6 @@ class CreateOrEditArrangementPage {
         const postalCode = $("#PostalCode").val();
         const postalCity = $("#PostalCity").val();
         const lookupAddress = `${streetAddress}, ${postalCode} ${postalCity}`;
-        console.log(`getLookupAddress: ${lookupAddress}`);
         return lookupAddress;
     }
 

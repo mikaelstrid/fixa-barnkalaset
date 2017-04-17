@@ -1,8 +1,14 @@
-﻿@model Pixel.Kidsparties.Core.Arrangement
+﻿@using System.Globalization
+@model Pixel.Kidsparties.Core.Arrangement
 
 @section Header
 {
     <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+    <style>
+        #map {
+            height: 350px;
+        }
+    </style>
 }
 
 <div class="ui main container text">
@@ -18,8 +24,12 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/utilities/slugify.js"></script>
+    <script src="~/js/admin-pages/createOrEditArrangementPageBase.js"></script>
+    <script src="~/js/admin-pages/editArrangementPage.js"></script>
     <script>
-        $('select.dropdown').dropdown();
-        CKEDITOR.replace('Description');
+        var page = new EditArrangementPage();
+        page.initPage(@Model.Latitude.ToString(CultureInfo.InvariantCulture), @Model.Longitude.ToString(CultureInfo.InvariantCulture));
     </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&callback=page.initMap"></script>
 }

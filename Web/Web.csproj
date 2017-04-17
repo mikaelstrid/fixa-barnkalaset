@@ -20,6 +20,12 @@
     <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
     <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
     <Content Include="wwwroot\images\parkour-goteborg.jpg" />
+    <Content Include="wwwroot\js\admin-pages\createArrangementPage - Copy.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\js\admin-pages\createArrangementPage - Copy.ts">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\lib\jquery.nice-select.js" />
     <Content Include="wwwroot\lib\jquery.nice-select.min.js" />
     <Content Include="wwwroot\lib\material.js" />

@@ -20,10 +20,6 @@
     <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
     <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
     <Content Include="wwwroot\images\parkour-goteborg.jpg" />
-    <Content Include="wwwroot\js\jquery.nice-select.min.js" />
-    <Content Include="wwwroot\js\material.js" />
-    <Content Include="wwwroot\js\material.min.js" />
-    <Content Include="wwwroot\js\material.min.js.map" />
     <Content Include="wwwroot\lib\jquery.nice-select.js" />
     <Content Include="wwwroot\lib\jquery.nice-select.min.js" />
     <Content Include="wwwroot\lib\material.js" />

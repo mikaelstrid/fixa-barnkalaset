@@ -71,14 +71,20 @@
     Karta
 </h3>
 <div class="ui bottom attached segment">
-    <div class="fields">
-        <div class="eight wide field">
-            <label asp-for="Latitude"></label>
-            <input type="text" asp-for="Latitude">
+    <div class="ui grid">
+        <div class="six wide column">
+            <div class="field">
+                <label asp-for="Latitude"></label>
+                <input type="text" asp-for="Latitude">
+            </div>
+            <div class="field">
+                <label asp-for="Longitude"></label>
+                <input type="text" asp-for="Longitude">
+            </div>
+            <button class="ui basic button" type="button" id="btnGetCoordinatesFromAddress">Hämta från adress</button>
         </div>
-        <div class="eight wide field">
-            <label asp-for="Longitude"></label>
-            <input type="text" asp-for="Longitude">
+        <div class="ten wide column">
+            <div id="map"></div>
         </div>
     </div>
 </div>

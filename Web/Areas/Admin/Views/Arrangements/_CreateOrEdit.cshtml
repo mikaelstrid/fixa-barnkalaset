@@ -4,12 +4,15 @@
 <input type="hidden" asp-for="Country" />
 
 <h3 class="ui top attached header">
-    Namn
+    Allmänt
 </h3>
 <div class="ui bottom attached segment">
     <div class="field">
         <label asp-for="Name"></label>
         <input type="text" asp-for="Name">
+    </div>
+    <div class="field">
+        <button class="ui basic button" type="button" id="btnGetInformationFromGooglePlaces">Hämta info från Google Places</button>
     </div>
     <div class="field">
         <label asp-for="Slug"></label>
@@ -40,7 +43,7 @@
 </div>
 
 <h3 class="ui top attached header">
-    Adress
+    Adress och kontaktuppgifter
 </h3>
 <div class="ui bottom attached segment">
     <div class="field">
@@ -64,6 +67,13 @@
     <div class="field">
         <label asp-for="EmailAddress"></label>
         <input type="text" asp-for="EmailAddress">
+    </div>
+    <div class="field">
+        <label asp-for="Website"></label>
+        <input type="text" asp-for="Website">
+    </div>
+    <div class="field">
+        <button class="ui basic button" type="button" id="btnOpenWebsite">Öppna hemsida</button>
     </div>
 </div>
 

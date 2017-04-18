@@ -24,11 +24,12 @@
 
 @section Scripts {
     <script src="~/js/utilities/slugify.js"></script>
+    <script src="~/js/utilities/googleMapsUtilities.js"></script>
     <script src="~/js/admin-pages/createOrEditArrangementPageBase.js"></script>
     <script src="~/js/admin-pages/createArrangementPage.js"></script>
     <script>
         var page = new CreateArrangementPage();
         page.initPage();
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&callback=page.initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&libraries=places&callback=page.initMap"></script>
 }

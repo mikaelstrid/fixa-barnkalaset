@@ -41,6 +41,9 @@ namespace Pixel.Kidsparties.Core
         [Display(Name = "E-postadress")]
         public string EmailAddress { get; set; }
 
+        [Display(Name = "Hemsida")]
+        public string Website { get; set; }
+
         [Required]
         [Display(Name = "Latitud")]
         public double Latitude { get; set; }

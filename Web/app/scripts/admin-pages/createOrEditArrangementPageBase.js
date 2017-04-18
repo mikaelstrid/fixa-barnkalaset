@@ -67,6 +67,7 @@ var CreateOrEditArrangementPageBase = (function () {
             this.updateLatLngTextboxes(place.geometry.location);
             this.updateMap(place.geometry.location);
         }
+        $("#GooglePlacesName").text(place.name);
     };
     CreateOrEditArrangementPageBase.prototype.updateAddressComponent = function (addressComponents, googleName, fieldId) {
         var value = GoogleMapsUtilties.getAddressComponent(addressComponents, googleName);

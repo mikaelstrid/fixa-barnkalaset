@@ -82,6 +82,8 @@
             this.updateLatLngTextboxes(place.geometry.location);
             this.updateMap(place.geometry.location);
         }
+
+        $("#GooglePlacesName").text(place.name);
     }
 
     private updateAddressComponent(addressComponents: google.maps.GeocoderAddressComponent[], googleName: string, fieldId: string): void {

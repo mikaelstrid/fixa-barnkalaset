@@ -1,4 +1,4 @@
-﻿@model Pixel.Kidsparties.Core.Arrangement
+﻿@model Pixel.Kidsparties.Web.Areas.Admin.ViewModels.CreateOrEditArrangementViewModel
 
 <input type="hidden" asp-for="Id" />
 <input type="hidden" asp-for="Country" />
@@ -21,7 +21,8 @@
     </div>
     <div class="field">
         <label asp-for="CategoryCity"></label>
-        <input type="text" asp-for="CategoryCity">
+        <select asp-for="CategoryCity" asp-items="Model.CategoryCities"></select>
+@*        <input type="text" asp-for="CategoryCity">*@
     </div>
     <div class="field">
         <label asp-for="CoverImage"></label>

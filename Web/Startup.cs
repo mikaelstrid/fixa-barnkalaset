@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,9 +29,11 @@ namespace Pixel.Kidsparties.Web
         {
             // Add framework services.
             services.AddMvc();
+            services.AddAutoMapper();
 
             // Add application services.
             services.AddSingleton<IArrangementRepository, DummyArrangementRepository>();
+            services.AddSingleton<ICityRepository, DummyCityRepository>();
         }
 
 

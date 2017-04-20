@@ -84,6 +84,11 @@
         }
 
         $("#GooglePlacesName").text(place.name);
+
+        $.get(`/api/cities/closest?latitude=${place.geometry.location.lat()}&longitude=${place.geometry.location.lng()}`,
+            data => {
+                $("#CategoryCity").val(data.slug);
+            });
     }
 
     private updateAddressComponent(addressComponents: google.maps.GeocoderAddressComponent[], googleName: string, fieldId: string): void {

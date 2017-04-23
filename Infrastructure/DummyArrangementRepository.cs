@@ -19,14 +19,13 @@ namespace Pixel.Kidsparties.Infrastructure
                     Id = 1,
                     Name = "Laserdome",
                     Slug = "laserdome",
-                    Latitude = 56.689355m,
-                    Longitude = 12.8682093m,
-                    CategoryCity = "Halmstad",
+                    Latitude = 56.689355,
+                    Longitude = 12.8682093,
+                    CitySlug = "halmstad",
                     CoverImage = "/images/laserdome-halmstad.jpg",
                     StreetAddress = "Slottsmöllan",
                     PostalCode = "302 31",
                     PostalCity = "Halmstad",
-                    Country = "SE",
                     PhoneNumber = "035-21 47 00",
                     EmailAddress = "halmstad@aktivitetscenter.nu"
                 },
@@ -35,14 +34,13 @@ namespace Pixel.Kidsparties.Infrastructure
                     Id = 2,
                     Name = "Parkour",
                     Slug = "parkour",
-                    Latitude = 57.6906169m,
-                    Longitude = 11.9152949m,
-                    CategoryCity = "Göteborg",
+                    Latitude = 57.6906169,
+                    Longitude = 11.9152949,
+                    CitySlug = "goteborg",
                     CoverImage = "/images/parkour-goteborg.jpg",
                     StreetAddress = "Backavägen 6",
                     PostalCode = "417 05",
                     PostalCity = "Göteborg",
-                    Country = "SE",
                     PhoneNumber = "0723-95 28 58",
                     EmailAddress = "info@fearlessmovement.se",
                     Pitch = "Vill du fira din födelsedag med världens coolaste sport?",
@@ -53,14 +51,13 @@ namespace Pixel.Kidsparties.Infrastructure
                     Id = 3,
                     Name = "Laserdome",
                     Slug = "laserdome",
-                    Latitude = 57.6006462m,
-                    Longitude = 11.9772345m,
-                    CategoryCity = "Göteborg",
+                    Latitude = 57.6006462,
+                    Longitude = 11.9772345,
+                    CitySlug = "goteborg",
                     CoverImage = "/images/laserdome-goteborg.jpg",
                     StreetAddress = "Grafiska vägen 32",
                     PostalCode = "412 63",
                     PostalCity = "Göteborg",
-                    Country = "SE",
                     PhoneNumber = "031-155105",
                     EmailAddress = "gbg@laserdome.se",
                     Pitch = "Världens bästa barnkalas!",
@@ -74,41 +71,48 @@ namespace Pixel.Kidsparties.Infrastructure
             return _arrangements;
         }
 
-        public IEnumerable<Arrangement> GetByCity(string city)
+        public IEnumerable<Arrangement> GetByCitySlug(string citySlug)
         {
-            return _arrangements.Where(a => a.CategoryCity.Equals(city, StringComparison.CurrentCultureIgnoreCase));
+            return _arrangements
+                .Where(a =>
+                    a.CitySlug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase)
+                );
         }
 
         public Arrangement GetBySlug(string citySlug, string arrangementSlug)
         {
-            return GetByCity(GetCityName(citySlug)).SingleOrDefault(a => a.Slug.Equals(arrangementSlug, StringComparison.CurrentCultureIgnoreCase));
+            return _arrangements
+                .SingleOrDefault(a =>
+                    a.CitySlug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase)
+                    && a.Slug.Equals(arrangementSlug, StringComparison.CurrentCultureIgnoreCase)
+                );
         }
 
         public Arrangement GetById(int id)
         {
-            return _arrangements.FirstOrDefault(a => a.Id == id);
+            return _arrangements
+                .SingleOrDefault(a =>
+                    a.Id == id
+                );
         }
 
         public void AddOrUpdate(Arrangement arrangement)
         {
             var existigArrangement = GetById(arrangement.Id);
             if (existigArrangement != null)
+            {
                 _arrangements.Remove(existigArrangement);
+            }
+            else
+            {
+                arrangement.Id = GetNextId();
+            }
             _arrangements.Add(arrangement);
         }
 
         public void Remove(int id)
         {
             _arrangements.RemoveAll(a => a.Id == id);
-        }
-
-        public string GetCityName(string citySlug)
-        {
-            if (citySlug.Equals("stockholm")) return "Stockholm";
-            if (citySlug.Equals("goteborg")) return "Göteborg";
-            if (citySlug.Equals("malmo")) return "Malmö";
-            if (citySlug.Equals("halmstad")) return "Halmstad";
-            return null;
         }
 
         public int GetNextId() => _arrangements.Max(a => a.Id) + 1;

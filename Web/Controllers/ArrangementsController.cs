@@ -8,23 +8,27 @@ namespace Pixel.Kidsparties.Web.Controllers
     [Route("")]
     public class Arrangements : Controller
     {
+        private readonly ICityRepository _cityRepository;
         private readonly IArrangementRepository _arrangementRepository;
 
-        public Arrangements(IArrangementRepository arrangementRepository)
+        public Arrangements(
+            ICityRepository cityRepository,
+            IArrangementRepository arrangementRepository)
         {
+            _cityRepository = cityRepository;
             _arrangementRepository = arrangementRepository;
         }
 
         [Route("{citySlug}")]
         public IActionResult Index(string citySlug)
         {
-            var cityName = _arrangementRepository.GetCityName(citySlug);
-            if (cityName == null) return NotFound();
+            var city = _cityRepository.GetBySlug(citySlug);
+            if (city == null) return NotFound();
 
-            var arrangements = _arrangementRepository.GetByCity(cityName);
+            var arrangements = _arrangementRepository.GetByCitySlug(citySlug);
             return View(new ArrangementIndexViewModel
             {
-                CityName = cityName,
+                CityName = city.Name,
                 CitySlug = citySlug,
                 Arrangements = arrangements
             });

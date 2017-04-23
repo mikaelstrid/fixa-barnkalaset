@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Pixel.Kidsparties.Core.Interfaces;
 using Pixel.Kidsparties.Infrastructure;
 
 namespace Pixel.Kidsparties.Web
@@ -24,7 +24,6 @@ namespace Pixel.Kidsparties.Web
         public IConfigurationRoot Configuration { get; }
 
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
@@ -32,12 +31,16 @@ namespace Pixel.Kidsparties.Web
             services.AddAutoMapper();
 
             // Add application services.
-            services.AddSingleton<IArrangementRepository, DummyArrangementRepository>();
-            services.AddSingleton<ICityRepository, DummyCityRepository>();
+            var connectionString = @"Server=(localdb)\mssqllocaldb;Database=KidsParties;Trusted_Connection=True;";
+            services.AddEntityFramework(connectionString);
+            services.AddApplicationServices();
+
+            //services.AddMvc();
+            //services.AddDbContext<KidsPartiesContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -47,6 +50,12 @@ namespace Pixel.Kidsparties.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    serviceScope.ServiceProvider.GetService<KidsPartiesContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<KidsPartiesContext>().EnsureSeedData();
+                }
             }
             else
             {

@@ -1,7 +1,6 @@
 ﻿@model Pixel.Kidsparties.Web.Areas.Admin.ViewModels.CreateOrEditArrangementViewModel
 
 <input type="hidden" asp-for="Id" />
-<input type="hidden" asp-for="Country" />
 
 <h3 class="ui top attached header">
     Allmänt
@@ -20,9 +19,8 @@
         <input type="text" asp-for="Slug">
     </div>
     <div class="field">
-        <label asp-for="CategoryCity"></label>
-        <select asp-for="CategoryCity" asp-items="Model.CategoryCities"></select>
-@*        <input type="text" asp-for="CategoryCity">*@
+        <label asp-for="CitySlug"></label>
+        <select asp-for="CitySlug" asp-items="Model.Cities"></select>
     </div>
     <div class="field">
         <label asp-for="CoverImage"></label>

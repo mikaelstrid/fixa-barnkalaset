@@ -136,7 +136,7 @@
     }
 
     private updateLatLngTextboxes(location: google.maps.LatLng): void  {
-        $("#Latitude").val(location.lat().toLocaleString(undefined, { maximumFractionDigits: 14 }));
-        $("#Longitude").val(location.lng().toLocaleString(undefined, { maximumFractionDigits: 14 }));
+        $("#Latitude").val(location.lat().toLocaleString(Constants.locale, { maximumFractionDigits: 14 }));
+        $("#Longitude").val(location.lng().toLocaleString(Constants.locale, { maximumFractionDigits: 14 }));
     }
 }

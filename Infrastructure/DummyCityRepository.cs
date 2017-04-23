@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Pixel.Kidsparties.Core;
 using Pixel.Kidsparties.Core.Interfaces;
 
@@ -14,43 +15,43 @@ namespace Pixel.Kidsparties.Infrastructure
             {
                 new City
                 {
-                    Id = 1,
-                    Name = "Halmstad",
                     Slug = "halmstad",
-                    Latitude = 56.6706614m,
-                    Longitude = 12.7579992m
+                    Name = "Halmstad",
+                    Latitude = 56.6706614,
+                    Longitude = 12.7579992
                 },
                 new City
                 {
-                    Id = 2,
-                    Name = "Göteborg",
                     Slug = "goteborg",
-                    Latitude = 57.7018796m,
-                    Longitude = 11.7536028m
+                    Name = "Göteborg",
+                    Latitude = 57.7018796,
+                    Longitude = 11.7536028
                 },
                 new City
                 {
-                    Id = 3,
-                    Name = "Malmö",
                     Slug = "malmo",
-                    Latitude = 55.5708212m,
-                    Longitude = 12.9500712m
+                    Name = "Malmö",
+                    Latitude = 55.5708212,
+                    Longitude = 12.9500712
                 },
                 new City
                 {
-                    Id = 4,
-                    Name = "Växjö",
                     Slug = "vaxjo",
-                    Latitude = 56.8894262m,
-                    Longitude = 14.7241027m
+                    Name = "Växjö",
+                    Latitude = 56.8894262,
+                    Longitude = 14.7241027
                 }
             };
-
         }
 
         public IEnumerable<City> GetAll()
         {
             return _cities;
+        }
+
+        public City GetBySlug(string citySlug)
+        {
+            return _cities.SingleOrDefault(c => c.Slug == citySlug);
         }
     }
 }

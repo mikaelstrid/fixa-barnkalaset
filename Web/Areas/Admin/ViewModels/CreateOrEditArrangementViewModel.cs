@@ -34,9 +34,6 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.ViewModels
         [Display(Name = "Postort")]
         public string PostalCity { get; set; }
 
-        [Display(Name = "Land")]
-        public string Country { get; set; }
-
         [Display(Name = "Telefonnummer")]
         public string PhoneNumber { get; set; }
 
@@ -56,9 +53,9 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.ViewModels
 
         [Required]
         [Display(Name = "Stad")]
-        public string CategoryCity { get; set; }
+        public string CitySlug { get; set; }
 
 
-        public IEnumerable<SelectListItem> CategoryCities { get; set; }
+        public IEnumerable<SelectListItem> Cities { get; set; }
     }
 }

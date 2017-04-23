@@ -5,12 +5,10 @@ namespace Pixel.Kidsparties.Core.Interfaces
     public interface IArrangementRepository
     {
         IEnumerable<Arrangement> GetAll();
-        IEnumerable<Arrangement> GetByCity(string city);
+        IEnumerable<Arrangement> GetByCitySlug(string citySlug);
         Arrangement GetBySlug(string citySlug, string arrangementSlug);
         Arrangement GetById(int id);
         void AddOrUpdate(Arrangement arrangement);
         void Remove(int id);
-        string GetCityName(string citySlug);
-        int GetNextId();
     }
 }

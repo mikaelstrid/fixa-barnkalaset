@@ -37,16 +37,14 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
         {
             return View(new CreateOrEditArrangementViewModel
             {
-                Id = _arrangementRepository.GetNextId(),
-                Country = "SE",
-                CategoryCities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name })
+                Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name })
             });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public IActionResult Create([Bind("Id,Name,Slug,CategoryCity,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,Country,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public IActionResult Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +53,7 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            arrangement.CategoryCities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
+            arrangement.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(arrangement);
         }
 
@@ -63,14 +61,14 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
         public IActionResult Edit(int id)
         {
             var model = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(_arrangementRepository.GetById(id));
-            model.CategoryCities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
+            model.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id}/andra")]
-        public IActionResult Edit(int id, [Bind("Id,Name,Slug,CategoryCity,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,Country,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public IActionResult Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
         {
             if (id != arrangement.Id) return NotFound();
 
@@ -81,7 +79,7 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            arrangement.CategoryCities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
+            arrangement.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(arrangement);
         }
     }

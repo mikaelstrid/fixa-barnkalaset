@@ -8,6 +8,8 @@ namespace Pixel.Kidsparties.Web
     {
         public MappingProfile()
         {
+            //CreateMap<City, CityViewModel>();
+            //CreateMap<CityViewModel, City>();
             CreateMap<Arrangement, CreateOrEditArrangementViewModel>();
             CreateMap<CreateOrEditArrangementViewModel, Arrangement>();
         }

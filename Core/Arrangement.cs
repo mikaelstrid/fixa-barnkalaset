@@ -1,9 +1,14 @@
-﻿namespace Pixel.Kidsparties.Core
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Pixel.Kidsparties.Core
 {
     public class Arrangement
     {
+        [Required]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Slug { get; set; }
         public string Pitch { get; set; }
         public string Description { get; set; }
@@ -11,12 +16,15 @@
         public string StreetAddress { get; set; }
         public string PostalCode { get; set; }
         public string PostalCity { get; set; }
-        public string Country { get; set; }
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public string Website { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
-        public string CategoryCity { get; set; }
+        [Required]
+        public double Latitude { get; set; }
+        [Required]
+        public double Longitude { get; set; }
+
+        public string CitySlug { get; set; }
+        public City City { get; set; }
     }
 }

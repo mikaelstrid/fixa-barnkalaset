@@ -5,7 +5,7 @@ using Pixel.Kidsparties.Core.Interfaces;
 
 namespace Pixel.Kidsparties.Web.Controllers
 {
-    [Route("")]
+    [Route("arrangemang")]
     public class Arrangements : Controller
     {
         private readonly ICityRepository _cityRepository;

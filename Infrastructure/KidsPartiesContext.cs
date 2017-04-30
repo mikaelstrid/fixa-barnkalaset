@@ -3,7 +3,7 @@ using Pixel.Kidsparties.Core;
 
 namespace Pixel.Kidsparties.Infrastructure
 {
-    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web
+    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context KidsPartiesContext
     // Update-Database -Project Infrastructure -StartupProject Web
     // Remove-Migration
     public class KidsPartiesContext : DbContext

@@ -3,7 +3,7 @@ using Pixel.Kidsparties.Core;
 
 namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework
 {
-    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context KidsPartiesContext
+    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context KidsPartiesContext -OutputDir Persistence/EntityFramework/KidsPartiesContextMigrations
     // Update-Database -Project Infrastructure -StartupProject Web
     // Remove-Migration
     public class KidsPartiesContext : DbContext

@@ -66,6 +66,8 @@ namespace Pixel.Kidsparties.Web
 
                 using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
+                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>().Database.Migrate();
+
                     serviceScope.ServiceProvider.GetService<KidsPartiesContext>().Database.Migrate();
                     serviceScope.ServiceProvider.GetService<KidsPartiesContext>().EnsureSeedData();
                 }

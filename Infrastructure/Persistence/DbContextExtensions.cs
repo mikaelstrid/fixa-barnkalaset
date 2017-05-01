@@ -1,9 +1,9 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Pixel.Kidsparties.Infrastructure
+namespace Pixel.Kidsparties.Infrastructure.Persistence
 {
     // https://github.com/rowanmiller/UnicornStore/blob/master/UnicornStore/src/UnicornStore/Models/DbContextExtensions.cs
     public static class DbContextExtensions

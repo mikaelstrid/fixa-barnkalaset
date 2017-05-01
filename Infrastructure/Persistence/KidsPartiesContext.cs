@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixel.Kidsparties.Core;
 
-namespace Pixel.Kidsparties.Infrastructure
+namespace Pixel.Kidsparties.Infrastructure.Persistence
 {
     // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context KidsPartiesContext
     // Update-Database -Project Infrastructure -StartupProject Web

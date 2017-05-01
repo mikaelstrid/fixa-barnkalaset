@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pixel.Kidsparties.Core.Interfaces;
+using Pixel.Kidsparties.Infrastructure.Persistence;
 
-namespace Pixel.Kidsparties.Infrastructure
+namespace Pixel.Kidsparties.Infrastructure.Startup
 {
     public static class ServiceCollectionExtensions
     {

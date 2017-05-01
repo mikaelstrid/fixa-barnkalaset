@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Pixel.Kidsparties.Core;
 
-namespace Pixel.Kidsparties.Infrastructure
+namespace Pixel.Kidsparties.Infrastructure.Persistence
 {
     // https://github.com/rowanmiller/UnicornStore/blob/master/UnicornStore/src/UnicornStore/Models/UnicornStore/UnicornStoreExtensions.cs
     public static class KidsPartiesContextExtensions

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Pixel.Kidsparties.Infrastructure;
+using Pixel.Kidsparties.Infrastructure.Identity;
 using Pixel.Kidsparties.Web.Models.AccountViewModels;
 
 namespace Pixel.Kidsparties.Web.Controllers

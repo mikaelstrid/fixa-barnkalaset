@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Pixel.Kidsparties.Core.Interfaces;
 using Pixel.Kidsparties.Infrastructure.Persistence;
+using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
+using Pixel.Kidsparties.Infrastructure.Persistence.Repositories;
 
 namespace Pixel.Kidsparties.Infrastructure.Startup
 {

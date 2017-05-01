@@ -4,7 +4,7 @@ using System.Linq;
 using Pixel.Kidsparties.Core;
 using Pixel.Kidsparties.Core.Interfaces;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence
+namespace Pixel.Kidsparties.Infrastructure.Persistence.Repositories
 {
     public class DummyArrangementRepository : IArrangementRepository
     {

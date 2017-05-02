@@ -22,6 +22,10 @@
         </select>
     </div>
     <section>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <h1>Inloggad!</h1>
+        }
         @{
             var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
             if (loginProviders.Count == 0)

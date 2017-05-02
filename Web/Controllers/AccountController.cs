@@ -129,11 +129,11 @@ namespace Pixel.Kidsparties.Web.Controllers
             return View(model);
         }
 
-        //[HttpGet]
-        //public IActionResult AccessDenied()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         #region Helpers
 

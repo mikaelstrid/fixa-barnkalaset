@@ -17,23 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\css\nice-select.css" />
     <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
     <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
     <Content Include="wwwroot\images\parkour-goteborg.jpg" />
-    <Content Include="wwwroot\js\admin-pages\createArrangementPage - Copy.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\js\admin-pages\createArrangementPage - Copy.ts">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\lib\jquery.nice-select.js" />
     <Content Include="wwwroot\lib\jquery.nice-select.min.js" />
-    <Content Include="wwwroot\lib\material.js" />
-    <Content Include="wwwroot\lib\material.min.js" />
-    <Content Include="wwwroot\lib\material.min.js.map" />
     <Content Include="wwwroot\lib\material.purple-deep_orange.min.css" />
-    <Content Include="wwwroot\lib\nice-select.css" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.0.2" />

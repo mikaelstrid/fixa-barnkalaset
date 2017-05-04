@@ -1,18 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.Kidsparties.Core;
 using Pixel.Kidsparties.Core.Interfaces;
+using Pixel.Kidsparties.Web.Models;
 
 namespace Pixel.Kidsparties.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IArrangementRepository _arrangementRepository;
+        private readonly IMapper _mapper;
+        private readonly ICityRepository _cityRepository;
 
-        public HomeController(IArrangementRepository arrangementRepository)
+        public HomeController(
+            IMapper mapper, 
+            ICityRepository cityRepository)
         {
-            _arrangementRepository = arrangementRepository;
+            _mapper = mapper;
+            _cityRepository = cityRepository;
         }
 
         [Route("")]
@@ -20,10 +25,10 @@ namespace Pixel.Kidsparties.Web.Controllers
         {
             return View(new HomeIndexViewModel
             {
-                Arrangements = _arrangementRepository.GetAll(),
-                CitiesInSouth = new[] { "Göteborg", "Malmö", "Linköping", "Helsingborg", "Jönköping", "Norrköping", "Lund", "Borås", "Halmstad", "Växjö" },
-                CitiesInMiddle = new[] { "Stockholm", "Uppsala", "Västerås", "Örebro", "Gävle", "Södertälje", "Eskilstuna", "Karlstad" },
-                CitiesInNorth = new[] { "Umeå" }
+                Cities = _mapper.Map<IEnumerable<City>, IEnumerable<HomeIndexViewModel.CityViewModel>>(_cityRepository.GetAll())
+                //CitiesInSouth = new[] { "Göteborg", "Malmö", "Linköping", "Helsingborg", "Jönköping", "Norrköping", "Lund", "Borås", "Halmstad", "Växjö" },
+                //CitiesInMiddle = new[] { "Stockholm", "Uppsala", "Västerås", "Örebro", "Gävle", "Södertälje", "Eskilstuna", "Karlstad" },
+                //CitiesInNorth = new[] { "Umeå" }
             });
         }
 
@@ -31,13 +36,5 @@ namespace Pixel.Kidsparties.Web.Controllers
         {
             return View();
         }
-    }
-
-    public class HomeIndexViewModel
-    {
-        public IEnumerable<Arrangement> Arrangements { get; set; }
-        public IEnumerable<string> CitiesInSouth { get; set; }
-        public IEnumerable<string> CitiesInMiddle { get; set; }
-        public IEnumerable<string> CitiesInNorth { get; set; }
     }
 }

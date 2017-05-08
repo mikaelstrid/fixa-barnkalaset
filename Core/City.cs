@@ -14,6 +14,6 @@ namespace Pixel.Kidsparties.Core
         [Required]
         public double Longitude { get; set; }
 
-        public List<Arrangement> Arrangements { get; set; }
+        public virtual List<Arrangement> Arrangements { get; set; }
     }
 }

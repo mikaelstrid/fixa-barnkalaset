@@ -1,20 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.Kidsparties.Core;
 using Pixel.Kidsparties.Core.Interfaces;
+using Pixel.Kidsparties.Web.Models;
+using System.Collections.Generic;
 
 namespace Pixel.Kidsparties.Web.Controllers
 {
     [Route("arrangemang")]
     public class Arrangements : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ICityRepository _cityRepository;
         private readonly IArrangementRepository _arrangementRepository;
 
         public Arrangements(
+            IMapper mapper,
             ICityRepository cityRepository,
             IArrangementRepository arrangementRepository)
         {
+            _mapper = mapper;
             _cityRepository = cityRepository;
             _arrangementRepository = arrangementRepository;
         }
@@ -25,12 +30,13 @@ namespace Pixel.Kidsparties.Web.Controllers
             var city = _cityRepository.GetBySlug(citySlug);
             if (city == null) return NotFound();
 
-            var arrangements = _arrangementRepository.GetByCitySlug(citySlug);
             return View(new ArrangementIndexViewModel
             {
                 CityName = city.Name,
                 CitySlug = citySlug,
-                Arrangements = arrangements
+                Arrangements =
+                    _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementIndexViewModel.ArrangementViewModel>>(
+                        city.Arrangements)
             });
         }
 
@@ -41,12 +47,5 @@ namespace Pixel.Kidsparties.Web.Controllers
             if (arrangement == null) return NotFound();
             return View(arrangement);
         }
-    }
-
-    public class ArrangementIndexViewModel
-    {
-        public string CityName { get; set; }
-        public string CitySlug { get; set; }
-        public IEnumerable<Arrangement> Arrangements { get; set; }
     }
 }

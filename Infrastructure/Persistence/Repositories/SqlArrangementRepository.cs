@@ -25,18 +25,18 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.Repositories
         {
             return _dbContext
                 .Cities
-                .Find(citySlug)
-                .Arrangements;
+                .SingleOrDefault(c => c.Slug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase))
+                ?.Arrangements
+                ?? new List<Arrangement>();
         }
 
         public Arrangement GetBySlug(string citySlug, string arrangementSlug)
         {
             return _dbContext
-                .Cities
-                .Find(citySlug)
                 .Arrangements
                 .SingleOrDefault(a =>
-                    a.Slug.Equals(arrangementSlug, StringComparison.CurrentCultureIgnoreCase)
+                    a.CitySlug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase)
+                    && a.Slug.Equals(arrangementSlug, StringComparison.CurrentCultureIgnoreCase)
                 );
         }
 

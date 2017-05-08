@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Pixel.Kidsparties.Core;
 using Pixel.Kidsparties.Core.Interfaces;
 using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
@@ -22,7 +23,9 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.Repositories
 
         public City GetBySlug(string citySlug)
         {
-            return _dbContext.Cities.SingleOrDefault(c => c.Slug == citySlug);
+            return _dbContext.Cities
+                .Include(c => c.Arrangements)
+                .SingleOrDefault(c => c.Slug == citySlug);
         }
     }
 }

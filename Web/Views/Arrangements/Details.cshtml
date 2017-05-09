@@ -1,28 +1,32 @@
-﻿@model Pixel.Kidsparties.Core.Arrangement
+﻿@model Pixel.Kidsparties.Web.Models.ArrangementDetailsViewModel
 
-<div class="layout--column">
-    <h5 class="mdl-color-text--primary">
-        @Html.ActionLink(Model.CitySlug, "Index")
-    </h5>
-    <h1 class="mdl-typography--display-2 typography--font-family-brand">@Html.DisplayFor(m => m.Name)</h1>
-    <p class="mdl-typography--title">@Html.DisplayFor(m => m.Pitch)</p>
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--6-col  mdl-cell--4-col-tablet">
-            @Html.Raw(Model.Description)
-        </div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
-            <p>
-                @Html.DisplayFor(m => m.StreetAddress)<br/>
-                @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)<br />
-                @Html.DisplayFor(m => m.PhoneNumber)<br />
-                @Html.DisplayFor(m => m.EmailAddress)<br />
-            </p>
-            <iframe height="450"
-                    frameborder="0"
-                    style="border: 0"
-                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
-                    allowfullscreen>
-            </iframe>
+<div class="ui main container">
+    <h2 class="ui sub header">@Html.ActionLink(Model.CitySlug, "Index")</h2>
+    <h1 class="ui header">@Html.DisplayFor(m => m.Name)</h1>
+    <p class="typography--premable">@Html.DisplayFor(m => m.Pitch)</p>
+
+    <div class="ui stackable two column grid">
+        <div class="row">
+            <div class="column typography--body">
+                @Html.Raw(Model.Description)
+                <p>
+                    @Html.DisplayFor(m => m.StreetAddress)<br />
+                    @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)<br />
+                    @Html.DisplayFor(m => m.PhoneNumber)<br />
+                    @Html.DisplayFor(m => m.EmailAddress)<br />
+                </p>
+                <p><a href="@Model.Website">@Model.Website</a></p>
+            </div>
+            <div class="column">
+                <img width="100%" src="@Model.CoverImage"/>
+                <iframe height="250"
+                        width="100%"
+                        frameborder="0"
+                        style="border: 0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
+                        allowfullscreen></iframe>
+
+            </div>
         </div>
     </div>
 </div>

@@ -45,7 +45,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         {
             var arrangement = _arrangementRepository.GetBySlug(citySlug, arrangementSlug);
             if (arrangement == null) return NotFound();
-            return View(arrangement);
+            return View(_mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement));
         }
     }
 }

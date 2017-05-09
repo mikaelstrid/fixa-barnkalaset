@@ -16,6 +16,7 @@ namespace Pixel.Kidsparties.Web
 
             CreateMap<City, HomeIndexViewModel.CityViewModel>();
             CreateMap<Arrangement, ArrangementIndexViewModel.ArrangementViewModel>();
+            CreateMap<Arrangement, ArrangementDetailsViewModel>();
         }
     }
 }

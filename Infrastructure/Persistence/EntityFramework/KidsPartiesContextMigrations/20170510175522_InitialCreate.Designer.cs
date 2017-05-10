@@ -8,7 +8,7 @@ using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
 namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.KidsPartiesContextMigrations
 {
     [DbContext(typeof(KidsPartiesContext))]
-    [Migration("20170501190316_InitialCreate")]
+    [Migration("20170510175522_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,8 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.KidsParti
                     b.Property<string>("Description");
 
                     b.Property<string>("EmailAddress");
+
+                    b.Property<string>("GooglePlacesId");
 
                     b.Property<double>("Latitude");
 

@@ -44,7 +44,7 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public IActionResult Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public IActionResult Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id}/andra")]
-        public IActionResult Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public IActionResult Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
         {
             if (id != arrangement.Id) return NotFound();
 

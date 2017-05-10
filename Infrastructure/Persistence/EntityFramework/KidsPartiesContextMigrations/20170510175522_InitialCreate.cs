@@ -33,6 +33,7 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.KidsParti
                     CoverImage = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
+                    GooglePlacesId = table.Column<string>(nullable: true),
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
                     Name = table.Column<string>(nullable: false),

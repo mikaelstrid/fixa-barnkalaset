@@ -29,6 +29,8 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.KidsParti
 
                     b.Property<string>("EmailAddress");
 
+                    b.Property<string>("GooglePlacesId");
+
                     b.Property<double>("Latitude");
 
                     b.Property<double>("Longitude");

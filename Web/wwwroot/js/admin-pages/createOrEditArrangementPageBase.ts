@@ -67,9 +67,10 @@ abstract class CreateOrEditArrangementPageBase {
     }
 
     private updateInformationFromGooglePlaces(place: google.maps.places.PlaceResult): void {
+        $("#GooglePlacesId").val(place.place_id);
         if (place.photos.length > 0)
             $("#CoverImage").val(place.photos[0].getUrl({ maxWidth: 1000 }));
-
+        
         this.updateStreetAddress(place.address_components, "StreetAddress");
         this.updateAddressComponent(place.address_components, "postal_code", "PostalCode");
         this.updateAddressComponent(place.address_components, "postal_town", "PostalCity");

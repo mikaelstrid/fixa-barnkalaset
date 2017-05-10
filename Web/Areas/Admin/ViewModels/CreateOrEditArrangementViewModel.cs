@@ -22,6 +22,9 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.ViewModels
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
+        [Display(Name = "Google Places id")]
+        public string GooglePlacesId { get; set; }
+
         [Display(Name = "Omslagsbild")]
         public string CoverImage { get; set; }
 

@@ -5,6 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
+    @*<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">*@
+    @*<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">*@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" />
     <link href="~/css/public-style.css" rel="stylesheet" />
@@ -17,14 +21,25 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <div class="ui fixed menu">
-        <div class="ui container ">
-            <a href="@Url.Action("Index", "Arrangements")" class="header item">
-                @*<img class="logo" src="assets/images/logo.png">*@
-                Fixa kalaset
-            </a>
+    <header class="pxl-header">
+        <div class="ui container group">
+            <div class="pxl-header-brand">
+                @Html.ActionLink("Fixa barnkalaset", "Index", "Home")
+            </div>
+            <div class="ui right pxl-header-menu-right">
+                <a>
+                    <i class="user icon"></i>
+                </a>
+            </div>        
         </div>
-    </div>
+    </header>
+    @*<div class="ui fixed menu">
+            <div class="ui container ">
+                <a href="@Url.Action("Index", "Arrangements")" class="header item">
+                    Fixa kalaset
+                </a>
+            </div>
+        </div>*@
 
     @RenderBody()
 

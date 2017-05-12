@@ -3,22 +3,25 @@ var gulp = require("gulp");
 var sass = require("gulp-sass");
 var del = require("del");
 
+// Semantic UI
+var buildSemantic = require('./app/lib/semantic/tasks/build');
+gulp.task("build-semantic", buildSemantic);
+gulp.task("copy-semantic", function () {
+    return gulp.src(paths.semantic)
+        .pipe(gulp.dest('wwwroot/lib'));
+});
+
 var paths = {
+    semantic: "app/lib/semantic/dist/semantic*.*",
     scripts: ["app/scripts/**/*.js", "app/scripts/**/*.ts", "app/scripts/**/*.map"],
 };
 
 gulp.task("css", function () {
     return gulp.src("app/styles/*.scss")
-        //.pipe(plumber())
-        //.pipe(sourcemaps.init())
         .pipe(sass({
             outputStyle: "compressed"
         })
-        .on("error", sass.logError))
-        //.pipe(header(banner))
-        //.pipe(sourcemaps.write('.', {
-        //    sourceRoot: '/app-main-savings/sass'
-        //}))
+            .on("error", sass.logError))
         .pipe(gulp.dest("wwwroot/css"));
 });
 
@@ -34,3 +37,8 @@ gulp.task("clean", function () {
 });
 
 gulp.task("default", ["js", "css"]);
+
+gulp.task("watch",
+    function () {
+        gulp.watch("app/**/*.*", ["js", "css"]);
+    });

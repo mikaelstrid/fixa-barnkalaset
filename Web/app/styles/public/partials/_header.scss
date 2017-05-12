@@ -1,0 +1,25 @@
+﻿@import "../modules/_variables";
+
+.pxl-header {
+    border-bottom: 1px solid $lightGrey;
+
+    a {
+        color: $violet;
+    }
+}
+
+.pxl-header-brand {
+    float: left;
+    line-height: 4rem;
+    font-size: 2.5rem;
+    /*font-weight: bold;*/
+    font-family: 'Gochi Hand', cursive;
+    /*font-family: 'Indie Flower', cursive;*/
+    /*font-family: 'Gloria Hallelujah', cursive;*/
+}
+
+.pxl-header-menu-right {
+    float: right;
+    line-height: 4rem;
+    font-size: 1.5rem;
+}

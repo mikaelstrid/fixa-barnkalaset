@@ -10,5 +10,8 @@
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-sass": "^3.1.0"
+  },
+  "dependencies": {
+    "semantic-ui": "^2.2.10"
   }
 }

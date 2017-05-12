@@ -20,8 +20,6 @@
     <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
     <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
     <Content Include="wwwroot\images\parkour-goteborg.jpg" />
-    <Content Include="wwwroot\lib\jquery.nice-select.min.js" />
-    <Content Include="wwwroot\lib\material.purple-deep_orange.min.css" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.0.2" />
@@ -44,5 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 </Project>

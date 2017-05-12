@@ -10,7 +10,8 @@
     @*<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">*@
     @*<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">*@
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" />
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" />*@
+    <link href="~/lib/semantic.css" rel="stylesheet" />
     <link href="~/css/public-style.css" rel="stylesheet" />
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -22,7 +23,7 @@
 </head>
 <body>
     <header class="pxl-header">
-        <div class="ui container group">
+        <div class="ui container pxl-group">
             <div class="pxl-header-brand">
                 @Html.ActionLink("Fixa barnkalaset", "Index", "Home")
             </div>

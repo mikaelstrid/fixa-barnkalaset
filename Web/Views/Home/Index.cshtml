@@ -3,10 +3,10 @@
 @model Pixel.Kidsparties.Web.Models.HomeIndexViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
-<div class="ui main container">
-    <h1>Hitta det perfekta barnkalaset</h1>
-    <p>Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn och hans/hennes kompisar.</p>
-    <select id="citySelector" class="dropdown">
+<div class="ui container text pxl-block pxl-block--content-centered">
+    <h1 class="pxl-first-page-hero-header">Hitta det perfekta barnkalaset</h1>
+    <p class="pxl-first-page-hero-pitch">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn och hans/hennes kompisar.</p>
+    <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
         <option value="">Välj stad...</option>
         @foreach (var city in Model.Cities)
         {

@@ -43,9 +43,15 @@ namespace Pixel.Kidsparties.Web.Controllers
         [Route("{citySlug}/{arrangementSlug}")]
         public IActionResult Details(string citySlug, string arrangementSlug)
         {
+            var city = _cityRepository.GetBySlug(citySlug);
+            if (city == null) return NotFound();
+
             var arrangement = _arrangementRepository.GetBySlug(citySlug, arrangementSlug);
             if (arrangement == null) return NotFound();
-            return View(_mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement));
+
+            var viewModel = _mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement);
+            viewModel.CityName = city.Name;
+            return View(viewModel);
         }
     }
 }

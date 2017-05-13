@@ -15,6 +15,7 @@ namespace Pixel.Kidsparties.Web.Models
         public string Website { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string CityName { get; set; }
         public string CitySlug { get; set; }
     }
 }

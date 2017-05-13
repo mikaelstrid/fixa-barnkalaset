@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    
+
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
     @*<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">*@
     @*<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">*@
@@ -31,18 +31,17 @@
                 <a>
                     <i class="user icon"></i>
                 </a>
-            </div>        
+            </div>
         </div>
     </header>
-    @*<div class="ui fixed menu">
-            <div class="ui container ">
-                <a href="@Url.Action("Index", "Arrangements")" class="header item">
-                    Fixa kalaset
-                </a>
-            </div>
-        </div>*@
 
     @RenderBody()
+
+    <footer class="pxl-footer">
+        <div class="ui container">
+            Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>
+        </div>
+    </footer>
 
     <script>
         $(document).ready(function () {

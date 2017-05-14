@@ -2,6 +2,17 @@
 @using Pixel.Kidsparties.Infrastructure.Identity
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var userProfilePictureUrl = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        userProfilePictureUrl = $"https://graph.facebook.com/v2.9/{user.NameIdentifier}/picture";
+    }
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +52,7 @@
             }
             else
             {
-                <img class="ui mini circular image" src="http://graph.facebook.com/v2.9/10154742459438370/picture">
+                <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
             }
             </div>
         </div>

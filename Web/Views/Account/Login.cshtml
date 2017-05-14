@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Pixel.Kidsparties.Infrastructure.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@*@{
+        ViewData["Title"] = "Log in";
+    }*@
+
+<div class="ui container pxl-block">
+    <div class="ui middle aligned center aligned grid pxl-login-dialog">
+        <div class="column">
+            <h2 class="ui header">
+                <div class="content">
+                    Logga in
+                </div>
+            </h2>
+            @{
+                var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="ui large form">
+                    <div class="ui segment">
+                        <p>Hos oss använder du ditt Facebook-konto för att logga in så att du slipper hålla reda på fler användaruppgifter.</p>
+                        <p>Första gången kommer vi be om tillgång till din offentliga profil och e-postadress (vilket är minimum). Vi får alltså <strong>inte</strong> rättighet att posta i ditt flöde, se dina vänner eller liknande.</p>
+
+                        @foreach (var provider in loginProviders)
+                        {
+                            <button type="submit" class="ui labeled icon large button pxl-button-@provider.AuthenticationScheme.ToLowerInvariant()" name="provider" value="@provider.AuthenticationScheme" title="Logga in med @provider.DisplayName"><i class="white large facebook square icon"></i> Logga in med @provider.AuthenticationScheme</button>
+                        }
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

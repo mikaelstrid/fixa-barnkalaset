@@ -1,0 +1,16 @@
+﻿@import "../modules/_variables";
+
+$facebook-blue: #3b5899;
+$facebook-blue-medium: #4267b2;
+
+.ui.button.pxl-button-facebook {
+    color: $white;
+    background-color: $facebook-blue-medium;
+
+    &:not([disabled]) {
+        &:hover, &:active, &:focus {
+            color: $white;
+            background-color: $facebook-blue;
+        }
+    }
+}

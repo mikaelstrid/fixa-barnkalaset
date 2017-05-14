@@ -11,6 +11,7 @@ using Pixel.Kidsparties.Web.Models.AccountViewModels;
 namespace Pixel.Kidsparties.Web.Controllers
 {
     [Authorize]
+    [Route("konto")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -29,6 +30,20 @@ namespace Pixel.Kidsparties.Web.Controllers
         }
 
         //
+        // GET: /Account/Login
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("logga-in")]
+        public IActionResult Login(string returnUrl = null)
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            //await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        //
         // POST: /Account/Logout
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -44,6 +59,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Route("external-login")]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
@@ -56,6 +72,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         // GET: /Account/ExternalLoginCallback
         [HttpGet]
         [AllowAnonymous]
+        [Route("external-login-callback")]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             if (remoteError != null)
@@ -100,6 +117,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Route("external-login-confirmation")]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
         {
             if (ModelState.IsValid)
@@ -130,6 +148,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         }
 
         [HttpGet]
+        [Route("atkomst-nekad")]
         public IActionResult AccessDenied()
         {
             return View();

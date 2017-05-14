@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Pixel.Kidsparties.Infrastructure.Identity;
 using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
 using Pixel.Kidsparties.Infrastructure.Startup;
 
@@ -36,9 +34,7 @@ namespace Pixel.Kidsparties.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.ConfigureAuthentication();
 
             services.AddMvc(options =>
             {

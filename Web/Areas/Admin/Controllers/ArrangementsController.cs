@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Pixel.Kidsparties.Core;
@@ -10,6 +11,7 @@ namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/arrangemang")]
+    [Authorize]
     public class ArrangementsController : Controller
     {
         private readonly IMapper _mapper;

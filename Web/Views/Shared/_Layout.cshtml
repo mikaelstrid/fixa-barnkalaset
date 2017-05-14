@@ -32,14 +32,18 @@
                 @Html.ActionLink("Fixa barnkalaset", "Index", "Home")
             </div>
 
+            <div class="ui right pxl-header-menu-right">
             @if (!SignInManager.IsSignedIn(User))
             {
-                <div class="ui right pxl-header-menu-right">
-                    <a href="@Url.Action("Login", "Account")">
-                        <i class="circular user link icon"></i>
-                    </a>
-                </div>
+                <a href="@Url.Action("Login", "Account")">
+                    <i class="circular user link icon"></i>
+                </a>
             }
+            else
+            {
+                <img class="ui mini circular image" src="http://graph.facebook.com/v2.9/10154742459438370/picture">
+            }
+            </div>
         </div>
     </header>
 

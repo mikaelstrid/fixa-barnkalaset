@@ -70,7 +70,7 @@ var CreateOrEditArrangementPageBase = (function () {
         }
         $("#GooglePlacesName").text(place.name);
         $.get("/api/cities/closest?latitude=" + place.geometry.location.lat() + "&longitude=" + place.geometry.location.lng(), function (data) {
-            $("#CategoryCity").val(data.slug);
+            $("#CitySlug").val(data.slug);
         });
     };
     CreateOrEditArrangementPageBase.prototype.updateAddressComponent = function (addressComponents, googleName, fieldId) {

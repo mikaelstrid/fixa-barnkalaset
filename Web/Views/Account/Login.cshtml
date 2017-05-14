@@ -17,7 +17,7 @@
             @{
                 var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
                 <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="ui large form">
-                    <div class="ui segment">
+                    <div class="ui padded segment">
                         <p>Hos oss använder du ditt Facebook-konto för att logga in så att du slipper hålla reda på fler användaruppgifter.</p>
                         <p>Första gången kommer vi be om tillgång till din offentliga profil och e-postadress (vilket är minimum). Vi får alltså <strong>inte</strong> rättighet att posta i ditt flöde, se dina vänner eller liknande.</p>
 

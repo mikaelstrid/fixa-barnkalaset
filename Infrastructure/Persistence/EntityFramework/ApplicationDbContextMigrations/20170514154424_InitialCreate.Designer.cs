@@ -8,7 +8,7 @@ using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
 namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.ApplicationDbContextMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170501190351_InitialCreate")]
+    [Migration("20170514154424_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,9 +139,15 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.Applicati
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("GivenName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("NameIdentifier");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -156,6 +162,8 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.Applicati
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Surname");
 
                     b.Property<bool>("TwoFactorEnabled");
 

@@ -138,9 +138,15 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.Applicati
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("GivenName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("NameIdentifier");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -155,6 +161,8 @@ namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.Applicati
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Surname");
 
                     b.Property<bool>("TwoFactorEnabled");
 

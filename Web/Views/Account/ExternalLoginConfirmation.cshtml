@@ -11,16 +11,20 @@
             </h2>
             @{
                 <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="ui large form">
+                    <input type="hidden" asp-for="NameIdentifier" /> 
+                    <input type="hidden" asp-for="Name" />
+                    <input type="hidden" asp-for="GivenName" />
+                    <input type="hidden" asp-for="Surname" />
                     <div class="ui padded segment">
                         <p>Perfekt, du har nu autentiserat dig med @ViewData["LoginProvider"]!</p>
                         <p>Vill du använda en annan e-postadress hos oss så är det bara att ändra nedan, sedan klickar du på Skapa nytt konto.</p>
                         <div class="field">
                             <div class="ui left icon input">
                                 <i class="mail icon"></i>
-                                <input asp-for="Email" />
+                                <input asp-for="Email"/>
                             </div>
                         </div>
-                        <div class="ui large primary submit button">Skapa nytt konto</div>
+                        <button type="submit" class="ui large primary button">Skapa nytt konto</button>
                     </div>
                 </form>
             }

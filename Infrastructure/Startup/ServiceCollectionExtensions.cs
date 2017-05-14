@@ -29,6 +29,7 @@ namespace Pixel.Kidsparties.Infrastructure.Startup
                 {
                     o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
                     o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
+                    o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

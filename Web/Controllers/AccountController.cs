@@ -17,6 +17,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
+        private readonly string _externalCookieScheme;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -26,6 +27,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -34,25 +36,25 @@ namespace Pixel.Kidsparties.Web.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("logga-in")]
-        public IActionResult Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
-            //await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
-
+            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         //
         // POST: /Account/Logout
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await _signInManager.SignOutAsync();
-        //    _logger.LogInformation(4, "User logged out.");
-        //    return RedirectToAction(nameof(HomeController.Index), "Home");
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("logga-ut")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation(4, "User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
 
         //
         // POST: /Account/ExternalLogin
@@ -148,6 +150,7 @@ namespace Pixel.Kidsparties.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("atkomst-nekad")]
         public IActionResult AccessDenied()
         {

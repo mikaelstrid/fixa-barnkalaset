@@ -324,7 +324,7 @@
     },
     {
       "apiVersion": "2014-04-01",
-      "name": "[variables('webSiteName')]",
+      "name": "[concat('ai-fbk-', parameters('environmentName'))]",
       "type": "Microsoft.Insights/components",
       "location": "[resourceGroup().location]",
       "dependsOn": [
@@ -335,7 +335,7 @@
         "displayName": "AppInsightsComponent"
       },
       "properties": {
-        "ApplicationId": "[variables('webSiteName')]"
+        "ApplicationId": "[concat('ai-fbk-', parameters('environmentName'))]"
       }
     }
   ]

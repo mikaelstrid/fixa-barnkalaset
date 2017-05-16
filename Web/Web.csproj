@@ -9,6 +9,8 @@
     <AssemblyName>Pixel.Kidsparties.Web</AssemblyName>
     <RootNamespace>Pixel.Kidsparties.Web</RootNamespace>
     <UserSecretsId>c5600757-86c6-46ef-834b-8542453ec33a</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/1f2f77c6-c627-4309-9830-f97ceb26d8a9/resourcegroups/Group-Fixa-Barnkalaset-LOCAL/providers/microsoft.insights/components/ai-fbk-local</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/1f2f77c6-c627-4309-9830-f97ceb26d8a9/resourcegroups/Group-Fixa-Barnkalaset-LOCAL/providers/microsoft.insights/components/ai-fbk-local</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,5 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 </Project>

@@ -44,7 +44,7 @@ namespace Pixel.Kidsparties.Web
 
             services.AddAutoMapper();
 
-            var connectionString = @"Server=(localdb)\mssqllocaldb;Database=KidsParties;Trusted_Connection=True;";
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFramework(connectionString);
 
             services.AddApplicationServices();

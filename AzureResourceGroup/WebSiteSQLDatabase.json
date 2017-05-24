@@ -14,9 +14,9 @@
     }
   },
   "variables": {
-    "appServicePlanName": "[concat('asp-fixabarnkalaset-', parameters('environmentName'))]",
+    "appServicePlanName": "[concat('asp-fbk-', parameters('environmentName'))]",
     "webSiteName": "[concat('web-fbk-', parameters('environmentName'))]",
-    "sqlserverName": "[concat('sql-fixabarnkalaset-', parameters('environmentName'))]",
+    "sqlserverName": "[concat('sql-fbk-', parameters('environmentName'))]",
     "databaseName": "fbk-core-db",
     "administratorLogin": "[concat('fbkadmin', parameters('environmentName'))]",
     "skuName": "F1",

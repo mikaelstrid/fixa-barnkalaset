@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "kids-parties",
+  "name": "fixa-barnkalaset",
   "private": true,
   "devDependencies": {
     "@types/ckeditor": "0.0.37",

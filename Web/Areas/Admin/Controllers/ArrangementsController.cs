@@ -3,11 +3,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Pixel.Kidsparties.Core;
-using Pixel.Kidsparties.Core.Interfaces;
-using Pixel.Kidsparties.Web.Areas.Admin.ViewModels;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 
-namespace Pixel.Kidsparties.Web.Areas.Admin.Controllers
+namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/arrangemang")]

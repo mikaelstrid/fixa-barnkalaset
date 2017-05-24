@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <AssemblyName>Pixel.Kidsparties.Infrastructure</AssemblyName>
-    <RootNamespace>Pixel.Kidsparties.Infrastructure</RootNamespace>
+    <AssemblyName>Pixel.FixaBarnkalaset.Infrastructure</AssemblyName>
+    <RootNamespace>Pixel.FixaBarnkalaset.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
     // https://github.com/rowanmiller/UnicornStore/blob/master/UnicornStore/src/UnicornStore/Models/DbContextExtensions.cs
     public static class DbContextExtensions

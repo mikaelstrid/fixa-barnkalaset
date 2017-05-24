@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Pixel.Kidsparties.Web
+namespace Pixel.FixaBarnkalaset.Web
 {
     public class Program
     {

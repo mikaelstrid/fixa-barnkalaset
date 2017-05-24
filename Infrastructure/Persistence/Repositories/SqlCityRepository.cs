@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Pixel.Kidsparties.Core;
-using Pixel.Kidsparties.Core.Interfaces;
-using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.Repositories
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
     public class SqlCityRepository : ICityRepository
     {

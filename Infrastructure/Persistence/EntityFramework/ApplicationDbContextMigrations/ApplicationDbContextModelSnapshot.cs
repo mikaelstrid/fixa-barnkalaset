@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.ApplicationDbContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.ApplicationDbContextMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot

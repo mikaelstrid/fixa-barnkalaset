@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Mvc;
-using Pixel.Kidsparties.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
 
-namespace Pixel.Kidsparties.Web.ApiControllers
+namespace Pixel.FixaBarnkalaset.Web.ApiControllers
 {
     [Route("api/cities")]
     public class CitiesController : Controller

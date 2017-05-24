@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
-namespace Pixel.Kidsparties.Infrastructure.Startup
+namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
 {
     public static class ApplicationBuilderExtensions
     {

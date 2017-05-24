@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Pixel.Kidsparties.Infrastructure.Identity;
+using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
     // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context ApplicationDbContext -OutputDir Persistence/EntityFramework/ApplicationDbContextMigrations
     // Update-Database -Project Infrastructure -StartupProject Web

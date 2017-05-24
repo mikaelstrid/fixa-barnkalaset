@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Pixel.Kidsparties.Core;
-using Pixel.Kidsparties.Core.Interfaces;
-using Pixel.Kidsparties.Web.Models;
-using System.Collections.Generic;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Web.Models;
 
-namespace Pixel.Kidsparties.Web.Controllers
+namespace Pixel.FixaBarnkalaset.Web.Controllers
 {
     [Route("arrangemang")]
     public class Arrangements : Controller

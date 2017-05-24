@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pixel.Kidsparties.Core;
+using Pixel.FixaBarnkalaset.Core;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
     // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context KidsPartiesContext -OutputDir Persistence/EntityFramework/KidsPartiesContextMigrations
     // Update-Database -Project Infrastructure -StartupProject Web

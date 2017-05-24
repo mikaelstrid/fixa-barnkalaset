@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pixel.Kidsparties.Core
+namespace Pixel.FixaBarnkalaset.Core
 {
     public class Arrangement
     {

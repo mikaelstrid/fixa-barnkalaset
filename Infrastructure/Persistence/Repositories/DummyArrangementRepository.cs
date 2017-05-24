@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Pixel.Kidsparties.Core;
-using Pixel.Kidsparties.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.Repositories
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
     public class DummyArrangementRepository : IArrangementRepository
     {

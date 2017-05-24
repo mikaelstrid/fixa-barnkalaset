@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pixel.Kidsparties.Core.Interfaces
+namespace Pixel.FixaBarnkalaset.Core.Interfaces
 {
     public interface ICityRepository
     {

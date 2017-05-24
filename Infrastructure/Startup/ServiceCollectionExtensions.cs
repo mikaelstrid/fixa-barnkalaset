@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Pixel.Kidsparties.Core.Interfaces;
-using Pixel.Kidsparties.Infrastructure.Identity;
-using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
-using Pixel.Kidsparties.Infrastructure.Persistence.Repositories;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Infrastructure.Identity;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 
-namespace Pixel.Kidsparties.Infrastructure.Startup
+namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
 {
     public static class ServiceCollectionExtensions
     {

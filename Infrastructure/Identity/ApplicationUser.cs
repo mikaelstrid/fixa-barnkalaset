@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Pixel.Kidsparties.Infrastructure.Identity
+namespace Pixel.FixaBarnkalaset.Infrastructure.Identity
 {
     public class ApplicationUser : IdentityUser
     {

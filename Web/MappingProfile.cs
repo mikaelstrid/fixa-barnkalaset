@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Pixel.Kidsparties.Core;
-using Pixel.Kidsparties.Web.Areas.Admin.ViewModels;
-using Pixel.Kidsparties.Web.Models;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
+using Pixel.FixaBarnkalaset.Web.Models;
 
-namespace Pixel.Kidsparties.Web
+namespace Pixel.FixaBarnkalaset.Web
 {
     public class MappingProfile : Profile
     {

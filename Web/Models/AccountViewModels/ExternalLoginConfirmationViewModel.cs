@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pixel.Kidsparties.Web.Models.AccountViewModels
+namespace Pixel.FixaBarnkalaset.Web.Models.AccountViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {

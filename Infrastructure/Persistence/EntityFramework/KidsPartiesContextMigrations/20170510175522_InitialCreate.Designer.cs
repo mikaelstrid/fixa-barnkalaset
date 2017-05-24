@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.KidsPartiesContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.KidsPartiesContextMigrations
 {
     [DbContext(typeof(KidsPartiesContext))]
     [Migration("20170510175522_InitialCreate")]

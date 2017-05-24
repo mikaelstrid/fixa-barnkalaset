@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Pixel.Kidsparties.Web.Areas.Admin.ViewModels
+namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 {
     public class CreateOrEditArrangementViewModel
     {

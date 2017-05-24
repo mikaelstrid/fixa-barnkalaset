@@ -1,4 +1,4 @@
-namespace Pixel.Kidsparties.Web.Models
+namespace Pixel.FixaBarnkalaset.Web.Models
 {
     public class ArrangementDetailsViewModel
     {

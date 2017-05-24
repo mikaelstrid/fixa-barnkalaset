@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework.KidsPartiesContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.KidsPartiesContextMigrations
 {
     public partial class InitialCreate : Migration
     {

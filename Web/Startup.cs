@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Pixel.Kidsparties.Infrastructure.Persistence.EntityFramework;
-using Pixel.Kidsparties.Infrastructure.Startup;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
+using Pixel.FixaBarnkalaset.Infrastructure.Startup;
 
-namespace Pixel.Kidsparties.Web
+namespace Pixel.FixaBarnkalaset.Web
 {
     public class Startup
     {

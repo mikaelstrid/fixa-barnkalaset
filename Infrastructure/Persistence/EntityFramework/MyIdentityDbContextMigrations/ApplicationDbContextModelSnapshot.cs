@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.ApplicationDbContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIdentityDbContextMigrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(MyIdentityDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.ApplicationDbContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIdentityDbContextMigrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(MyIdentityDbContext))]
     [Migration("20170514154424_InitialCreate")]
     partial class InitialCreate
     {

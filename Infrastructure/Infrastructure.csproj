@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\EntityFramework\ApplicationDbContextMigrations\" />
+    <Folder Include="Persistence\EntityFramework\MyIdentityDbContextMigrations\" />
   </ItemGroup>
 
 </Project>

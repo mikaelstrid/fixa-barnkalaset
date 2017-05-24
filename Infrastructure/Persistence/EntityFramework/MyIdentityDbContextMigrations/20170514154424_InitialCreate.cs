@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.ApplicationDbContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIdentityDbContextMigrations
 {
     public partial class InitialCreate : Migration
     {

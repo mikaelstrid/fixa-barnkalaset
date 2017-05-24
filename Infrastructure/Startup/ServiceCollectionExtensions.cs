@@ -14,7 +14,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
         public static void AddEntityFramework(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<KidsPartiesContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)
@@ -31,7 +31,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
                     o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
                     o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<MyIdentityDbContext>()
                 .AddDefaultTokenProviders();
         }
     }

@@ -64,8 +64,8 @@ namespace Pixel.FixaBarnkalaset.Web
                 {
                     serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
 
-                    serviceScope.ServiceProvider.GetService<KidsPartiesContext>().Database.Migrate();
-                    serviceScope.ServiceProvider.GetService<KidsPartiesContext>().EnsureSeedData();
+                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
                 }
             }
             else

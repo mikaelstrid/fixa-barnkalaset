@@ -1,19 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
-namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.KidsPartiesContextMigrations
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDataDbContextMigrations
 {
-    [DbContext(typeof(KidsPartiesContext))]
-    partial class KidsPartiesContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MyDataDbContext))]
+    [Migration("20170524213041_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Pixel.Kidsparties.Core.Arrangement", b =>
+            modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.Arrangement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -57,7 +61,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.KidsP
                     b.ToTable("Arrangements");
                 });
 
-            modelBuilder.Entity("Pixel.Kidsparties.Core.City", b =>
+            modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.City", b =>
                 {
                     b.Property<string>("Slug")
                         .ValueGeneratedOnAdd();
@@ -74,9 +78,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.KidsP
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("Pixel.Kidsparties.Core.Arrangement", b =>
+            modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.Arrangement", b =>
                 {
-                    b.HasOne("Pixel.Kidsparties.Core.City", "City")
+                    b.HasOne("Pixel.FixaBarnkalaset.Core.City", "City")
                         .WithMany("Arrangements")
                         .HasForeignKey("CitySlug");
                 });

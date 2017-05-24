@@ -3,12 +3,12 @@ using Pixel.FixaBarnkalaset.Core;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
-    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context KidsPartiesContext -OutputDir Persistence/EntityFramework/KidsPartiesContextMigrations
+    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context MyDataDbContext -OutputDir Persistence/EntityFramework/MyDataDbContextMigrations
     // Update-Database -Project Infrastructure -StartupProject Web
     // Remove-Migration
-    public class KidsPartiesContext : DbContext
+    public class MyDataDbContext : DbContext
     {
-        public KidsPartiesContext(DbContextOptions<KidsPartiesContext> options) : base(options)
+        public MyDataDbContext(DbContextOptions<MyDataDbContext> options) : base(options)
         {
         }
 

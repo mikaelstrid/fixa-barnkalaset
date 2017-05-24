@@ -13,7 +13,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
     {
         public static void AddEntityFramework(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<KidsPartiesContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
             services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
         }
 

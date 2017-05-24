@@ -1,6 +1,7 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIdentityDbContextMigrations
 {

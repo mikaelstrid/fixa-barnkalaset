@@ -9,9 +9,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
     public class SqlArrangementRepository : IArrangementRepository
     {
-        private readonly KidsPartiesContext _dbContext;
+        private readonly MyDataDbContext _dbContext;
 
-        public SqlArrangementRepository(KidsPartiesContext dbContext)
+        public SqlArrangementRepository(MyDataDbContext dbContext)
         {
             _dbContext = dbContext;
         }

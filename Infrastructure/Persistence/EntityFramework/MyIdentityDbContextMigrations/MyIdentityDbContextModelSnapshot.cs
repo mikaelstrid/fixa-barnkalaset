@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIdentityDbContextMigrations
 {
     [DbContext(typeof(MyIdentityDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class MyIdentityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -121,7 +123,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIde
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Pixel.Kidsparties.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Pixel.FixaBarnkalaset.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -189,7 +191,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIde
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Pixel.Kidsparties.Infrastructure.Identity.ApplicationUser")
+                    b.HasOne("Pixel.FixaBarnkalaset.Infrastructure.Identity.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -197,7 +199,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIde
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Pixel.Kidsparties.Infrastructure.Identity.ApplicationUser")
+                    b.HasOne("Pixel.FixaBarnkalaset.Infrastructure.Identity.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -210,7 +212,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyIde
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Pixel.Kidsparties.Infrastructure.Identity.ApplicationUser")
+                    b.HasOne("Pixel.FixaBarnkalaset.Infrastructure.Identity.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

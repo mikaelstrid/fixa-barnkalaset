@@ -4,7 +4,7 @@ using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
-    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context MyIdentityDbContext -OutputDir Persistence/EntityFramework/ApplicationDbContextMigrations
+    // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context MyIdentityDbContext -OutputDir Persistence/EntityFramework/MyIdentityDbContextMigrations
     // Update-Database -Project Infrastructure -StartupProject Web
     // Remove-Migration
     public class MyIdentityDbContext : IdentityDbContext<ApplicationUser>

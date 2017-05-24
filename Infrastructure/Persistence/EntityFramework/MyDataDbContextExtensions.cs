@@ -4,9 +4,9 @@ using Pixel.FixaBarnkalaset.Core;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
     // https://github.com/rowanmiller/UnicornStore/blob/master/UnicornStore/src/UnicornStore/Models/UnicornStore/UnicornStoreExtensions.cs
-    public static class KidsPartiesContextExtensions
+    public static class MyDataDbContextExtensions
     {
-        public static void EnsureSeedData(this KidsPartiesContext context)
+        public static void EnsureSeedData(this MyDataDbContext context)
         {
             if (context.AllMigrationsApplied())
             {

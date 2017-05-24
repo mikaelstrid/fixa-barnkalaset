@@ -9,9 +9,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
     public class SqlCityRepository : ICityRepository
     {
-        private readonly KidsPartiesContext _dbContext;
+        private readonly MyDataDbContext _dbContext;
 
-        public SqlCityRepository(KidsPartiesContext dbContext)
+        public SqlCityRepository(MyDataDbContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,8 @@ namespace Pixel.FixaBarnkalaset.Web
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
+
+                TelemetryConfiguration.Active.DisableTelemetry = true;
             }
 
             builder.AddEnvironmentVariables();

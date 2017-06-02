@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,11 +40,18 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             services.ConfigureAuthentication();
 
+#if DEBUG
             services.AddMvc(options =>
             {
                 options.SslPort = 44369;
                 options.Filters.Add(new RequireHttpsAttribute());
             });
+#else
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+#endif
 
             services.AddAutoMapper();
 
@@ -57,6 +65,10 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var defaultCulture = new CultureInfo("sv-SE");
+            CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
 
             if (env.IsDevelopment())
             {
@@ -79,7 +91,7 @@ namespace Pixel.FixaBarnkalaset.Web
             app.UseStaticFiles();
 
             app.UseAuthentication(Configuration);
-
+            
             //app.UseMvc(routes =>
             //{
             //    routes.MapRoute(

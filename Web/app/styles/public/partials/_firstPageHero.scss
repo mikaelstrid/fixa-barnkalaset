@@ -1,12 +1,20 @@
 ﻿@import "../modules/_variables";
 
+.pxl-first-page-hero-wrapper {
+    background: #833ab4; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fcb045, #fd1d1d, #833ab4); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .pxl-first-page-hero-header {
     margin-bottom: 2rem;
+    color: $white;
 }
 
 .pxl-first-page-hero-pitch {
     margin-bottom: 3rem;
     font-size: 1.2em;
+    color: $white;
 }
 
 .pxl-first-page-hero-city-chooser {

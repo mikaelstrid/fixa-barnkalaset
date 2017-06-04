@@ -4,19 +4,20 @@
 @model Pixel.FixaBarnkalaset.Web.Models.HomeIndexViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
-<div class="ui container text pxl-block pxl-block--content-centered">
-    <h1 class="pxl-first-page-hero-header">Hitta det perfekta barnkalaset</h1>
-    <p class="pxl-first-page-hero-pitch">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn.</p>
-    <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
-        <option value="">Välj stad...</option>
-        @foreach (var city in Model.Cities)
-        {
-            <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
-        }
-    </select>
+<div class="pxl-first-page-hero-wrapper">
+    <div class="ui container text pxl-block pxl-block--content-centered pxl-first-page-hero-block">
+        <h1 class="pxl-first-page-hero-header">Hitta det perfekta barnkalaset</h1>
+        <p class="pxl-first-page-hero-pitch">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn.</p>
+        <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
+            <option value="">Välj stad...</option>
+            @foreach (var city in Model.Cities)
+            {
+                <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
+            }
+        </select>
+    </div>
 </div>
-
-<div class="ui two column grid container">
+<div class="ui two column very relaxed grid container">
     <div class="row">
         <div class="column pxl-block">
             <h2>Inte tid att skicka inbjudningskort?</h2>

@@ -6,7 +6,7 @@
 
 <div class="ui container text pxl-block pxl-block--content-centered">
     <h1 class="pxl-first-page-hero-header">Hitta det perfekta barnkalaset</h1>
-    <p class="pxl-first-page-hero-pitch">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn och hans/hennes kompisar.</p>
+    <p class="pxl-first-page-hero-pitch">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn.</p>
     <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
         <option value="">Välj stad...</option>
         @foreach (var city in Model.Cities)
@@ -14,6 +14,28 @@
             <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
         }
     </select>
+</div>
+
+<div class="ui two column grid container">
+    <div class="row">
+        <div class="column pxl-block">
+            <h2>Inte tid att skicka inbjudningskort?</h2>
+            <p>Om du inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
+            <p>Allt du behöver göra är följande:</p>
+            <ol class="ui list">
+                <li>Fyll i tid och plats och skriv en kort hälsning.</li>
+                <li>Välj en mall för inbjudningskorten.</li>
+                <li>Fotografera en klasslista eller liknande och justera lite om det behövs.</li>
+            </ol>
+            <p>Vi gör sedan resten, det vill säga ser till att inbjudningskorten trycks i ett professionellt tryckeri och skickas till dina gäster.</p>
+        </div>
+        <div class="column pxl-block">
+            <h2>Håll reda på vilka som kommer</h2>
+            <p>Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa andra meddelande eller e-post.</p>
+            <p>Vi genererar en smidig kod som är unik för varje gäst som du kan skicka med på inbjudningskorten. Gästen kan sedan enkelt gå in på vår hemsida och svara om de kommer eller inte.</p>
+            <p>Psst. Vi kan även skicka en vänlig påminnelse till de som glömt svara, så slipper du verka tjatig. :)</p>
+        </div>
+    </div>
 </div>
 
 @section Scripts

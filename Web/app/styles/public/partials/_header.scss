@@ -1,18 +1,82 @@
 ﻿@import "../modules/_variables";
 
+.hidden.menu {
+    display: none;
+}
+
+.masthead.segment {
+    padding: 1em 0em;
+    background: #B993D6 !important; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #8CA6DB, #B993D6) !important; /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #8CA6DB, #B993D6) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.masthead .logo.item img {
+    margin-right: 1em;
+}
+
+.masthead .ui.menu .ui.button {
+    margin-left: 0.5em;
+}
+
+.masthead h1.ui.header {
+    margin-top: 3em;
+    margin-bottom: 0em;
+    font-size: 4em;
+    font-weight: normal;
+}
+
+.masthead h2 {
+    font-size: 1.7em;
+    font-weight: normal;
+}
+
+.secondary.pointing.menu {
+    border: 0px solid transparent !important;
+}
+
+.secondary.pointing.menu .toc.item {
+    display: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .secondary.pointing.menu .item,
+    .secondary.pointing.menu .menu {
+        display: none;
+    }
+
+    .secondary.pointing.menu .toc.item {
+        display: block;
+    }
+
+    .masthead.segment {
+        min-height: 350px;
+    }
+
+    .masthead h1.ui.header {
+        font-size: 2em;
+        margin-top: 1.5em;
+    }
+
+    .masthead h2 {
+        margin-top: 0.5em;
+        font-size: 1.5em;
+    }
+}
+
 .pxl-header {
     border-bottom: 1px solid $lightGrey;
 }
 
-.pxl-header-brand {
-    float: left;
-    line-height: 4rem;
+.pxl-masthead-brand {
+    margin-bottom: -2px !important;
     font-size: 2.5rem;
+    padding-top: (42.69px-35px)/2 !important;
+    padding-bottom: (42.69px-35px)/2 !important;
     font-family: 'Gochi Hand', cursive;
-
-    a {
+    /*a {
         color: $primaryColor;
-    }
+    }*/
 }
 
 .pxl-header-menu-right {

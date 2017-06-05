@@ -1,23 +1,79 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Pixel.FixaBarnkalaset.Infrastructure.Identity
 @using Pixel.FixaBarnkalaset.Web.Models
-@model Pixel.FixaBarnkalaset.Web.Models.HomeIndexViewModel
+@model HomeIndexViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
-<div class="pxl-first-page-hero-wrapper">
-    <div class="ui container text pxl-block pxl-block--content-centered pxl-first-page-hero-block">
-        <h1 class="pxl-first-page-hero-header">Hitta det perfekta barnkalaset</h1>
-        <p class="pxl-first-page-hero-pitch">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset för just ditt barn.</p>
-        <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
-            <option value="">Välj stad...</option>
-            @foreach (var city in Model.Cities)
-            {
-                <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
-            }
-        </select>
+@section Hero 
+{
+    <div class="ui text container">
+    <h1 class="ui inverted header">
+        Hitta det perfekta barnkalaset
+    </h1>
+    <h2>Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset.</h2>
+    @*<div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>*@
+    <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
+        <option value="">Välj stad...</option>
+        @foreach (var city in Model.Cities)
+        {
+            <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
+        }
+    </select>
+</div>
+}
+
+<div class="ui vertical stripe segment">
+    <div class="ui middle aligned stackable grid container">
+        <div class="row">
+            <div class="eight wide column">
+                <h3 class="ui header">We Help Companies and Companions</h3>
+                <p>We can give your company superpowers to do things that they never thought possible. Let us delight your customers and empower your needs...through pure data analytics.</p>
+                <h3 class="ui header">We Make Bananas That Can Dance</h3>
+                <p>Yes that's right, you thought it was the stuff of dreams, but even bananas can be bioengineered.</p>
+            </div>
+            <div class="six wide right floated column">
+                <img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">
+            </div>
+        </div>
+        <div class="row">
+            <div class="center aligned column">
+                <a class="ui huge button">Check Them Out</a>
+            </div>
+        </div>
     </div>
 </div>
-<div class="ui two column very relaxed grid container">
+
+
+<div class="ui vertical stripe quote segment">
+    <div class="ui equal width stackable internally celled grid">
+        <div class="center aligned row">
+            <div class="column">
+                <h3>Inte tid att skicka inbjudningskort?</h3>
+                <p>Om du inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
+            </div>
+            <div class="column">
+                <h3>Håll reda på vilka som kommer</h3>
+                <p>Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa andra meddelande eller e-post.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui vertical stripe segment">
+    <div class="ui text container">
+        <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
+        <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
+        <a class="ui large button">Read More</a>
+        <h4 class="ui horizontal header divider">
+            <a href="#">Case Studies</a>
+        </h4>
+        <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
+        <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
+        <a class="ui large button">I'm Still Quite Interested</a>
+    </div>
+</div>
+
+@*<div class="ui two column very relaxed grid container">
     <div class="row">
         <div class="column pxl-block">
             <h2>Inte tid att skicka inbjudningskort?</h2>
@@ -37,7 +93,7 @@
             <p>Psst. Vi kan även skicka en vänlig påminnelse till de som glömt svara, så slipper du verka tjatig. :)</p>
         </div>
     </div>
-</div>
+</div>*@
 
 @section Scripts
 {

@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @*<title>@ViewData["Title"]</title>*@
     <title>Fixa barnkalaset!</title>
-    
+
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
 
     <link href="~/lib/semantic.css" rel="stylesheet" />
@@ -31,28 +31,37 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
-   
-   @Html.Raw(JavaScriptSnippet.FullScript)
+
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
     <!-- Page Contents -->
     <div class="pusher">
         <div class="ui inverted vertical masthead center aligned segment pxl-hero">
             <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
+                <div class="ui large secondary inverted menu">
                     <div class="header item pxl-brand">
                         Fixa barnkalaset
                     </div>
-                    <div class="right item">
-                        <a href="@Url.Action("Login", "Account")" class="ui inverted button">Logga in</a>
-                    </div>
+                        @if (!SignInManager.IsSignedIn(User))
+                        {
+                            <div class="right item">
+                                <a href="@Url.Action("Login", "Account")" class="ui inverted button">Logga in</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="right item pxl-profile-image">
+                                <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
+                            </div>
+                        }
                 </div>
             </div>
-            
-            @RenderSection("Hero", true)
+
+            @RenderSection("Hero", false)
 
         </div>
-        
+
         @RenderBody()
 
         <div class="ui inverted center aligned vertical footer segment">

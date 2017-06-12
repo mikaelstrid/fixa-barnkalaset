@@ -1,24 +1,21 @@
 ﻿@import "../modules/_variables";
 
-.secondary.pointing.menu {
-    border: 0px solid transparent !important;
+.secondary.menu {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 .pxl-brand {
-    margin-bottom: -2px !important;
     font-size: 2.5rem;
-    padding-top: (42.69px-35px)/2 !important;
-    padding-bottom: (42.69px-35px)/2 !important;
+    padding: 0 !important;
     font-family: 'Gochi Hand', cursive;
 }
 
-
 @media only screen and (max-width: 700px) {
-    .secondary.pointing.menu .right.item {
+    .secondary.menu .right.item {
         margin-left: 0;
         margin-right: 0;
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
     }
 
     .masthead h1.ui.header {
@@ -33,18 +30,5 @@
 
     .pxl-brand {
         font-size: 1.6em;
-        padding: (42.69px-24px)/2 0 !important;
     }
 }
-
-
-
-/*.pxl-header-menu-right {
-    float: right;
-    line-height: 4rem;
-    font-size: 1.5rem;
-
-    img.mini {
-        margin-top: 11px;
-    }
-}*/

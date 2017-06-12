@@ -26,7 +26,6 @@
     @*<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">*@
     @*<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">*@
 
-    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" />*@
     <link href="~/lib/semantic.css" rel="stylesheet" />
     <link href="~/css/public-style.css" rel="stylesheet" />
 
@@ -69,117 +68,21 @@
       padding: 5em 0em;
     }
 
-    @@media only screen and (max-width: 700px) {
-      .ui.fixed.menu {
-        display: none !important;
-      }
-    }
-
-
     </style>
     
-    <script>
-        $(document).ready(function() {
-
-            // fix menu when passed
-            $('.masthead')
-                .visibility({
-                    once: false,
-                    onBottomPassed: function() {
-                        $('.fixed.menu').transition('fade in');
-                    },
-                    onBottomPassedReverse: function() {
-                        $('.fixed.menu').transition('fade out');
-                    }
-                });
-
-            // create sidebar and attach to menu open
-            $('.ui.sidebar')
-                .sidebar('attach events', '.toc.item');
-
-        });
-    </script>
-
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    @*<header class="pxl-header">
-        <div class="ui container pxl-group">
-            <div class="pxl-header-brand">
-                @Html.ActionLink("Fixa barnkalaset", "Index", "Home")
-            </div>
-
-            <div class="ui right pxl-header-menu-right">
-            @if (!SignInManager.IsSignedIn(User))
-            {
-                <a href="@Url.Action("Login", "Account")">
-                    <i class="circular user link icon"></i>
-                </a>
-            }
-            else
-            {
-                <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
-            }
-            </div>
-        </div>
-    </header>
-
-    @RenderBody()
-
-    <footer class="pxl-footer">
-        <div class="ui container">
-            Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>
-        </div>
-    </footer>*@
-    
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item">Home</a>
-            <a class="item">Work</a>
-            <a class="item">Company</a>
-            <a class="item">Careers</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui button">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui primary button">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item">Home</a>
-        <a class="item">Work</a>
-        <a class="item">Company</a>
-        <a class="item">Careers</a>
-        <a class="item">Login</a>
-        <a class="item">Signup</a>
-    </div>
-
-
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
-
+        <div class="ui inverted vertical masthead center aligned segment pxl-hero">
             <div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <i class="sidebar icon"></i>
-                    </a>
-                    <div class="header item pxl-masthead-brand">
+                    <div class="header item pxl-brand">
                         Fixa barnkalaset
                     </div>
-                    <a class="active item">Home</a>
-                    <a class="item">Work</a>
-                    <a class="item">Company</a>
-                    <a class="item">Careers</a>
                     <div class="right item">
-                        <a class="ui inverted button">Log in</a>
-                        <a class="ui inverted button">Sign Up</a>
+                        <a href="@Url.Action("Login", "Account")" class="ui inverted button">Logga in</a>
                     </div>
                 </div>
             </div>
@@ -190,37 +93,13 @@
         
         @RenderBody()
 
-        <div class="ui inverted vertical footer segment">
+        <div class="ui inverted center aligned vertical footer segment">
             <div class="ui container">
-                <div class="ui stackable inverted divided equal height stackable grid">
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">About</h4>
-                        <div class="ui inverted link list">
-                            <a href="#" class="item">Sitemap</a>
-                            <a href="#" class="item">Contact Us</a>
-                            <a href="#" class="item">Religious Ceremonies</a>
-                            <a href="#" class="item">Gazebo Plans</a>
-                        </div>
-                    </div>
-                    <div class="three wide column">
-                        <h4 class="ui inverted header">Services</h4>
-                        <div class="ui inverted link list">
-                            <a href="#" class="item">Banana Pre-Order</a>
-                            <a href="#" class="item">DNA FAQ</a>
-                            <a href="#" class="item">How To Access</a>
-                            <a href="#" class="item">Favorite X-Men</a>
-                        </div>
-                    </div>
-                    <div class="seven wide column">
-                        <h4 class="ui inverted header">Footer Header</h4>
-                        <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
-                    </div>
-                </div>
+                Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>
             </div>
         </div>
     </div>
 
-@RenderSection("Scripts", required: false)
-
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

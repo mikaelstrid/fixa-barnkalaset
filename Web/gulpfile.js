@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='clean, default' Clean='clean' />
+/// <binding Clean='clean' />
 var gulp = require("gulp");
 var sass = require("gulp-sass");
 var del = require("del");

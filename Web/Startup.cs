@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -57,6 +58,8 @@ namespace Pixel.FixaBarnkalaset.Web
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFramework(connectionString);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddApplicationServices();
         }

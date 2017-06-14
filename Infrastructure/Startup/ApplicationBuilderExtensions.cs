@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
 {
@@ -13,6 +14,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
                 AppId = configuration["Authentication:Facebook:AppId"],
                 AppSecret = configuration["Authentication:Facebook:AppSecret"]
             });
+            app.EnsureRolesCreated();
         }
     }
 }

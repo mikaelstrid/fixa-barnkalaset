@@ -18,7 +18,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 
         public IEnumerable<City> GetAll()
         {
-            return _dbContext.Cities.AsEnumerable();
+            return _dbContext.Cities.Include(c => c.Arrangements).AsEnumerable();
         }
 
         public City GetBySlug(string citySlug)

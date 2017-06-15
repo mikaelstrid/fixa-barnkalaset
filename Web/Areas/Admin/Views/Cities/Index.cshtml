@@ -1,0 +1,32 @@
+﻿@using Pixel.FixaBarnkalaset.Core
+@model IEnumerable<Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.IndexCityViewModel>
+
+<div class="ui main container">
+    <h1>Städer</h1>
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Name)</th>
+                <th>@Html.DisplayNameFor(m => m.Slug)</th>
+                <th>@Html.DisplayNameFor(m => m.Latitude)</th>
+                <th>@Html.DisplayNameFor(m => m.Longitude)</th>
+                <th>@Html.DisplayNameFor(m => m.ArrangementsCount)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var arrangement in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(m => arrangement.Name)</td>
+                    <td>@Html.DisplayFor(m => arrangement.Slug)</td>
+                    <td>@Html.DisplayFor(m => arrangement.Latitude)</td>
+                    <td>@Html.DisplayFor(m => arrangement.Longitude)</td>
+                    <td>@Html.DisplayFor(m => arrangement.ArrangementsCount)</td>
+                    <td><a asp-action="Edit" asp-route-id="@arrangement.Slug">Ändra</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="Create">Lägg till ny</a>
+</div>

@@ -27,13 +27,13 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
-            ILoggerFactory loggerFactory)
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+            _logger = logger;
         }
 
         //
@@ -57,7 +57,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
+            _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -97,12 +97,12 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
             if (result.Succeeded)
             {
-                _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
+                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
                 return RedirectToLocal(returnUrl);
             }
             if (result.RequiresTwoFactor)
             {
-                _logger.LogError(5, "Authentication requries two-factor.", info.LoginProvider);
+                _logger.LogError("Authentication requries two-factor.", info.LoginProvider);
                 return View("ExternalLoginFailure");
             }
             if (result.IsLockedOut)
@@ -153,13 +153,13 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    await AddAsAdminIfNoAdminExists(user, _userManager);
+                    await AddAsAdminIfNoAdminExists(user, _userManager, _logger);
 
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
+                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -170,11 +170,14 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(model);
         }
 
-        internal static async Task AddAsAdminIfNoAdminExists(ApplicationUser user, UserManager<ApplicationUser> userManager)
+        internal static async Task AddAsAdminIfNoAdminExists(ApplicationUser user, UserManager<ApplicationUser> userManager, ILogger logger)
         {
             var applicationUsers = await userManager.GetUsersInRoleAsync(Roles.Admin);
-            if (applicationUsers.Count > 0) return;
-            await userManager.AddToRoleAsync(user, Roles.Admin);
+            if (applicationUsers.Count == 0)
+            {
+                await userManager.AddToRoleAsync(user, Roles.Admin);
+                logger.LogInformation("{Name} was added to the admin role", user.Name);
+            }
         }
 
         [HttpGet]

@@ -22,7 +22,7 @@ namespace Pixel.FixaBarnkalaset.Web.Tests.Controllers
             var mockUserManager = CreateMockFakeUserManager(existingAdmins: new ApplicationUser[0]);
             
             // ACT
-            await AccountController.AddAsAdminIfNoAdminExists(user, mockUserManager.Object);
+            await AccountController.AddAsAdminIfNoAdminExists(user, mockUserManager.Object, new Mock<ILogger>().Object);
 
             // ASSERT
             mockUserManager.Verify(m => m.AddToRoleAsync(user, Roles.Admin), Times.Once);
@@ -36,7 +36,7 @@ namespace Pixel.FixaBarnkalaset.Web.Tests.Controllers
             var mockUserManager = CreateMockFakeUserManager(existingAdmins: new[] { new ApplicationUser() });
 
             // ACT
-            await AccountController.AddAsAdminIfNoAdminExists(user, mockUserManager.Object);
+            await AccountController.AddAsAdminIfNoAdminExists(user, mockUserManager.Object, new Mock<ILogger>().Object);
 
             // ASSERT
             mockUserManager.Verify(m => m.AddToRoleAsync(user, Roles.Admin), Times.Never);

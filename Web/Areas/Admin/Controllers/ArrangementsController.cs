@@ -11,7 +11,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/arrangemang")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ArrangementsController : Controller
     {
         private readonly IMapper _mapper;

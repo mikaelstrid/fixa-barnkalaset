@@ -77,18 +77,18 @@ namespace Pixel.FixaBarnkalaset.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-
-                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
-
-                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
-                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
-                }
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+            }
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
+
+                serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
             }
 
             app.UseStaticFiles();

@@ -153,7 +153,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    await AddToAdminRoleIfFirstUser(user);
+                    await AddAsAdminIfNoAdminExists(user, _userManager);
 
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
@@ -170,10 +170,11 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(model);
         }
 
-        private async Task AddToAdminRoleIfFirstUser(ApplicationUser user)
+        internal static async Task AddAsAdminIfNoAdminExists(ApplicationUser user, UserManager<ApplicationUser> userManager)
         {
-            if (_userManager.Users.Count() > 1) return;
-            await _userManager.AddToRoleAsync(user, Roles.Admin);
+            var applicationUsers = await userManager.GetUsersInRoleAsync(Roles.Admin);
+            if (applicationUsers.Count > 0) return;
+            await userManager.AddToRoleAsync(user, Roles.Admin);
         }
 
         [HttpGet]

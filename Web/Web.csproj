@@ -13,6 +13,10 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/1f2f77c6-c627-4309-9830-f97ceb26d8a9/resourcegroups/Group-Fixa-Barnkalaset-LOCAL/providers/microsoft.insights/components/ai-fbk-local</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(NCrunch)' == '1'">
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Remove="wwwroot/js\site.js" />
     <Content Remove="wwwroot/js\site.min.js" />

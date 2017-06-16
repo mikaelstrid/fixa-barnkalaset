@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
@@ -52,6 +53,11 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
         public City GetBySlug(string citySlug)
         {
             return _cities.SingleOrDefault(c => c.Slug == citySlug);
+        }
+
+        public void AddOrUpdate(City model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

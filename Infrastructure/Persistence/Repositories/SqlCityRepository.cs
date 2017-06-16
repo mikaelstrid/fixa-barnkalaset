@@ -27,5 +27,22 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
                 .Include(c => c.Arrangements)
                 .SingleOrDefault(c => c.Slug == citySlug);
         }
+
+        public void AddOrUpdate(City city)
+        {
+            var existingCity = GetBySlug(city.Slug);
+            if (existingCity != null)
+            {
+                existingCity.Name = city.Name;
+                existingCity.Latitude = city.Latitude;
+                existingCity.Longitude = city.Longitude;
+                _dbContext.Update(existingCity);
+            }
+            else
+            {
+                _dbContext.Cities.Add(city);
+            }
+            _dbContext.SaveChanges();
+        }
     }
 }

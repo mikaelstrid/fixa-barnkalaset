@@ -6,5 +6,6 @@ namespace Pixel.FixaBarnkalaset.Core.Interfaces
     {
         IEnumerable<City> GetAll();
         City GetBySlug(string citySlug);
+        void AddOrUpdate(City model);
     }
 }

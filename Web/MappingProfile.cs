@@ -10,6 +10,7 @@ namespace Pixel.FixaBarnkalaset.Web
         public MappingProfile()
         {
             CreateMap<City, IndexCityViewModel>();
+            CreateMap<CreateOrEditCityViewModel, City>();
 
             CreateMap<Arrangement, CreateOrEditArrangementViewModel>();
             CreateMap<CreateOrEditArrangementViewModel, Arrangement>();

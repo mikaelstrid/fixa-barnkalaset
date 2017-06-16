@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,30 +32,25 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route("skapa")]
-        //public IActionResult Create(int id)
-        //{
-        //    return View(new CreateOrEditArrangementViewModel
-        //    {
-        //        Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name })
-        //    });
-        //}
+        [Route("skapa")]
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("skapa")]
-        //public IActionResult Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var model = _mapper.Map<CreateOrEditArrangementViewModel, Arrangement>(arrangement);
-        //        _arrangementRepository.AddOrUpdate(model);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    arrangement.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
-        //    return View(arrangement);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("skapa")]
+        public IActionResult Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = _mapper.Map<CreateOrEditCityViewModel, City>(city);
+                _cityRepository.AddOrUpdate(model);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
 
         //[Route("{id}/andra")]
         //public IActionResult Edit(int id)

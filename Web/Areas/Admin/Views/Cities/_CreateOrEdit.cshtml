@@ -1,0 +1,38 @@
+﻿@using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
+@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditArrangementViewModel
+
+<h3 class="ui top attached header">
+    Allmänt
+</h3>
+<div class="ui bottom attached segment">
+    <div class="field">
+        <label asp-for="Name"></label>
+        <input type="text" asp-for="Name">
+    </div>
+    <div class="field">
+        <label asp-for="Slug"></label>
+        <input type="text" asp-for="Slug">
+    </div>
+</div>
+
+<h3 class="ui top attached header">
+    Karta
+</h3>
+<div class="ui bottom attached segment">
+    <div class="ui grid">
+        <div class="six wide column">
+            <div class="field">
+                <label asp-for="Latitude"></label>
+                <input type="text" asp-for="Latitude">
+            </div>
+            <div class="field">
+                <label asp-for="Longitude"></label>
+                <input type="text" asp-for="Longitude">
+            </div>
+            <button class="ui basic button" type="button" id="btnGetCoordinatesFromName">Hämta från namn</button>
+        </div>
+        <div class="ten wide column">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>

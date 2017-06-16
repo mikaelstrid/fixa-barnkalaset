@@ -1,8 +1,8 @@
 ﻿// https://gist.github.com/mathewbyrne/1280286
 
 function slugify(text: string) {
-    const a = "àáäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;";
-    const b = "aaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------";
+    const a = "àáåäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;";
+    const b = "aaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------";
     const p = new RegExp(a.split("").join("|"), "g");
 
     return text.toString().toLowerCase()

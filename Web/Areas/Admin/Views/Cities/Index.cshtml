@@ -23,7 +23,7 @@
                     <td>@Html.DisplayFor(m => arrangement.Latitude)</td>
                     <td>@Html.DisplayFor(m => arrangement.Longitude)</td>
                     <td>@Html.DisplayFor(m => arrangement.ArrangementsCount)</td>
-                    <td><a asp-action="Edit" asp-route-id="@arrangement.Slug">Ändra</a></td>
+                    <td><a asp-action="Edit" asp-route-citySlug="@arrangement.Slug">Ändra</a></td>
                 </tr>
             }
         </tbody>

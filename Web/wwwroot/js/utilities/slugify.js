@@ -1,6 +1,6 @@
 function slugify(text) {
-    var a = "àáäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;";
-    var b = "aaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------";
+    var a = "àáåäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;";
+    var b = "aaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------";
     var p = new RegExp(a.split("").join("|"), "g");
     return text.toString().toLowerCase()
         .replace(/\s+/g, "-")

@@ -52,30 +52,28 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             return View();
         }
 
-        //[Route("{id}/andra")]
-        //public IActionResult Edit(int id)
-        //{
-        //    var model = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(_arrangementRepository.GetById(id));
-        //    model.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
-        //    return View(model);
-        //}
+        [Route("{citySlug}/andra")]
+        public IActionResult Edit(string citySlug)
+        {
+            var model = _mapper.Map<City, CreateOrEditCityViewModel>(_cityRepository.GetBySlug(citySlug));
+            return View(model);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("{id}/andra")]
-        //public IActionResult Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
-        //{
-        //    if (id != arrangement.Id) return NotFound();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{citySlug}/andra")]
+        public IActionResult Edit(string citySlug, [Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
+        {
+            if (citySlug != city.Slug) return NotFound();
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        var model = _mapper.Map<CreateOrEditArrangementViewModel, Arrangement>(arrangement);
-        //        _arrangementRepository.AddOrUpdate(model);
-        //        return RedirectToAction("Index");
-        //    }
+            if (ModelState.IsValid)
+            {
+                var model = _mapper.Map<CreateOrEditCityViewModel, City>(city);
+                _cityRepository.AddOrUpdate(model);
+                return RedirectToAction("Index");
+            }
 
-        //    arrangement.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
-        //    return View(arrangement);
-        //}
+            return View(city);
+        }
     }
 }

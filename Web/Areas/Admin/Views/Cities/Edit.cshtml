@@ -1,10 +1,8 @@
 ﻿@using System.Globalization
-@using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
-@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditArrangementViewModel
+@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditCityViewModel
 
 @section Header
 {
-    <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
     <style>
         #map {
             height: 350px;
@@ -14,7 +12,7 @@
 
 <div class="ui main container text">
 
-    <h1>Ändra arrangemang</h1>
+    <h1>Ändra stad</h1>
 
     <form class="ui form" asp-action="Edit">
 
@@ -28,10 +26,10 @@
     <script src="~/js/utilities/constants.js"></script>
     <script src="~/js/utilities/slugify.js"></script>
     <script src="~/js/utilities/googleMapsUtilities.js"></script>
-    <script src="~/js/admin-pages/createOrEditArrangementPageBase.js"></script>
-    <script src="~/js/admin-pages/editArrangementPage.js"></script>
+    <script src="~/js/admin-pages/createOrEditCityPageBase.js"></script>
+    <script src="~/js/admin-pages/editCityPage.js"></script>
     <script>
-        var page = new EditArrangementPage();
+        var page = new EditCityPage();
         page.initPage(@Model.Latitude.ToString(CultureInfo.InvariantCulture), @Model.Longitude.ToString(CultureInfo.InvariantCulture));
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&libraries=places&callback=page.initMap"></script>

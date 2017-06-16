@@ -50,12 +50,17 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
             return _cities;
         }
 
-        public City GetBySlug(string citySlug)
+        public City GetBySlug(string slug)
         {
-            return _cities.SingleOrDefault(c => c.Slug == citySlug);
+            return _cities.SingleOrDefault(c => c.Slug == slug);
         }
 
         public void AddOrUpdate(City model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(string slug)
         {
             throw new NotImplementedException();
         }

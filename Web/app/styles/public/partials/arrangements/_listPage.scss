@@ -1,0 +1,17 @@
+﻿@import "../../modules/_variables";
+
+.pxl-arrangements-list-card {
+    width: 100% !important;
+
+    @media only screen and (min-width: 584px) {
+        width: 271px !important;
+    }
+
+    @media only screen and (min-width: 768px) {
+        width: 231px !important;
+    }
+
+    @media only screen and (min-width: 992px) {
+        width: 271px !important;
+    }
+}

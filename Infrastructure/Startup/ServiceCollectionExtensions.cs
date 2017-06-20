@@ -15,12 +15,16 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
         {
             services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
             services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyEventSourcingDbContext>(options => options.UseSqlServer(connectionString));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)
         {
+            services.AddTransient<ISettings, Settings>();
+            services.AddTransient<IAggregateFactory, AggregateFactory>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
+            services.AddTransient<IRepository, SqlServerRepository>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services)

@@ -89,6 +89,8 @@ namespace Pixel.FixaBarnkalaset.Web
 
                 serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
+
+                serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
             }
 
             app.UseStaticFiles();

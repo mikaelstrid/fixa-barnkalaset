@@ -1,5 +1,6 @@
 ﻿namespace Pixel.FixaBarnkalaset.Core.Commands
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class CreateCity
     {
         public string Name { get; }

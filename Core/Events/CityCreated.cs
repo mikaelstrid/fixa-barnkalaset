@@ -4,11 +4,13 @@ namespace Pixel.FixaBarnkalaset.Core.Events
 {
     public class CityCreated : IEvent
     {
-        public readonly Guid Id;
-        public readonly string Name;
-        public readonly string Slug;
-        public readonly double Latitude;
-        public readonly double Longitude;
+        // ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        public Guid Id { get; }
+        public string Name { get; }
+        public string Slug { get; }
+        public double Latitude { get; }
+        public double Longitude { get; }
 
         public CityCreated(Guid id, string name, string slug, double latitude, double longitude)
         {

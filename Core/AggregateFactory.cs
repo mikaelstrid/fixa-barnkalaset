@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Pixel.FixaBarnkalaset.Core.Events;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
 
-namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
+namespace Pixel.FixaBarnkalaset.Core
 {
-    public interface IAggregateFactory
-    {
-        T Create<T>(IEnumerable<IEvent> events);
-    }
-
     // ReSharper disable once ClassNeverInstantiated.Global
     public class AggregateFactory : IAggregateFactory
     {

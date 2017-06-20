@@ -36,7 +36,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 
         public static IEvent ToEvent(this EventData eventData)
         {
-            var type = Type.GetType(eventData.AggregateType);
+            var metadata = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.Metadata);
+            var type = Type.GetType(metadata["EventClrType"].ToString());
             var @event = JsonConvert.DeserializeObject(eventData.Event, type) as IEvent;
             return @event;
         }

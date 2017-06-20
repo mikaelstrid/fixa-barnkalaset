@@ -6,10 +6,9 @@ using Pixel.FixaBarnkalaset.Core.Utilities;
 
 namespace Pixel.FixaBarnkalaset.Core
 {
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class CityAggregate : AggregateBase
     {
-        public CityAggregate() { }
-
         public CityAggregate(IEnumerable<IEvent> events)
         {
             foreach (var e in events)
@@ -22,7 +21,7 @@ namespace Pixel.FixaBarnkalaset.Core
             RedirectToWhen.InvokeEventOptional(this, e);
         }
         
-        public void Create(Guid id, string name, string slug, double latitude, double longitude)
+        public virtual void Create(Guid id, string name, string slug, double latitude, double longitude)
         {
             if (_version > 0)
                 throw new InvalidOperationException("Cannot create a city more than once");

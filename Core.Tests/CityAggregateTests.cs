@@ -10,6 +10,13 @@ namespace Core.Tests
 {
     public class CityAggregateTests
     {
+        private readonly CityAggregate _sut;
+
+        public CityAggregateTests()
+        {
+            _sut = new CityAggregate(new IEvent[0]);
+        }
+
         [Fact]
         public void Hydrate_GivenOnlyCityCreated_ShouldSetOnlyId()
         {
@@ -36,13 +43,12 @@ namespace Core.Tests
             var slug = "halmstad";
             var latitude = 10.1;
             var longitude = 12.2;
-            var sut = new CityAggregate();
 
             // ACT
-            sut.Create(id, name, slug, latitude, longitude);
+            _sut.Create(id, name, slug, latitude, longitude);
 
             // ASSERT
-            var uncommittedEvents = sut.GetUncommittedEvents();
+            var uncommittedEvents = _sut.GetUncommittedEvents();
             Assert.Equal(1, uncommittedEvents.Count());
             Assert.IsType<CityCreated>(uncommittedEvents.First());
             uncommittedEvents.First().As<CityCreated>().ShouldBeEquivalentTo(new CityCreated(id, name, slug, latitude, longitude));
@@ -57,11 +63,10 @@ namespace Core.Tests
             var slug = "halmstad";
             var latitude = 10.1;
             var longitude = 12.2;
-            var sut = new CityAggregate();
-            sut.Create(id, name, slug, latitude, longitude);
+            _sut.Create(id, name, slug, latitude, longitude);
 
             // ACT
-            Assert.Throws<InvalidOperationException>(() => sut.Create(id, name, slug, latitude, longitude));
+            Assert.Throws<InvalidOperationException>(() => _sut.Create(id, name, slug, latitude, longitude));
 
             // ASSERT
         }
@@ -71,12 +76,11 @@ namespace Core.Tests
         {
             // ARRANGE
             var id = Guid.Empty;
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(id, "Halmstad", "halmstad", 10.1, 12.1));
+            Assert.Throws<ArgumentException>(() => _sut.Create(id, "Halmstad", "halmstad", 10.1, 12.1));
         }
 
         [Theory]
@@ -86,12 +90,11 @@ namespace Core.Tests
         public void Create_GivenInvalidName_ShouldThrowArgumentException(string name)
         {
             // ARRANGE
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(Guid.NewGuid(), name, "halmstad", 10.1, 12.1));
+            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), name, "halmstad", 10.1, 12.1));
         }
 
         [Theory]
@@ -106,12 +109,11 @@ namespace Core.Tests
         public void Create_GivenInvalidSlug_ShouldThrowArgumentException(string slug)
         {
             // ARRANGE
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(Guid.NewGuid(), "Halmstad", slug, 10.1, 12.1));
+            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", slug, 10.1, 12.1));
         }
 
         [Fact]
@@ -119,12 +121,11 @@ namespace Core.Tests
         {
             // ARRANGE
             var latitude = -90.001;
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
+            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
         }
 
         [Fact]
@@ -132,12 +133,11 @@ namespace Core.Tests
         {
             // ARRANGE
             var latitude = 90.001;
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
+            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
         }
 
         [Fact]
@@ -145,12 +145,11 @@ namespace Core.Tests
         {
             // ARRANGE
             var longitude = -180.001;
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
+            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
         }
 
         [Fact]
@@ -158,12 +157,11 @@ namespace Core.Tests
         {
             // ARRANGE
             var longitude = 180.001;
-            var sut = new CityAggregate();
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
+            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
         }
 
     }

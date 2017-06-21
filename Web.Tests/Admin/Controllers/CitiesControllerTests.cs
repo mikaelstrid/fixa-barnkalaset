@@ -13,13 +13,22 @@ namespace Pixel.FixaBarnkalaset.Web.Tests.Admin.Controllers
 {
     public class CitiesControllerTests
     {
+        private readonly Mapper _mapper;
+        private readonly Mock<ICityRepository> _mockCityRepository;
+        private readonly Mock<ICityService> _mockCityService;
+
+        public CitiesControllerTests()
+        {
+            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
+            _mockCityService = new Mock<ICityService>();
+            _mockCityRepository = new Mock<ICityRepository>();
+        }
+
         [Fact]
         public void Index_GivenOneCityWithTwoArrangements_ShouldReturnOneCity()
         {
             // ARRANGE
-            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
-            var mockCityRepository = new Mock<ICityRepository>();
-            mockCityRepository.Setup(m => m.GetAll()).Returns(new List<City>
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(new List<City>
             {
                 new City
                 {
@@ -31,7 +40,7 @@ namespace Pixel.FixaBarnkalaset.Web.Tests.Admin.Controllers
                 }
             });
 
-            var sut = new CitiesController(mapper, mockCityRepository.Object);
+            var sut = new CitiesController(_mapper, _mockCityRepository.Object, _mockCityService.Object);
 
             // ACT
             var result = sut.Index();

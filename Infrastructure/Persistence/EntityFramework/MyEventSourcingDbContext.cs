@@ -6,7 +6,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
     // Update-Database -Project Infrastructure -StartupProject Web -Context MyEventSourcingDbContext
     public class MyEventSourcingDbContext : DbContext
     {
-        public MyEventSourcingDbContext(DbContextOptions<MyDataDbContext> options) : base(options)
+        public MyEventSourcingDbContext(DbContextOptions<MyEventSourcingDbContext> options) : base(options)
         {
         }
 

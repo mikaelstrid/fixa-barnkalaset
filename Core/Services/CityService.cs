@@ -5,7 +5,7 @@ using Pixel.FixaBarnkalaset.Core.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.Core.Services
 {
-    public class CityService
+    public class CityService : ICityService
     {
         private readonly IRepository _repository;
 

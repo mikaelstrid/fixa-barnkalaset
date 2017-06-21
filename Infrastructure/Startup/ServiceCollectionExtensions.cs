@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Core.Services;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
@@ -26,6 +27,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<IRepository, SqlServerRepository>();
+            services.AddTransient<ICityService, CityService>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services)

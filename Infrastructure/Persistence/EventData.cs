@@ -4,7 +4,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 {
     public class EventData
     {
-        public Guid EventId { get; set; }
+        public int Id { get; set; }
         public DateTime Created { get; set; }
         public string AggregateType { get; set; }
         public Guid AggregateId { get; set; }

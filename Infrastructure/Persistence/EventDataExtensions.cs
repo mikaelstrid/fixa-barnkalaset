@@ -20,11 +20,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
             };
 
             var metadata = JsonConvert.SerializeObject(eventHeaders, SerializerSettings);
-            var eventId = Guid.NewGuid();
 
             return new EventData
             {
-                EventId = eventId,
                 Created = DateTime.UtcNow,
                 AggregateType = aggregateType,
                 AggregateId = aggregateId,

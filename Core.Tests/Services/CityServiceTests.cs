@@ -14,13 +14,13 @@ namespace Core.Tests.Services
     public class CityServiceTests
     {
         private readonly Mock<CityAggregate> _mockCityAggregate;
-        private readonly Mock<IRepository> _mockRepository;
+        private readonly Mock<IAggregateRepository> _mockRepository;
         private readonly CityService _sut;
 
         public CityServiceTests()
         {
             _mockCityAggregate = new Mock<CityAggregate>(new List<IEvent>());
-            _mockRepository = new Mock<IRepository>();
+            _mockRepository = new Mock<IAggregateRepository>();
             _mockRepository.Setup(m => m.GetById<CityAggregate>(It.IsAny<Guid>())).Returns(Task.FromResult(_mockCityAggregate.Object));
             _sut = new CityService(_mockRepository.Object);
         }

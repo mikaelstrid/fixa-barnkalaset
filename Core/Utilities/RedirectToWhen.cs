@@ -44,24 +44,24 @@ namespace Pixel.FixaBarnkalaset.Core.Utilities
             }
         }
 
-        [DebuggerNonUserCode]
-        public static void InvokeCommand<T>(T instance, object command)
-        {
-            var type = command.GetType();
-            if (!Cache<T>.Dict.TryGetValue(type, out MethodInfo info))
-            {
-                var s = string.Format("Failed to locate {0}.When({1})", typeof(T).Name, type.Name);
-                throw new InvalidOperationException(s);
-            }
-            try
-            {
-                info.Invoke(instance, new[] { command });
-            }
-            catch (TargetInvocationException ex)
-            {
-                InternalPreserveStackTraceMethod?.Invoke(ex.InnerException, new object[0]);
-                throw ex.InnerException;
-            }
-        }
+        //[DebuggerNonUserCode]
+        //public static void InvokeCommand<T>(T instance, object command)
+        //{
+        //    var type = command.GetType();
+        //    if (!Cache<T>.Dict.TryGetValue(type, out MethodInfo info))
+        //    {
+        //        var s = string.Format("Failed to locate {0}.When({1})", typeof(T).Name, type.Name);
+        //        throw new InvalidOperationException(s);
+        //    }
+        //    try
+        //    {
+        //        info.Invoke(instance, new[] { command });
+        //    }
+        //    catch (TargetInvocationException ex)
+        //    {
+        //        InternalPreserveStackTraceMethod?.Invoke(ex.InnerException, new object[0]);
+        //        throw ex.InnerException;
+        //    }
+        //}
     }
 }

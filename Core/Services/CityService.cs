@@ -7,11 +7,11 @@ namespace Pixel.FixaBarnkalaset.Core.Services
 {
     public class CityService : ICityService
     {
-        private readonly IRepository _repository;
+        private readonly IAggregateRepository _aggregateRepository;
 
-        public CityService(IRepository repository)
+        public CityService(IAggregateRepository aggregateRepository)
         {
-            _repository = repository;
+            _aggregateRepository = aggregateRepository;
         }
 
         public async Task<Guid> When(CreateCity cmd)
@@ -23,9 +23,9 @@ namespace Pixel.FixaBarnkalaset.Core.Services
 
         private async Task Act<T>(Guid id, Action<T> action) where T : class, IAggregate
         {
-            var aggregate = await _repository.GetById<T>(id);
+            var aggregate = await _aggregateRepository.GetById<T>(id);
             action(aggregate);
-            await _repository.Save(aggregate);
+            await _aggregateRepository.Save(aggregate);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Startup
             services.AddTransient<IAggregateFactory, AggregateFactory>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
-            services.AddTransient<IRepository, SqlServerRepository>();
+            services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
             services.AddTransient<ICityService, CityService>();
         }
 

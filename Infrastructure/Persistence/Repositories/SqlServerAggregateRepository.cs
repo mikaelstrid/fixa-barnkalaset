@@ -9,13 +9,13 @@ using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class SqlServerRepository : IRepository
+    public class SqlServerAggregateRepository : IAggregateRepository
     {
         private readonly MyEventSourcingDbContext _dbContext;
         private readonly IAggregateFactory _factory;
         private readonly ISettings _settings;
 
-        public SqlServerRepository(MyEventSourcingDbContext dbContext, IAggregateFactory factory, ISettings settings)
+        public SqlServerAggregateRepository(MyEventSourcingDbContext dbContext, IAggregateFactory factory, ISettings settings)
         {
             _dbContext = dbContext;
             _factory = factory;

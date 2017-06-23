@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Commands;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Core.Utilities;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 
 namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
@@ -50,13 +48,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var model = _mapper.Map<CreateOrEditCityViewModel, City>(city);
-                //_cityRepository.AddOrUpdate(model);
-
-                var cmd = new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude);
-
-                RedirectToWhen.InvokeCommand(_cityService, cmd);
-
+                _cityService.When(new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude));
                 return RedirectToAction("Index");
             }
             return View();

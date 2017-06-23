@@ -16,11 +16,14 @@ namespace Pixel.FixaBarnkalaset.Web
 {
     public class Startup
     {
+        private readonly IHostingEnvironment _env;
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -39,14 +42,16 @@ namespace Pixel.FixaBarnkalaset.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureAuthentication();
+            if (!_env.IsEnvironment("Testing"))
+            {
+                services.ConfigureAuthentication();
 
 #if DEBUG
-            services.AddMvc(options =>
-            {
-                options.SslPort = 44369;
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
+                services.AddMvc(options =>
+                {
+                    options.SslPort = 44369;
+                    options.Filters.Add(new RequireHttpsAttribute());
+                });
 #else
             services.AddMvc(options =>
             {
@@ -54,14 +59,19 @@ namespace Pixel.FixaBarnkalaset.Web
             });
 #endif
 
-            services.AddAutoMapper();
+                services.AddAutoMapper();
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddEntityFramework(connectionString);
+                var connectionString = Configuration.GetConnectionString("DefaultConnection");
+                services.AddEntityFramework(connectionString);
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+                services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddApplicationServices();
+                services.AddApplicationServices();
+            }
+            else
+            {
+                services.AddMvc();
+            }
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -83,19 +93,23 @@ namespace Pixel.FixaBarnkalaset.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            if (!env.IsEnvironment("Testing"))
             {
-                serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
+                using (
+                    var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
 
-                serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
+                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
 
-                serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
+                }
+
+                app.UseAuthentication(Configuration);
             }
 
             app.UseStaticFiles();
-
-            app.UseAuthentication(Configuration);
             
             //app.UseMvc(routes =>
             //{

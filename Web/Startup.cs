@@ -50,6 +50,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddAutoMapper();
             ConfigureServicesDatabase(services, _env, Configuration);
             services.AddTransient<ICityRepository, SqlCityRepository>();
+            ConfigureServicesMvc(services, _env);
 
             if (!_env.IsEnvironment("Testing"))
             {
@@ -61,18 +62,7 @@ namespace Pixel.FixaBarnkalaset.Web
                 })
                     .AddEntityFrameworkStores<MyIdentityDbContext>()
                     .AddDefaultTokenProviders();
-#if DEBUG
-                services.AddMvc(options =>
-                {
-                    options.SslPort = 44369;
-                    options.Filters.Add(new RequireHttpsAttribute());
-                });
-#else
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
-#endif
+
                 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
                 services.AddTransient<ISettings, Settings>();
@@ -80,10 +70,6 @@ namespace Pixel.FixaBarnkalaset.Web
                 services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
                 services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
                 services.AddTransient<ICityService, CityService>();
-            }
-            else
-            {
-                services.AddMvc();
             }
         }
 
@@ -100,6 +86,20 @@ namespace Pixel.FixaBarnkalaset.Web
                 services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
                 services.AddDbContext<MyEventSourcingDbContext>(options => options.UseSqlServer(connectionString));
             }
+        }
+
+        private static void ConfigureServicesMvc(IServiceCollection services, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+                services.AddMvc(options =>
+                {
+                    options.SslPort = 44369;
+                    options.Filters.Add(new RequireHttpsAttribute());
+                });
+            if (env.IsEnvironment("Testing"))
+                services.AddMvc();
+            else
+                services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

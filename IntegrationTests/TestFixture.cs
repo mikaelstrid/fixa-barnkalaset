@@ -17,10 +17,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 
 namespace IntegrationTests
 {
@@ -62,22 +60,26 @@ namespace IntegrationTests
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
+            ConfigureServicesApplicationPartManager(services);
+            ConfigureServicesUserManagement(services);
+            ConfigureServicesDatabase(services);
+        }
 
+        private static void ConfigureServicesApplicationPartManager(IServiceCollection services)
+        {
             // Inject a custom application part manager. Overrides AddMvcCore() because that uses TryAdd().
+            var startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
             var manager = new ApplicationPartManager();
             manager.ApplicationParts.Add(new AssemblyPart(startupAssembly));
             manager.FeatureProviders.Add(new ControllerFeatureProvider());
             manager.FeatureProviders.Add(new ViewComponentFeatureProvider());
             services.AddSingleton(manager);
+        }
 
-            // Define and register your own services
+        private static void ConfigureServicesUserManagement(IServiceCollection services)
+        {
             services.AddTransient<SignInManager<ApplicationUser>, FakeSignInManager>();
             services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
-            //var mockFakeUserManager = CreateMockFakeUserManager();
-            //services.AddSingleton(mockFakeUserManager.Object);
-
-            ConfigureServicesDatabase(services);
         }
 
         private static void ConfigureServicesDatabase(IServiceCollection services)
@@ -95,15 +97,6 @@ namespace IntegrationTests
             //services.AddDbContext<MyEventSourcingDbContext>(options => options.UseInMemoryDatabase("MyEventSourcing"));
         }
 
-        /// <summary>
-        /// Gets the full path to the target project path that we wish to test
-        /// </summary>
-        /// <param name="solutionRelativePath">
-        /// The parent directory of the target project.
-        /// e.g. src, samples, test, or test/Websites
-        /// </param>
-        /// <param name="startupAssembly">The target project's assembly.</param>
-        /// <returns>The full path to the target project.</returns>
         private static string GetProjectPath(string solutionRelativePath, Assembly startupAssembly)
         {
             // Get name of the target project which we want to test

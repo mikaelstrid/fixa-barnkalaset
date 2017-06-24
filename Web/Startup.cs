@@ -42,6 +42,8 @@ namespace Pixel.FixaBarnkalaset.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper();
+
             if (!_env.IsEnvironment("Testing"))
             {
                 services.ConfigureAuthentication();
@@ -58,8 +60,6 @@ namespace Pixel.FixaBarnkalaset.Web
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 #endif
-
-                services.AddAutoMapper();
 
                 var connectionString = Configuration.GetConnectionString("DefaultConnection");
                 services.AddEntityFramework(connectionString);

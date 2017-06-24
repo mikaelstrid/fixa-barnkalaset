@@ -20,13 +20,17 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         //    _cityRepository = cityRepository;
         //}
 
+        public HomeController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [Route("")]
         public IActionResult Index()
         {
             return View(new HomeIndexViewModel
             {
-                Cities = new List<HomeIndexViewModel.CityViewModel>()
-                //Cities = _mapper.Map<IEnumerable<City>, IEnumerable<HomeIndexViewModel.CityViewModel>>(_cityRepository.GetAll())
+                Cities = _mapper.Map<IEnumerable<City>, IEnumerable<HomeIndexViewModel.CityViewModel>>(new List<City>())
                 //CitiesInSouth = new[] { "Göteborg", "Malmö", "Linköping", "Helsingborg", "Jönköping", "Norrköping", "Lund", "Borås", "Halmstad", "Växjö" },
                 //CitiesInMiddle = new[] { "Stockholm", "Uppsala", "Västerås", "Örebro", "Gävle", "Södertälje", "Eskilstuna", "Karlstad" },
                 //CitiesInNorth = new[] { "Umeå" }

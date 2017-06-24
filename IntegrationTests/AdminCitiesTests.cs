@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using IntegrationTests.Utilities;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
@@ -38,17 +39,24 @@ namespace IntegrationTests
         public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
         {
             // ARRANGE
-            var data = new Dictionary<string, string>
+            var getResponse = await _client.GetAsync("/admin/stader/skapa");
+            getResponse.EnsureSuccessStatusCode();
+            
+            var antiForgeryToken = await AntiForgeryHelper.ExtractAntiForgeryToken(getResponse);
+
+            var formPostBodyData = new Dictionary<string, string>
             {
+                {"__RequestVerificationToken", antiForgeryToken},
                 {"Name", "Halmstad"},
                 {"Slug", "halmstad"},
                 {"Latitude", "19,5"},
                 {"Longitude", "58,7"}
             };
-            var content = new FormUrlEncodedContent(data);
 
+            var requestMessage = PostRequestHelper.CreateWithCookiesFromResponse("/admin/stader/skapa", formPostBodyData, getResponse);
+            
             // ACT
-            var response = await _client.PostAsync("/admin/stader/skapa", content);
+            var response = await _client.SendAsync(requestMessage);
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);

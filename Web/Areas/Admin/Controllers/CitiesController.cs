@@ -43,7 +43,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         [Route("skapa")]
         public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
         {

@@ -4,7 +4,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
     {
     }
 
-    class Settings : ISettings
+    public class Settings : ISettings
     {
     }
 }

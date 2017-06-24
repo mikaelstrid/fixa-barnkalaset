@@ -12,17 +12,12 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         private readonly IMapper _mapper;
         private readonly ICityRepository _cityRepository;
 
-        //public HomeController(
-        //    IMapper mapper, 
-        //    ICityRepository cityRepository)
-        //{
-        //    _mapper = mapper;
-        //    _cityRepository = cityRepository;
-        //}
-
-        public HomeController(IMapper mapper)
+        public HomeController(
+            IMapper mapper,
+            ICityRepository cityRepository)
         {
             _mapper = mapper;
+            _cityRepository = cityRepository;
         }
 
         [Route("")]

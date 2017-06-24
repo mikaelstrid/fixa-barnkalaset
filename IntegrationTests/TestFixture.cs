@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Moq;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 
 namespace IntegrationTests
@@ -71,6 +72,7 @@ namespace IntegrationTests
             services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
             //var mockFakeUserManager = CreateMockFakeUserManager();
             //services.AddSingleton(mockFakeUserManager.Object);
+            services.AddTransient<ICityRepository>(sp => new Mock<ICityRepository>().Object);
         }
 
         /// <summary>

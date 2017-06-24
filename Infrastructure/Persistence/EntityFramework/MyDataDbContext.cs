@@ -11,6 +11,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
     // Remove-Migration
     public class MyDataDbContext : DbContext
     {
+        // Move to Startup if needed
+        //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
         //public MyDataDbContext(DbContextOptions<MyDataDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)

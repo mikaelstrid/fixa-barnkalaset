@@ -47,30 +47,10 @@ namespace Pixel.FixaBarnkalaset.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper();
             ConfigureServicesDatabase(services, _env, Configuration);
-            services.AddTransient<ICityRepository, SqlCityRepository>();
             ConfigureServicesMvc(services, _env);
-
-            if (!_env.IsEnvironment("Testing"))
-            {
-                services.AddIdentity<ApplicationUser, IdentityRole>(o =>
-                {
-                    o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
-                    o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
-                    o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
-                })
-                    .AddEntityFrameworkStores<MyIdentityDbContext>()
-                    .AddDefaultTokenProviders();
-
-                services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-                services.AddTransient<ISettings, Settings>();
-                services.AddTransient<IAggregateFactory, AggregateFactory>();
-                services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
-                services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
-                services.AddTransient<ICityService, CityService>();
-            }
+            ConfigureServicesIdentity(services, _env);
+            ConfigureServicesApplication(services, _env);
         }
 
         private static void ConfigureServicesDatabase(IServiceCollection services, IHostingEnvironment env, IConfigurationRoot configuration)
@@ -101,6 +81,38 @@ namespace Pixel.FixaBarnkalaset.Web
             else
                 services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); });
         }
+
+        private static void ConfigureServicesIdentity(IServiceCollection services, IHostingEnvironment env)
+        {
+            if (!env.IsEnvironment("Testing"))
+            {
+                services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+                    {
+                        o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
+                        o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
+                        o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
+                    })
+                    .AddEntityFrameworkStores<MyIdentityDbContext>()
+                    .AddDefaultTokenProviders();
+            }
+        }
+
+        private static void ConfigureServicesApplication(IServiceCollection services, IHostingEnvironment env)
+        {
+            services.AddAutoMapper();
+            services.AddTransient<ICityRepository, SqlCityRepository>();
+
+            if (!env.IsEnvironment("Testing"))
+            {
+                services.AddTransient<ISettings, Settings>();
+                services.AddTransient<IAggregateFactory, AggregateFactory>();
+                services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
+                services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
+                services.AddTransient<ICityService, CityService>();
+            }
+        }
+
+
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {

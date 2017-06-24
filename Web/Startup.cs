@@ -116,12 +116,9 @@ namespace Pixel.FixaBarnkalaset.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            ConfigureLogging(loggerFactory, Configuration);
 
-            var defaultCulture = new CultureInfo("sv-SE");
-            CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+            ConfigureCulture();
 
             if (env.IsDevelopment())
             {
@@ -135,40 +132,47 @@ namespace Pixel.FixaBarnkalaset.Web
 
             if (!env.IsEnvironment("Testing"))
             {
-                using (
-                    var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
-
-                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
-                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
-
-                    serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
-                }
-
-                app.UseIdentity();
-                app.UseFacebookAuthentication(new FacebookOptions()
-                {
-                    AppId = Configuration["Authentication:Facebook:AppId"],
-                    AppSecret = Configuration["Authentication:Facebook:AppSecret"]
-                });
-                app.EnsureRolesCreated();
+                ConfigureDatabaseMigration(app);
+                ConfigureIdentity(app, Configuration);
             }
 
             app.UseStaticFiles();
-            
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "city",
-            //        template: "stad/{controller=City}/{action=Index}/{id?}");
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
-            app.UseMvc(routes =>
-                routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}")
-            );
+            app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
+        }
+
+        private static void ConfigureLogging(ILoggerFactory loggerFactory, IConfigurationRoot configuration)
+        {
+            loggerFactory.AddConsole(configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+        }
+
+        private static void ConfigureCulture()
+        {
+            var defaultCulture = new CultureInfo("sv-SE");
+            CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+        }
+
+        private static void ConfigureDatabaseMigration(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
+                serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
+            }
+        }
+
+        private static void ConfigureIdentity(IApplicationBuilder app, IConfigurationRoot configuration)
+        {
+            app.UseIdentity();
+            app.UseFacebookAuthentication(new FacebookOptions()
+            {
+                AppId = configuration["Authentication:Facebook:AppId"],
+                AppSecret = configuration["Authentication:Facebook:AppSecret"]
+            });
+            app.EnsureRolesCreated();
         }
     }
 }

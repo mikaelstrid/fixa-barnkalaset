@@ -100,16 +100,12 @@ namespace Pixel.FixaBarnkalaset.Web
         private static void ConfigureServicesApplication(IServiceCollection services, IHostingEnvironment env)
         {
             services.AddAutoMapper();
+            services.AddTransient<ICityService, CityService>();
+            services.AddTransient<ISettings, Settings>();
+            services.AddTransient<IAggregateFactory, AggregateFactory>();
+            services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
+            services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
-
-            if (!env.IsEnvironment("Testing"))
-            {
-                services.AddTransient<ISettings, Settings>();
-                services.AddTransient<IAggregateFactory, AggregateFactory>();
-                services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
-                services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
-                services.AddTransient<ICityService, CityService>();
-            }
         }
 
 

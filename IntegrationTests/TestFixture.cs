@@ -49,20 +49,28 @@ namespace IntegrationTests
             Client = _server.CreateClient();
             Client.BaseAddress = new Uri("http://localhost");
         }
-
-        public HttpClient Client { get; }
-
+        
         public void Dispose()
         {
             Client.Dispose();
             _server.Dispose();
         }
 
-        private static void ConfigureServices(IServiceCollection services)
+        
+        // === PUBLIC PROPERTIES
+
+        public HttpClient Client { get; }
+
+        public MyEventSourcingDbContext EventSourcingDbContext { get; private set; }
+
+
+        // === CONFIG METHODS ===
+
+        private void ConfigureServices(IServiceCollection services)
         {
             ConfigureServicesApplicationPartManager(services);
             ConfigureServicesUserManagement(services);
-            ConfigureServicesDatabase(services);
+            EventSourcingDbContext = ConfigureServicesDatabase(services);
         }
 
         private static void ConfigureServicesApplicationPartManager(IServiceCollection services)
@@ -82,16 +90,26 @@ namespace IntegrationTests
             services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
         }
 
-        private static void ConfigureServicesDatabase(IServiceCollection services)
+        private static MyEventSourcingDbContext ConfigureServicesDatabase(IServiceCollection services)
         {
+            // https://stormpath.com/blog/tutorial-entity-framework-core-in-memory-database-asp-net-core
+            // http://gunnarpeipman.com/2017/04/aspnet-core-ef-inmemory/
             //var httpContextAccessor = new Mock<IHttpContextAccessor>();
-            var options = new DbContextOptionsBuilder<MyDataDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            var context = new MyDataDbContext(options);
-            context.Cities.Add(new City {Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0});
-            context.SaveChanges();
-            services.AddSingleton(context);
+            var myDataDbContext = new MyDataDbContext(
+                new DbContextOptionsBuilder<MyDataDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                    .Options);
+            myDataDbContext.Cities.Add(new City {Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0});
+            myDataDbContext.SaveChanges();
+            services.AddSingleton(myDataDbContext);
+
+            var myEventSourcingDbContext = new MyEventSourcingDbContext(
+                new DbContextOptionsBuilder<MyEventSourcingDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                    .Options);
+            services.AddSingleton(myEventSourcingDbContext);
+            return myEventSourcingDbContext;
+
 
             //services.AddDbContext<MyIdentityDbContext>(options => options.UseInMemoryDatabase("MyIdentity"));
             //services.AddDbContext<MyEventSourcingDbContext>(options => options.UseInMemoryDatabase("MyEventSourcing"));

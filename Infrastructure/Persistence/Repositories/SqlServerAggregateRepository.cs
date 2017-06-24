@@ -47,7 +47,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
                 .Select(e => e.ToEventData(aggregateType, aggregate.Id, originalVersion++))
                 .ToArray();
             
-            if (await _dbContext.Events.MaxAsync(e => e.Version) >= originalVersion)
+            if (await _dbContext.Events.AnyAsync() && await _dbContext.Events.MaxAsync(e => e.Version) >= originalVersion)
                 throw new Exception("Concurrency exception");
 
             await _dbContext.Events.AddRangeAsync(eventsToSave);

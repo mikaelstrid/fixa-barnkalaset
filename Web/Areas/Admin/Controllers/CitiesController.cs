@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/stader")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class CitiesController : Controller
     {
         private readonly IMapper _mapper;
@@ -42,13 +43,13 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [Route("skapa")]
-        public IActionResult Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
+        public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
         {
             if (ModelState.IsValid)
             {
-                _cityService.When(new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude));
+                await _cityService.When(new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude));
                 return RedirectToAction("Index");
             }
             return View();

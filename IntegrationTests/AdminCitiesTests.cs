@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 
 namespace IntegrationTests
 {
-    public class AdminCitiesTests : IClassFixture<TestFixture<TestStartup>>
+    public class AdminCitiesTests : IClassFixture<TestFixture<Startup>>
     {
         private readonly HttpClient _client;
 
-        public AdminCitiesTests(TestFixture<TestStartup> fixture)
+        public AdminCitiesTests(TestFixture<Startup> fixture)
         {
             _client = fixture.Client;
         }
@@ -22,7 +23,7 @@ namespace IntegrationTests
 
             // ASSERT
             response.EnsureSuccessStatusCode();
-            //var responseString = await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync();
             //Assert.Equal("Hello World!", responseString);
         }
 

@@ -4,13 +4,18 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Core.Services;
+using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
-using Pixel.FixaBarnkalaset.Infrastructure.Startup;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 
 namespace Pixel.FixaBarnkalaset.Web
 {
@@ -46,8 +51,14 @@ namespace Pixel.FixaBarnkalaset.Web
 
             if (!_env.IsEnvironment("Testing"))
             {
-                services.ConfigureAuthentication();
-
+                services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+                {
+                    o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
+                    o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
+                    o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
+                })
+                    .AddEntityFrameworkStores<MyIdentityDbContext>()
+                    .AddDefaultTokenProviders();
 #if DEBUG
                 services.AddMvc(options =>
                 {
@@ -61,19 +72,35 @@ namespace Pixel.FixaBarnkalaset.Web
             });
 #endif
 
-                var connectionString = Configuration.GetConnectionString("DefaultConnection");
-                services.AddEntityFramework(connectionString);
+                ConfigureDatabase(services);
 
                 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-                services.AddApplicationServices();
+                services.AddTransient<ISettings, Settings>();
+                services.AddTransient<IAggregateFactory, AggregateFactory>();
+                services.AddTransient<ICityRepository, SqlCityRepository>();
+                services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
+                services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
+                services.AddTransient<ICityService, CityService>();
             }
             else
             {
                 services.AddMvc();
+                //            //services.AddDbContext<MyDataDbContext>(options => options.UseInMemoryDatabase("MyData"));
+                //            //services.AddDbContext<MyIdentityDbContext>(options => options.UseInMemoryDatabase("MyIdentity"));
+                //            //services.AddDbContext<MyEventSourcingDbContext>(options => options.UseInMemoryDatabase("MyEventSourcing"));
+
             }
         }
-        
+
+        private void ConfigureDatabase(IServiceCollection services)
+        {
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyEventSourcingDbContext>(options => options.UseSqlServer(connectionString));
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -106,7 +133,13 @@ namespace Pixel.FixaBarnkalaset.Web
                     serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
                 }
 
-                app.UseAuthentication(Configuration);
+                app.UseIdentity();
+                app.UseFacebookAuthentication(new FacebookOptions()
+                {
+                    AppId = Configuration["Authentication:Facebook:AppId"],
+                    AppSecret = Configuration["Authentication:Facebook:AppSecret"]
+                });
+                app.EnsureRolesCreated();
             }
 
             app.UseStaticFiles();

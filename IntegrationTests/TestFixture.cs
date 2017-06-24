@@ -10,13 +10,17 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Moq;
+using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 
 namespace IntegrationTests
 {
@@ -72,7 +76,18 @@ namespace IntegrationTests
             services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
             //var mockFakeUserManager = CreateMockFakeUserManager();
             //services.AddSingleton(mockFakeUserManager.Object);
-            services.AddTransient<ICityRepository>(sp => new Mock<ICityRepository>().Object);
+            services.AddTransient<ICityRepository, SqlCityRepository>();
+
+            //var httpContextAccessor = new Mock<IHttpContextAccessor>();
+            var options = new DbContextOptionsBuilder<MyDataDbContext>()
+                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                     .Options;
+            var context = new MyDataDbContext(options);
+            context.Cities.Add(new City() {Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0});
+            context.SaveChanges();
+            services.AddSingleton(context);
+
+            //services.AddDbContext<MyDataDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
         }
 
         /// <summary>

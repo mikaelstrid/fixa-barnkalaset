@@ -22,7 +22,7 @@ namespace IntegrationTests
 
             // ASSERT
             response.EnsureSuccessStatusCode();
-            //var responseString = await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync();
             //Assert.Equal("Hello World!", responseString);
         }
     }

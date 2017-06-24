@@ -11,13 +11,17 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
     // Remove-Migration
     public class MyDataDbContext : DbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        //private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MyDataDbContext(DbContextOptions<MyDataDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        //public MyDataDbContext(DbContextOptions<MyDataDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        //{
+        //    _httpContextAccessor = httpContextAccessor;
+        //}
+
+        public MyDataDbContext(DbContextOptions<MyDataDbContext> options) : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
         }
-
+        
         public DbSet<Arrangement> Arrangements { get; set; }
         public DbSet<City> Cities { get; set; }
 
@@ -49,7 +53,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
             foreach (var entry in entries)
             {
                 entry.Property("LastUpdatedUtc").CurrentValue = DateTime.UtcNow;
-                entry.Property("UpdatedBy").CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
+                //entry.Property("UpdatedBy").CurrentValue = _httpContextAccessor.HttpContext.User.Identity.Name;
             }
 
             return base.SaveChanges();

@@ -41,7 +41,7 @@ namespace IntegrationTests
 
             var builder = new WebHostBuilder()
                 .UseContentRoot(contentRoot)
-                .ConfigureServices(InitializeServices)
+                .ConfigureServices(ConfigureServices)
                 .UseEnvironment("Testing")
                 .UseApplicationInsights()
                 .UseStartup(typeof(TStartup));
@@ -60,7 +60,7 @@ namespace IntegrationTests
             _server.Dispose();
         }
 
-        private static void InitializeServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services)
         {
             var startupAssembly = typeof(TStartup).GetTypeInfo().Assembly;
 
@@ -76,18 +76,23 @@ namespace IntegrationTests
             services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
             //var mockFakeUserManager = CreateMockFakeUserManager();
             //services.AddSingleton(mockFakeUserManager.Object);
-            services.AddTransient<ICityRepository, SqlCityRepository>();
 
+            ConfigureServicesDatabase(services);
+        }
+
+        private static void ConfigureServicesDatabase(IServiceCollection services)
+        {
             //var httpContextAccessor = new Mock<IHttpContextAccessor>();
             var options = new DbContextOptionsBuilder<MyDataDbContext>()
-                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                     .Options;
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
             var context = new MyDataDbContext(options);
-            context.Cities.Add(new City() {Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0});
+            context.Cities.Add(new City {Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0});
             context.SaveChanges();
             services.AddSingleton(context);
 
-            //services.AddDbContext<MyDataDbContext>(options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+            //services.AddDbContext<MyIdentityDbContext>(options => options.UseInMemoryDatabase("MyIdentity"));
+            //services.AddDbContext<MyEventSourcingDbContext>(options => options.UseInMemoryDatabase("MyEventSourcing"));
         }
 
         /// <summary>

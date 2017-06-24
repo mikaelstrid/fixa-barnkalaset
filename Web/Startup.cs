@@ -48,6 +48,8 @@ namespace Pixel.FixaBarnkalaset.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper();
+            ConfigureServicesDatabase(services, _env, Configuration);
+            services.AddTransient<ICityRepository, SqlCityRepository>();
 
             if (!_env.IsEnvironment("Testing"))
             {
@@ -71,14 +73,10 @@ namespace Pixel.FixaBarnkalaset.Web
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 #endif
-
-                ConfigureDatabase(services);
-
                 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
                 services.AddTransient<ISettings, Settings>();
                 services.AddTransient<IAggregateFactory, AggregateFactory>();
-                services.AddTransient<ICityRepository, SqlCityRepository>();
                 services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
                 services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
                 services.AddTransient<ICityService, CityService>();
@@ -86,19 +84,22 @@ namespace Pixel.FixaBarnkalaset.Web
             else
             {
                 services.AddMvc();
-                //            //services.AddDbContext<MyDataDbContext>(options => options.UseInMemoryDatabase("MyData"));
-                //            //services.AddDbContext<MyIdentityDbContext>(options => options.UseInMemoryDatabase("MyIdentity"));
-                //            //services.AddDbContext<MyEventSourcingDbContext>(options => options.UseInMemoryDatabase("MyEventSourcing"));
-
             }
         }
 
-        private void ConfigureDatabase(IServiceCollection services)
+        private static void ConfigureServicesDatabase(IServiceCollection services, IHostingEnvironment env, IConfigurationRoot configuration)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<MyEventSourcingDbContext>(options => options.UseSqlServer(connectionString));
+            if (env.IsEnvironment("Testing"))
+            {
+                // The database DI is configured in the TestFixture
+            }
+            else
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
+                services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
+                services.AddDbContext<MyEventSourcingDbContext>(options => options.UseSqlServer(connectionString));
+            }
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

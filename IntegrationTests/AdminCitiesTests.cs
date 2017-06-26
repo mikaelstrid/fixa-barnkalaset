@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IntegrationTests.Utilities;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 

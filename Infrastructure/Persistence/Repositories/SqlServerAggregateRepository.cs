@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Domain.Model;
+using Pixel.FixaBarnkalaset.Infrastructure.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories

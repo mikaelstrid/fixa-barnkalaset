@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Domain.Events;
+using Pixel.FixaBarnkalaset.Infrastructure.Interfaces;
 
-namespace Pixel.FixaBarnkalaset.Core
+namespace Pixel.FixaBarnkalaset.Infrastructure
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class AggregateFactory : IAggregateFactory

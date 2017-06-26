@@ -13,7 +13,9 @@ using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Core.Services;
+using Pixel.FixaBarnkalaset.Infrastructure;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
+using Pixel.FixaBarnkalaset.Infrastructure.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 

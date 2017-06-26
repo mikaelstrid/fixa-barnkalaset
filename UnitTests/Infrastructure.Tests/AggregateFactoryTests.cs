@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.Domain.Model;
+using Pixel.FixaBarnkalaset.Infrastructure;
 using Xunit;
 
-namespace Core.Tests
+namespace Infrastructure.Tests
 {
     public class AggregateFactoryTests
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Pixel.FixaBarnkalaset.Domain.Events;
 
-namespace Pixel.FixaBarnkalaset.Core.Interfaces
+namespace Pixel.FixaBarnkalaset.Infrastructure.Interfaces
 {
     public interface IAggregateFactory
     {

@@ -1,3 +1,5 @@
 {
-  "shadowCopy": false
+  "shadowCopy": false,
+  "parallelizeTestCollections": false,
+  "maxParallelThreads": 1
 }

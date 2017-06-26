@@ -11,9 +11,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
     {
         public static void EnsureRolesCreated(this IApplicationBuilder app)
         {
-            var context = app.ApplicationServices.GetService<MyIdentityDbContext>();
-
-            if (!context.AllMigrationsApplied()) return;
+            //var context = app.ApplicationServices.GetService<MyIdentityDbContext>();
+            //if (!context.AllMigrationsApplied()) return;
 
             var roleManager = app.ApplicationServices.GetService<RoleManager<IdentityRole>>();
             foreach (var role in Roles.All)
@@ -23,6 +22,28 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
                     roleManager.CreateAsync(new IdentityRole { Name = role });
                 }
             }
+        }
+
+        public static void AddTestingUsers(this IApplicationBuilder app)
+        {
+            var email = "test@test.com";
+            var nameIdentifier = "123";
+            var givenName = "Test";
+            var surname = "Testsson";
+            var password = "B1pdsosp!";
+
+            var userManager = app.ApplicationServices.GetService<UserManager<ApplicationUser>>();
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                NameIdentifier = nameIdentifier,
+                Name = $"{givenName} {surname}",
+                GivenName = givenName,
+                Surname = surname
+            };
+            var result = userManager.CreateAsync(user, password).Result;
+            userManager.AddToRoleAsync(user, Roles.Admin).Wait();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace IntegrationTests
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
     public class AdminCitiesTests : IClassFixture<TestFixture<Startup>>
     {
+        private const string IdentityCookieName = ".AspNetCore.Identity.Application";
         private readonly TestFixture<Startup> _fixture;
         private readonly HttpClient _client;
 
@@ -39,7 +40,18 @@ namespace IntegrationTests
         public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
         {
             // ARRANGE
-            var getResponse = await _client.GetAsync("/admin/stader/skapa");
+            var loginRequestMessage = PostRequestHelper.Create(
+                "/konto/logga-in",
+                new Dictionary<string, string>
+            {
+                {"Email", "test@test.com"},
+                {"Password", "B1pdsosp!"}
+            });
+            var loginReponse = await _client.SendAsync(loginRequestMessage);
+            var authenticationToken = CookiesHelper.ExtractCookiesFromResponse(loginReponse)[IdentityCookieName];
+
+            var getRequest = GetRequestHelper.CreateWithCookiesFromResponse("/admin/stader/skapa", loginReponse);
+            var getResponse = await _client.SendAsync(getRequest);
             getResponse.EnsureSuccessStatusCode();
             
             var antiForgeryToken = await AntiForgeryHelper.ExtractAntiForgeryToken(getResponse);
@@ -53,10 +65,12 @@ namespace IntegrationTests
                 {"Longitude", "58,7"}
             };
 
-            var requestMessage = PostRequestHelper.CreateWithCookiesFromResponse("/admin/stader/skapa", formPostBodyData, getResponse);
+            var postMessage = CookiesHelper.PutCookiesOnRequest(
+                PostRequestHelper.CreateWithCookiesFromResponse("/admin/stader/skapa", formPostBodyData, getResponse),
+                new Dictionary<string, string> { { IdentityCookieName, authenticationToken } });
             
             // ACT
-            var response = await _client.SendAsync(requestMessage);
+            var response = await _client.SendAsync(postMessage);
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);

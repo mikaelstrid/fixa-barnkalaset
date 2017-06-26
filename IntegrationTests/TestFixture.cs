@@ -86,8 +86,8 @@ namespace IntegrationTests
 
         private static void ConfigureServicesUserManagement(IServiceCollection services)
         {
-            services.AddTransient<SignInManager<ApplicationUser>, FakeSignInManager>();
-            services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
+            //services.AddTransient<SignInManager<ApplicationUser>, FakeSignInManager>();
+            //services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
         }
 
         private static MyEventSourcingDbContext ConfigureServicesDatabase(IServiceCollection services)
@@ -103,16 +103,18 @@ namespace IntegrationTests
             myDataDbContext.SaveChanges();
             services.AddSingleton(myDataDbContext);
 
+            var myIdentityDataDbContext = new MyIdentityDbContext(
+                new DbContextOptionsBuilder<MyIdentityDbContext>()
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                    .Options);
+            services.AddSingleton(myIdentityDataDbContext);
+
             var myEventSourcingDbContext = new MyEventSourcingDbContext(
                 new DbContextOptionsBuilder<MyEventSourcingDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options);
             services.AddSingleton(myEventSourcingDbContext);
             return myEventSourcingDbContext;
-
-
-            //services.AddDbContext<MyIdentityDbContext>(options => options.UseInMemoryDatabase("MyIdentity"));
-            //services.AddDbContext<MyEventSourcingDbContext>(options => options.UseInMemoryDatabase("MyEventSourcing"));
         }
 
         private static string GetProjectPath(string solutionRelativePath, Assembly startupAssembly)

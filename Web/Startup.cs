@@ -35,7 +35,10 @@ namespace Pixel.FixaBarnkalaset.Web
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
+            }
 
+            if (env.IsDevelopment() || env.IsEnvironment("Testing"))
+            {
                 TelemetryConfiguration.Active.DisableTelemetry = true;
             }
 
@@ -84,17 +87,14 @@ namespace Pixel.FixaBarnkalaset.Web
 
         private static void ConfigureServicesIdentity(IServiceCollection services, IHostingEnvironment env)
         {
-            if (!env.IsEnvironment("Testing"))
-            {
-                services.AddIdentity<ApplicationUser, IdentityRole>(o =>
-                    {
-                        o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
-                        o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
-                        o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
-                    })
-                    .AddEntityFrameworkStores<MyIdentityDbContext>()
-                    .AddDefaultTokenProviders();
-            }
+            services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+                {
+                    o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
+                    o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
+                    o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
+                })
+                .AddEntityFrameworkStores<MyIdentityDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         private static void ConfigureServicesApplication(IServiceCollection services, IHostingEnvironment env)
@@ -129,9 +129,9 @@ namespace Pixel.FixaBarnkalaset.Web
             if (!env.IsEnvironment("Testing"))
             {
                 ConfigureDatabaseMigration(app);
-                ConfigureIdentity(app, Configuration);
             }
 
+            ConfigureIdentity(app, _env, Configuration);
             app.UseStaticFiles();
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
         }
@@ -160,15 +160,24 @@ namespace Pixel.FixaBarnkalaset.Web
             }
         }
 
-        private static void ConfigureIdentity(IApplicationBuilder app, IConfigurationRoot configuration)
+        private static void ConfigureIdentity(IApplicationBuilder app, IHostingEnvironment env, IConfigurationRoot configuration)
         {
             app.UseIdentity();
-            app.UseFacebookAuthentication(new FacebookOptions()
-            {
-                AppId = configuration["Authentication:Facebook:AppId"],
-                AppSecret = configuration["Authentication:Facebook:AppSecret"]
-            });
+
             app.EnsureRolesCreated();
+            if (env.IsEnvironment("Testing"))
+            {
+                app.AddTestingUsers();
+            }
+
+            if (!env.IsEnvironment("Testing"))
+            {
+                app.UseFacebookAuthentication(new FacebookOptions()
+                {
+                    AppId = configuration["Authentication:Facebook:AppId"],
+                    AppSecret = configuration["Authentication:Facebook:AppSecret"]
+                });
+            }
         }
     }
 }

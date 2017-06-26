@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -47,6 +48,25 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
             ViewData["ReturnUrl"] = returnUrl;
             return View();
+        }
+
+        //
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("logga-in")]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, lockoutOnFailure: false);
+                if (result.Succeeded)
+                    return Ok();
+                else
+                    return BadRequest();
+            }
+            return BadRequest();
         }
 
         //
@@ -211,5 +231,16 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
         #endregion
+    }
+
+    public class LoginViewModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
     }
 }

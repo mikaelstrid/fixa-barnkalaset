@@ -12,7 +12,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/stader")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class CitiesController : Controller
     {
         private readonly IMapper _mapper;

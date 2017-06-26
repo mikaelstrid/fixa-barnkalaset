@@ -4,7 +4,7 @@ using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Xunit;
 
-namespace Infrastructure.Tests.Persistence
+namespace UnitTests.Infrastructure.Tests.Persistence
 {
     public class EventDataTests
     {

@@ -2,8 +2,8 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp1.1</TargetFramework>    
-    <AssemblyName>Web.Tests</AssemblyName>    
-    <RootNamespace>Web.Tests</RootNamespace>
+    <AssemblyName>UnitTests.Web.Tests</AssemblyName>    
+    <RootNamespace>UnitTests.Web.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -20,7 +20,7 @@ using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
-namespace IntegrationTests
+namespace IntegrationTests.Admin.Tests
 {
     public sealed class TestFixture<TStartup> : IDisposable
     {

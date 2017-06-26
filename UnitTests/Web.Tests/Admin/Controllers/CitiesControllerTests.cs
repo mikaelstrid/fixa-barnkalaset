@@ -12,7 +12,7 @@ using Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using Xunit;
 
-namespace Web.Tests.Admin.Controllers
+namespace UnitTests.Web.Tests.Admin.Controllers
 {
     public class CitiesControllerTests
     {

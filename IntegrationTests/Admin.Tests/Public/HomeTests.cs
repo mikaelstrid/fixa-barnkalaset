@@ -4,7 +4,7 @@ using FluentAssertions;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 
-namespace IntegrationTests.Public
+namespace IntegrationTests.Admin.Tests.Public
 {
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
     public class HomeTests : IClassFixture<TestFixture<Startup>>

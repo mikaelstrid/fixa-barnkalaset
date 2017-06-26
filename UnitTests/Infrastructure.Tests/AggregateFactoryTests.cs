@@ -6,7 +6,7 @@ using Pixel.FixaBarnkalaset.Domain.Model;
 using Pixel.FixaBarnkalaset.Infrastructure;
 using Xunit;
 
-namespace Infrastructure.Tests
+namespace UnitTests.Infrastructure.Tests
 {
     public class AggregateFactoryTests
     {

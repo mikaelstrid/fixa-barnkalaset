@@ -4,11 +4,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using IntegrationTests.Utilities;
+using IntegrationTests.Admin.Tests.Utilities;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 
-namespace IntegrationTests.Admin
+namespace IntegrationTests.Admin.Tests.Admin
 {
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
     public class CitiesTests : IClassFixture<TestFixture<Startup>>

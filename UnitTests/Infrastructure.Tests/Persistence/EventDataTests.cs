@@ -1,6 +1,6 @@
 using System;
 using FluentAssertions;
-using Pixel.FixaBarnkalaset.Core.Events;
+using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Xunit;
 

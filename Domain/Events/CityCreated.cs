@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pixel.FixaBarnkalaset.Core.Events
+namespace Pixel.FixaBarnkalaset.Domain.Events
 {
     public class CityCreated : IEvent
     {

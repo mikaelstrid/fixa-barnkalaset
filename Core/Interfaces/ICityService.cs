@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Pixel.FixaBarnkalaset.Core.Commands;
+using Pixel.FixaBarnkalaset.Domain.Commands;
 
 namespace Pixel.FixaBarnkalaset.Core.Interfaces
 {

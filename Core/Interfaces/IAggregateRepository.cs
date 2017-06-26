@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Pixel.FixaBarnkalaset.Domain.Model;
 
 namespace Pixel.FixaBarnkalaset.Core.Interfaces
 {

@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Core.Events;
 using Xunit;
 using FluentAssertions;
+using Pixel.FixaBarnkalaset.Domain.Events;
+using Pixel.FixaBarnkalaset.Domain.Model;
 
 namespace Core.Tests
 {

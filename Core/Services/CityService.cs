@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Pixel.FixaBarnkalaset.Core.Commands;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Domain.Commands;
+using Pixel.FixaBarnkalaset.Domain.Model;
 
 namespace Pixel.FixaBarnkalaset.Core.Services
 {

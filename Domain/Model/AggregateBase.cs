@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Pixel.FixaBarnkalaset.Core.Events;
+using Pixel.FixaBarnkalaset.Domain.Events;
 
-namespace Pixel.FixaBarnkalaset.Core
+namespace Pixel.FixaBarnkalaset.Domain.Model
 {
     public abstract class AggregateBase : IAggregate
     {

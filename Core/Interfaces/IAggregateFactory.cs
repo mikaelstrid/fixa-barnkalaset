@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Pixel.FixaBarnkalaset.Core.Events;
+using Pixel.FixaBarnkalaset.Domain.Events;
 
 namespace Pixel.FixaBarnkalaset.Core.Interfaces
 {

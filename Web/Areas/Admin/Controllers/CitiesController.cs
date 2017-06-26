@@ -4,8 +4,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Core.Commands;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Domain.Commands;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 
 namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Pixel.FixaBarnkalaset.Core.Events;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Domain.Events;
 
 namespace Pixel.FixaBarnkalaset.Core
 {

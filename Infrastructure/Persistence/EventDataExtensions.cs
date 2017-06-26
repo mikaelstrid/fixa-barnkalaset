@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Pixel.FixaBarnkalaset.Core.Events;
+using Pixel.FixaBarnkalaset.Domain.Events;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Pixel.FixaBarnkalaset.Core.Events;
-using Pixel.FixaBarnkalaset.Core.Utilities;
+using Pixel.FixaBarnkalaset.Domain.Events;
+using Pixel.FixaBarnkalaset.Domain.Utilities;
 
-namespace Pixel.FixaBarnkalaset.Core
+namespace Pixel.FixaBarnkalaset.Domain.Model
 {
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class CityAggregate : AggregateBase

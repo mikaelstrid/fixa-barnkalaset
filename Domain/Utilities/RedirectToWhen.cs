@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace Pixel.FixaBarnkalaset.Core.Utilities
+namespace Pixel.FixaBarnkalaset.Domain.Utilities
 {
     public static class RedirectToWhen
     {

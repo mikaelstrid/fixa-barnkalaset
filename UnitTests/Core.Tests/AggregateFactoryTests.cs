@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Core.Events;
+using Pixel.FixaBarnkalaset.Domain.Events;
+using Pixel.FixaBarnkalaset.Domain.Model;
 using Xunit;
 
 namespace Core.Tests

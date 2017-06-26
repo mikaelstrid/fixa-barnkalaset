@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Core.Commands;
-using Pixel.FixaBarnkalaset.Core.Events;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Core.Services;
+using Pixel.FixaBarnkalaset.Domain.Commands;
+using Pixel.FixaBarnkalaset.Domain.Events;
+using Pixel.FixaBarnkalaset.Domain.Model;
 using Xunit;
 
 namespace Core.Tests.Services

@@ -7,11 +7,12 @@ using Moq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Commands;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using Xunit;
 
-namespace Pixel.FixaBarnkalaset.Web.Tests.Admin.Controllers
+namespace Web.Tests.Admin.Controllers
 {
     public class CitiesControllerTests
     {

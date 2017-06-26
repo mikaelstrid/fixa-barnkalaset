@@ -2,8 +2,8 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp1.1</TargetFramework>    
-    <AssemblyName>Pixel.FixaBarnkalaset.Web.Tests</AssemblyName>    
-    <RootNamespace>Pixel.FixaBarnkalaset.Web.Tests</RootNamespace>
+    <AssemblyName>Web.Tests</AssemblyName>    
+    <RootNamespace>Web.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

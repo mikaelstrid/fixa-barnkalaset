@@ -8,33 +8,21 @@ using IntegrationTests.Utilities;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 
-namespace IntegrationTests
+namespace IntegrationTests.Admin
 {
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
-    public class AdminCitiesTests : IClassFixture<TestFixture<Startup>>
+    public class CitiesTests : IClassFixture<TestFixture<Startup>>
     {
         private const string IdentityCookieName = ".AspNetCore.Identity.Application";
         private readonly TestFixture<Startup> _fixture;
         private readonly HttpClient _client;
 
-        public AdminCitiesTests(TestFixture<Startup> fixture)
+        public CitiesTests(TestFixture<Startup> fixture)
         {
             _fixture = fixture;
             _client = fixture.Client;
         }
-
-        [Fact]
-        public async Task ReturnHelloWorld()
-        {
-            // ACT
-            var response = await _client.GetAsync("/");
-
-            // ASSERT
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            responseString.Should().Contain("<option value=\"/arrangemang/halmstad\">Halmstad</option>");
-        }
-
+        
         [Fact]
         public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
         {

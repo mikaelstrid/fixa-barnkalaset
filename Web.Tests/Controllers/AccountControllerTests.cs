@@ -10,7 +10,7 @@ using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Web.Controllers;
 using Xunit;
 
-namespace Pixel.FixaBarnkalaset.Web.Tests.Controllers
+namespace Web.Tests.Controllers
 {
     public class AccountControllerTests
     {

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace UnitTests.Infrastructure.Tests.Persistence.Repositories
 {
+    // https://stackoverflow.com/questions/40476233/how-to-mock-an-async-repository-with-entity-framework-core
     internal class TestAsyncQueryProvider<TEntity> : IAsyncQueryProvider
     {
         private readonly IQueryProvider _inner;

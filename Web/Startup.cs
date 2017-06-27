@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Core.Services;
 using Pixel.FixaBarnkalaset.Infrastructure;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Interfaces;
+using Pixel.FixaBarnkalaset.Infrastructure.Messaging;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 
@@ -103,11 +103,11 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             services.AddAutoMapper();
             services.AddTransient<ICityService, CityService>();
-            services.AddTransient<ISettings, Settings>();
             services.AddTransient<IAggregateFactory, AggregateFactory>();
             services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
+            services.AddSingleton(new EventPublisher());
         }
 
 

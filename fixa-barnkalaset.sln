@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel", "ReadModel\Read
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.Tests", "UnitTests\ReadModel.Tests\ReadModel.Tests.csproj", "{8E6383F7-3025-4AAF-9318-40621A7EDA85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "UnitTests\Domain.Tests\Domain.Tests.csproj", "{40A1B719-2E22-4955-9314-295E283051B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{8E6383F7-3025-4AAF-9318-40621A7EDA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E6383F7-3025-4AAF-9318-40621A7EDA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E6383F7-3025-4AAF-9318-40621A7EDA85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40A1B719-2E22-4955-9314-295E283051B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A1B719-2E22-4955-9314-295E283051B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A1B719-2E22-4955-9314-295E283051B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A1B719-2E22-4955-9314-295E283051B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +101,6 @@ Global
 		{EFA0D55F-70FE-4283-BB79-5D4C6F5F14F6} = {1F25CF50-0CAF-4076-B6D5-87AC2619AB0E}
 		{5D2C8DB2-71ED-4FB2-9C1B-AA1DEA375532} = {ABABF398-A9B7-4F2F-A9FE-F63AA6F2B756}
 		{8E6383F7-3025-4AAF-9318-40621A7EDA85} = {1F25CF50-0CAF-4076-B6D5-87AC2619AB0E}
+		{40A1B719-2E22-4955-9314-295E283051B9} = {1F25CF50-0CAF-4076-B6D5-87AC2619AB0E}
 	EndGlobalSection
 EndGlobal

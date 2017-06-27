@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using Xunit;
 using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.Domain.Model;
-using Xunit;
 
-namespace UnitTests.Core.Tests
+namespace UnitTests.Domain.Tests
 {
     public class CityAggregateTests
     {

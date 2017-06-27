@@ -4,6 +4,6 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Interfaces
 {
     public interface IEventPublisher
     {
-        void Publish(IEvent eventData);
+        void Publish(IEvent @event);
     }
 }

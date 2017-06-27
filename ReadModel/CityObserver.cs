@@ -1,14 +1,13 @@
-﻿using System;
-using Pixel.FixaBarnkalaset.Domain.Events;
+﻿using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.ReadModel
 {
-    public class CityObserver
+    public class CityObserver : IObserver
     {
-        private readonly IProjectionWriter<CityView> _writer;
+        private readonly IProjectionWriter _writer;
 
-        public CityObserver(IProjectionWriter<CityView> writer)
+        public CityObserver(IProjectionWriter writer)
         {
             _writer = writer;
         }
@@ -19,23 +18,29 @@ namespace Pixel.FixaBarnkalaset.ReadModel
             {
                 Id = e.Id,
                 Name = e.Name,
+                Slug = e.Slug,
                 Latitude = e.Latitude,
                 Longitude = e.Longitude
             };
             _writer.Add(view);
         }
 
+
+        public void Handle(IEvent @event)
+        {
+            switch (@event)
+            {
+                case CityCreated c:
+                {
+                    When(c);
+                    break;
+                }
+            }
+        }
+
         //public void When(CityNameChanged e)
         //{
         //    _writer.Update(e.Id, v => v.Name = e.Name);
         //}
-    }
-
-    public class CityView
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
     }
 }

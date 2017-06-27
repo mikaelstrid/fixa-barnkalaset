@@ -2,9 +2,10 @@
 
 namespace Pixel.FixaBarnkalaset.ReadModel.Interfaces
 {
-    public interface IProjectionWriter<T>
+    //public interface IProjectionWriter<T>
+    public interface IProjectionWriter
     {
-        void Add(T view);
-        void Update(object id, Action<T> updateAction);
+        void Add<T>(T view);
+        void Update<T>(object id, Action<T> updateAction);
     }
 }

@@ -110,7 +110,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IObserverRegistry, ObserverRegistry>();
-            services.AddTransient<IProjectionWriter, InMemoryProjectionWriter>();
+            services.AddSingleton<IProjectionWriter, InMemoryProjectionWriter>();
             services.AddSingleton<IEventPublisher, EventPublisher>();
         }
 

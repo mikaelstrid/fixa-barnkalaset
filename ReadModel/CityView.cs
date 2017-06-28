@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace Pixel.FixaBarnkalaset.ReadModel
+﻿namespace Pixel.FixaBarnkalaset.ReadModel
 {
-    public class CityView
+    public class CityView : ViewBase
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
         public double Latitude { get; set; }

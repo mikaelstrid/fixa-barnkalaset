@@ -17,6 +17,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.ReadModel
         public IEnumerable<IProjection> GetObservers()
         {
             yield return new CityProjection(_viewRepository);
+            yield return new CityListProjection(_viewRepository);
         }
     }
 }

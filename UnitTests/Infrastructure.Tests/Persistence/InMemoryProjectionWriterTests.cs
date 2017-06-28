@@ -1,5 +1,4 @@
 ﻿using System;
-using Moq;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Pixel.FixaBarnkalaset.ReadModel;
 using Xunit;
@@ -13,11 +12,10 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         {
             // ARRANGE
             var sut = new InMemoryProjectionWriter();
-            var mockView = new Mock<IView>();
-            mockView.SetupGet(m => m.Id).Returns(Guid.Parse("F48B5459-DAEF-43F2-9E16-2DBE2AEE33D4"));
+            var view = new TestView();
 
             // ACT
-            sut.Add(mockView.Object);
+            sut.Add(view);
 
             // ASSERT
         }
@@ -27,15 +25,13 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         {
             // ARRANGE
             var sut = new InMemoryProjectionWriter();
-            var mockOtherView = new Mock<IView>();
-            mockOtherView.SetupGet(m => m.Id).Returns(Guid.Parse("7238E54D-1E90-4DB1-AD8E-13588E42A4D4"));
-            sut.Add(mockOtherView.Object);
+            var otherView = new TestView();
+            sut.Add(otherView);
 
-            var mockView = new Mock<IView>();
-            mockView.SetupGet(m => m.Id).Returns(Guid.Parse("F48B5459-DAEF-43F2-9E16-2DBE2AEE33D4"));
+            var view = new TestView();
 
             // ACT
-            sut.Add(mockView.Object);
+            sut.Add(view);
 
             // ASSERT
         }
@@ -45,12 +41,60 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         {
             // ARRANGE
             var sut = new InMemoryProjectionWriter();
-            var mockView = new Mock<IView>();
-            mockView.SetupGet(m => m.Id).Returns(Guid.Parse("F48B5459-DAEF-43F2-9E16-2DBE2AEE33D4"));
-            sut.Add(mockView.Object);
+            var view = new TestView();
+            sut.Add(view);
 
             // ACT && ASSERT
-            Assert.Throws<ArgumentException>(() => sut.Add(mockView.Object));
+            Assert.Throws<ArgumentException>(() => sut.Add(view));
+        }
+
+
+        [Fact]
+        public void Update_GivenNoViews_ShouldThrowException()
+        {
+            // ARRANGE
+            var sut = new InMemoryProjectionWriter();
+            var view = new TestView();
+
+            // ACT && ASSERT
+            Assert.Throws<ArgumentException>(() => sut.Update<IView>(view.Id, v => { }));
+        }
+
+        [Fact]
+        public void Update_GivenOneOtherView_ShouldThrowException()
+        {
+            // ARRANGE
+            var sut = new InMemoryProjectionWriter();
+            var otherView = new TestView();
+            sut.Add(otherView);
+
+            var view = new TestView();
+
+            // ACT && ASSERT
+            Assert.Throws<ArgumentException>(() => sut.Update<IView>(view.Id, v => { }));
+        }
+
+        [Fact]
+        public void Update_GivenViewAlreadyAdded_ShouldNotThrowException()
+        {
+            // ARRANGE
+            var sut = new InMemoryProjectionWriter();
+            var view = new TestView();
+            sut.Add(view);
+
+            // ACT 
+            sut.Update<TestView>(view.Id, v => {});
+
+            // ASSERT
+        }
+
+
+        public class TestView : ViewBase
+        {
+            public TestView()
+            {
+                Id = Guid.NewGuid();
+            }
         }
     }
 }

@@ -14,15 +14,19 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
             _cache = new Dictionary<string, IView>();
         }
 
-        public void Add<T>(T view) where T : IView
+        public void Add<T>(T view) where T : class, IView
         {
             var key = CreateCacheKey(view.GetType(), view.Id);
             _cache.Add(key, view);
         }
 
-        public void Update<T>(object id, Action<T> updateAction) where T : IView
+        public void Update<T>(Guid id, Action<T> updateAction) where T : class, IView
         {
-            throw new NotImplementedException();
+            var key = CreateCacheKey(typeof(T), id);
+            if (!_cache.ContainsKey(key))
+                throw new ArgumentException($"The cache does not contain any entry for {key}", nameof(id));
+
+            updateAction(_cache[key] as T);
         }
 
         private static string CreateCacheKey(Type type, Guid id) => $"{type.Name}-{id}";

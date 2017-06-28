@@ -26,9 +26,9 @@ namespace Pixel.FixaBarnkalaset.ReadModel
         }
 
 
-        public void Handle(IEvent @event)
+        public void Handle(IEvent e)
         {
-            switch (@event)
+            switch (e)
             {
                 case CityCreated c:
                 {

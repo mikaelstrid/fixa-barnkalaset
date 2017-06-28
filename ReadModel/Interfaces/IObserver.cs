@@ -4,6 +4,6 @@ namespace Pixel.FixaBarnkalaset.ReadModel.Interfaces
 {
     public interface IObserver
     {
-        void Handle(IEvent @event);
+        void Handle(IEvent e);
     }
 }

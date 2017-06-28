@@ -14,6 +14,12 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
             _cache = new Dictionary<string, IView>();
         }
 
+        public bool Contains<T>(Guid id)
+        {
+            var key = CreateCacheKey(typeof(T), id);
+            return _cache.ContainsKey(key);
+        }
+
         public void Add<T>(T view) where T : class, IView
         {
             var key = CreateCacheKey(view.GetType(), view.Id);

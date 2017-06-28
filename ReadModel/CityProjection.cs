@@ -3,11 +3,11 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.ReadModel
 {
-    public class CityObserver : IObserver
+    public class CityProjection : IProjection
     {
-        private readonly IProjectionWriter _writer;
+        private readonly IViewRepository _writer;
 
-        public CityObserver(IProjectionWriter writer)
+        public CityProjection(IViewRepository writer)
         {
             _writer = writer;
         }

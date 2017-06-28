@@ -5,11 +5,11 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 {
-    public class InMemoryProjectionWriter : IProjectionWriter
+    public class InMemoryViewRepository : IViewRepository
     {
         private readonly Dictionary<string, IView> _cache;
 
-        public InMemoryProjectionWriter()
+        public InMemoryViewRepository()
         {
             _cache = new Dictionary<string, IView>();
         }

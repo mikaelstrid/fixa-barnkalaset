@@ -5,13 +5,13 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.ReadModel
 {
-    public class CityListObserver : IObserver
+    public class CityListProjection : IProjection
     {
         private readonly Guid _id = Guid.Parse("7DD8538F-3BBE-4A8C-8E65-D6ECA114938F");
 
-        private readonly IProjectionWriter _writer;
+        private readonly IViewRepository _writer;
 
-        public CityListObserver(IProjectionWriter writer)
+        public CityListProjection(IViewRepository writer)
         {
             _writer = writer;
         }

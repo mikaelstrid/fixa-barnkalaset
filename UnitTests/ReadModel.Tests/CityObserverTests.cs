@@ -9,13 +9,13 @@ namespace UnitTests.ReadModel.Tests
 {
     public class CityObserverTests
     {
-        private readonly Mock<IProjectionWriter> _mockProjectionWriter;
-        private readonly CityObserver _sut;
+        private readonly Mock<IViewRepository> _mockProjectionWriter;
+        private readonly CityProjection _sut;
 
         public CityObserverTests()
         {
-            _mockProjectionWriter = new Mock<IProjectionWriter>();
-            _sut = new CityObserver(_mockProjectionWriter.Object);
+            _mockProjectionWriter = new Mock<IViewRepository>();
+            _sut = new CityProjection(_mockProjectionWriter.Object);
         }
         
         [Fact]

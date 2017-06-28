@@ -7,11 +7,11 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Messaging
 {
     public class EventPublisher : IEventPublisher
     {
-        private readonly IEnumerable<IObserver> _observers;
+        private readonly IEnumerable<IProjection> _observers;
 
-        public EventPublisher(IObserverRegistry observerRegistry)
+        public EventPublisher(IProjectionRegistry projectionRegistry)
         {
-            _observers = observerRegistry.GetObservers() ?? new List<IObserver>();
+            _observers = projectionRegistry.GetObservers() ?? new List<IProjection>();
         }
 
         public void Publish(IEvent @event)

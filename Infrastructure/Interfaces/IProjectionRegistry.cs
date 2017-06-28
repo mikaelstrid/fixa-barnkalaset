@@ -3,8 +3,8 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Interfaces
 {
-    public interface IObserverRegistry
+    public interface IProjectionRegistry
     {
-        IEnumerable<IObserver> GetObservers();
+        IEnumerable<IProjection> GetObservers();
     }
 }

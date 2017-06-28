@@ -19,6 +19,7 @@ using Pixel.FixaBarnkalaset.Infrastructure.Messaging;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
+using Pixel.FixaBarnkalaset.Infrastructure.ReadModel;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.Web
@@ -109,8 +110,8 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
-            services.AddTransient<IObserverRegistry, ObserverRegistry>();
-            services.AddSingleton<IProjectionWriter, InMemoryProjectionWriter>();
+            services.AddTransient<IProjectionRegistry, ProjectionRegistry>();
+            services.AddSingleton<IViewRepository, InMemoryViewRepository>();
             services.AddSingleton<IEventPublisher, EventPublisher>();
         }
 

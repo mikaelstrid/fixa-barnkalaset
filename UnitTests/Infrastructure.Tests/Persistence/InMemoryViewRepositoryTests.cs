@@ -5,13 +5,13 @@ using Xunit;
 
 namespace UnitTests.Infrastructure.Tests.Persistence
 {
-    public class InMemoryProjectionWriterTests
+    public class InMemoryViewRepositoryTests
     {
         [Fact]
         public void Add_GivenNoViews_ShouldNotThrowException()
         {
             // ARRANGE
-            var sut = new InMemoryProjectionWriter();
+            var sut = new InMemoryViewRepository();
             var view = new TestView();
 
             // ACT
@@ -24,7 +24,7 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         public void Add_GivenOneOtherView_ShouldNotThrowException()
         {
             // ARRANGE
-            var sut = new InMemoryProjectionWriter();
+            var sut = new InMemoryViewRepository();
             var otherView = new TestView();
             sut.Add(otherView);
 
@@ -40,7 +40,7 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         public void Add_GivenViewAlreadyAdded_ShouldThrowException()
         {
             // ARRANGE
-            var sut = new InMemoryProjectionWriter();
+            var sut = new InMemoryViewRepository();
             var view = new TestView();
             sut.Add(view);
 
@@ -53,7 +53,7 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         public void Update_GivenNoViews_ShouldThrowException()
         {
             // ARRANGE
-            var sut = new InMemoryProjectionWriter();
+            var sut = new InMemoryViewRepository();
             var view = new TestView();
 
             // ACT && ASSERT
@@ -64,7 +64,7 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         public void Update_GivenOneOtherView_ShouldThrowException()
         {
             // ARRANGE
-            var sut = new InMemoryProjectionWriter();
+            var sut = new InMemoryViewRepository();
             var otherView = new TestView();
             sut.Add(otherView);
 
@@ -78,7 +78,7 @@ namespace UnitTests.Infrastructure.Tests.Persistence
         public void Update_GivenViewAlreadyAdded_ShouldNotThrowException()
         {
             // ARRANGE
-            var sut = new InMemoryProjectionWriter();
+            var sut = new InMemoryViewRepository();
             var view = new TestView();
             sut.Add(view);
 

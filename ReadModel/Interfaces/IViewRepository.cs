@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.ReadModel.Interfaces
 {
-    public interface IProjectionWriter
+    public interface IViewRepository
     {
         bool Contains<T>(Guid id);
         void Add<T>(T view) where T : class, IView;

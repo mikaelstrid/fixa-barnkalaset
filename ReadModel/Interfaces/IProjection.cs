@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.ReadModel.Interfaces
 {
-    public interface IObserver
+    public interface IProjection
     {
         void Handle(IEvent e);
     }

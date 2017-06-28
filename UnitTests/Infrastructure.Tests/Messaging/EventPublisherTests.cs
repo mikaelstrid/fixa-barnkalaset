@@ -11,17 +11,17 @@ namespace UnitTests.Infrastructure.Tests.Messaging
 {
     public class EventPublisherTests
     {
-        private readonly Mock<IObserverRegistry> _mockObserverRegistry;
+        private readonly Mock<IProjectionRegistry> _mockObserverRegistry;
         private readonly EventPublisher _sut;
-        private readonly Mock<IObserver> _mockObserver1;
-        private readonly Mock<IObserver> _mockObserver2;
+        private readonly Mock<IProjection> _mockObserver1;
+        private readonly Mock<IProjection> _mockObserver2;
 
         public EventPublisherTests()
         {
-            _mockObserver1 = new Mock<IObserver>();
-            _mockObserver2 = new Mock<IObserver>();
-            _mockObserverRegistry = new Mock<IObserverRegistry>();
-            _mockObserverRegistry.Setup(m => m.GetObservers()).Returns(new List<IObserver>
+            _mockObserver1 = new Mock<IProjection>();
+            _mockObserver2 = new Mock<IProjection>();
+            _mockObserverRegistry = new Mock<IProjectionRegistry>();
+            _mockObserverRegistry.Setup(m => m.GetObservers()).Returns(new List<IProjection>
             {
                 _mockObserver1.Object,
                 _mockObserver2.Object
@@ -33,7 +33,7 @@ namespace UnitTests.Infrastructure.Tests.Messaging
         public void Constructor_ShouldGetObserversFromTheRegistry()
         {
             // ARRANGE
-            var mockObserverRegistry = new Mock<IObserverRegistry>();
+            var mockObserverRegistry = new Mock<IProjectionRegistry>();
 
             // ACT
             // ReSharper disable once ObjectCreationAsStatement

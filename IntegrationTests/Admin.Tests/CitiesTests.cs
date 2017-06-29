@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using IntegrationTests.Utilities;
+using IntegrationTests.Utilities.Helpers;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 

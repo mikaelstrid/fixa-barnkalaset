@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using IntegrationTests.Utilities;
 using IntegrationTests.Utilities.Helpers;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
@@ -22,7 +23,7 @@ namespace IntegrationTests.Admin.Tests
             _fixture = fixture;
             _client = fixture.Client;
         }
-        
+
         [Fact]
         public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
         {
@@ -54,7 +55,7 @@ namespace IntegrationTests.Admin.Tests
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _fixture.EventSourcingDbContext.Events.Count().Should().Be(1);
+            _fixture.MyEventSourcingDbContext.Events.Count().Should().Be(1);
         }
 
         private async Task<string> LoginAndGetIdentityToken(string email, string password)

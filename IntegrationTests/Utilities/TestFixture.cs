@@ -2,25 +2,17 @@
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
-using Moq;
-using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 
-namespace IntegrationTests.Admin.Tests
+namespace IntegrationTests.Utilities
 {
     public sealed class TestFixture<TStartup> : IDisposable
     {
@@ -61,7 +53,9 @@ namespace IntegrationTests.Admin.Tests
 
         public HttpClient Client { get; }
 
-        public MyEventSourcingDbContext EventSourcingDbContext { get; private set; }
+        public MyDataDbContext MyDataDbContext { get; private set; }
+
+        public MyEventSourcingDbContext MyEventSourcingDbContext { get; private set; }
 
 
         // === CONFIG METHODS ===
@@ -69,8 +63,7 @@ namespace IntegrationTests.Admin.Tests
         private void ConfigureServices(IServiceCollection services)
         {
             ConfigureServicesApplicationPartManager(services);
-            ConfigureServicesUserManagement(services);
-            EventSourcingDbContext = ConfigureServicesDatabase(services);
+            ConfigureServicesDatabase(services);
         }
 
         private static void ConfigureServicesApplicationPartManager(IServiceCollection services)
@@ -84,37 +77,28 @@ namespace IntegrationTests.Admin.Tests
             services.AddSingleton(manager);
         }
 
-        private static void ConfigureServicesUserManagement(IServiceCollection services)
-        {
-            //services.AddTransient<SignInManager<ApplicationUser>, FakeSignInManager>();
-            //services.AddTransient<UserManager<ApplicationUser>, FakeUserManager>();
-        }
-
-        private static MyEventSourcingDbContext ConfigureServicesDatabase(IServiceCollection services)
+        private void ConfigureServicesDatabase(IServiceCollection services)
         {
             // https://stormpath.com/blog/tutorial-entity-framework-core-in-memory-database-asp-net-core
             // http://gunnarpeipman.com/2017/04/aspnet-core-ef-inmemory/
             //var httpContextAccessor = new Mock<IHttpContextAccessor>();
-            var myDataDbContext = new MyDataDbContext(
+            MyDataDbContext = new MyDataDbContext(
                 new DbContextOptionsBuilder<MyDataDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options);
-            myDataDbContext.Cities.Add(new City {Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0});
-            myDataDbContext.SaveChanges();
-            services.AddSingleton(myDataDbContext);
-
+            services.AddSingleton(MyDataDbContext);
+            
             var myIdentityDataDbContext = new MyIdentityDbContext(
                 new DbContextOptionsBuilder<MyIdentityDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options);
             services.AddSingleton(myIdentityDataDbContext);
 
-            var myEventSourcingDbContext = new MyEventSourcingDbContext(
+            MyEventSourcingDbContext = new MyEventSourcingDbContext(
                 new DbContextOptionsBuilder<MyEventSourcingDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options);
-            services.AddSingleton(myEventSourcingDbContext);
-            return myEventSourcingDbContext;
+            services.AddSingleton(MyEventSourcingDbContext);
         }
 
         private static string GetProjectPath(string solutionRelativePath, Assembly startupAssembly)
@@ -142,46 +126,5 @@ namespace IntegrationTests.Admin.Tests
 
             throw new Exception($"Solution root could not be located using application root {applicationBasePath}.");
         }
-
-
-        private static Mock<FakeUserManager> CreateMockFakeUserManager()
-        {
-            var mockUserManager = new Mock<FakeUserManager>();
-            //mockUserManager
-            //    .Setup(m => m.GetUsersInRoleAsync(Roles.Admin))
-            //    .Returns(Task.FromResult(existingAdmins));
-            return mockUserManager;
-        }
-    }
-
-
-    // ReSharper disable once ClassNeverInstantiated.Global
-    public class FakeSignInManager : SignInManager<ApplicationUser>
-    {
-        public FakeSignInManager()
-            : base(new Mock<FakeUserManager>().Object,
-                new Mock<IHttpContextAccessor>().Object,
-                new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<ILogger<SignInManager<ApplicationUser>>>().Object
-            )
-        {}
-    }
-
-    // ReSharper disable once ClassNeverInstantiated.Global
-    public class FakeUserManager : UserManager<ApplicationUser>
-    {
-        public FakeUserManager()
-                    : base(
-                          new Mock<IUserRoleStore<ApplicationUser>>().Object,
-                          new Mock<IOptions<IdentityOptions>>().Object,
-                          new Mock<IPasswordHasher<ApplicationUser>>().Object,
-                          new IUserValidator<ApplicationUser>[0],
-                          new IPasswordValidator<ApplicationUser>[0],
-                          new Mock<ILookupNormalizer>().Object,
-                          new Mock<IdentityErrorDescriber>().Object,
-                          new Mock<IServiceProvider>().Object,
-                          new Mock<ILogger<UserManager<ApplicationUser>>>().Object)
-        { }
     }
 }

@@ -2,8 +2,8 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp1.1</TargetFramework>    
-    <AssemblyName>IntegrationTests.Admin.Tests</AssemblyName>    
-    <RootNamespace>IntegrationTests.Admin.Tests</RootNamespace>
+    <AssemblyName>IntegrationTests.Public.Tests</AssemblyName>    
+    <RootNamespace>IntegrationTests.Public.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,7 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Web\Web.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
 </Project>

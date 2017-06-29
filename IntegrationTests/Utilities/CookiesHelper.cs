@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using Microsoft.Net.Http.Headers;
 
-namespace IntegrationTests.Admin.Tests.Utilities
+namespace IntegrationTests.Utilities
 {
     // http://www.stefanhendriks.com/2016/05/11/integration-testing-your-asp-net-core-app-dealing-with-anti-request-forgery-csrf-formdata-and-cookies/
     public class CookiesHelper

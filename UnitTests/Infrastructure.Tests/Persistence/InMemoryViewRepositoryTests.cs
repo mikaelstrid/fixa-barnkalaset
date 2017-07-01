@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Pixel.FixaBarnkalaset.ReadModel;
@@ -10,25 +9,31 @@ namespace UnitTests.Infrastructure.Tests.Persistence
     public class InMemoryViewRepositoryTests
     {
         [Fact]
-        public void Get_GivenNoViews_ShouldThrowException()
+        public void Get_GivenNoViews_ShouldReturnNull()
         {
             // ARRANGE
             var sut = new InMemoryViewRepository();
 
-            // ACT && ASSERT
-            Assert.Throws<KeyNotFoundException>(() => sut.Get<TestView>(Guid.NewGuid()));
+            // ACT
+            var result = sut.Get<TestView>(Guid.NewGuid());
+
+            // ASSERT
+            result.Should().BeNull();
         }
 
         [Fact]
-        public void Get_GivenOneOtherView_ShouldThrowException()
+        public void Get_GivenOneOtherView_ShouldReturnNull()
         {
             // ARRANGE
             var sut = new InMemoryViewRepository();
             var otherView = new TestView();
             sut.Add(otherView);
 
-            // ACT && ASSERT
-            Assert.Throws<KeyNotFoundException>(() => sut.Get<TestView>(Guid.NewGuid()));
+            // ACT
+            var result = sut.Get<TestView>(Guid.NewGuid());
+
+            // ASSERT
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -54,8 +59,11 @@ namespace UnitTests.Infrastructure.Tests.Persistence
             var otherView = new OtherTestView();
             sut.Add(otherView);
 
-            // ACT && ASSERT
-            Assert.Throws<KeyNotFoundException>(() => sut.Get<TestView>(otherView.Id));
+            // ACT
+            var result = sut.Get<TestView>(otherView.Id);
+
+            // ASSERT
+            result.Should().BeNull();
         }
 
 

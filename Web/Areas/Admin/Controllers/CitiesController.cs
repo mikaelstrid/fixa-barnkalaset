@@ -3,9 +3,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Domain.Commands;
+using Pixel.FixaBarnkalaset.ReadModel;
+using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 
 namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
@@ -16,17 +19,26 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
     public class CitiesController : Controller
     {
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
         private readonly ICityRepository _cityRepository;
         private readonly ICityService _cityService;
+        private readonly ISlugDictionary _slugDictionary;
+        private readonly IViewRepository _viewRepository;
 
         public CitiesController(
             IMapper mapper,
+            ILogger<CitiesController> logger,
             ICityRepository cityRepository,
-            ICityService cityService)
+            ICityService cityService,
+            ISlugDictionary slugDictionary,
+            IViewRepository viewRepository)
         {
             _mapper = mapper;
+            _logger = logger;
             _cityRepository = cityRepository;
             _cityService = cityService;
+            _slugDictionary = slugDictionary;
+            _viewRepository = viewRepository;
         }
 
         [Route("")]
@@ -55,10 +67,25 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             return View();
         }
 
-        [Route("{citySlug}/andra")]
-        public IActionResult Edit(string citySlug)
+
+        [Route("{slug}/andra")]
+        public IActionResult Edit(string slug)
         {
-            var model = _mapper.Map<City, CreateOrEditCityViewModel>(_cityRepository.GetBySlug(citySlug));
+            var id = _slugDictionary.GetId(slug);
+            if (!id.HasValue)
+            {
+                _logger.LogWarning("Edit: No city with slug {Slug} found", slug);
+                return NotFound();
+            }
+
+            var view = _viewRepository.Get<CityView>(id.Value);
+            if (view == null)
+            {
+                _logger.LogError("Edit: No city view with id {id} found", id);
+                return NotFound();
+            }
+
+            var model = _mapper.Map<CityView, CreateOrEditCityViewModel>(view);
             return View(model);
         }
 

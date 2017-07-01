@@ -22,7 +22,11 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 
         public T Get<T>(Guid id) where T : class, IView
         {
-            return _cache[CreateCacheKey(typeof(T), id)] as T;
+            var key = CreateCacheKey(typeof(T), id);
+            if (_cache.ContainsKey(key))
+                return _cache[key] as T;
+            else
+                return null;
         }
 
         public void Add<T>(T view) where T : class, IView

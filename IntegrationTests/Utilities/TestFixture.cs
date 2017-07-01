@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
+using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace IntegrationTests.Utilities
 {
@@ -57,6 +59,8 @@ namespace IntegrationTests.Utilities
 
         public MyEventSourcingDbContext MyEventSourcingDbContext { get; private set; }
 
+        public IViewRepository ViewRepository { get; set; }
+
 
         // === CONFIG METHODS ===
 
@@ -64,6 +68,9 @@ namespace IntegrationTests.Utilities
         {
             ConfigureServicesApplicationPartManager(services);
             ConfigureServicesDatabase(services);
+
+            ViewRepository = new InMemoryViewRepository();
+            services.AddSingleton(ViewRepository);
         }
 
         private static void ConfigureServicesApplicationPartManager(IServiceCollection services)

@@ -7,8 +7,6 @@ namespace Pixel.FixaBarnkalaset.ReadModel
 {
     public class CityListProjection : IProjection
     {
-        private readonly Guid _id = Guid.Parse("7DD8538F-3BBE-4A8C-8E65-D6ECA114938F");
-
         private readonly IViewRepository _writer;
 
         public CityListProjection(IViewRepository writer)
@@ -24,18 +22,16 @@ namespace Pixel.FixaBarnkalaset.ReadModel
                 Slug = e.Slug
             };
 
-            if (!_writer.Contains<CityListView>(_id))
+            if (!_writer.Contains<CityListView>(CityListView.ListViewId))
             {
-                var view = new CityListView {Cities = new List<CityListView.City> {city}};
-                _writer.Add(view);
+                _writer.Add(new CityListView {Cities = new List<CityListView.City> {city}});
             }
             else
             {
-                _writer.Update<CityListView>(_id, v => v.Cities.Add(city));
+                _writer.Update<CityListView>(CityListView.ListViewId, v => v.Cities.Add(city));
             }
         }
-
-
+        
         public void Handle(IEvent e)
         {
             switch (e)

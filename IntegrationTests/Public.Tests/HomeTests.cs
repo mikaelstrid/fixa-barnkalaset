@@ -1,9 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IntegrationTests.Utilities;
-using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Web;
+using Pixel.FixaBarnkalaset.ReadModel;
 using Xunit;
 
 namespace IntegrationTests.Public.Tests
@@ -24,8 +26,11 @@ namespace IntegrationTests.Public.Tests
         public async Task Index_ShouldContainHalmstad()
         {
             // ARRANGE
-            _fixture.MyDataDbContext.Cities.Add(new City { Name = "Halmstad", Slug = "halmstad", Latitude = 10.0, Longitude = 11.0 });
-            _fixture.MyDataDbContext.SaveChanges();
+            _fixture.ViewRepository.Add(new CityListView
+            {
+                Id = CityListView.ListViewId,
+                Cities = new List<CityListView.City> { new CityListView.City { Name = "Halmstad", Slug = "halmstad" }}
+            });
 
             // ACT
             var response = await _client.GetAsync("/");

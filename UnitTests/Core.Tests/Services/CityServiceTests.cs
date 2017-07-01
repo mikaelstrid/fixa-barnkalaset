@@ -26,7 +26,7 @@ namespace UnitTests.Core.Tests.Services
         }
 
         [Fact]
-        public async Task WhenCreateCity_ShouldCallCreateOnTheAggregate()
+        public async Task WhenCreateCity_ShouldCallCreate_AndSave()
         {
             // ARRANGE
             var name = "Halmstad";
@@ -40,18 +40,55 @@ namespace UnitTests.Core.Tests.Services
 
             // ASSERT
             _mockCityAggregate.Verify(m => m.Create(It.IsAny<Guid>(), name, slug, latitude, longitude));
+            _mockRepository.Verify(m => m.Save(_mockCityAggregate.Object));
         }
 
         [Fact]
-        public async Task WhenCreateCity_ShouldCallSaveOnTheRepository()
+        public async Task WhenChangeCityName_ShouldCallChangeName_AndSave()
         {
             // ARRANGE
-            var cmd = new CreateCity("Halmstad", "halmstad", 10.12, 58.12);
+            var id = Guid.Parse("68AB830F-BD2C-4520-8D2B-F0A83D6302B7");
+            var newName = "Halmstad";
+            var cmd = new ChangeCityName(id, newName);
 
             // ACT
-            var result = await _sut.When(cmd);
+            await _sut.When(cmd);
 
             // ASSERT
+            _mockCityAggregate.Verify(m => m.ChangeName(newName));
+            _mockRepository.Verify(m => m.Save(_mockCityAggregate.Object));
+        }
+
+        [Fact]
+        public async Task WhenChangeSlug_ShouldCallChangeSlug_AndSave()
+        {
+            // ARRANGE
+            var id = Guid.Parse("B38F5D17-E117-4302-A349-93B9E1E7199D");
+            var newSlug = "halmstad";
+            var cmd = new ChangeCitySlug(id, newSlug);
+
+            // ACT
+            await _sut.When(cmd);
+
+            // ASSERT
+            _mockCityAggregate.Verify(m => m.ChangeSlug(newSlug));
+            _mockRepository.Verify(m => m.Save(_mockCityAggregate.Object));
+        }
+
+        [Fact]
+        public async Task WhenChangePosition_ShouldCallChangePosition_AndSave()
+        {
+            // ARRANGE
+            var id = Guid.Parse("30094051-F715-4B4A-9374-3778CB48D2DE");
+            var latitude = 10.1;
+            var longitude = 78.1;
+            var cmd = new ChangeCityPosition(id, latitude, longitude);
+
+            // ACT
+            await _sut.When(cmd);
+
+            // ASSERT
+            _mockCityAggregate.Verify(m => m.ChangePosition(latitude, longitude));
             _mockRepository.Verify(m => m.Save(_mockCityAggregate.Object));
         }
     }

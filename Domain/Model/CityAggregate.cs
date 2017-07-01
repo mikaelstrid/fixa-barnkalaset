@@ -48,5 +48,21 @@ namespace Pixel.FixaBarnkalaset.Domain.Model
         {
             _id = e.Id;
         }
+
+
+        public virtual void ChangeName(string newName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void ChangeSlug(string newSlug)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void ChangePosition(double latitude, double longitude)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -22,26 +22,26 @@ namespace Pixel.FixaBarnkalaset.Core.Services
             return id;
         }
 
+        public async Task When(ChangeCityName cmd)
+        {
+            await Act<CityAggregate>(cmd.CityId, aggregate => aggregate.ChangeName(cmd.NewName));
+        }
+
+        public async Task When(ChangeCitySlug cmd)
+        {
+            await Act<CityAggregate>(cmd.CityId, aggregate => aggregate.ChangeSlug(cmd.NewSlug));
+        }
+
+        public async Task When(ChangeCityPosition cmd)
+        {
+            await Act<CityAggregate>(cmd.CityId, aggregate => aggregate.ChangePosition(cmd.Latitude, cmd.Longitude));
+        }
+
         private async Task Act<T>(Guid id, Action<T> action) where T : class, IAggregate
         {
             var aggregate = await _aggregateRepository.GetById<T>(id);
             action(aggregate);
             await _aggregateRepository.Save(aggregate);
-        }
-
-        public void When(ChangeCityName cmd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void When(ChangeCitySlug cmd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void When(ChangeCityPosition changeCityPosition)
-        {
-            throw new NotImplementedException();
         }
     }
 }

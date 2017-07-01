@@ -112,13 +112,13 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 return View(city);
 
             if (view.Name != city.Name)
-                _cityService.When(new ChangeCityName(city.Name));
+                _cityService.When(new ChangeCityName(id.Value, city.Name));
 
             if (view.Slug != city.Slug)
-                _cityService.When(new ChangeCitySlug(city.Slug));
+                _cityService.When(new ChangeCitySlug(id.Value, city.Slug));
 
             if (view.Latitude != city.Latitude || view.Longitude != city.Longitude)
-                _cityService.When(new ChangeCityPosition(city.Latitude, city.Longitude));
+                _cityService.When(new ChangeCityPosition(id.Value, city.Latitude, city.Longitude));
 
             return RedirectToAction("Index");
         }

@@ -10,11 +10,28 @@ namespace UnitTests.Domain.Tests
 {
     public class CityAggregateTests
     {
-        private readonly CityAggregate _sut;
+        private readonly CityAggregate _emptySut;
+        private readonly CityAggregate _createdSut;
+
+        private readonly Guid _createdSutId;
+        private readonly string _createdSutName;
+        private readonly string _createdSutSlug;
+        private readonly double _createdSutLatitude;
+        private readonly double _createdSutLongitude;
 
         public CityAggregateTests()
         {
-            _sut = new CityAggregate(new IEvent[0]);
+            _emptySut = CreateSut(new IEvent[0]);
+            _createdSutId = Guid.Parse("E31C6D38-1B34-49F9-A6AC-6F5477D480E5");
+            _createdSutName = "Varberg";
+            _createdSutSlug = "varberg";
+            _createdSutLatitude = 16.5;
+            _createdSutLongitude = -165.6;
+            _createdSut =
+                CreateSut(new List<IEvent>
+                {
+                    new CityCreated(_createdSutId, _createdSutName, _createdSutSlug, _createdSutLatitude, _createdSutLongitude)
+                });
         }
 
         [Fact]
@@ -45,10 +62,10 @@ namespace UnitTests.Domain.Tests
             var longitude = 12.2;
 
             // ACT
-            _sut.Create(id, name, slug, latitude, longitude);
+            _emptySut.Create(id, name, slug, latitude, longitude);
 
             // ASSERT
-            var uncommittedEvents = _sut.GetUncommittedEvents();
+            var uncommittedEvents = _emptySut.GetUncommittedEvents();
             Assert.Equal(1, uncommittedEvents.Count());
             Assert.IsType<CityCreated>(uncommittedEvents.First());
             uncommittedEvents.First().As<CityCreated>().ShouldBeEquivalentTo(new CityCreated(id, name, slug, latitude, longitude));
@@ -63,10 +80,10 @@ namespace UnitTests.Domain.Tests
             var slug = "halmstad";
             var latitude = 10.1;
             var longitude = 12.2;
-            _sut.Create(id, name, slug, latitude, longitude);
+            _emptySut.Create(id, name, slug, latitude, longitude);
 
             // ACT
-            Assert.Throws<InvalidOperationException>(() => _sut.Create(id, name, slug, latitude, longitude));
+            Assert.Throws<InvalidOperationException>(() => _emptySut.Create(id, name, slug, latitude, longitude));
 
             // ASSERT
         }
@@ -80,7 +97,7 @@ namespace UnitTests.Domain.Tests
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(id, "Halmstad", "halmstad", 10.1, 12.1));
+            Assert.Throws<ArgumentException>(() => _emptySut.Create(id, "Halmstad", "halmstad", 10.1, 12.1));
         }
 
         [Theory]
@@ -94,7 +111,7 @@ namespace UnitTests.Domain.Tests
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), name, "halmstad", 10.1, 12.1));
+            Assert.Throws<ArgumentException>(() => _emptySut.Create(Guid.NewGuid(), name, "halmstad", 10.1, 12.1));
         }
 
         [Theory]
@@ -113,56 +130,155 @@ namespace UnitTests.Domain.Tests
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", slug, 10.1, 12.1));
+            Assert.Throws<ArgumentException>(() => _emptySut.Create(Guid.NewGuid(), "Halmstad", slug, 10.1, 12.1));
         }
 
-        [Fact]
-        public void Create_GivenTooSmallLatitude_ShouldThrowArgumentException()
+        [Theory]
+        [InlineData(-90.001)]
+        [InlineData(90.001)]
+        public void Create_GivenInvalidLatitude_ShouldThrowArgumentException(double latitude)
         {
             // ARRANGE
-            var latitude = -90.001;
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
+            Assert.Throws<ArgumentException>(() => _emptySut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
         }
 
-        [Fact]
-        public void Create_GivenTooLargeLatitude_ShouldThrowArgumentException()
+        [Theory]
+        [InlineData(-180.001)]
+        [InlineData(180.001)]
+        public void Create_GivenInvalidLongitude_ShouldThrowArgumentException(double longitude)
         {
             // ARRANGE
-            var latitude = 90.001;
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", latitude, 12.1));
+            Assert.Throws<ArgumentException>(() => _emptySut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
         }
 
+
         [Fact]
-        public void Create_GivenTooSmallLongitude_ShouldThrowArgumentException()
+        public void ChangeName_GivenCorrectInput_ShouldCreateEventCityNameChanged()
         {
             // ARRANGE
-            var longitude = -180.001;
+            var newName = "Halmstad II";
+
+            // ACT
+            _createdSut.ChangeName(newName);
+
+            // ASSERT
+            var uncommittedEvents = _createdSut.GetUncommittedEvents();
+            Assert.Equal(1, uncommittedEvents.Count());
+            Assert.IsType<CityNameChanged>(uncommittedEvents.First());
+            uncommittedEvents.First().As<CityNameChanged>().ShouldBeEquivalentTo(new CityNameChanged(_createdSutId, newName, _createdSutName));
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void ChangeName_GivenInvalidName_ShouldThrowArgumentException(string newName)
+        {
+            // ARRANGE
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
+            Assert.Throws<ArgumentException>(() => _createdSut.ChangeName(newName));
         }
 
+
         [Fact]
-        public void Create_GivenTooLargeLongitude_ShouldThrowArgumentException()
+        public void ChangeSlug_GivenCorrectInput_ShouldCreateEventCitySlugChanged()
         {
             // ARRANGE
-            var longitude = 180.001;
+            var newSlug = "halmstad-ii";
+
+            // ACT
+            _createdSut.ChangeSlug(newSlug);
+
+            // ASSERT
+            var uncommittedEvents = _createdSut.GetUncommittedEvents();
+            Assert.Equal(1, uncommittedEvents.Count());
+            Assert.IsType<CitySlugChanged>(uncommittedEvents.First());
+            uncommittedEvents.First().As<CitySlugChanged>().ShouldBeEquivalentTo(new CitySlugChanged(_createdSutId, newSlug, _createdSutSlug));
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        [InlineData("a b")]
+        [InlineData("borås")]
+        [InlineData("test?")]
+        [InlineData("Boras")]
+        [InlineData("   ")]
+        public void ChangeSlug_GivenInvalidSlug_ShouldThrowArgumentException(string newSlug)
+        {
+            // ARRANGE
 
             // ACT
 
             // ASSERT
-            Assert.Throws<ArgumentException>(() => _sut.Create(Guid.NewGuid(), "Halmstad", "halmstad", 58.1, longitude));
+            Assert.Throws<ArgumentException>(() => _createdSut.ChangeSlug(newSlug));
         }
 
+
+
+        [Fact]
+        public void ChangePosition_GivenCorrectInput_ShouldCreateEventCityPositionChanged()
+        {
+            // ARRANGE
+            var newLatitude = 18.89;
+            var newLongitude = 89.12;
+
+            // ACT
+            _createdSut.ChangePosition(newLatitude, newLongitude);
+
+            // ASSERT
+            var uncommittedEvents = _createdSut.GetUncommittedEvents();
+            Assert.Equal(1, uncommittedEvents.Count());
+            Assert.IsType<CityPositionChanged>(uncommittedEvents.First());
+            uncommittedEvents.First().As<CityPositionChanged>().ShouldBeEquivalentTo(new CityPositionChanged(_createdSutId, newLatitude, newLongitude, _createdSutLatitude, _createdSutLongitude));
+        }
+
+        [Theory]
+        [InlineData(-90.001)]
+        [InlineData(90.001)]
+        public void ChangePosition_GivenInvalidLatitude_ShouldThrowArgumentException(double latitude)
+        {
+            // ARRANGE
+
+            // ACT
+
+            // ASSERT
+            Assert.Throws<ArgumentException>(() => _createdSut.ChangePosition(latitude, 58.1));
+        }
+
+
+
+
+        [Theory]
+        [InlineData(-180.001)]
+        [InlineData(180.001)]
+        public void ChangePosition_GivenInvalidLongitude_ShouldThrowArgumentException(double longitude)
+        {
+            // ARRANGE
+
+            // ACT
+
+            // ASSERT
+            Assert.Throws<ArgumentException>(() => _createdSut.ChangePosition(12.1, longitude));
+        }
+
+
+
+        private static CityAggregate CreateSut(IEnumerable<IEvent> events)
+        {
+            return new CityAggregate(events);
+        }
     }
 }

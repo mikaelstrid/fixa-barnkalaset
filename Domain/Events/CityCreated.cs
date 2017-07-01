@@ -2,11 +2,8 @@
 
 namespace Pixel.FixaBarnkalaset.Domain.Events
 {
-    public class CityCreated : IEvent
+    public class CityCreated : EventBase
     {
-        // ReSharper disable MemberCanBePrivate.Global
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
-        public Guid Id { get; }
         public string Name { get; }
         public string Slug { get; }
         public double Latitude { get; }

@@ -74,14 +74,14 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             var id = _slugDictionary.GetId(slug);
             if (!id.HasValue)
             {
-                _logger.LogWarning("Edit: No city with slug {Slug} found", slug);
+                _logger.LogWarning("Edit: No city with slug {Slug} found when getting city", slug);
                 return NotFound();
             }
 
             var view = _viewRepository.Get<CityView>(id.Value);
             if (view == null)
             {
-                _logger.LogError("Edit: No city view with id {id} found", id);
+                _logger.LogError("Edit: No city view with id {id} found when getting city", id);
                 return NotFound();
             }
 
@@ -91,10 +91,22 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("{citySlug}/andra")]
-        public IActionResult Edit(string citySlug, [Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
+        [Route("{slug}/andra")]
+        public IActionResult Edit(string slug, [Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
         {
-            if (citySlug != city.Slug) return NotFound();
+            var id = _slugDictionary.GetId(slug);
+            if (!id.HasValue)
+            {
+                _logger.LogWarning("Edit: No city with slug {Slug} found when updating city", slug);
+                return NotFound();
+            }
+
+            var view = _viewRepository.Get<CityView>(id.Value);
+            if (view == null)
+            {
+                _logger.LogError("Edit: No city view with id {id} found when updating city", id);
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {

@@ -80,21 +80,17 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Create_Post_GivenValidModel_ShouldCallService()
+        public async Task Create_Post_GivenValidModel_ShouldCallService()
         {
             // ARRANGE
-            var model = new CreateOrEditCityViewModel
-            {
-                Name = "Halmstad",
-                Slug = "halmstad",
-                Latitude = 10.1,
-                Longitude = 58.7
-            };
+            var model = CreateHalmstadCreateOrEditCityViewModel();
             CreateCity createdCommand = null;
-            _mockCityService.Setup(m => m.When(It.IsAny<CreateCity>())).Callback<CreateCity>(cmd => createdCommand = cmd);
-
+            _mockCityService.Setup(m => m.When(It.IsAny<CreateCity>()))
+                .Callback<CreateCity>(cmd => createdCommand = cmd)
+                .Returns(Task.FromResult(Guid.Parse("635476A4-4999-47C3-AB3D-96D94880F66E")));
+            
             // ACT
-            var result = _sut.Create(model);
+            await _sut.Create(model);
 
             // ASSERT
             _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Once);
@@ -106,8 +102,8 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         public async Task Create_Post_GivenInvalidModel_ShouldOnlyReturnView()
         {
             // ARRANGE
-            var model = new CreateOrEditCityViewModel();
-            _sut.ModelState.AddModelError("key", "error message");
+            var model = CreateHalmstadCreateOrEditCityViewModel();
+            AddModelStateError();
 
             // ACT
             var result = await _sut.Create(model);
@@ -128,17 +124,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = _sut.Edit("unknown_slug");
 
             // ASSERT
-            //_mockLogger.Verify(m => m.LogWarning(It.IsAny<string>()));
-            _mockLogger.Verify(
-                m => m.Log(
-                    LogLevel.Warning,
-                    It.IsAny<EventId>(),
-                    //It.Is<FormattedLogValues>(v => v.ToString().Contains("CreateInvoiceFailed")),
-                    It.IsAny<FormattedLogValues>(),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<object, Exception, string>>()
-                )
-            );
+            VerifyLogging(LogLevel.Warning);
             result.Should().BeOfType<NotFoundResult>();
         }
 
@@ -146,18 +132,145 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         public void Edit_Get_GivenNoCityViewMatchingIdFound_ShouldLogError_AndReturnNotFound()
         {
             // ARRANGE
-            var slug = "unknown_slug";
+            var slug = "halmstad";
             var id = Guid.Parse("3B88F709-C499-4016-AA1F-883A071CE829");
-            _mockSlugDictionary.Setup(m => m.GetId(slug)).Returns(id);
-            _mockViewRepository.Setup(m => m.Get<CityView>(id)).Returns((CityView)null);
+            SetupSlugAndView(slug, id, null);
 
             // ACT
             var result = _sut.Edit(slug);
 
             // ASSERT
+            VerifyLogging(LogLevel.Error);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public void Edit_Get_ShouldGetView_AndReturnItAsModel()
+        {
+            // ARRANGE
+            var view = CreateKungsbackaCityView();
+            SetupSlugAndView(view.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(view.Slug);
+
+            // ASSERT
+            _mockSlugDictionary.Verify(m => m.GetId(view.Slug), Times.Once);
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.ShouldBeEquivalentTo(new CreateOrEditCityViewModel
+            {
+                Name = view.Name,
+                Slug = view.Slug,
+                Latitude = view.Latitude,
+                Longitude = view.Longitude
+            });
+        }
+
+
+        [Fact]
+        public void Edit_Post_GivenNoCityMatchingSlug_ShouldLogWarning_AndReturnNotFound()
+        {
+            // ARRANGE
+
+            // ACT
+            var result = _sut.Edit("unknown_slug", CreateHalmstadCreateOrEditCityViewModel());
+
+            // ASSERT
+            VerifyLogging(LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenNoCityViewMatchingIdFound_ShouldLogError_AndReturnNotFound()
+        {
+            // ARRANGE
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var id = Guid.Parse("3B88F709-C499-4016-AA1F-883A071CE829");
+            SetupSlugAndView(viewModel.Slug, id, null);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            VerifyLogging(LogLevel.Error);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenInvalidModel_ShouldOnlyReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var view = CreateHalmstadCityView();
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+            AddModelStateError();
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            //_mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().Be(viewModel);
+        }
+
+
+
+
+        //:TODO: Write "update tests"
+
+        private static CreateOrEditCityViewModel CreateHalmstadCreateOrEditCityViewModel()
+        {
+            return new CreateOrEditCityViewModel
+            {
+                Name = "Halmstad",
+                Slug = "halmstad",
+                Latitude = 10.1,
+                Longitude = 58.7
+            };
+        }
+
+        private static CityView CreateHalmstadCityView()
+        {
+            return new CityView
+            {
+                Id = Guid.Parse("E3E4D12C-2EDF-478E-92B6-5E408A69E961"),
+                Name = "Halmstad",
+                Slug = "halmstad",
+                Latitude = 10.1,
+                Longitude = 58.7
+            };
+        }
+
+        private static CityView CreateKungsbackaCityView()
+        {
+            return new CityView
+            {
+                Id = Guid.Parse("3BCC0ADB-3A44-425F-926C-B2202A23D0C7"),
+                Name = "Kungsbacka",
+                Slug = "kungsbacka",
+                Latitude = 12.8,
+                Longitude = 67.2
+            };
+        }
+
+        private void AddModelStateError()
+        {
+            _sut.ModelState.AddModelError("key", "error message");
+        }
+
+        private void SetupSlugAndView(string slug, Guid id, CityView cityView)
+        {
+            _mockSlugDictionary.Setup(m => m.GetId(slug)).Returns(id);
+            _mockViewRepository.Setup(m => m.Get<CityView>(id)).Returns(cityView);
+        }
+
+        private void VerifyLogging(LogLevel logLevel)
+        {
             _mockLogger.Verify(
                 m => m.Log(
-                    LogLevel.Error,
+                    logLevel,
                     It.IsAny<EventId>(),
                     //It.Is<FormattedLogValues>(v => v.ToString().Contains("CreateInvoiceFailed")),
                     It.IsAny<FormattedLogValues>(),
@@ -165,46 +278,6 @@ namespace UnitTests.Web.Tests.Admin.Controllers
                     It.IsAny<Func<object, Exception, string>>()
                 )
             );
-            result.Should().BeOfType<NotFoundResult>();
         }
-
-
-        [Fact]
-        public void Edit_Get_ShouldGetView_AndReturnItAsModel()
-        {
-            // ARRANGE
-            var id = Guid.Parse("3BCC0ADB-3A44-425F-926C-B2202A23D0C7");
-            var name = "Kungsbacka";
-            var slug = "kungsbacka";
-            var latitude = 12.8;
-            var longitude = 67.2;
-            var view = new CityView
-            {
-                Name = name,
-                Slug = slug,
-                Latitude = latitude,
-                Longitude = longitude
-            };
-            _mockSlugDictionary.Setup(m => m.GetId(view.Slug)).Returns(id);
-            _mockViewRepository.Setup(m => m.Get<CityView>(id)).Returns(view);
-
-            // ACT
-            var result = _sut.Edit(slug);
-
-            // ASSERT
-            _mockSlugDictionary.Verify(m => m.GetId(slug), Times.Once);
-            _mockViewRepository.Verify(m => m.Get<CityView>(id), Times.Once);
-            result.Should().BeOfType<ViewResult>();
-            (result as ViewResult).Model.ShouldBeEquivalentTo(new CreateOrEditCityViewModel
-            {
-                Name = name,
-                Slug = slug,
-                Latitude = latitude,
-                Longitude = longitude
-            });
-        }
-
-
-
     }
 }

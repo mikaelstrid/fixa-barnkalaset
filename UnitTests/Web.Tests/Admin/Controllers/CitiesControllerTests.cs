@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +17,16 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 {
     public class CitiesControllerTests
     {
-        private readonly Mapper _mapper;
         private readonly Mock<ICityRepository> _mockCityRepository;
         private readonly Mock<ICityService> _mockCityService;
         private readonly CitiesController _sut;
 
         public CitiesControllerTests()
         {
-            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
+            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockCityService = new Mock<ICityService>();
             _mockCityRepository = new Mock<ICityRepository>();
-            _sut = new CitiesController(_mapper, _mockCityRepository.Object, _mockCityService.Object);
+            _sut = new CitiesController(mapper, _mockCityRepository.Object, _mockCityService.Object);
         }
 
         [Fact]
@@ -55,7 +55,21 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Create_GivenValidModel_ShouldCallService()
+        public void Create_Get_ShouldOnlyReturnView()
+        {
+            // ARRANGE
+
+            // ACT
+            var result = _sut.Create();
+
+            // ASSERT
+            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().BeNull();
+        }
+        
+        [Fact]
+        public void Create_Post_GivenValidModel_ShouldCallService()
         {
             // ARRANGE
             var model = new CreateOrEditCityViewModel
@@ -75,6 +89,22 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Once);
             Assert.NotNull(createdCommand);
             createdCommand.ShouldBeEquivalentTo(model);
+        }
+
+        [Fact]
+        public async Task Create_Post_GivenInvalidModel_ShouldOnlyReturnView()
+        {
+            // ARRANGE
+            var model = new CreateOrEditCityViewModel();
+            _sut.ModelState.AddModelError("key", "error message");
+
+            // ACT
+            var result = await _sut.Create(model);
+
+            // ASSERT
+            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().BeNull();
         }
     }
 }

@@ -28,5 +28,20 @@ namespace Pixel.FixaBarnkalaset.Core.Services
             action(aggregate);
             await _aggregateRepository.Save(aggregate);
         }
+
+        public void When(ChangeCityName cmd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void When(ChangeCitySlug cmd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void When(ChangeCityPosition changeCityPosition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

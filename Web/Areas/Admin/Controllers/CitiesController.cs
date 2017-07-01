@@ -108,14 +108,19 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                var model = _mapper.Map<CreateOrEditCityViewModel, City>(city);
-                _cityRepository.AddOrUpdate(model);
-                return RedirectToAction("Index");
-            }
+            if (!ModelState.IsValid)
+                return View(city);
 
-            return View(city);
+            if (view.Name != city.Name)
+                _cityService.When(new ChangeCityName(city.Name));
+
+            if (view.Slug != city.Slug)
+                _cityService.When(new ChangeCitySlug(city.Slug));
+
+            if (view.Latitude != city.Latitude || view.Longitude != city.Longitude)
+                _cityService.When(new ChangeCityPosition(city.Latitude, city.Longitude));
+
+            return RedirectToAction("Index");
         }
     }
 }

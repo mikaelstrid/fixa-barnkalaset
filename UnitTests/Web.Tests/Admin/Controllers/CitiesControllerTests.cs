@@ -210,15 +210,155 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
-            //_mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().Be(viewModel);
         }
 
+        [Fact]
+        public void Edit_Post_GivenNoChanges_ShouldNoSendAndCommands()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
 
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
 
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Never);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
 
-        //:TODO: Write "update tests"
+        [Fact]
+        public void Edit_Post_GivenChangedCityName_ShouldSendChangeCityNameCommand()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var changedName = "Halmstad II";
+            viewModel.Name = changedName;
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCitySlug>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityPosition>()), Times.Never);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenChangedCitySlug_ShouldSendChangeCitySlugCommand()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var changedSlug = "Halmstad";
+            viewModel.Slug = changedSlug;
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCitySlug>()), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityPosition>()), Times.Never);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenChangedCityLatitude_ShouldSendChangeCityPositionCommand()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            viewModel.Latitude = 18.7;
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCitySlug>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityPosition>()), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenChangedCityLongitude_ShouldSendChangeCityPositionCommand()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            viewModel.Longitude = 18.7;
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCitySlug>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityPosition>()), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenChangedCityLatitideAndLongitude_ShouldSendChangeCityPositionCommandOnce()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            viewModel.Latitude = 13.7;
+            viewModel.Longitude = 18.7;
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCitySlug>()), Times.Never);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityPosition>()), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public void Edit_Post_GivenChangedCityAllProperties_ShouldSendAllCommandsOnce()
+        {
+            // ARRANGE
+            var view = CreateHalmstadCityView();
+            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            viewModel.Name = "Halmstad II";
+            viewModel.Slug = "Halmstad";
+            viewModel.Latitude = 13.7;
+            viewModel.Longitude = 18.7;
+            SetupSlugAndView(viewModel.Slug, view.Id, view);
+
+            // ACT
+            var result = _sut.Edit(viewModel.Slug, viewModel);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityName>()), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCitySlug>()), Times.Once);
+            _mockCityService.Verify(m => m.When(It.IsAny<ChangeCityPosition>()), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
 
         private static CreateOrEditCityViewModel CreateHalmstadCreateOrEditCityViewModel()
         {

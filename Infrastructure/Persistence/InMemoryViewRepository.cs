@@ -5,7 +5,7 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 {
-    public class InMemoryViewRepository : IViewRepository
+    public class InMemoryViewRepository : IViewRepository, ISlugDictionary
     {
         private readonly Dictionary<string, IView> _cache;
 
@@ -45,5 +45,12 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
         }
 
         private static string CreateCacheKey(Type type, Guid id) => $"{type.Name}-{id}";
+
+
+
+        public Guid? GetId(string slug)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

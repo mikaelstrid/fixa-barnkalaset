@@ -112,6 +112,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IProjectionRegistry, ProjectionRegistry>();
             services.AddSingleton<IEventPublisher, EventPublisher>();
+            services.AddTransient<ISlugDictionary, InMemoryViewRepository>(); //:TODO
 
             if (!env.IsEnvironment("Testing"))
             {
@@ -127,7 +128,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
             ConfigureCulture();
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsEnvironment("Testing"))
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();

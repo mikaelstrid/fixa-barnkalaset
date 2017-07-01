@@ -28,15 +28,11 @@ namespace IntegrationTests.Admin.Tests
         public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
         {
             // ARRANGE
+            var url = "/admin/stader/skapa";
             var identityToken = await LoginAndGetIdentityToken("test@test.com", "B1pdsosp!");
 
-            var getRequest = CookiesHelper.PutCookiesOnRequest(
-                GetRequestHelper.Create("/admin/stader/skapa"),
-                CreateCookiesDictionary(IdentityCookieName, identityToken));
-            var getResponse = await _client.SendAsync(getRequest);
-            getResponse.EnsureSuccessStatusCode();
-            
-            var antiForgeryToken = await AntiForgeryHelper.ExtractAntiForgeryToken(getResponse);
+            var antiforgeryTokenResponse = await RequestAntiForgeryToken(identityToken, url);
+            var antiForgeryToken = await AntiForgeryHelper.ExtractAntiForgeryToken(antiforgeryTokenResponse);
 
             var postRequestBody = new Dictionary<string, string>
             {
@@ -46,9 +42,7 @@ namespace IntegrationTests.Admin.Tests
                 {"Latitude", "19,5"},
                 {"Longitude", "58,7"}
             };
-            var postRequest = CookiesHelper.PutCookiesOnRequest(
-                PostRequestHelper.CreateWithCookiesFromResponse("/admin/stader/skapa", postRequestBody, getResponse),
-                CreateCookiesDictionary(IdentityCookieName, identityToken));
+            var postRequest = CreatePostDataRequest(url, postRequestBody, antiforgeryTokenResponse, identityToken);
             
             // ACT
             var response = await _client.SendAsync(postRequest);
@@ -57,6 +51,10 @@ namespace IntegrationTests.Admin.Tests
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
             _fixture.MyEventSourcingDbContext.Events.Count().Should().Be(1);
         }
+
+
+
+
 
         private async Task<string> LoginAndGetIdentityToken(string email, string password)
         {
@@ -70,6 +68,23 @@ namespace IntegrationTests.Admin.Tests
             var loginReponse = await _client.SendAsync(loginRequestMessage);
             var identityToken = CookiesHelper.ExtractCookiesFromResponse(loginReponse)[IdentityCookieName];
             return identityToken;
+        }
+
+        private async Task<HttpResponseMessage> RequestAntiForgeryToken(string identityToken, string url)
+        {
+            var getRequest = CookiesHelper.PutCookiesOnRequest(
+                GetRequestHelper.Create(url),
+                CreateCookiesDictionary(IdentityCookieName, identityToken));
+            var getResponse = await _client.SendAsync(getRequest);
+            getResponse.EnsureSuccessStatusCode();
+            return getResponse;
+        }
+
+        private static HttpRequestMessage CreatePostDataRequest(string url, Dictionary<string, string> postRequestBody, HttpResponseMessage antiforgeryTokenResponse, string identityToken)
+        {
+            return CookiesHelper.PutCookiesOnRequest(
+                PostRequestHelper.CreateWithCookiesFromResponse(url, postRequestBody, antiforgeryTokenResponse),
+                CreateCookiesDictionary(IdentityCookieName, identityToken));
         }
 
         private static Dictionary<string, string> CreateCookiesDictionary(string cookieName, string cookieValue)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Pixel.FixaBarnkalaset.Domain.Commands;
 using Pixel.FixaBarnkalaset.ReadModel;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
+using Newtonsoft.Json;
 
 namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 {
@@ -44,6 +46,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [Route("")]
         public IActionResult Index()
         {
+            _logger.LogDebug("Index: Called");
             var model = _mapper.Map<IEnumerable<City>, IEnumerable<IndexCityViewModel>>(_cityRepository.GetAll());
             return View(model);
         }
@@ -51,6 +54,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [Route("skapa")]
         public IActionResult Create()
         {
+            _logger.LogDebug("Create GET: Called");
             return View();
         }
 
@@ -59,11 +63,15 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [Route("skapa")]
         public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
         {
+            _logger.LogDebug("Create POST: called");
             if (ModelState.IsValid)
             {
-                await _cityService.When(new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude));
+                var cmd = new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude);
+                var id = await _cityService.When(cmd);
+                _logger.LogInformation("Create POST: Created city with id {Id} using the following command {Command}", id, JsonConvert.SerializeObject(cmd));
                 return RedirectToAction("Index");
             }
+            _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
             return View();
         }
 
@@ -71,54 +79,73 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [Route("{slug}/andra")]
         public IActionResult Edit(string slug)
         {
+            _logger.LogDebug("Edit GET: Edit called with slug {Slug}", slug);
             var id = _slugDictionary.GetId(slug);
             if (!id.HasValue)
             {
-                _logger.LogWarning("Edit: No city with slug {Slug} found when getting city", slug);
+                _logger.LogWarning("Edit GET: No city with slug {Slug} found when getting city", slug);
                 return NotFound();
             }
 
             var view = _viewRepository.Get<CityView>(id.Value);
             if (view == null)
             {
-                _logger.LogError("Edit: No city view with id {id} found when getting city", id);
+                _logger.LogError("Edit GET: No city view with id {id} found when getting city", id);
                 return NotFound();
             }
 
             var model = _mapper.Map<CityView, CreateOrEditCityViewModel>(view);
+            _logger.LogDebug("Edit GET: Returned model {Model}", JsonConvert.SerializeObject(model));
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{slug}/andra")]
-        public IActionResult Edit(string slug, [Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
+        public IActionResult Edit(string slug, [Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel model)
         {
+            _logger.LogDebug("Edit POST: Edit called with slug {Slug} and model {Model}", slug, JsonConvert.SerializeObject(model));
+
             var id = _slugDictionary.GetId(slug);
             if (!id.HasValue)
             {
-                _logger.LogWarning("Edit: No city with slug {Slug} found when updating city", slug);
+                _logger.LogWarning("Edit POST: No city with slug {Slug} found when updating city", slug);
                 return NotFound();
             }
 
             var view = _viewRepository.Get<CityView>(id.Value);
             if (view == null)
             {
-                _logger.LogError("Edit: No city view with id {id} found when updating city", id);
+                _logger.LogError("Edit POST: No city view with id {id} found when updating city with slug {Slug}", id, slug);
                 return NotFound();
             }
 
             if (!ModelState.IsValid)
-                return View(city);
+            {
+                _logger.LogWarning("Edit POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
+                return View(model);
+            }
 
-            if (view.Name != city.Name)
-                _cityService.When(new ChangeCityName(id.Value, city.Name));
+            if (view.Name != model.Name)
+            {
+                var cmd = new ChangeCityName(id.Value, model.Name);
+                _logger.LogInformation("Edit POST: Edited name of city with slug {Slug} and id {Id} using the following command {Command}", slug, id, JsonConvert.SerializeObject(cmd));
+                _cityService.When(cmd);
+            }
 
-            if (view.Slug != city.Slug)
-                _cityService.When(new ChangeCitySlug(id.Value, city.Slug));
+            if (view.Slug != model.Slug)
+            {
+                var cmd = new ChangeCitySlug(id.Value, model.Slug);
+                _logger.LogInformation("Edit POST: Edited slug of city with slug {Slug} and id {Id} using the following command {Command}", slug, id, JsonConvert.SerializeObject(cmd));
+                _cityService.When(cmd);
+            }
 
-            if (view.Latitude != city.Latitude || view.Longitude != city.Longitude)
-                _cityService.When(new ChangeCityPosition(id.Value, city.Latitude, city.Longitude));
+            if (view.Latitude != model.Latitude || view.Longitude != model.Longitude)
+            {
+                var cmd = new ChangeCityPosition(id.Value, model.Latitude, model.Longitude);
+                _logger.LogInformation("Edit POST: Edited position of city with slug {Slug} and id {Id} using the following command {Command}", slug, id, JsonConvert.SerializeObject(cmd));
+                _cityService.When(cmd);
+            }
 
             return RedirectToAction("Index");
         }

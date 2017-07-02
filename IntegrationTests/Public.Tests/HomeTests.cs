@@ -26,7 +26,7 @@ namespace IntegrationTests.Public.Tests
         public async Task Index_ShouldContainHalmstad()
         {
             // ARRANGE
-            _fixture.ViewRepository.Add(new CityListView
+            _fixture.InMemoryViewRepository.Add(new CityListView
             {
                 Id = CityListView.ListViewId,
                 Cities = new List<CityListView.City> { new CityListView.City { Name = "Halmstad", Slug = "halmstad" }}

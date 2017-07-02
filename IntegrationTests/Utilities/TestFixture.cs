@@ -59,7 +59,7 @@ namespace IntegrationTests.Utilities
 
         public MyEventSourcingDbContext MyEventSourcingDbContext { get; private set; }
 
-        public IViewRepository ViewRepository { get; set; }
+        public InMemoryViewRepository InMemoryViewRepository { get; set; }
 
 
         // === CONFIG METHODS ===
@@ -69,8 +69,9 @@ namespace IntegrationTests.Utilities
             ConfigureServicesApplicationPartManager(services);
             ConfigureServicesDatabase(services);
 
-            ViewRepository = new InMemoryViewRepository();
-            services.AddSingleton(ViewRepository);
+            InMemoryViewRepository = new InMemoryViewRepository();
+            services.AddSingleton<IViewRepository>(InMemoryViewRepository);
+            services.AddSingleton<ISlugDictionary>(InMemoryViewRepository);
         }
 
         private static void ConfigureServicesApplicationPartManager(IServiceCollection services)

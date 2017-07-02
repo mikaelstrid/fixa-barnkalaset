@@ -5,11 +5,11 @@ namespace Pixel.FixaBarnkalaset.ReadModel
 {
     public class CityProjection : IProjection
     {
-        private readonly IViewRepository _writer;
+        private readonly IViewRepository _viewRepository;
 
-        public CityProjection(IViewRepository writer)
+        public CityProjection(IViewRepository viewRepository)
         {
-            _writer = writer;
+            _viewRepository = viewRepository;
         }
 
         public void When(CityCreated e)
@@ -22,7 +22,7 @@ namespace Pixel.FixaBarnkalaset.ReadModel
                 Latitude = e.Latitude,
                 Longitude = e.Longitude
             };
-            _writer.Add(view);
+            _viewRepository.Add(view);
         }
 
 
@@ -32,15 +32,40 @@ namespace Pixel.FixaBarnkalaset.ReadModel
             {
                 case CityCreated c:
                 {
-                    When(c);
-                    break;
+                    When(c); break;
+                }
+                case CityNameChanged c:
+                {
+                    When(c); break;
+                }
+                case CitySlugChanged c:
+                {
+                    When(c); break;
+                }
+                case CityPositionChanged c:
+                {
+                    When(c); break;
                 }
             }
         }
 
-        //public void When(CityNameChanged e)
-        //{
-        //    _writer.Update(e.Id, v => v.Name = e.Name);
-        //}
+        public void When(CityNameChanged e)
+        {
+            _viewRepository.Update<CityView>(e.Id, c => c.Name = e.NewName);
+        }
+
+        public void When(CitySlugChanged e)
+        {
+            _viewRepository.Update<CityView>(e.Id, c => c.Slug = e.NewSlug);
+        }
+
+        public void When(CityPositionChanged e)
+        {
+            _viewRepository.Update<CityView>(e.Id, c =>
+            {
+                c.Latitude = e.NewLatitude;
+                c.Longitude = e.NewLongitude;
+            });
+        }
     }
 }

@@ -112,11 +112,12 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IProjectionRegistry, ProjectionRegistry>();
             services.AddSingleton<IEventPublisher, EventPublisher>();
-            services.AddTransient<ISlugDictionary, InMemoryViewRepository>(); //:TODO
 
             if (!env.IsEnvironment("Testing"))
             {
-                services.AddSingleton<IViewRepository, InMemoryViewRepository>();
+                var inMemoryViewRepository = new InMemoryViewRepository();
+                services.AddSingleton<IViewRepository>(inMemoryViewRepository);
+                services.AddSingleton<ISlugDictionary>(inMemoryViewRepository);
             }
         }
 

@@ -155,7 +155,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = _sut.Edit(view.Slug);
 
             // ASSERT
-            _mockSlugDictionary.Verify(m => m.GetId(view.Slug), Times.Once);
+            _mockSlugDictionary.Verify(m => m.GetIdBySlug(view.Slug), Times.Once);
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.ShouldBeEquivalentTo(new CreateOrEditCityViewModel
@@ -169,12 +169,12 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
 
         [Fact]
-        public void Edit_Post_GivenNoCityMatchingSlug_ShouldLogWarning_AndReturnNotFound()
+        public async Task Edit_Post_GivenNoCityMatchingSlug_ShouldLogWarning_AndReturnNotFound()
         {
             // ARRANGE
 
             // ACT
-            var result = _sut.Edit("unknown_slug", CreateHalmstadCreateOrEditCityViewModel());
+            var result = await _sut.Edit("unknown_slug", CreateHalmstadCreateOrEditCityViewModel());
 
             // ASSERT
             VerifyLogging(LogLevel.Warning);
@@ -182,7 +182,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenNoCityViewMatchingIdFound_ShouldLogError_AndReturnNotFound()
+        public async Task Edit_Post_GivenNoCityViewMatchingIdFound_ShouldLogError_AndReturnNotFound()
         {
             // ARRANGE
             var viewModel = CreateHalmstadCreateOrEditCityViewModel();
@@ -190,7 +190,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, id, null);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             VerifyLogging(LogLevel.Error);
@@ -198,7 +198,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenInvalidModel_ShouldOnlyReturnViewWithModelReceivedAsInput()
+        public async Task Edit_Post_GivenInvalidModel_ShouldOnlyReturnViewWithModelReceivedAsInput()
         {
             // ARRANGE
             var viewModel = CreateHalmstadCreateOrEditCityViewModel();
@@ -207,7 +207,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             AddModelStateError();
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
@@ -216,7 +216,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenNoChanges_ShouldNoSendAndCommands()
+        public async Task Edit_Post_GivenNoChanges_ShouldNoSendAndCommands()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -224,7 +224,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -234,7 +234,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenChangedCityName_ShouldSendChangeCityNameCommand()
+        public async Task Edit_Post_GivenChangedCityName_ShouldSendChangeCityNameCommand()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -244,7 +244,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -255,7 +255,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenChangedCitySlug_ShouldSendChangeCitySlugCommand()
+        public async Task Edit_Post_GivenChangedCitySlug_ShouldSendChangeCitySlugCommand()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -265,7 +265,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -276,7 +276,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenChangedCityLatitude_ShouldSendChangeCityPositionCommand()
+        public async Task Edit_Post_GivenChangedCityLatitude_ShouldSendChangeCityPositionCommand()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -285,7 +285,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -296,7 +296,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenChangedCityLongitude_ShouldSendChangeCityPositionCommand()
+        public async Task Edit_Post_GivenChangedCityLongitude_ShouldSendChangeCityPositionCommand()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -305,7 +305,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -316,7 +316,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenChangedCityLatitideAndLongitude_ShouldSendChangeCityPositionCommandOnce()
+        public async Task Edit_Post_GivenChangedCityLatitideAndLongitude_ShouldSendChangeCityPositionCommandOnce()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -326,7 +326,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -337,7 +337,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Post_GivenChangedCityAllProperties_ShouldSendAllCommandsOnce()
+        public async Task Edit_Post_GivenChangedCityAllProperties_ShouldSendAllCommandsOnce()
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
@@ -349,7 +349,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
-            var result = _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(viewModel.Slug, viewModel);
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
@@ -402,7 +402,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
         private void SetupSlugAndView(string slug, Guid id, CityView cityView)
         {
-            _mockSlugDictionary.Setup(m => m.GetId(slug)).Returns(id);
+            _mockSlugDictionary.Setup(m => m.GetIdBySlug(slug)).Returns(id);
             _mockViewRepository.Setup(m => m.Get<CityView>(id)).Returns(cityView);
         }
 

@@ -9,9 +9,12 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
     {
         private readonly Dictionary<string, IView> _cache;
 
+        private readonly Dictionary<string, Guid> _slugIdDictionary;
+
         public InMemoryViewRepository()
         {
             _cache = new Dictionary<string, IView>();
+            _slugIdDictionary = new Dictionary<string, Guid>();
         }
 
         public bool Contains<T>(Guid id) where T : class, IView
@@ -48,9 +51,31 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
 
 
 
-        public Guid? GetId(string slug)
+        public Guid? GetIdBySlug(string slug)
         {
-            throw new NotImplementedException();
+            return _slugIdDictionary.ContainsKey(slug) ? (Guid?) _slugIdDictionary[slug] : null;
         }
+
+        public void AddSlug(string slug, Guid id)
+        {
+            _slugIdDictionary[slug] = id;
+        }
+
+        public void RemoveSlug(string slug)
+        {
+            _slugIdDictionary.Remove(slug);
+        }
+
+        //public void AddOrUpdateIdForSlug(string slug, Guid id)
+        //{
+        //    var key = slug.ToLower();
+        //    if (_slugIdDictionary.ContainsKey(key))
+        //    {
+        //        _slugIdDictionary[key] = id;
+
+        //    }
+        //    else
+        //        _slugIdDictionary.Add(key, id);
+        //}
     }
 }

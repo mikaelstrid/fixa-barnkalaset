@@ -1,4 +1,9 @@
-﻿namespace Pixel.FixaBarnkalaset.Domain.Events
+﻿using System;
+
+namespace Pixel.FixaBarnkalaset.Domain.Events
 {
-    public interface IEvent { }
+    public interface IEvent
+    {
+        Guid Id { get; }
+    }
 }

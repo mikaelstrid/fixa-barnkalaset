@@ -123,7 +123,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEventPublisher eventPublisher)
         {
             ConfigureLogging(loggerFactory, Configuration);
 
@@ -147,6 +147,9 @@ namespace Pixel.FixaBarnkalaset.Web
             ConfigureIdentity(app, _env, Configuration);
             app.UseStaticFiles();
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
+
+            //app.ApplicationServices.GetRequiredService<CustomCookieAuthenticationEvents>()
+            eventPublisher.CatchUp(0);
         }
 
         private static void ConfigureLogging(ILoggerFactory loggerFactory, IConfigurationRoot configuration)

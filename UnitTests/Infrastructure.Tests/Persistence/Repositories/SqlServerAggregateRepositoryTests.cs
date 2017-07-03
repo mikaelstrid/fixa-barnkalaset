@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.Domain.Model;
@@ -25,26 +24,7 @@ namespace UnitTests.Infrastructure.Tests.Persistence.Repositories
 
         public SqlServerAggregateRepositoryTests()
         {
-            var companyProducts = Enumerable.Empty<EventData>().AsQueryable();
-
-            var mockSet = new Mock<DbSet<EventData>>();
-
-            mockSet.As<IAsyncEnumerable<EventData>>()
-                .Setup(m => m.GetEnumerator())
-                .Returns(new TestAsyncEnumerator<EventData>(companyProducts.GetEnumerator()));
-
-            mockSet.As<IQueryable<EventData>>()
-                .Setup(m => m.Provider)
-                .Returns(new TestAsyncQueryProvider<EventData>(companyProducts.Provider));
-
-            mockSet.As<IQueryable<EventData>>().Setup(m => m.Expression).Returns(companyProducts.Expression);
-            mockSet.As<IQueryable<EventData>>().Setup(m => m.ElementType).Returns(companyProducts.ElementType);
-            mockSet.As<IQueryable<EventData>>().Setup(m => m.GetEnumerator()).Returns(() => companyProducts.GetEnumerator());
-
-            var contextOptions = new DbContextOptions<MyEventSourcingDbContext>();
-            _mockDbContext = new Mock<MyEventSourcingDbContext>(contextOptions);
-            _mockDbContext.SetupGet(c => c.Events).Returns(mockSet.Object);
-
+            _mockDbContext = MyEventSourcingDbContextHelper.CreateMockDbContext(Enumerable.Empty<EventData>());
             _mockAggregateFactory = new Mock<IAggregateFactory>();
             _mockEventPublisher = new Mock<IEventPublisher>();
             _mockAggregate = new Mock<IAggregate>();

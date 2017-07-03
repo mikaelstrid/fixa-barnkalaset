@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 using Pixel.FixaBarnkalaset.ReadModel;
 using Xunit;
 

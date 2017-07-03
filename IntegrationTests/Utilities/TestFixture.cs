@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
@@ -71,7 +71,7 @@ namespace IntegrationTests.Utilities
 
             InMemoryViewRepository = new InMemoryViewRepository();
             services.AddSingleton<IViewRepository>(InMemoryViewRepository);
-            services.AddSingleton<ISlugDictionary>(InMemoryViewRepository);
+            services.AddSingleton<ISlugLookup>(InMemoryViewRepository);
         }
 
         private static void ConfigureServicesApplicationPartManager(IServiceCollection services)

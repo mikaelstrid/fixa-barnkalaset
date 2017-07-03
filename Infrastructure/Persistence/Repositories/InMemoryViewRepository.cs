@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Pixel.FixaBarnkalaset.ReadModel;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
-namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence
+namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
-    public class InMemoryViewRepository : IViewRepository, ISlugDictionary
+    public class InMemoryViewRepository : IViewRepository, ISlugLookup
     {
         private readonly Dictionary<string, IView> _cache;
 

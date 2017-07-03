@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.ReadModel.Interfaces
 {
-    public interface ISlugDictionary
+    public interface ISlugLookup
     {
         Guid? GetIdBySlug(string slug);
         void AddSlug(string slug, Guid id);

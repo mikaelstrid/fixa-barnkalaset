@@ -25,7 +25,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         private readonly Mock<ILogger<CitiesController>> _mockLogger;
         private readonly Mock<ICityService> _mockCityService;
         private readonly Mock<IViewRepository> _mockViewRepository;
-        private readonly Mock<ISlugDictionary> _mockSlugDictionary;
+        private readonly Mock<ISlugLookup> _mockSlugLookup;
         private readonly CitiesController _sut;
 
         public CitiesControllerTests()
@@ -34,8 +34,8 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _mockLogger = new Mock<ILogger<CitiesController>>();
             _mockCityService = new Mock<ICityService>();
             _mockViewRepository = new Mock<IViewRepository>();
-            _mockSlugDictionary = new Mock<ISlugDictionary>();
-            _sut = new CitiesController(mapper, _mockLogger.Object, _mockCityService.Object, _mockSlugDictionary.Object, _mockViewRepository.Object);
+            _mockSlugLookup = new Mock<ISlugLookup>();
+            _sut = new CitiesController(mapper, _mockLogger.Object, _mockCityService.Object, _mockSlugLookup.Object, _mockViewRepository.Object);
         }
 
         [Fact]
@@ -171,7 +171,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = _sut.Edit(view.Slug);
 
             // ASSERT
-            _mockSlugDictionary.Verify(m => m.GetIdBySlug(view.Slug), Times.Once);
+            _mockSlugLookup.Verify(m => m.GetIdBySlug(view.Slug), Times.Once);
             _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.ShouldBeEquivalentTo(new CreateOrEditCityViewModel
@@ -418,7 +418,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
         private void SetupSlugAndView(string slug, Guid id, CityView cityView)
         {
-            _mockSlugDictionary.Setup(m => m.GetIdBySlug(slug)).Returns(id);
+            _mockSlugLookup.Setup(m => m.GetIdBySlug(slug)).Returns(id);
             _mockViewRepository.Setup(m => m.Get<CityView>(id)).Returns(cityView);
         }
 

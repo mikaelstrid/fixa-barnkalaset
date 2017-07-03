@@ -77,6 +77,11 @@ namespace Pixel.FixaBarnkalaset.Domain.Model
             Publish(new CityPositionChanged(_id, latitude, longitude, _latitude, _longitude));
         }
 
+        private void When(CityPositionChanged e)
+        {
+            _latitude = e.NewLatitude;
+            _longitude = e.NewLongitude;
+        }
 
 
         protected sealed override void Apply(IEvent e)

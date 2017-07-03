@@ -7,15 +7,15 @@ using Xunit;
 
 namespace UnitTests.ReadModel.Tests
 {
-    public class SlugDictionaryProjectionTests
+    public class SlugLookupProjectionTests
     {
-        private readonly Mock<ISlugDictionary> _mockSlugDictionary;
-        private readonly SlugDictionaryProjection _sut;
+        private readonly Mock<ISlugLookup> _mockSlugLookup;
+        private readonly SlugLookupProjection _sut;
 
-        public SlugDictionaryProjectionTests()
+        public SlugLookupProjectionTests()
         {
-            _mockSlugDictionary = new Mock<ISlugDictionary>();
-            _sut = new SlugDictionaryProjection(_mockSlugDictionary.Object);
+            _mockSlugLookup = new Mock<ISlugLookup>();
+            _sut = new SlugLookupProjection(_mockSlugLookup.Object);
         }
         
         [Fact]
@@ -33,7 +33,7 @@ namespace UnitTests.ReadModel.Tests
             _sut.Handle(@event);
 
             // ASSERT
-            _mockSlugDictionary.Verify(m => m.AddSlug(slug, id));
+            _mockSlugLookup.Verify(m => m.AddSlug(slug, id));
         }
 
         [Fact]
@@ -46,8 +46,8 @@ namespace UnitTests.ReadModel.Tests
             _sut.Handle(@event);
 
             // ASSERT
-            _mockSlugDictionary.Verify(m => m.RemoveSlug(@event.OldSlug));
-            _mockSlugDictionary.Verify(m => m.AddSlug(@event.NewSlug, @event.Id));
+            _mockSlugLookup.Verify(m => m.RemoveSlug(@event.OldSlug));
+            _mockSlugLookup.Verify(m => m.AddSlug(@event.NewSlug, @event.Id));
         }
     }
 }

@@ -6,9 +6,9 @@ namespace Pixel.FixaBarnkalaset.Domain.Model
 {
     public interface IAggregate
     {
-        IEnumerable<IEvent> GetUncommittedEvents();
-        int Version { get; }
         Guid Id { get; }
+        int Version { get; }
+        IEnumerable<IEvent> GetUncommittedEvents();
         void ClearUncommittedEvents();
     }
 }

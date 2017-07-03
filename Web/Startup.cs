@@ -117,7 +117,7 @@ namespace Pixel.FixaBarnkalaset.Web
             {
                 var inMemoryViewRepository = new InMemoryViewRepository();
                 services.AddSingleton<IViewRepository>(inMemoryViewRepository);
-                services.AddSingleton<ISlugDictionary>(inMemoryViewRepository);
+                services.AddSingleton<ISlugLookup>(inMemoryViewRepository);
             }
         }
 

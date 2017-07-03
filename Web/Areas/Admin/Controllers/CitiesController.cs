@@ -22,20 +22,20 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
         private readonly ICityService _cityService;
-        private readonly ISlugDictionary _slugDictionary;
+        private readonly ISlugLookup _slugLookup;
         private readonly IViewRepository _viewRepository;
 
         public CitiesController(
             IMapper mapper,
             ILogger<CitiesController> logger,
             ICityService cityService,
-            ISlugDictionary slugDictionary,
+            ISlugLookup slugLookup,
             IViewRepository viewRepository)
         {
             _mapper = mapper;
             _logger = logger;
             _cityService = cityService;
-            _slugDictionary = slugDictionary;
+            _slugLookup = slugLookup;
             _viewRepository = viewRepository;
         }
 
@@ -77,7 +77,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public IActionResult Edit(string urlSlug)
         {
             _logger.LogDebug("Edit GET: Edit called with slug {Slug}", urlSlug);
-            var id = _slugDictionary.GetIdBySlug(urlSlug);
+            var id = _slugLookup.GetIdBySlug(urlSlug);
             if (!id.HasValue)
             {
                 _logger.LogWarning("Edit GET: No city with slug {Slug} found when getting city", urlSlug);
@@ -103,7 +103,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         {
             _logger.LogDebug("Edit POST: Edit called with slug {Slug} and model {Model}", urlSlug, JsonConvert.SerializeObject(model));
 
-            var id = _slugDictionary.GetIdBySlug(urlSlug);
+            var id = _slugLookup.GetIdBySlug(urlSlug);
             if (!id.HasValue)
             {
                 _logger.LogWarning("Edit POST: No city with slug {Slug} found when updating city", urlSlug);

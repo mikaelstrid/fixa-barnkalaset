@@ -3,24 +3,24 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.ReadModel
 {
-    public class SlugDictionaryProjection : IProjection
+    public class SlugLookupProjection : IProjection
     {
-        private readonly ISlugDictionary _slugDictionary;
+        private readonly ISlugLookup _slugLookup;
 
-        public SlugDictionaryProjection(ISlugDictionary slugDictionary)
+        public SlugLookupProjection(ISlugLookup slugLookup)
         {
-            _slugDictionary = slugDictionary;
+            _slugLookup = slugLookup;
         }
 
         public void When(CityCreated e)
         {
-            _slugDictionary.AddSlug(e.Slug, e.Id);
+            _slugLookup.AddSlug(e.Slug, e.Id);
         }
 
         public void When(CitySlugChanged e)
         {
-            _slugDictionary.RemoveSlug(e.OldSlug);
-            _slugDictionary.AddSlug(e.NewSlug, e.Id);
+            _slugLookup.RemoveSlug(e.OldSlug);
+            _slugLookup.AddSlug(e.NewSlug, e.Id);
         }
 
         public void Handle(IEvent e)

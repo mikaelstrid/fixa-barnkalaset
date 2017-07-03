@@ -8,19 +8,19 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.ReadModel
     public class ProjectionRegistry : IProjectionRegistry
     {
         private readonly IViewRepository _viewRepository;
-        private readonly ISlugDictionary _slugDictionary;
+        private readonly ISlugLookup _slugLookup;
 
-        public ProjectionRegistry(IViewRepository viewRepository, ISlugDictionary slugDictionary)
+        public ProjectionRegistry(IViewRepository viewRepository, ISlugLookup slugLookup)
         {
             _viewRepository = viewRepository;
-            _slugDictionary = slugDictionary;
+            _slugLookup = slugLookup;
         }
 
         public IEnumerable<IProjection> GetObservers()
         {
             yield return new CityProjection(_viewRepository);
             yield return new CityListProjection(_viewRepository);
-            yield return new SlugDictionaryProjection(_slugDictionary);
+            yield return new SlugLookupProjection(_slugLookup);
         }
     }
 }

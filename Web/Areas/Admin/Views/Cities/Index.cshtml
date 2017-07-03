@@ -1,29 +1,29 @@
 ﻿@using Pixel.FixaBarnkalaset.Core
-@model IEnumerable<Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.IndexCityViewModel>
+@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CitiesIndexViewModel
 
 <div class="ui main container">
     <h1>Städer</h1>
     <table class="ui table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(m => m.Name)</th>
-                <th>@Html.DisplayNameFor(m => m.Slug)</th>
-                <th>@Html.DisplayNameFor(m => m.Latitude)</th>
-                <th>@Html.DisplayNameFor(m => m.Longitude)</th>
-                <th>@Html.DisplayNameFor(m => m.ArrangementsCount)</th>
+                <th>@Html.DisplayNameFor(m => m.Cities.First().Name)</th>
+                <th>@Html.DisplayNameFor(m => m.Cities.First().Slug)</th>
+                <th>@Html.DisplayNameFor(m => m.Cities.First().Latitude)</th>
+                <th>@Html.DisplayNameFor(m => m.Cities.First().Longitude)</th>
+                <th>@Html.DisplayNameFor(m => m.Cities.First().ArrangementsCount)</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var arrangement in Model)
+            @foreach (var city in Model.Cities)
             {
                 <tr>
-                    <td>@Html.DisplayFor(m => arrangement.Name)</td>
-                    <td>@Html.DisplayFor(m => arrangement.Slug)</td>
-                    <td>@Html.DisplayFor(m => arrangement.Latitude)</td>
-                    <td>@Html.DisplayFor(m => arrangement.Longitude)</td>
-                    <td>@Html.DisplayFor(m => arrangement.ArrangementsCount)</td>
-                    <td><a asp-action="Edit" asp-route-citySlug="@arrangement.Slug">Ändra</a></td>
+                    <td>@Html.DisplayFor(m => city.Name)</td>
+                    <td>@Html.DisplayFor(m => city.Slug)</td>
+                    <td>@Html.DisplayFor(m => city.Latitude)</td>
+                    <td>@Html.DisplayFor(m => city.Longitude)</td>
+                    <td>@Html.DisplayFor(m => city.ArrangementsCount)</td>
+                    <td><a asp-action="Edit" asp-route-citySlug="@city.Slug">Ändra</a></td>
                 </tr>
             }
         </tbody>

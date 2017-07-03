@@ -17,16 +17,11 @@ namespace Pixel.FixaBarnkalaset.ReadModel
 
         public void When(CityCreated e)
         {
-            var city = new CityListView.City
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Slug = e.Slug
-            };
+            var city = new CityListView.City(e.Id, e.Name, e.Slug, e.Latitude, e.Longitude);
 
             if (!_viewRepository.Contains<CityListView>(CityListView.ListViewId))
             {
-                _viewRepository.Add(new CityListView {Cities = new List<CityListView.City> {city}});
+                _viewRepository.Add(new CityListView(CityListView.ListViewId, new List<CityListView.City> {city}));
             }
             else
             {
@@ -44,6 +39,16 @@ namespace Pixel.FixaBarnkalaset.ReadModel
             _viewRepository.Update<CityListView>(CityListView.ListViewId, v => v.Cities.Single(c => c.Id == e.Id).Slug = e.NewSlug);
         }
 
+        public void When(CityPositionChanged e)
+        {
+            _viewRepository.Update<CityListView>(CityListView.ListViewId, v =>
+            {
+                var city = v.Cities.Single(c => c.Id == e.Id);
+                city.Latitude = e.NewLatitude;
+                city.Longitude = e.NewLongitude;
+            });
+        }
+
         public void Handle(IEvent e)
         {
             switch (e)
@@ -57,6 +62,10 @@ namespace Pixel.FixaBarnkalaset.ReadModel
                     When(c); break;
                 }
                 case CitySlugChanged c:
+                {
+                    When(c); break;
+                }
+                case CityPositionChanged c:
                 {
                     When(c); break;
                 }

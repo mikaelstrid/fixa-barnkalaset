@@ -121,11 +121,12 @@ namespace IntegrationTests.Admin.Tests
             fixture.MyEventSourcingDbContext.Events.Add(@event.ToEventData(typeof(CityAggregate).Name, id, 1));
             fixture.MyEventSourcingDbContext.SaveChanges();
             fixture.InMemoryViewRepository.AddSlug(slug, id);
-            fixture.InMemoryViewRepository.Add(new CityListView
-            {
-                Id = CityListView.ListViewId,
-                Cities = new List<CityListView.City> { new CityListView.City { Id = id, Name = name, Slug = slug } }
-            });
+            fixture.InMemoryViewRepository.Add(new CityListView(
+                CityListView.ListViewId,
+                new List<CityListView.City>
+                {
+                    new CityListView.City(id, name, slug, latitude, longitude)
+                }));
             var cityView = new CityView
             {
                 Id = id,

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 using Pixel.FixaBarnkalaset.ReadModel;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
@@ -44,7 +46,7 @@ namespace UnitTests.Web.Tests.Controllers
         public void Index_GivenCityListViewWithNoCityList_ShouldGetCititesFromTheViewRepository_AndReturnAnEmptyResponseModel()
         {
             // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView());
+            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView(CityListView.ListViewId, null));
 
             // ACT
             var result = _sut.Index();
@@ -58,7 +60,7 @@ namespace UnitTests.Web.Tests.Controllers
         public void Index_GivenCityListViewWithEmptyCityList_ShouldGetCititesFromTheViewRepository_AndReturnAnEmptyResponseModel()
         {
             // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView {Cities = new List<CityListView.City>()});
+            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView(CityListView.ListViewId, new List<CityListView.City>()));
 
             // ACT
             var result = _sut.Index();
@@ -72,15 +74,14 @@ namespace UnitTests.Web.Tests.Controllers
         public void Index_GivenTwoCities_ShouldReturnToMappedCitiesInTheResponseModel()
         {
             // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView
-            {
-                Id = CityListView.ListViewId,
-                Cities = new List<CityListView.City>
+            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView(
+                CityListView.ListViewId,
+                new List<CityListView.City>
                 {
-                    new CityListView.City { Name = "Halmstad", Slug = "halmstad"},
-                    new CityListView.City { Name = "Borås", Slug = "boras"}
+                    new CityListView.City(Guid.Parse("44A63B21-5446-4EBD-AD23-C1B176690052"), "Halmstad", "halmstad", 10.1, 11.2),
+                    new CityListView.City(Guid.Parse("10EF0B69-D6B9-4A3F-9E92-5A40D96E6A69"), "Borås", "boras", 78.1, -178.1)
                 }
-            });
+            ));
 
             // ACT
             var result = _sut.Index();

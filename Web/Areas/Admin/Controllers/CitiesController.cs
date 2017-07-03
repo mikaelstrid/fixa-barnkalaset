@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Domain.Commands;
 using Pixel.FixaBarnkalaset.ReadModel;
@@ -22,7 +21,6 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        private readonly ICityRepository _cityRepository;
         private readonly ICityService _cityService;
         private readonly ISlugDictionary _slugDictionary;
         private readonly IViewRepository _viewRepository;
@@ -30,14 +28,12 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public CitiesController(
             IMapper mapper,
             ILogger<CitiesController> logger,
-            ICityRepository cityRepository,
             ICityService cityService,
             ISlugDictionary slugDictionary,
             IViewRepository viewRepository)
         {
             _mapper = mapper;
             _logger = logger;
-            _cityRepository = cityRepository;
             _cityService = cityService;
             _slugDictionary = slugDictionary;
             _viewRepository = viewRepository;
@@ -47,7 +43,8 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             _logger.LogDebug("Index: Called");
-            var model = _mapper.Map<IEnumerable<City>, IEnumerable<IndexCityViewModel>>(_cityRepository.GetAll());
+            var view = _viewRepository.Get<CityListView>(CityListView.ListViewId) ?? new CityListView(CityListView.ListViewId, new List<CityListView.City>());
+            var model = _mapper.Map<CityListView, CitiesIndexViewModel>(view);
             return View(model);
         }
 

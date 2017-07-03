@@ -26,11 +26,10 @@ namespace IntegrationTests.Public.Tests
         public async Task Index_ShouldContainHalmstad()
         {
             // ARRANGE
-            _fixture.InMemoryViewRepository.Add(new CityListView
-            {
-                Id = CityListView.ListViewId,
-                Cities = new List<CityListView.City> { new CityListView.City { Name = "Halmstad", Slug = "halmstad" }}
-            });
+            _fixture.InMemoryViewRepository.Add(new CityListView(
+                CityListView.ListViewId,
+                new List<CityListView.City> { new CityListView.City(Guid.Parse("111D814A-A4C7-4432-9D1B-FFC55A8FCE71"), "Halmstad", "halmstad", 10.2, 78.1) }
+            ));
 
             // ACT
             var response = await _client.GetAsync("/");

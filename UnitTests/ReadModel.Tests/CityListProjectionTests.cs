@@ -37,9 +37,14 @@ namespace UnitTests.ReadModel.Tests
 
             // ASSERT
             _mockViewRepository.Verify(m => m.Add(It.Is<CityListView>(v =>
-                v.Cities.Count == 1
+                v.Id == CityListView.ListViewId 
+                && v.Cities.Count == 1
+                && v.Cities.First().Id == id
                 && v.Cities.First().Name == name
                 && v.Cities.First().Slug == slug
+                && v.Cities.First().Latitude == latitude
+                && v.Cities.First().Longitude == longitude
+                && v.Cities.First().ArrangementsCount == 0
             )));
         }
 
@@ -95,5 +100,22 @@ namespace UnitTests.ReadModel.Tests
                 It.IsAny<Action<CityListView>>()
             ));
         }
+
+        [Fact]
+        public void Handle_GivenCityPositionChanged_ShouldUpdateTheView()
+        {
+            // ARRANGE
+            var @event = new CityPositionChanged(Guid.Parse("1927A790-FDFE-41E1-988F-E7EEC2E20D54"), 10.1, 10.2, 10.3, 10.4);
+
+            // ACT 
+            _sut.Handle(@event);
+
+            // ASSERT
+            _mockViewRepository.Verify(m => m.Update(
+                It.IsAny<Guid>(),
+                It.IsAny<Action<CityListView>>()
+            ));
+        }
+
     }
 }

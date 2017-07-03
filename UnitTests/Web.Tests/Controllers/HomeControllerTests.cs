@@ -1,87 +1,75 @@
-using System;
 using System.Collections.Generic;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
-using Pixel.FixaBarnkalaset.ReadModel;
-using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Controllers;
 using Pixel.FixaBarnkalaset.Web.Models;
 using Xunit;
+// ReSharper disable PossibleNullReferenceException
 
 namespace UnitTests.Web.Tests.Controllers
 {
     public class HomeControllerTests
     {
-        // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
         private readonly HomeController _sut;
-        private readonly IMapper _mapper;
-        private readonly Mock<IViewRepository> _mockViewRepository;
+        private readonly Mock<ICityRepository> _mockCityRepository;
 
         public HomeControllerTests()
         {
-            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
-            _mockViewRepository = new Mock<IViewRepository>();
-            _sut = new HomeController(_mapper, _mockViewRepository.Object);
+            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
+            _mockCityRepository = new Mock<ICityRepository>();
+            _sut = new HomeController(mapper, _mockCityRepository.Object);
         }
 
         [Fact]
-        public void Index_GivenNoCityListView_ShouldGetCititesFromTheViewRepository_AndReturnAnEmptyResponseModel()
+        public void Index_GivenNullResponseFromRepository_ShouldReturnAnEmptyResponseModel()
         {
             // ARRANGE
-            //_mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns
+            _mockCityRepository.Setup(m => m.GetAll()).Returns((IEnumerable<City>) null);
             
             // ACT
             var result = _sut.Index();
 
             // ASSERT
-            _mockViewRepository.Verify(m => m.Get<CityListView>(CityListView.ListViewId));
-            ((result as ViewResult).Model as HomeIndexViewModel).Cities.Should().BeEmpty();
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
+            var responseModel = (result as ViewResult).Model as HomeIndexViewModel;
+            responseModel.Should().NotBeNull();
+            responseModel.Cities.Should().NotBeNull();
+            responseModel.Cities.Should().BeEmpty();
         }
 
         [Fact]
-        public void Index_GivenCityListViewWithNoCityList_ShouldGetCititesFromTheViewRepository_AndReturnAnEmptyResponseModel()
+        public void Index_GivenEmptyResponseFromRepository_ShouldReturnAnEmptyResponseModel()
         {
             // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView(CityListView.ListViewId, null));
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(new List<City>());
 
             // ACT
             var result = _sut.Index();
 
             // ASSERT
-            _mockViewRepository.Verify(m => m.Get<CityListView>(CityListView.ListViewId));
-            ((result as ViewResult).Model as HomeIndexViewModel).Cities.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Index_GivenCityListViewWithEmptyCityList_ShouldGetCititesFromTheViewRepository_AndReturnAnEmptyResponseModel()
-        {
-            // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView(CityListView.ListViewId, new List<CityListView.City>()));
-
-            // ACT
-            var result = _sut.Index();
-
-            // ASSERT
-            _mockViewRepository.Verify(m => m.Get<CityListView>(CityListView.ListViewId));
-            ((result as ViewResult).Model as HomeIndexViewModel).Cities.Should().BeEmpty();
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
+            var responseModel = (result as ViewResult).Model as HomeIndexViewModel;
+            responseModel.Should().NotBeNull();
+            responseModel.Cities.Should().NotBeNull();
+            responseModel.Cities.Should().BeEmpty();
         }
 
         [Fact]
         public void Index_GivenTwoCities_ShouldReturnToMappedCitiesInTheResponseModel()
         {
             // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(new CityListView(
-                CityListView.ListViewId,
-                new List<CityListView.City>
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(
+                new List<City>
                 {
-                    new CityListView.City(Guid.Parse("44A63B21-5446-4EBD-AD23-C1B176690052"), "Halmstad", "halmstad", 10.1, 11.2),
-                    new CityListView.City(Guid.Parse("10EF0B69-D6B9-4A3F-9E92-5A40D96E6A69"), "Borås", "boras", 78.1, -178.1)
+                    new City("Halmstad", "halmstad", 10.1, 11.2),
+                    new City("Borås", "boras", 78.1, -178.1)
                 }
-            ));
+            );
 
             // ACT
             var result = _sut.Index();

@@ -4,6 +4,7 @@
     <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>Pixel.FixaBarnkalaset.Infrastructure</AssemblyName>
     <RootNamespace>Pixel.FixaBarnkalaset.Infrastructure</RootNamespace>
+    <GenerateUserSecretsAttribute>false</GenerateUserSecretsAttribute>
   </PropertyGroup>
 
   <ItemGroup>

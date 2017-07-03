@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using IntegrationTests.Utilities;
 using IntegrationTests.Utilities.Helpers;
-using Pixel.FixaBarnkalaset.Domain.Commands;
 using Pixel.FixaBarnkalaset.Domain.Events;
 using Pixel.FixaBarnkalaset.Domain.Model;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
@@ -18,44 +17,16 @@ using Xunit;
 namespace IntegrationTests.Admin.Tests
 {
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
-    public class CitiesTests : IClassFixture<TestFixture<Startup>>
+    public class EditCityTest : IClassFixture<TestFixture<Startup>>
     {
         private const string IdentityCookieName = ".AspNetCore.Identity.Application";
         private readonly TestFixture<Startup> _fixture;
         private readonly HttpClient _client;
 
-        public CitiesTests(TestFixture<Startup> fixture)
+        public EditCityTest(TestFixture<Startup> fixture)
         {
             _fixture = fixture;
             _client = fixture.Client;
-        }
-
-        [Fact]
-        public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
-        {
-            // ARRANGE
-            var url = "/admin/stader/skapa";
-            var identityToken = await LoginAndGetIdentityToken("test@test.com", "B1pdsosp!");
-
-            var antiforgeryTokenResponse = await RequestAntiForgeryToken(identityToken, url);
-            var antiForgeryToken = await AntiForgeryHelper.ExtractAntiForgeryToken(antiforgeryTokenResponse);
-
-            var postRequestBody = new Dictionary<string, string>
-            {
-                {"__RequestVerificationToken", antiForgeryToken},
-                {"Name", "Halmstad"},
-                {"Slug", "halmstad"},
-                {"Latitude", "19,5"},
-                {"Longitude", "58,7"}
-            };
-            var postRequest = CreatePostDataRequest(url, postRequestBody, antiforgeryTokenResponse, identityToken);
-            
-            // ACT
-            var response = await _client.SendAsync(postRequest);
-
-            // ASSERT
-            response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _fixture.MyEventSourcingDbContext.Events.Count().Should().Be(1);
         }
 
         [Fact]
@@ -121,12 +92,7 @@ namespace IntegrationTests.Admin.Tests
             fixture.MyEventSourcingDbContext.Events.Add(@event.ToEventData(typeof(CityAggregate).Name, id, 1));
             fixture.MyEventSourcingDbContext.SaveChanges();
             fixture.InMemoryViewRepository.AddSlug(slug, id);
-            fixture.InMemoryViewRepository.Add(new CityListView(
-                CityListView.ListViewId,
-                new List<CityListView.City>
-                {
-                    new CityListView.City(id, name, slug, latitude, longitude)
-                }));
+            fixture.InMemoryViewRepository.Add(new CityListView(CityListView.ListViewId, new List<CityListView.City> { new CityListView.City(id, name, slug, latitude, longitude) }));
             var cityView = new CityView
             {
                 Id = id,

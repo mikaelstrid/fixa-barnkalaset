@@ -18,6 +18,10 @@ namespace Pixel.FixaBarnkalaset.Web
             CreateMap<CreateOrEditArrangementViewModel, Arrangement>();
 
             CreateMap<City, HomeIndexViewModel.CityViewModel>();
+            CreateMap<City, CitiesIndexViewModel.CityViewModel>();
+
+
+
             CreateMap<CityListView, CitiesIndexViewModel>();
             CreateMap<CityListView.City, CitiesIndexViewModel.CityViewModel>();
             CreateMap<CityView, CreateOrEditCityViewModel>();

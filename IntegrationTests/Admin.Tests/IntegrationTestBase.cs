@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using IntegrationTests.Utilities;
 using IntegrationTests.Utilities.Helpers;
+using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Web;
 using Xunit;
 
@@ -20,7 +21,8 @@ namespace IntegrationTests.Admin.Tests
             _client = fixture.Client;
         }
 
-        protected async Task<string> LoginAndGetIdentityToken(string email, string password)
+
+        protected async Task<IdentityContext> GetIdentityContext(string email, string password)
         {
             var loginRequestMessage = PostRequestHelper.Create(
                 "/konto/logga-in",
@@ -31,7 +33,23 @@ namespace IntegrationTests.Admin.Tests
                 });
             var loginReponse = await _client.SendAsync(loginRequestMessage);
             var identityToken = CookiesHelper.ExtractCookiesFromResponse(loginReponse)[IdentityCookieName];
-            return identityToken;
+            return new IdentityContext
+            {
+                Response = loginReponse,
+                Token = identityToken
+            };
+        }
+
+        protected class IdentityContext
+        {
+            public HttpResponseMessage Response { get; set; }
+            public string Token { get; set; }
+        }
+
+
+        protected async Task<string> LoginAndGetIdentityToken(string email, string password)
+        {
+            return (await GetIdentityContext(email, password)).Token;
         }
 
         protected async Task<HttpResponseMessage> RequestAntiForgeryToken(string identityToken, string url)
@@ -54,6 +72,12 @@ namespace IntegrationTests.Admin.Tests
         protected static Dictionary<string, string> CreateCookiesDictionary(string cookieName, string cookieValue)
         {
             return new Dictionary<string, string> { { cookieName, cookieValue } };
+        }
+
+        protected static void PopulateDatabase(TestFixture<Startup> fixture, IEnumerable<City> cities)
+        {
+            fixture.MyDataDbContext.Cities.AddRange(cities);
+            fixture.MyDataDbContext.SaveChanges();
         }
     }
 }

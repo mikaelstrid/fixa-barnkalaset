@@ -19,7 +19,7 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(m => city.Name)</td>
-                    <td>@Html.DisplayFor(m => city.Slug)</td>
+                    <td data-test-slug="@city.Slug">@Html.DisplayFor(m => city.Slug)</td>
                     <td>@Html.DisplayFor(m => city.Latitude)</td>
                     <td>@Html.DisplayFor(m => city.Longitude)</td>
                     <td>@Html.DisplayFor(m => city.ArrangementsCount)</td>

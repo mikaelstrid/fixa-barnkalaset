@@ -11,6 +11,7 @@ using Pixel.FixaBarnkalaset.ReadModel;
 using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using Newtonsoft.Json;
+using Pixel.FixaBarnkalaset.Core;
 
 namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 {
@@ -21,6 +22,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+        private readonly ICityRepository _cityRepository;
         private readonly ICityService _cityService;
         private readonly ISlugLookup _slugLookup;
         private readonly IViewRepository _viewRepository;
@@ -28,12 +30,14 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public CitiesController(
             IMapper mapper,
             ILogger<CitiesController> logger,
+            ICityRepository cityRepository,
             ICityService cityService,
             ISlugLookup slugLookup,
             IViewRepository viewRepository)
         {
             _mapper = mapper;
             _logger = logger;
+            _cityRepository = cityRepository;
             _cityService = cityService;
             _slugLookup = slugLookup;
             _viewRepository = viewRepository;
@@ -43,8 +47,11 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             _logger.LogDebug("Index: Called");
-            var view = _viewRepository.Get<CityListView>(CityListView.ListViewId) ?? new CityListView(CityListView.ListViewId, new List<CityListView.City>());
-            var model = _mapper.Map<CityListView, CitiesIndexViewModel>(view);
+            var cities = _cityRepository.GetAll();
+            var model = new CitiesIndexViewModel
+            {
+                Cities = _mapper.Map<IEnumerable<City>, IEnumerable<CitiesIndexViewModel.CityViewModel>>(cities)
+            };
             return View(model);
         }
 

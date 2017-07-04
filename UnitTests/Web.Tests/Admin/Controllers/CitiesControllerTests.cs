@@ -16,6 +16,7 @@ using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
+using UnitTests.Utilities.TestDataExtensions;
 using Xunit;
 
 namespace UnitTests.Web.Tests.Admin.Controllers
@@ -23,6 +24,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
     public class CitiesControllerTests
     {
         private readonly Mock<ILogger<CitiesController>> _mockLogger;
+        private readonly Mock<ICityRepository> _mockCityRepository;
         private readonly Mock<ICityService> _mockCityService;
         private readonly Mock<IViewRepository> _mockViewRepository;
         private readonly Mock<ISlugLookup> _mockSlugLookup;
@@ -32,23 +34,24 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockLogger = new Mock<ILogger<CitiesController>>();
+            _mockCityRepository = new Mock<ICityRepository>();
             _mockCityService = new Mock<ICityService>();
             _mockViewRepository = new Mock<IViewRepository>();
             _mockSlugLookup = new Mock<ISlugLookup>();
-            _sut = new CitiesController(mapper, _mockLogger.Object, _mockCityService.Object, _mockSlugLookup.Object, _mockViewRepository.Object);
+            _sut = new CitiesController(mapper, _mockLogger.Object, _mockCityRepository.Object, _mockCityService.Object, _mockSlugLookup.Object, _mockViewRepository.Object);
         }
 
         [Fact]
-        public void Index_GivenNullView_ShouldReturnModelWithNoCities()
+        public void Index_GivenNullReturnFromRepository_ShouldReturnModelWithNoCities()
         {
             // ARRANGE
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns((CityListView) null);
+            _mockCityRepository.Setup(m => m.GetAll()).Returns((IEnumerable<City>) null);
 
             // ACT
             var result = _sut.Index();
 
             // ASSERT
-            _mockViewRepository.Verify(m => m.Get<CityListView>(CityListView.ListViewId), Times.Once);
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
             var model = (result as ViewResult).Model as CitiesIndexViewModel;
             model.Should().NotBeNull();
             model.Cities.Should().NotBeNull();
@@ -56,27 +59,37 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Index_GivenViewWithTwoCities_ShouldReturnModelWithTwoCities()
+        public void Index_GivenNoCitiesFromRepository_ShouldReturnModelWithNoCities()
         {
             // ARRANGE
-            var cityListView = new CityListView(
-                CityListView.ListViewId,
-                new List<CityListView.City>
-                {
-                    new CityListView.City(Guid.Parse("25ECF19F-7964-4651-955E-3C896F54F7DD"), "Halmstad", "halmstad", 11.2, -176.1),
-                    new CityListView.City(Guid.Parse("A7D4FD68-38E8-4D33-BDDB-A7E8C792B4DE"), "Kungsbacka", "kungsbacka", -89.1, -111.2)
-                }
-            );
-            _mockViewRepository.Setup(m => m.Get<CityListView>(CityListView.ListViewId)).Returns(cityListView);
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(new List<City>());
 
             // ACT
             var result = _sut.Index();
 
             // ASSERT
-            _mockViewRepository.Verify(m => m.Get<CityListView>(CityListView.ListViewId), Times.Once);
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
+            var model = (result as ViewResult).Model as CitiesIndexViewModel;
+            model.Should().NotBeNull();
+            model.Cities.Should().NotBeNull();
+            model.Cities.Count().Should().Be(0);
+        }
+
+        [Fact]
+        public void Index_GivenTwoCitiesFromRepository_ShouldReturnModelWithTwoCities()
+        {
+            // ARRANGE
+            var cities = new List<City> { new City().Halmstad(), new City().Vaxjo() };
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(cities);
+
+            // ACT
+            var result = _sut.Index();
+
+            // ASSERT
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
             var model = (result as ViewResult).Model as CitiesIndexViewModel;
             model.Cities.Count().Should().Be(2);
-            model.Cities.ShouldBeEquivalentTo(cityListView.Cities);
+            model.Cities.ShouldBeEquivalentTo(cities, opt => opt.ExcludingMissingMembers());
         }
 
 

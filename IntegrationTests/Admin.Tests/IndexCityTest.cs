@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -21,8 +20,9 @@ namespace IntegrationTests.Admin.Tests
         public async Task IndexCityTest_GivenTwoCititesInDatabase_ShouldReturnTableWithTwoCities()
         {
             // ARRANGE
-            var cities = new List<City> { new City().Halmstad(), new City().Malmo() };
-            PopulateDatabase(_fixture, cities);
+            var halmstad = new City().Halmstad();
+            var malmo = new City().Malmo();
+            PopulateDatabase(_fixture, halmstad, malmo);
 
             var identityContext = await GetIdentityContext(_adminCredentials.UserName, _adminCredentials.Password);
             var request = GetRequestHelper.CreateWithCookiesFromResponse("/admin/stader", identityContext.IdentityResponse);
@@ -34,8 +34,8 @@ namespace IntegrationTests.Admin.Tests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseString = await response.Content.ReadAsStringAsync();
             Regex.Matches(responseString, "data-test-slug").Count.Should().Be(2);
-            Regex.IsMatch(responseString, $"data-test-slug=\"{cities[0].Slug}\"").Should().BeTrue();
-            Regex.IsMatch(responseString, $"data-test-slug=\"{cities[1].Slug}\"").Should().BeTrue();
+            Regex.IsMatch(responseString, $"data-test-slug=\"{halmstad.Slug}\"").Should().BeTrue();
+            Regex.IsMatch(responseString, $"data-test-slug=\"{malmo.Slug}\"").Should().BeTrue();
         }
     }
 }

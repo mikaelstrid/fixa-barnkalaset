@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Domain.Commands;
-using Pixel.FixaBarnkalaset.ReadModel;
-using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using Newtonsoft.Json;
 using Pixel.FixaBarnkalaset.Core;
@@ -23,24 +19,15 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
         private readonly ICityRepository _cityRepository;
-        private readonly ICityService _cityService;
-        private readonly ISlugLookup _slugLookup;
-        private readonly IViewRepository _viewRepository;
 
         public CitiesController(
             IMapper mapper,
             ILogger<CitiesController> logger,
-            ICityRepository cityRepository,
-            ICityService cityService,
-            ISlugLookup slugLookup,
-            IViewRepository viewRepository)
+            ICityRepository cityRepository)
         {
             _mapper = mapper;
             _logger = logger;
             _cityRepository = cityRepository;
-            _cityService = cityService;
-            _slugLookup = slugLookup;
-            _viewRepository = viewRepository;
         }
 
         [Route("")]
@@ -111,45 +98,31 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         {
             _logger.LogDebug("Edit POST: Edit called with slug {Slug} and model {Model}", urlSlug, JsonConvert.SerializeObject(model));
 
-            var id = _slugLookup.GetIdBySlug(urlSlug);
-            if (!id.HasValue)
-            {
-                _logger.LogWarning("Edit POST: No city with slug {Slug} found when updating city", urlSlug);
-                return NotFound();
-            }
-
-            var view = _viewRepository.Get<CityView>(id.Value);
-            if (view == null)
-            {
-                _logger.LogError("Edit POST: No city view with id {id} found when updating city with slug {Slug}", id, urlSlug);
-                return NotFound();
-            }
-
             if (!ModelState.IsValid)
             {
                 _logger.LogWarning("Edit POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
                 return View(model);
             }
 
-            if (view.Name != model.Name)
+            var existingCity = await _cityRepository.GetBySlug(urlSlug);
+            if (existingCity == null)
             {
-                var cmd = new ChangeCityName(id.Value, model.Name);
-                _logger.LogInformation("Edit POST: Edited name of city with slug {Slug} and id {Id} using the following command {Command}", urlSlug, id, JsonConvert.SerializeObject(cmd));
-                await _cityService.When(cmd);
+                _logger.LogWarning("Edit POST: No city with slug {Slug} found when updating city", urlSlug);
+                return NotFound();
             }
 
-            if (view.Slug != model.Slug)
+            if (existingCity.Name != model.Name || existingCity.Latitude != model.Latitude || existingCity.Longitude != model.Longitude)
             {
-                var cmd = new ChangeCitySlug(id.Value, model.Slug);
-                _logger.LogInformation("Edit POST: Edited slug of city with slug {Slug} and id {Id} using the following command {Command}", urlSlug, id, JsonConvert.SerializeObject(cmd));
-                await _cityService.When(cmd);
+                _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}",
+                    JsonConvert.SerializeObject(existingCity), JsonConvert.SerializeObject(model));
+                existingCity.Name = model.Name;
+                existingCity.Latitude = model.Latitude;
+                existingCity.Longitude = model.Longitude;
+                await _cityRepository.AddOrUpdate(existingCity);
             }
-
-            if (view.Latitude != model.Latitude || view.Longitude != model.Longitude)
+            else
             {
-                var cmd = new ChangeCityPosition(id.Value, model.Latitude, model.Longitude);
-                _logger.LogInformation("Edit POST: Edited position of city with slug {Slug} and id {Id} using the following command {Command}", urlSlug, id, JsonConvert.SerializeObject(cmd));
-                await _cityService.When(cmd);
+                _logger.LogInformation("Edit POST: No changes detected");
             }
 
             return RedirectToAction("Index");

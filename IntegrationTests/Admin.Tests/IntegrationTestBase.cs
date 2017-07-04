@@ -114,7 +114,7 @@ namespace IntegrationTests.Admin.Tests
             return new Dictionary<string, string> { { cookieName, cookieValue } };
         }
 
-        protected static void PopulateDatabase(TestFixture<Startup> fixture, IEnumerable<City> cities)
+        protected static void PopulateDatabase(TestFixture<Startup> fixture, params City[] cities)
         {
             fixture.MyDataDbContext.Cities.AddRange(cities);
             fixture.MyDataDbContext.SaveChanges();

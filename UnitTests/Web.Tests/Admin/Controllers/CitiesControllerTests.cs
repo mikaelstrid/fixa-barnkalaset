@@ -103,42 +103,41 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = _sut.Create();
 
             // ASSERT
-            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().BeNull();
         }
 
         [Fact]
-        public async Task Create_Post_GivenValidModel_ShouldCallService()
+        public async Task Create_Post_GivenValidModel_ShouldCallRepository()
         {
             // ARRANGE
-            var model = CreateHalmstadCreateOrEditCityViewModel();
-            CreateCity createdCommand = null;
-            _mockCityService.Setup(m => m.When(It.IsAny<CreateCity>()))
-                .Callback<CreateCity>(cmd => createdCommand = cmd)
-                .Returns(Task.FromResult(Guid.Parse("635476A4-4999-47C3-AB3D-96D94880F66E")));
-            
+            var city = new City().Halmstad();
+            var model = CreateCreateOrEditCityViewModel(city);
+            City createdCity = null;
+            _mockCityRepository.Setup(m => m.AddOrUpdate(It.IsAny<City>()))
+                .Callback<City>(c => createdCity = c);
+
             // ACT
             await _sut.Create(model);
 
             // ASSERT
-            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Once);
-            Assert.NotNull(createdCommand);
-            createdCommand.ShouldBeEquivalentTo(model);
+            createdCity.ShouldBeEquivalentTo(city);
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Once);
         }
 
         [Fact]
         public async Task Create_Post_GivenInvalidModel_ShouldOnlyReturnView()
         {
             // ARRANGE
-            var model = CreateHalmstadCreateOrEditCityViewModel();
+            var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
             AddModelStateError();
 
             // ACT
             var result = await _sut.Create(model);
 
             // ASSERT
-            _mockCityService.Verify(m => m.When(It.IsAny<CreateCity>()), Times.Never);
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().BeNull();
         }
@@ -203,7 +202,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             // ARRANGE
 
             // ACT
-            var result = await _sut.Edit("unknown_slug", CreateHalmstadCreateOrEditCityViewModel());
+            var result = await _sut.Edit("unknown_slug", CreateCreateOrEditCityViewModel(new City().Halmstad()));
 
             // ASSERT
             VerifyLogging(LogLevel.Warning);
@@ -214,7 +213,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         public async Task Edit_Post_GivenNoCityViewMatchingIdFound_ShouldLogError_AndReturnNotFound()
         {
             // ARRANGE
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             var id = Guid.Parse("3B88F709-C499-4016-AA1F-883A071CE829");
             SetupSlugAndView(viewModel.Slug, id, null);
 
@@ -230,7 +229,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         public async Task Edit_Post_GivenInvalidModel_ShouldOnlyReturnViewWithModelReceivedAsInput()
         {
             // ARRANGE
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             var view = CreateHalmstadCityView();
             SetupSlugAndView(viewModel.Slug, view.Id, view);
             AddModelStateError();
@@ -249,7 +248,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
             // ACT
@@ -267,7 +266,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             var changedName = "Halmstad II";
             viewModel.Name = changedName;
             SetupSlugAndView(viewModel.Slug, view.Id, view);
@@ -288,7 +287,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             var changedSlug = "Halmstad";
             viewModel.Slug = changedSlug;
             SetupSlugAndView(viewModel.Slug, view.Id, view);
@@ -309,7 +308,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             viewModel.Latitude = 18.7;
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
@@ -329,7 +328,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             viewModel.Longitude = 18.7;
             SetupSlugAndView(viewModel.Slug, view.Id, view);
 
@@ -349,7 +348,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             viewModel.Latitude = 13.7;
             viewModel.Longitude = 18.7;
             SetupSlugAndView(viewModel.Slug, view.Id, view);
@@ -370,7 +369,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var view = CreateHalmstadCityView();
-            var viewModel = CreateHalmstadCreateOrEditCityViewModel();
+            var viewModel = CreateCreateOrEditCityViewModel(new City().Halmstad());
             viewModel.Name = "Halmstad II";
             viewModel.Slug = "Halmstad";
             viewModel.Latitude = 13.7;
@@ -389,14 +388,14 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
 
-        private static CreateOrEditCityViewModel CreateHalmstadCreateOrEditCityViewModel()
+        private static CreateOrEditCityViewModel CreateCreateOrEditCityViewModel(City city)
         {
             return new CreateOrEditCityViewModel
             {
-                Name = "Halmstad",
-                Slug = "halmstad",
-                Latitude = 10.1,
-                Longitude = 58.7
+                Name = city.Name,
+                Slug = city.Slug,
+                Latitude = city.Latitude,
+                Longitude = city.Longitude
             };
         }
 

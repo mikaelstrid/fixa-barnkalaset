@@ -24,8 +24,8 @@ namespace IntegrationTests.Admin.Tests
             var cities = new List<City> { new City().Halmstad(), new City().Malmo() };
             PopulateDatabase(_fixture, cities);
 
-            var identityContext = await GetIdentityContext("test@test.com", "B1pdsosp!");
-            var request = GetRequestHelper.CreateWithCookiesFromResponse("/admin/stader", identityContext.Response);
+            var identityContext = await GetIdentityContext(_adminCredentials.UserName, _adminCredentials.Password);
+            var request = GetRequestHelper.CreateWithCookiesFromResponse("/admin/stader", identityContext.IdentityResponse);
 
             // ACT
             var response = await _client.SendAsync(request);

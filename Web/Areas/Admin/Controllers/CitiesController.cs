@@ -65,14 +65,14 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel city)
+        public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel model)
         {
             _logger.LogDebug("Create POST: called");
             if (ModelState.IsValid)
             {
-                var cmd = new CreateCity(city.Name, city.Slug, city.Latitude, city.Longitude);
-                var id = await _cityService.When(cmd);
-                _logger.LogInformation("Create POST: Created city with id {Id} using the following command {Command}", id, JsonConvert.SerializeObject(cmd));
+                var city = new City(model.Name, model.Slug, model.Latitude, model.Longitude);
+                _cityRepository.AddOrUpdate(city);
+                _logger.LogInformation("Create POST: Created city {City} with slug {Slug}", JsonConvert.SerializeObject(city), model.Slug);
                 return RedirectToAction("Index");
             }
             _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));

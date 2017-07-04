@@ -4,8 +4,9 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IntegrationTests.Utilities;
-using IntegrationTests.Utilities.Helpers;
+using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Web;
+using UnitTests.Utilities.TestDataExtensions;
 using Xunit;
 
 namespace IntegrationTests.Admin.Tests
@@ -19,28 +20,26 @@ namespace IntegrationTests.Admin.Tests
         public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
         {
             // ARRANGE
+            var city = new City().Halmstad();
             var url = "/admin/stader/skapa";
-            var identityToken = await LoginAndGetIdentityToken("test@test.com", "B1pdsosp!");
+            var context = await GetIdentityAndAntiForgeryContext(_adminCredentials.UserName, _adminCredentials.Password, url);
 
-            var antiforgeryTokenResponse = await RequestAntiForgeryToken(identityToken, url);
-            var antiForgeryToken = await AntiForgeryHelper.ExtractAntiForgeryToken(antiforgeryTokenResponse);
-
-            var postRequestBody = new Dictionary<string, string>
+            var requestBody = new Dictionary<string, string>
             {
-                {"__RequestVerificationToken", antiForgeryToken},
-                {"Name", "Halmstad"},
-                {"Slug", "halmstad"},
-                {"Latitude", "19,5"},
-                {"Longitude", "58,7"}
+                {"__RequestVerificationToken", context.AntiForgeryToken},
+                {"Name", city.Name},
+                {"Slug", city.Slug},
+                {"Latitude", city.Latitude.ToString(_swedishCultureInfo)},
+                {"Longitude", city.Longitude.ToString(_swedishCultureInfo)}
             };
-            var postRequest = CreatePostDataRequest(url, postRequestBody, antiforgeryTokenResponse, identityToken);
+            var postRequest = CreatePostDataRequest(url, requestBody, context);
             
             // ACT
             var response = await _client.SendAsync(postRequest);
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _fixture.MyEventSourcingDbContext.Events.Count().Should().Be(1);
+            _fixture.MyDataDbContext.Cities.Single(c => c.Slug == city.Slug).ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers());
         }
     }
 }

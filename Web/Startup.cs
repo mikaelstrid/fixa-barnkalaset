@@ -11,16 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Core.Services;
-using Pixel.FixaBarnkalaset.Infrastructure;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
-using Pixel.FixaBarnkalaset.Infrastructure.Interfaces;
-using Pixel.FixaBarnkalaset.Infrastructure.Messaging;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
-using Pixel.FixaBarnkalaset.Infrastructure.ReadModel;
-using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace Pixel.FixaBarnkalaset.Web
 {
@@ -72,7 +65,6 @@ namespace Pixel.FixaBarnkalaset.Web
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
                 services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
-                services.AddDbContext<MyEventSourcingDbContext>(options => options.UseSqlServer(connectionString));
             }
         }
 
@@ -105,25 +97,13 @@ namespace Pixel.FixaBarnkalaset.Web
         private static void ConfigureServicesApplication(IServiceCollection services, IHostingEnvironment env)
         {
             services.AddAutoMapper();
-            services.AddTransient<ICityService, CityService>();
-            services.AddTransient<IAggregateFactory, AggregateFactory>();
-            services.AddTransient<IAggregateRepository, SqlServerAggregateRepository>();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
-            services.AddTransient<IProjectionRegistry, ProjectionRegistry>();
-            services.AddSingleton<IEventPublisher, EventPublisher>();
-
-            if (!env.IsEnvironment("Testing"))
-            {
-                var inMemoryViewRepository = new InMemoryViewRepository();
-                services.AddSingleton<IViewRepository>(inMemoryViewRepository);
-                services.AddSingleton<ISlugLookup>(inMemoryViewRepository);
-            }
         }
 
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IEventPublisher eventPublisher)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             ConfigureLogging(loggerFactory, Configuration);
 
@@ -147,9 +127,6 @@ namespace Pixel.FixaBarnkalaset.Web
             ConfigureIdentity(app, _env, Configuration);
             app.UseStaticFiles();
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
-
-            //app.ApplicationServices.GetRequiredService<CustomCookieAuthenticationEvents>()
-            eventPublisher.CatchUp(0);
         }
 
         private static void ConfigureLogging(ILoggerFactory loggerFactory, IConfigurationRoot configuration)
@@ -172,7 +149,6 @@ namespace Pixel.FixaBarnkalaset.Web
                 serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
-                serviceScope.ServiceProvider.GetService<MyEventSourcingDbContext>().Database.Migrate();
             }
         }
 

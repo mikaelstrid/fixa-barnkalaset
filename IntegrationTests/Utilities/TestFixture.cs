@@ -10,9 +10,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
-using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 
 namespace IntegrationTests.Utilities
 {
@@ -57,10 +55,6 @@ namespace IntegrationTests.Utilities
 
         public MyDataDbContext MyDataDbContext { get; private set; }
 
-        public MyEventSourcingDbContext MyEventSourcingDbContext { get; private set; }
-
-        public InMemoryViewRepository InMemoryViewRepository { get; set; }
-
 
         // === CONFIG METHODS ===
 
@@ -68,10 +62,6 @@ namespace IntegrationTests.Utilities
         {
             ConfigureServicesApplicationPartManager(services);
             ConfigureServicesDatabase(services);
-
-            InMemoryViewRepository = new InMemoryViewRepository();
-            services.AddSingleton<IViewRepository>(InMemoryViewRepository);
-            services.AddSingleton<ISlugLookup>(InMemoryViewRepository);
         }
 
         private static void ConfigureServicesApplicationPartManager(IServiceCollection services)
@@ -101,12 +91,6 @@ namespace IntegrationTests.Utilities
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options);
             services.AddSingleton(myIdentityDataDbContext);
-
-            MyEventSourcingDbContext = new MyEventSourcingDbContext(
-                new DbContextOptionsBuilder<MyEventSourcingDbContext>()
-                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                    .Options);
-            services.AddSingleton(MyEventSourcingDbContext);
         }
 
         private static string GetProjectPath(string solutionRelativePath, Assembly startupAssembly)

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.ReadModel;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using Pixel.FixaBarnkalaset.Web.Models;
 
@@ -20,12 +19,6 @@ namespace Pixel.FixaBarnkalaset.Web
             CreateMap<City, HomeIndexViewModel.CityViewModel>();
             CreateMap<City, CitiesIndexViewModel.CityViewModel>();
 
-
-
-            CreateMap<CityListView, CitiesIndexViewModel>();
-            CreateMap<CityListView.City, CitiesIndexViewModel.CityViewModel>();
-            CreateMap<CityView, CreateOrEditCityViewModel>();
-            CreateMap<CityListView.City, HomeIndexViewModel.CityViewModel>();
             CreateMap<Arrangement, ArrangementIndexViewModel.ArrangementViewModel>();
             CreateMap<Arrangement, ArrangementDetailsViewModel>();
         }

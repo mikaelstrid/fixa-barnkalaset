@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +10,6 @@ using Microsoft.Extensions.Logging.Internal;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Domain.Commands;
-using Pixel.FixaBarnkalaset.ReadModel;
-using Pixel.FixaBarnkalaset.ReadModel.Interfaces;
 using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;

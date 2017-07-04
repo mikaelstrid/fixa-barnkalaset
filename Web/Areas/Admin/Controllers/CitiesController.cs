@@ -89,24 +89,17 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 
 
         [Route("{urlSlug}/andra")]
-        public IActionResult Edit(string urlSlug)
+        public async Task<IActionResult> Edit(string urlSlug)
         {
             _logger.LogDebug("Edit GET: Edit called with slug {Slug}", urlSlug);
-            var id = _slugLookup.GetIdBySlug(urlSlug);
-            if (!id.HasValue)
+            var city = await _cityRepository.GetBySlug(urlSlug);
+            if (city == null)
             {
                 _logger.LogWarning("Edit GET: No city with slug {Slug} found when getting city", urlSlug);
                 return NotFound();
             }
 
-            var view = _viewRepository.Get<CityView>(id.Value);
-            if (view == null)
-            {
-                _logger.LogError("Edit GET: No city view with id {id} found when getting city", id);
-                return NotFound();
-            }
-
-            var model = _mapper.Map<CityView, CreateOrEditCityViewModel>(view);
+            var model = _mapper.Map<City, CreateOrEditCityViewModel>(city);
             _logger.LogDebug("Edit GET: Returned model {Model}", JsonConvert.SerializeObject(model));
             return View(model);
         }

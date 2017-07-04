@@ -145,7 +145,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_ShouldReturnViewWithModel()
+        public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_AndReturnViewWithModel()
         {
             // ARRANGE
             var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
@@ -156,6 +156,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _sut.ModelState.IsValid.Should().BeFalse();
+            VerifyLogging(LogLevel.Warning);
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().Be(model);
@@ -164,12 +165,13 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
 
         [Fact]
-        public void Edit_Get_GivenNoCityMatchingSlug_ShouldLogWarning_AndReturnNotFound()
+        public async Task Edit_Get_GivenNoCityMatchingSlug_ShouldLogWarning_AndReturnNotFound()
         {
             // ARRANGE
+            _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult((City) null));
 
             // ACT
-            var result = _sut.Edit("unknown_slug");
+            var result = await _sut.Edit("unknown_slug");
 
             // ASSERT
             VerifyLogging(LogLevel.Warning);
@@ -177,42 +179,19 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void Edit_Get_GivenNoCityViewMatchingIdFound_ShouldLogError_AndReturnNotFound()
+        public async Task Edit_Get_ShouldGetView_AndReturnItAsModel()
         {
             // ARRANGE
-            var slug = "halmstad";
-            var id = Guid.Parse("3B88F709-C499-4016-AA1F-883A071CE829");
-            SetupSlugAndView(slug, id, null);
+            var city = new City().Vaxjo();
+            _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
 
             // ACT
-            var result = _sut.Edit(slug);
+            var result = await _sut.Edit(city.Slug);
 
             // ASSERT
-            VerifyLogging(LogLevel.Error);
-            result.Should().BeOfType<NotFoundResult>();
-        }
-
-        [Fact]
-        public void Edit_Get_ShouldGetView_AndReturnItAsModel()
-        {
-            // ARRANGE
-            var view = CreateKungsbackaCityView();
-            SetupSlugAndView(view.Slug, view.Id, view);
-
-            // ACT
-            var result = _sut.Edit(view.Slug);
-
-            // ASSERT
-            _mockSlugLookup.Verify(m => m.GetIdBySlug(view.Slug), Times.Once);
-            _mockViewRepository.Verify(m => m.Get<CityView>(view.Id), Times.Once);
+            _mockCityRepository.Verify(m => m.GetBySlug(city.Slug), Times.Once);
             result.Should().BeOfType<ViewResult>();
-            (result as ViewResult).Model.ShouldBeEquivalentTo(new CreateOrEditCityViewModel
-            {
-                Name = view.Name,
-                Slug = view.Slug,
-                Latitude = view.Latitude,
-                Longitude = view.Longitude
-            });
+            (result as ViewResult).Model.ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers());
         }
 
 

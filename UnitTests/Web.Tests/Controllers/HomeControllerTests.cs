@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +27,13 @@ namespace UnitTests.Web.Tests.Controllers
         }
 
         [Fact]
-        public void Index_GivenNullResponseFromRepository_ShouldReturnAnEmptyResponseModel()
+        public async Task Index_GivenNullResponseFromRepository_ShouldReturnAnEmptyResponseModel()
         {
             // ARRANGE
-            _mockCityRepository.Setup(m => m.GetAll()).Returns((IEnumerable<City>) null);
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) null));
             
             // ACT
-            var result = _sut.Index();
+            var result = await _sut.Index();
 
             // ASSERT
             _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
@@ -43,13 +44,13 @@ namespace UnitTests.Web.Tests.Controllers
         }
 
         [Fact]
-        public void Index_GivenEmptyResponseFromRepository_ShouldReturnAnEmptyResponseModel()
+        public async Task Index_GivenEmptyResponseFromRepository_ShouldReturnAnEmptyResponseModel()
         {
             // ARRANGE
-            _mockCityRepository.Setup(m => m.GetAll()).Returns(new List<City>());
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) new List<City>()));
 
             // ACT
-            var result = _sut.Index();
+            var result =await  _sut.Index();
 
             // ASSERT
             _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
@@ -60,19 +61,18 @@ namespace UnitTests.Web.Tests.Controllers
         }
 
         [Fact]
-        public void Index_GivenTwoCities_ShouldReturnToMappedCitiesInTheResponseModel()
+        public async Task Index_GivenTwoCities_ShouldReturnToMappedCitiesInTheResponseModel()
         {
             // ARRANGE
-            _mockCityRepository.Setup(m => m.GetAll()).Returns(
-                new List<City>
-                {
-                    new City("Halmstad", "halmstad", 10.1, 11.2),
-                    new City("Borås", "boras", 78.1, -178.1)
-                }
-            );
+            var cities = new List<City>
+            {
+                new City("Halmstad", "halmstad", 10.1, 11.2),
+                new City("Borås", "boras", 78.1, -178.1)
+            };
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) cities));
 
             // ACT
-            var result = _sut.Index();
+            var result = await _sut.Index();
 
             // ASSERT
             ((result as ViewResult).Model as HomeIndexViewModel).Cities.ShouldBeEquivalentTo(new List<HomeIndexViewModel.CityViewModel>

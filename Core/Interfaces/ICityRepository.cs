@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Pixel.FixaBarnkalaset.Core.Interfaces
 {
     public interface ICityRepository
     {
-        IEnumerable<City> GetAll();
-        City GetBySlug(string slug);
-        void AddOrUpdate(City model);
-        void Remove(string slug);
+        Task<IEnumerable<City>> GetAll();
+        Task<City> GetBySlug(string slug);
+        Task AddOrUpdate(City model);
+        Task Remove(string slug);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.FixaBarnkalaset.Core;
@@ -21,9 +22,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var cities = _cityRepository.GetAll();
+            var cities = await _cityRepository.GetAll();
             return View(new HomeIndexViewModel
             {
                 Cities = _mapper.Map<IEnumerable<City>, IEnumerable<HomeIndexViewModel.CityViewModel>>(cities)

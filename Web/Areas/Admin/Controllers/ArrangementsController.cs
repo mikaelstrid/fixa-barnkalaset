@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,18 +36,18 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         }
 
         [Route("skapa")]
-        public IActionResult Create(int id)
+        public async Task<IActionResult> Create(int id)
         {
             return View(new CreateOrEditArrangementViewModel
             {
-                Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name })
+                Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name })
             });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public IActionResult Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public async Task<IActionResult> Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
         {
             if (ModelState.IsValid)
             {
@@ -55,22 +56,22 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            arrangement.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
+            arrangement.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(arrangement);
         }
 
         [Route("{id}/andra")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var model = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(_arrangementRepository.GetById(id));
-            model.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
+            model.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id}/andra")]
-        public IActionResult Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
         {
             if (id != arrangement.Id) return NotFound();
 
@@ -81,7 +82,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            arrangement.Cities = _cityRepository.GetAll().Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
+            arrangement.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(arrangement);
         }
     }

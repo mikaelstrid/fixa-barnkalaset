@@ -44,10 +44,10 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         }
 
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             _logger.LogDebug("Index: Called");
-            var cities = _cityRepository.GetAll();
+            var cities = await _cityRepository.GetAll();
             var model = new CitiesIndexViewModel
             {
                 Cities = _mapper.Map<IEnumerable<City>, IEnumerable<CitiesIndexViewModel.CityViewModel>>(cities)
@@ -71,7 +71,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var city = new City(model.Name, model.Slug, model.Latitude, model.Longitude);
-                _cityRepository.AddOrUpdate(city);
+                await _cityRepository.AddOrUpdate(city);
                 _logger.LogInformation("Create POST: Created city {City} with slug {Slug}", JsonConvert.SerializeObject(city), model.Slug);
                 return RedirectToAction("Index");
             }

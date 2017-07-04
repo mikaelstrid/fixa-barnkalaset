@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.FixaBarnkalaset.Core;
@@ -25,9 +26,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
         [Route("{citySlug}")]
-        public IActionResult Index(string citySlug)
+        public async Task<IActionResult> Index(string citySlug)
         {
-            var city = _cityRepository.GetBySlug(citySlug);
+            var city = await _cityRepository.GetBySlug(citySlug);
             if (city == null) return NotFound();
 
             return View(new ArrangementIndexViewModel
@@ -41,9 +42,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
         [Route("{citySlug}/{arrangementSlug}")]
-        public IActionResult Details(string citySlug, string arrangementSlug)
+        public async Task<IActionResult> Details(string citySlug, string arrangementSlug)
         {
-            var city = _cityRepository.GetBySlug(citySlug);
+            var city = await _cityRepository.GetBySlug(citySlug);
             if (city == null) return NotFound();
 
             var arrangement = _arrangementRepository.GetBySlug(citySlug, arrangementSlug);

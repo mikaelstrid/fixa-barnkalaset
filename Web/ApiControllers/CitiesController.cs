@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Mvc;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
@@ -16,10 +17,10 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
         }
 
         [Route("closest")]
-        public IActionResult GetClosest(decimal latitude, decimal longitude)
+        public async Task<IActionResult> GetClosest(decimal latitude, decimal longitude)
         {
             var targetCoordinate = new GeoCoordinate((double) latitude, (double) longitude);
-            var cities = _cityRepository.GetAll();
+            var cities = await _cityRepository.GetAll();
 
             var closestCity = cities
                 .Select(c => new

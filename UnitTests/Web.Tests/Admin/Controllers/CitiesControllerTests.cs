@@ -129,7 +129,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public async Task Create_Post_GivenInvalidModel_ShouldOnlyReturnView()
+        public async Task Create_Post_GivenInvalidModel_ShouldReturnViewWithModel()
         {
             // ARRANGE
             var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
@@ -141,8 +141,26 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             // ASSERT
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
-            (result as ViewResult).Model.Should().BeNull();
+            (result as ViewResult).Model.Should().Be(model);
         }
+
+        [Fact]
+        public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
+            _mockCityRepository.Setup(m => m.GetBySlug(model.Slug)).Returns(Task.FromResult(new City().Halmstad()));
+
+            // ACT
+            var result = await _sut.Create(model);
+
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().Be(model);
+        }
+
 
 
         [Fact]

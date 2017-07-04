@@ -68,15 +68,23 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel model)
         {
             _logger.LogDebug("Create POST: called");
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var city = new City(model.Name, model.Slug, model.Latitude, model.Longitude);
-                await _cityRepository.AddOrUpdate(city);
-                _logger.LogInformation("Create POST: Created city {City} with slug {Slug}", JsonConvert.SerializeObject(city), model.Slug);
-                return RedirectToAction("Index");
+                _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
+                return View(model);
             }
-            _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
-            return View();
+
+            if (await _cityRepository.GetBySlug(model.Slug) != null)
+            {
+                _logger.LogWarning("Create POST: There already exist a city with slug {Slug}", model.Slug);
+                ModelState.AddModelError("Slug", "The slug already exists");
+                return View(model);
+            }
+
+            var city = new City(model.Name, model.Slug, model.Latitude, model.Longitude);
+            await _cityRepository.AddOrUpdate(city);
+            _logger.LogInformation("Create POST: Created city {City} with slug {Slug}", JsonConvert.SerializeObject(city), model.Slug);
+            return RedirectToAction("Index");
         }
 
 

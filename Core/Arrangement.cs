@@ -1,14 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Pixel.FixaBarnkalaset.Core
+﻿namespace Pixel.FixaBarnkalaset.Core
 {
     public class Arrangement
     {
-        [Required]
         public int Id { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string Slug { get; set; }
         public string Pitch { get; set; }
         public string Description { get; set; }
@@ -20,12 +15,10 @@ namespace Pixel.FixaBarnkalaset.Core
         public string PhoneNumber { get; set; }
         public string EmailAddress { get; set; }
         public string Website { get; set; }
-        [Required]
         public double Latitude { get; set; }
-        [Required]
         public double Longitude { get; set; }
 
-        public string CitySlug { get; set; }
-        public City City { get; set; }
+        public string CityId { get; set; }
+        public virtual City City { get; set; }
     }
 }

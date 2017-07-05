@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Pixel.FixaBarnkalaset.Core;
@@ -41,8 +42,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
             _logger.LogDebug("GetBySlug: Get arrangement with slug {CitySlug}/{ArrangementSlug}", citySlug, arrangementSlug);
             return _dbContext
                 .Arrangements
+                .Include(a => a.City)
                 .SingleOrDefault(a =>
-                    a.CitySlug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase)
+                    a.City.Slug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase)
                     && a.Slug.Equals(arrangementSlug, StringComparison.CurrentCultureIgnoreCase)
                 );
         }

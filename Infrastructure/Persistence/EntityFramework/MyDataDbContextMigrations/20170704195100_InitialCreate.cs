@@ -13,14 +13,18 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 name: "Cities",
                 columns: table => new
                 {
-                    Slug = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LastUpdatedUtc = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    Slug = table.Column<string>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cities", x => x.Slug);
+                    table.PrimaryKey("PK_Cities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,37 +33,40 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CitySlug = table.Column<string>(nullable: true),
+                    CityId = table.Column<string>(nullable: true),
+                    CityId1 = table.Column<int>(nullable: true),
                     CoverImage = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
                     GooglePlacesId = table.Column<string>(nullable: true),
+                    LastUpdatedUtc = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Pitch = table.Column<string>(nullable: true),
                     PostalCity = table.Column<string>(nullable: true),
                     PostalCode = table.Column<string>(nullable: true),
-                    Slug = table.Column<string>(nullable: false),
+                    Slug = table.Column<string>(nullable: true),
                     StreetAddress = table.Column<string>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true),
                     Website = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Arrangements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Arrangements_Cities_CitySlug",
-                        column: x => x.CitySlug,
+                        name: "FK_Arrangements_Cities_CityId1",
+                        column: x => x.CityId1,
                         principalTable: "Cities",
-                        principalColumn: "Slug",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Arrangements_CitySlug",
+                name: "IX_Arrangements_CityId1",
                 table: "Arrangements",
-                column: "CitySlug");
+                column: "CityId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

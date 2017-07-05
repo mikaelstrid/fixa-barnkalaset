@@ -21,7 +21,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CitySlug");
+                    b.Property<string>("CityId");
+
+                    b.Property<int?>("CityId1");
 
                     b.Property<string>("CoverImage");
 
@@ -37,8 +39,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.Property<double>("Longitude");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.Property<string>("PhoneNumber");
 
@@ -48,8 +49,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.Property<string>("PostalCode");
 
-                    b.Property<string>("Slug")
-                        .IsRequired();
+                    b.Property<string>("Slug");
 
                     b.Property<string>("StreetAddress");
 
@@ -59,14 +59,14 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CitySlug");
+                    b.HasIndex("CityId1");
 
                     b.ToTable("Arrangements");
                 });
 
             modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.City", b =>
                 {
-                    b.Property<string>("Slug")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("LastUpdatedUtc");
@@ -75,12 +75,13 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.Property<double>("Longitude");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Slug");
 
                     b.Property<string>("UpdatedBy");
 
-                    b.HasKey("Slug");
+                    b.HasKey("Id");
 
                     b.ToTable("Cities");
                 });
@@ -89,7 +90,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 {
                     b.HasOne("Pixel.FixaBarnkalaset.Core.City", "City")
                         .WithMany("Arrangements")
-                        .HasForeignKey("CitySlug");
+                        .HasForeignKey("CityId1");
                 });
         }
     }

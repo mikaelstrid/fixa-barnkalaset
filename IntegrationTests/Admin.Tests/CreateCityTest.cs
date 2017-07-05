@@ -88,7 +88,9 @@ namespace IntegrationTests.Admin.Tests
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _fixture.MyDataDbContext.Cities.Single(c => c.Slug == city.Slug).ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers());
+            _fixture.MyDataDbContext.Cities
+                .Single(c => c.Slug == city.Slug)
+                .ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers().Excluding(c => c.Id));
         }
     }
 }

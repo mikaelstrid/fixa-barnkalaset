@@ -27,12 +27,13 @@ namespace IntegrationTests.Admin.Tests
             var context = await GetIdentityAndAntiForgeryContext(_adminCredentials.UserName, _adminCredentials.Password, url);
 
             var newName = "Malmoe";
+            var newSlug = "malmoe";
             var newLatitude = 17.8;
             var postRequestBody = new Dictionary<string, string>
             {
                 {"__RequestVerificationToken", context.AntiForgeryToken},
                 {"Name", newName},
-                {"Slug", city.Slug},
+                {"Slug", newSlug},
                 {"Latitude", newLatitude.ToString(_swedishCultureInfo)},
                 {"Longitude", city.Longitude.ToString(_swedishCultureInfo)}
             };
@@ -43,10 +44,10 @@ namespace IntegrationTests.Admin.Tests
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            _fixture.MyDataDbContext.Cities.Single(c => c.Slug == city.Slug).ShouldBeEquivalentTo(new City(newName, city.Slug, newLatitude, city.Longitude)
-            {
-                Arrangements = new List<Arrangement>()
-            });
+            _fixture.MyDataDbContext.Cities
+                .Single(c => c.Slug == city.Slug)
+                .ShouldBeEquivalentTo(new City(newName, newSlug, newLatitude, city.Longitude) { Arrangements = new List<Arrangement>() },
+                opt => opt.Excluding(c => c.Id));
         }
     }
 }

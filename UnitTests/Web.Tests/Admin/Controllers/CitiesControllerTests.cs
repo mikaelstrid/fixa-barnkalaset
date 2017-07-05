@@ -207,7 +207,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             AddModelStateError();
 
             // ACT
-            var result = await _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(city.Slug, viewModel);
 
             // ASSERT
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
@@ -225,7 +225,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
 
             // ACT
-            var result = await _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(city.Slug, viewModel);
 
             // ASSERT
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
@@ -244,7 +244,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             viewModel.Name = changedName;
 
             // ACT
-            var result = await _sut.Edit(viewModel.Slug, viewModel);
+            var result = await _sut.Edit(city.Slug, viewModel);
 
             // ASSERT
             VerifyLogging(LogLevel.Information);
@@ -252,6 +252,24 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             result.Should().BeOfType<RedirectToActionResult>();
         }
 
+        [Fact]
+        public async Task Edit_Post_GivenChangedCitySlug_ShouldLogInformation_AndUpdateCityInDatabase()
+        {
+            // ARRANGE
+            var city = new City().Halmstad();
+            var viewModel = CreateCreateOrEditCityViewModel(city);
+            _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
+            var changedSlug = "halmstad-ii";
+            viewModel.Slug = changedSlug;
+
+            // ACT
+            var result = await _sut.Edit(city.Slug, viewModel);
+
+            // ASSERT
+            VerifyLogging(LogLevel.Information);
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.Is<City>(c => c.Slug == changedSlug)), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
 
 
 

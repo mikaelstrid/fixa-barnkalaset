@@ -111,11 +111,15 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (existingCity.Name != model.Name || existingCity.Latitude != model.Latitude || existingCity.Longitude != model.Longitude)
+            if (existingCity.Name != model.Name 
+                || existingCity.Slug != model.Slug 
+                || existingCity.Latitude != model.Latitude 
+                || existingCity.Longitude != model.Longitude)
             {
                 _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}",
                     JsonConvert.SerializeObject(existingCity), JsonConvert.SerializeObject(model));
                 existingCity.Name = model.Name;
+                existingCity.Slug = model.Slug;
                 existingCity.Latitude = model.Latitude;
                 existingCity.Longitude = model.Longitude;
                 await _cityRepository.AddOrUpdate(existingCity);

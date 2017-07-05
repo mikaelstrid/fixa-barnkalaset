@@ -13,13 +13,15 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
     {
         // Move to Startup if needed
         //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        
+
         //private readonly IHttpContextAccessor _httpContextAccessor;
 
         //public MyDataDbContext(DbContextOptions<MyDataDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         //{
         //    _httpContextAccessor = httpContextAccessor;
         //}
+
+        // https://csharp.christiannagel.com/2016/11/07/efcorefields/
 
         public MyDataDbContext(DbContextOptions<MyDataDbContext> options) : base(options)
         {
@@ -30,16 +32,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<City>()
-                .HasKey(c => c.Slug);
             builder.Entity<City>().Property<DateTime>("LastUpdatedUtc");
             builder.Entity<City>().Property<string>("UpdatedBy");
 
-            builder.Entity<Arrangement>()
-                .HasOne(a => a.City)
-                .WithMany(c => c.Arrangements)
-                .HasForeignKey(a => a.CitySlug)
-                .HasPrincipalKey(c => c.Slug);
             builder.Entity<Arrangement>().Property<DateTime>("LastUpdatedUtc");
             builder.Entity<Arrangement>().Property<string>("UpdatedBy");
         }

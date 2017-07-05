@@ -1,5 +1,4 @@
-﻿@using Pixel.FixaBarnkalaset.Core
-@model IEnumerable<Pixel.FixaBarnkalaset.Core.Arrangement>
+﻿@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.ArrangementsIndexViewModel
 
 <div class="ui main container">
 
@@ -14,11 +13,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var arrangement in Model)
+            @foreach (var arrangement in Model.Arrangements)
             {
                 <tr>
-                    <td>@arrangement.Name</td>
-                    <td>@arrangement.CitySlug</td>
+                    <td data-test-slug="@arrangement.Slug">@arrangement.Name</td>
+                    <td>@arrangement.CityName</td>
                     <td>@arrangement.Pitch</td>
                     <td><a asp-action="Edit" asp-route-id="@arrangement.Id">Ändra</a></td>
                 </tr>

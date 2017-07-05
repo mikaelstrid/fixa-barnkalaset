@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -21,10 +22,10 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
             _logger = logger;
         }
 
-        public IEnumerable<Arrangement> GetAll()
+        public async Task<IEnumerable<Arrangement>> GetAll()
         {
             _logger.LogDebug("GetAll: Get all arrangements");
-            return _dbContext.Arrangements.AsEnumerable();
+            return await _dbContext.Arrangements.ToListAsync();
         }
 
         public IEnumerable<Arrangement> GetByCitySlug(string citySlug)

@@ -1,4 +1,5 @@
-﻿using Pixel.FixaBarnkalaset.Core;
+﻿using System.Collections.Generic;
+using Pixel.FixaBarnkalaset.Core;
 
 namespace UnitTests.Utilities.TestDataExtensions
 {
@@ -38,6 +39,20 @@ namespace UnitTests.Utilities.TestDataExtensions
             city.Latitude = 56.8894262;
             city.Longitude = 14.7241027;
             return city;
+        }
+
+        public static Arrangement Busfabriken(this City city)
+        {
+            var arrangement = new Arrangement().Busfabriken(city);
+            city.Arrangements = new List<Arrangement> { arrangement };
+            return arrangement;
+        }
+
+        public static Arrangement Laserdome(this City city)
+        {
+            var arrangement = new Arrangement().Laserdome(city);
+            city.Arrangements = new List<Arrangement> { arrangement };
+            return arrangement;
         }
     }
 }

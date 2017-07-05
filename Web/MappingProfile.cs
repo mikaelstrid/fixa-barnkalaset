@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using Pixel.FixaBarnkalaset.Web.Models;
 
 namespace Pixel.FixaBarnkalaset.Web
@@ -9,18 +8,21 @@ namespace Pixel.FixaBarnkalaset.Web
     {
         public MappingProfile()
         {
-            CreateMap<City, CitiesIndexViewModel>();
-            CreateMap<City, CreateOrEditCityViewModel>();
-            CreateMap<CreateOrEditCityViewModel, City>();
-
-            CreateMap<Arrangement, CreateOrEditArrangementViewModel>();
-            CreateMap<CreateOrEditArrangementViewModel, Arrangement>();
-
+            // PUBLIC
             CreateMap<City, HomeIndexViewModel.CityViewModel>();
-            CreateMap<City, CitiesIndexViewModel.CityViewModel>();
-
             CreateMap<Arrangement, ArrangementIndexViewModel.ArrangementViewModel>();
             CreateMap<Arrangement, ArrangementDetailsViewModel>();
+
+
+            // ADMIN
+            CreateMap<Arrangement, Areas.Admin.ViewModels.CreateOrEditArrangementViewModel>();
+            CreateMap<Arrangement, Areas.Admin.ViewModels.ArrangementsIndexViewModel.ArrangementViewModel>();
+
+            CreateMap<City, Areas.Admin.ViewModels.CitiesIndexViewModel.CityViewModel>();
+            CreateMap<City, Areas.Admin.ViewModels.CitiesIndexViewModel>();
+            CreateMap<City, Areas.Admin.ViewModels.CreateOrEditCityViewModel>();
+            CreateMap<Areas.Admin.ViewModels.CreateOrEditCityViewModel, City>();
+            CreateMap<Areas.Admin.ViewModels.CreateOrEditArrangementViewModel, Arrangement>();
         }
     }
 }

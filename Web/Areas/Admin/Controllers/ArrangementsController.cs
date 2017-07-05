@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
@@ -16,23 +18,32 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
     public class ArrangementsController : Controller
     {
         private readonly IMapper _mapper;
+        private readonly ILogger<ArrangementsController> _logger;
         private readonly IArrangementRepository _arrangementRepository;
         private readonly ICityRepository _cityRepository;
 
         public ArrangementsController(
             IMapper mapper,
+            ILogger<ArrangementsController> logger,
             IArrangementRepository arrangementRepository, 
             ICityRepository cityRepository)
         {
             _mapper = mapper;
+            _logger = logger;
             _arrangementRepository = arrangementRepository;
             _cityRepository = cityRepository;
         }
 
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_arrangementRepository.GetAll());
+            _logger.LogDebug("Index: Called");
+            var arrangements = await _arrangementRepository.GetAll();
+            var model = new ArrangementsIndexViewModel
+            {
+                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(arrangements)
+            };
+            return View(model);
         }
 
         [Route("skapa")]

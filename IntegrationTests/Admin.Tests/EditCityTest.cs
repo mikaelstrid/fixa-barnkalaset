@@ -21,7 +21,7 @@ namespace IntegrationTests.Admin.Tests
         {
             // ARRANGE
             var city = new City().Malmo();
-            PopulateDatabase(_fixture, city);
+            PopulateDatabaseWithCities(_fixture, city);
 
             var url = $"/admin/stader/{city.Slug}/andra";
             var context = await GetIdentityAndAntiForgeryContext(_adminCredentials.UserName, _adminCredentials.Password, url);

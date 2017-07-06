@@ -49,11 +49,11 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 
         [Required]
         [Display(Name = "Latitud")]
-        public decimal Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [Required]
         [Display(Name = "Longitud")]
-        public decimal Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [Required]
         [Display(Name = "Stad")]

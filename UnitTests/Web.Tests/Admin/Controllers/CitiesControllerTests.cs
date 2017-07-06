@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +5,6 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Internal;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
@@ -18,7 +16,7 @@ using Xunit;
 
 namespace UnitTests.Web.Tests.Admin.Controllers
 {
-    public class CitiesControllerTests : ControllerTestBase
+    public class CitiesControllerTests : ControllerTestBase<CitiesController>
     {
         private readonly Mock<ILogger<CitiesController>> _mockLogger;
         private readonly Mock<ICityRepository> _mockCityRepository;
@@ -146,7 +144,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _sut.ModelState.IsValid.Should().BeFalse();
-            VerifyLogging(LogLevel.Warning);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().Be(model);
@@ -164,7 +162,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = await _sut.Edit("unknown_slug");
 
             // ASSERT
-            VerifyLogging(LogLevel.Warning);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
             result.Should().BeOfType<NotFoundResult>();
         }
 
@@ -193,7 +191,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = await _sut.Edit("unknown_slug", CreateCreateOrEditCityViewModel(new City().Halmstad()));
 
             // ASSERT
-            VerifyLogging(LogLevel.Warning);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
             result.Should().BeOfType<NotFoundResult>();
         }
 
@@ -213,7 +211,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().Be(viewModel);
-            VerifyLogging(LogLevel.Warning);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
         }
 
         [Fact]
@@ -233,7 +231,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _sut.ModelState.IsValid.Should().BeFalse();
-            VerifyLogging(LogLevel.Warning);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.Should().Be(model);
@@ -254,7 +252,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-            VerifyLogging(LogLevel.Information);
+            VerifyLogging(_mockLogger, LogLevel.Information);
             result.Should().BeOfType<RedirectToActionResult>();
         }
 
@@ -272,7 +270,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = await _sut.Edit(city.Slug, viewModel);
 
             // ASSERT
-            VerifyLogging(LogLevel.Information);
+            VerifyLogging(_mockLogger, LogLevel.Information);
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.Is<City>(c => c.Name == changedName)), Times.Once);
             result.Should().BeOfType<RedirectToActionResult>();
         }
@@ -291,7 +289,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var result = await _sut.Edit(city.Slug, viewModel);
 
             // ASSERT
-            VerifyLogging(LogLevel.Information);
+            VerifyLogging(_mockLogger, LogLevel.Information);
             _mockCityRepository.Verify(m => m.AddOrUpdate(It.Is<City>(c => c.Slug == changedSlug)), Times.Once);
             result.Should().BeOfType<RedirectToActionResult>();
         }
@@ -307,20 +305,6 @@ namespace UnitTests.Web.Tests.Admin.Controllers
                 Latitude = city.Latitude,
                 Longitude = city.Longitude
             };
-        }
-
-        private void VerifyLogging(LogLevel logLevel)
-        {
-            _mockLogger.Verify(
-                m => m.Log(
-                    logLevel,
-                    It.IsAny<EventId>(),
-                    //It.Is<FormattedLogValues>(v => v.ToString().Contains("CreateInvoiceFailed")),
-                    It.IsAny<FormattedLogValues>(),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<object, Exception, string>>()
-                )
-            );
         }
     }
 }

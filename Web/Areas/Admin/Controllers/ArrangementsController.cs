@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
@@ -91,7 +92,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             var existingArrangement = await _arrangementRepository.GetBySlug(urlCitySlug, urlSlug);
             if (existingArrangement == null)
             {
-                _logger.LogWarning("Edit GET: No arrangement with slug {Slug} and city slug {CitySlug} found when getting city", urlSlug, urlCitySlug);
+                _logger.LogWarning("Edit GET: No arrangement with slug {Slug} and city slug {CitySlug} found", urlSlug, urlCitySlug);
                 return NotFound();
             }
             
@@ -102,23 +103,104 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("{id}/andra")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        [Route("{urlCitySlug}/{urlSlug}/andra")]
+        public async Task<IActionResult> Edit(string urlCitySlug, string urlSlug, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
         {
-            if (id != arrangement.Id) return NotFound();
+            //if (id != arrangement.Id) return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var model = _mapper.Map<CreateOrEditArrangementViewModel, Arrangement>(arrangement);
-                await _arrangementRepository.AddOrUpdate(model);
-                return RedirectToAction("Index");
+                model.Cities = await GetCitySelectListItems();
+                return View(model);
             }
 
-            arrangement.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
-            return View(arrangement);
+            var existingArrangement = await _arrangementRepository.GetBySlug(urlCitySlug, urlSlug);
+            if (existingArrangement == null)
+            {
+                _logger.LogWarning("Edit POST: No arrangement with slug {Slug} and city slug {CitySlug} found", urlSlug, urlCitySlug);
+                return NotFound();
+            }
+            
+            if (existingArrangement.Name != model.Name
+                || existingArrangement.Slug != model.Slug
+                || existingArrangement.Slug != model.Slug
+                || existingArrangement.Pitch != model.Pitch
+                || existingArrangement.Description != model.Description
+                || existingArrangement.GooglePlacesId != model.GooglePlacesId
+                || existingArrangement.CoverImage != model.CoverImage
+                || existingArrangement.StreetAddress != model.StreetAddress
+                || existingArrangement.PostalCode != model.PostalCode
+                || existingArrangement.PostalCity != model.PostalCity
+                || existingArrangement.PhoneNumber != model.PhoneNumber
+                || existingArrangement.EmailAddress != model.EmailAddress
+                || existingArrangement.Website != model.Website
+                || existingArrangement.Latitude != model.Latitude
+                || existingArrangement.Longitude != model.Longitude
+                || existingArrangement.City.Slug != model.CitySlug)
+            {
+                var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                _logger.LogInformation("Edit POST: Edited arrangement from {OldArrangement} to {NewArrangement}",
+                    JsonConvert.SerializeObject(existingArrangement, settings), 
+                    JsonConvert.SerializeObject(model, settings));
+
+                if (existingArrangement.Slug != model.Slug)
+                {
+                    if (await _arrangementRepository.GetBySlug(model.CitySlug, model.Slug) != null)
+                    {
+                        _logger.LogWarning("Create POST: There is already an arrangement with city slug {CitySlug} and slug {Slug}", model.CitySlug, model.Slug);
+                        ModelState.AddModelError("Slug", "The slug combination must be unique");
+                        ModelState.AddModelError("CitySlug", "The slug combination must be unique");
+                        return View(model);
+                    }
+                }
+
+                if (existingArrangement.City.Slug != model.CitySlug)
+                {
+                    var city = await _cityRepository.GetBySlug(model.CitySlug);
+                    if (city == null)
+                    {
+                        _logger.LogWarning("Create POST: A city with slug {CitySlug} does not exist", model.CitySlug);
+                        ModelState.AddModelError("CitySlug", "The slug doesn't exist");
+                        return View(model);
+                    }
+
+                    if (await _arrangementRepository.GetBySlug(model.CitySlug, model.Slug) != null)
+                    {
+                        _logger.LogWarning("Create POST: There is already an arrangement with city slug {CitySlug} and slug {Slug}", model.CitySlug, model.Slug);
+                        ModelState.AddModelError("Slug", "The slug combination must be unique");
+                        ModelState.AddModelError("CitySlug", "The slug combination must be unique");
+                        return View(model);
+                    }
+
+                    existingArrangement.CityId = city.Id;
+                }
+
+                existingArrangement.Name = model.Name;
+                existingArrangement.Slug = model.Slug;
+                existingArrangement.Pitch = model.Pitch;
+                existingArrangement.Description = model.Description;
+                existingArrangement.GooglePlacesId = model.GooglePlacesId;
+                existingArrangement.CoverImage = model.CoverImage;
+                existingArrangement.StreetAddress = model.StreetAddress;
+                existingArrangement.PostalCode = model.PostalCode;
+                existingArrangement.PostalCity = model.PostalCity;
+                existingArrangement.PhoneNumber = model.PhoneNumber;
+                existingArrangement.EmailAddress = model.EmailAddress;
+                existingArrangement.Website = model.Website;
+                existingArrangement.Latitude = model.Latitude;
+                existingArrangement.Longitude = model.Longitude;
+
+                await _arrangementRepository.AddOrUpdate(existingArrangement);
+            }
+            else
+            {
+                _logger.LogInformation("Edit POST: No changes detected");
+            }
+            
+            return RedirectToAction("Index");
         }
 
-
+        
 
 
         private async Task<IEnumerable<SelectListItem>> GetCitySelectListItems()

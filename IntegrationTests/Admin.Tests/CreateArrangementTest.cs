@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IntegrationTests.Utilities;
+using IntegrationTests.Utilities.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Web;
@@ -15,13 +17,12 @@ namespace IntegrationTests.Admin.Tests
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
     public class CreateArrangementTest : IntegrationTestBase
     {
-        private readonly City _populatedHalmstad;
+        private static City _populatedHalmstad;
         private const string Url = "/admin/arrangemang/skapa";
 
         public CreateArrangementTest(TestFixture<Startup> fixture) : base(fixture)
         {
             if (fixture.IsInitialized) return;
-
             _populatedHalmstad = new City().Halmstad();
             PopulateDatabaseWithCities(fixture, _populatedHalmstad);
             fixture.IsInitialized = true;
@@ -101,6 +102,24 @@ namespace IntegrationTests.Admin.Tests
         }
 
         [Fact]
+        public async Task CreateArrangement_GivenOneCityInDatabase_ShouldReturnSelectWithOneCity()
+        {
+            // ARRANGE
+            var identityContext = await GetIdentityContext(_adminCredentials.UserName, _adminCredentials.Password);
+            var request = GetRequestHelper.CreateWithCookiesFromResponse("/admin/arrangemang/skapa", identityContext.IdentityResponse);
+
+            // ACT
+            var response = await _client.SendAsync(request);
+
+            // ASSERT
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var responseString = await response.Content.ReadAsStringAsync();
+            responseString.Should().Contain("<h1>Skapa arrangemang</h1>");
+            Regex.Matches(responseString, "<option").Count.Should().Be(1);
+            responseString.Should().Contain("<option value=\"halmstad\">Halmstad</option>");
+        }
+
+        [Fact]
         public async Task CreateArrangement_GivenValidModel_ShouldWriteArrangementToDatabase()
         {
             // ARRANGE
@@ -135,13 +154,13 @@ namespace IntegrationTests.Admin.Tests
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            System.Diagnostics.Debug.WriteLine("A1: " + _fixture.MyDataDbContext.Arrangements.Count());
+            var expectedArrangement = arrangement;
+            expectedArrangement.CityId = _populatedHalmstad.Id;
             _fixture.MyDataDbContext
                 .Arrangements
                 .Include(a => a.City)
                 .Single(a => a.City.Slug == halmstad.Slug && a.Slug == arrangement.Slug)
-                .ShouldBeEquivalentTo(arrangement, opt => opt
-                    .Including(a => a.CityId == _populatedHalmstad.Id)
+                .ShouldBeEquivalentTo(expectedArrangement, opt => opt
                     .ExcludingMissingMembers()
                     .Excluding(a => a.Id)
                     .Excluding(a => a.City));

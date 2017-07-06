@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Pixel.FixaBarnkalaset.Core;
 
 namespace UnitTests.Utilities.TestDataExtensions
 {
     public static class CityTestDataExtensions
     {
+        public static City With(this City city, Action<City> action)
+        {
+            action(city);
+            return city;
+        }
+
         public static City Halmstad(this City city)
         {
             city.Name = "Halmstad";

@@ -111,13 +111,19 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            if (urlSlug != model.Slug && await _cityRepository.GetBySlug(model.Slug) != null)
+            {
+                _logger.LogWarning("Edit POST: A city with slug {Slug} already exists.", model.Slug);
+                ModelState.AddModelError("Slug", "The slug already exists");
+                return View(model);
+            }
+
             if (existingCity.Name != model.Name 
                 || existingCity.Slug != model.Slug 
                 || existingCity.Latitude != model.Latitude 
                 || existingCity.Longitude != model.Longitude)
             {
-                _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}",
-                    JsonConvert.SerializeObject(existingCity), JsonConvert.SerializeObject(model));
+                _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}", JsonConvert.SerializeObject(existingCity), JsonConvert.SerializeObject(model));
                 existingCity.Name = model.Name;
                 existingCity.Slug = model.Slug;
                 existingCity.Latitude = model.Latitude;

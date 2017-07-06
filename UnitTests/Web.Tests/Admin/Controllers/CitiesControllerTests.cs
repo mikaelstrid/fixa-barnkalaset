@@ -217,6 +217,31 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
+        public async Task Edit_Post_GivenDuplicateSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var cityUnderTest = new City().Halmstad();
+            var otherExistingCity = new City().Vaxjo();
+            _mockCityRepository.Setup(m => m.GetBySlug(cityUnderTest.Slug)).Returns(Task.FromResult(cityUnderTest));
+            _mockCityRepository.Setup(m => m.GetBySlug(otherExistingCity.Slug)).Returns(Task.FromResult(otherExistingCity));
+
+            // ACT
+            var model = CreateCreateOrEditCityViewModel(cityUnderTest);
+            var originalSlug = model.Slug;
+            model.Slug = otherExistingCity.Slug;
+            var result = await _sut.Edit(originalSlug, model);
+
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
+            VerifyLogging(LogLevel.Warning);
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().Be(model);
+        }
+
+
+
+        [Fact]
         public async Task Edit_Post_GivenNoChanges_ShouldLogInformation_AndNotUpdateTheDatabase()
         {
             // ARRANGE
@@ -258,7 +283,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             // ARRANGE
             var city = new City().Halmstad();
             var viewModel = CreateCreateOrEditCityViewModel(city);
-            _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
+            _mockCityRepository.Setup(m => m.GetBySlug(city.Slug)).Returns(Task.FromResult(city));
             var changedSlug = "halmstad-ii";
             viewModel.Slug = changedSlug;
 

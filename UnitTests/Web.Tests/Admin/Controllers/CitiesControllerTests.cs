@@ -18,7 +18,7 @@ using Xunit;
 
 namespace UnitTests.Web.Tests.Admin.Controllers
 {
-    public class CitiesControllerTests
+    public class CitiesControllerTests : ControllerTestBase
     {
         private readonly Mock<ILogger<CitiesController>> _mockLogger;
         private readonly Mock<ICityRepository> _mockCityRepository;
@@ -70,7 +70,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         public async Task Index_GivenTwoCitiesFromRepository_ShouldReturnModelWithTwoCities()
         {
             // ARRANGE
-            var cities = new List<City> { new City().Halmstad(), new City().Vaxjo() };
+            var cities = new List<City> {new City().Halmstad(), new City().Vaxjo()};
             _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) cities));
 
             // ACT
@@ -123,7 +123,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         {
             // ARRANGE
             var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
-            AddModelStateError();
+            AddModelStateError(_sut);
 
             // ACT
             var result = await _sut.Create(model);
@@ -183,7 +183,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             result.Should().BeOfType<ViewResult>();
             (result as ViewResult).Model.ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers());
         }
-        
+
         [Fact]
         public async Task Edit_Post_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
         {
@@ -204,7 +204,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var city = new City().Halmstad();
             var viewModel = CreateCreateOrEditCityViewModel(city);
             _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
-            AddModelStateError();
+            AddModelStateError(_sut);
 
             // ACT
             var result = await _sut.Edit(city.Slug, viewModel);
@@ -282,11 +282,6 @@ namespace UnitTests.Web.Tests.Admin.Controllers
                 Latitude = city.Latitude,
                 Longitude = city.Longitude
             };
-        }
-
-        private void AddModelStateError()
-        {
-            _sut.ModelState.AddModelError("key", "error message");
         }
 
         private void VerifyLogging(LogLevel logLevel)

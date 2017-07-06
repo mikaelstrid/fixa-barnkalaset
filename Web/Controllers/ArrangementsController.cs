@@ -47,7 +47,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             var city = await _cityRepository.GetBySlug(citySlug);
             if (city == null) return NotFound();
 
-            var arrangement = _arrangementRepository.GetBySlug(citySlug, arrangementSlug);
+            var arrangement = await _arrangementRepository.GetBySlug(citySlug, arrangementSlug);
             if (arrangement == null) return NotFound();
 
             var viewModel = _mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement);

@@ -67,7 +67,7 @@ namespace IntegrationTests.Admin.Tests
 
 
         [Fact]
-        public async Task CreateCity_GivenValidModel_ShouldWriteEventToDatabase()
+        public async Task CreateCity_GivenValidModel_ShouldWriteCityToDatabase()
         {
             // ARRANGE
             var city = new City().Halmstad();

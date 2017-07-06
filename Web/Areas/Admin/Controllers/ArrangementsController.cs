@@ -47,36 +47,57 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         }
 
         [Route("skapa")]
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create()
         {
-            return View(new CreateOrEditArrangementViewModel
-            {
-                Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name })
-            });
+            return View(new CreateOrEditArrangementViewModel {Cities = await GetCitySelectListItems()});
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public async Task<IActionResult> Create([Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel arrangement)
+        public async Task<IActionResult> Create([Bind("Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var model = _mapper.Map<CreateOrEditArrangementViewModel, Arrangement>(arrangement);
-                _arrangementRepository.AddOrUpdate(model);
-                return RedirectToAction("Index");
+                model.Cities = await GetCitySelectListItems();
+                return View(model);
             }
 
-            arrangement.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
-            return View(arrangement);
+            var city = await _cityRepository.GetBySlug(model.CitySlug);
+            if (city == null)
+            {
+                _logger.LogError("Edit GET: No city with slug {CitySlug} found when creating arrangement", model.CitySlug);
+                ModelState.AddModelError("CitySlug", "The city slug does not exist");
+                return View(model);
+            }
+
+            if (await _arrangementRepository.GetBySlug(model.CitySlug, model.Slug) != null)
+            {
+                _logger.LogWarning("Create POST: There already exist a arrangement with {Slug} and city with slug {CitySlug}", model.Slug, model.CitySlug);
+                ModelState.AddModelError("Slug", "The slug already exists");
+                ModelState.AddModelError("CitySlug", "The slug already exists");
+                return View(model);
+            }
+
+            var arrangement = _mapper.Map<CreateOrEditArrangementViewModel, Arrangement>(model);
+            arrangement.CityId = city.Id; 
+            await _arrangementRepository.AddOrUpdate(arrangement);
+            return RedirectToAction("Index");
         }
 
-        [Route("{id}/andra")]
-        public async Task<IActionResult> Edit(int id)
+        [Route("{urlCitySlug}/{urlSlug}/andra")]
+        public async Task<IActionResult> Edit(string urlCitySlug, string urlSlug)
         {
-            var model = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(_arrangementRepository.GetById(id));
-            model.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
-            return View(model);
+            var existingArrangement = await _arrangementRepository.GetBySlug(urlCitySlug, urlSlug);
+            if (existingArrangement == null)
+            {
+                _logger.LogWarning("Edit GET: No arrangement with slug {Slug} and city slug {CitySlug} found when getting city", urlSlug, urlCitySlug);
+                return NotFound();
+            }
+            
+            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(existingArrangement);
+            viewModel.Cities = await GetCitySelectListItems();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -89,12 +110,20 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var model = _mapper.Map<CreateOrEditArrangementViewModel, Arrangement>(arrangement);
-                _arrangementRepository.AddOrUpdate(model);
+                await _arrangementRepository.AddOrUpdate(model);
                 return RedirectToAction("Index");
             }
 
             arrangement.Cities = (await _cityRepository.GetAll()).Select(c => new SelectListItem { Value = c.Slug, Text = c.Name });
             return View(arrangement);
+        }
+
+
+
+
+        private async Task<IEnumerable<SelectListItem>> GetCitySelectListItems()
+        {
+            return (await _cityRepository.GetAll()).Select(c => new SelectListItem {Text = c.Name, Value = c.Slug});
         }
     }
 }

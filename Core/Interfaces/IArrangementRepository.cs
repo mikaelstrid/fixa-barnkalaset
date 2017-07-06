@@ -7,9 +7,9 @@ namespace Pixel.FixaBarnkalaset.Core.Interfaces
     {
         Task<IEnumerable<Arrangement>> GetAll();
         IEnumerable<Arrangement> GetByCitySlug(string citySlug);
-        Arrangement GetBySlug(string citySlug, string arrangementSlug);
-        Arrangement GetById(int id);
-        void AddOrUpdate(Arrangement arrangement);
-        void Remove(int id);
+        Task<Arrangement> GetBySlug(string citySlug, string arrangementSlug);
+        Task<Arrangement> GetById(int id);
+        Task AddOrUpdate(Arrangement arrangement);
+        Task Remove(int id);
     }
 }

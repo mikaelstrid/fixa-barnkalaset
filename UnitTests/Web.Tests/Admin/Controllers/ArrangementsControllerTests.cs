@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 using Moq;
@@ -18,8 +19,9 @@ using Xunit;
 
 namespace UnitTests.Web.Tests.Admin.Controllers
 {
-    public class ArrangementsControllerTests
+    public class ArrangementsControllerTests : ControllerTestBase
     {
+        private readonly IMapper _mapper;
         private readonly Mock<ILogger<ArrangementsController>> _mockLogger;
         private readonly Mock<IArrangementRepository> _mockArrangementsRepository;
         private readonly Mock<ICityRepository> _mockCityRepository;
@@ -27,11 +29,11 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
         public ArrangementsControllerTests()
         {
-            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
+            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockLogger = new Mock<ILogger<ArrangementsController>>();
             _mockArrangementsRepository = new Mock<IArrangementRepository>();
             _mockCityRepository = new Mock<ICityRepository>();
-            _sut = new ArrangementsController(mapper, _mockLogger.Object, _mockArrangementsRepository.Object, _mockCityRepository.Object);
+            _sut = new ArrangementsController(_mapper, _mockLogger.Object, _mockArrangementsRepository.Object, _mockCityRepository.Object);
         }
 
         [Fact]
@@ -88,104 +90,169 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
 
 
-        //[Fact]
-        //public void Create_Get_ShouldOnlyReturnView()
-        //{
-        //    // ARRANGE
+        [Fact]
+        public async Task Create_Get_ShouldReturnView_WithEmptyModelExceptForAvailableCities()
+        {
+            // ARRANGE
+            var halmstad = new City().Halmstad();
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) new[] {halmstad}));
 
-        //    // ACT
-        //    var result = _sut.Create();
+            // ACT
+            var result = await _sut.Create();
 
-        //    // ASSERT
-        //    _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().BeNull();
-        //}
-
-        //[Fact]
-        //public async Task Create_Post_GivenValidModel_ShouldCallRepository()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Halmstad();
-        //    var model = CreateCreateOrEditCityViewModel(city);
-        //    City createdCity = null;
-        //    _mockCityRepository.Setup(m => m.AddOrUpdate(It.IsAny<City>()))
-        //        .Callback<City>(c => createdCity = c)
-        //        .Returns(Task.CompletedTask);
-
-        //    // ACT
-        //    await _sut.Create(model);
-
-        //    // ASSERT
-        //    createdCity.ShouldBeEquivalentTo(city);
-        //    _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Once);
-        //}
-
-        //[Fact]
-        //public async Task Create_Post_GivenInvalidModel_ShouldReturnViewWithModel()
-        //{
-        //    // ARRANGE
-        //    var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
-        //    AddModelStateError();
-
-        //    // ACT
-        //    var result = await _sut.Create(model);
-
-        //    // ASSERT
-        //    _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().Be(model);
-        //}
-
-        //[Fact]
-        //public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
-        //{
-        //    // ARRANGE
-        //    var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
-        //    _mockCityRepository.Setup(m => m.GetBySlug(model.Slug)).Returns(Task.FromResult(new City().Halmstad()));
-
-        //    // ACT
-        //    var result = await _sut.Create(model);
-
-        //    // ASSERT
-        //    _sut.ModelState.IsValid.Should().BeFalse();
-        //    VerifyLogging(LogLevel.Warning);
-        //    _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().Be(model);
-        //}
+            // ASSERT
+            _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.ShouldBeEquivalentTo(new CreateOrEditArrangementViewModel
+            {
+                Cities = new [] { new SelectListItem { Text = halmstad.Name, Value = halmstad.Slug } }
+            });
+        }
 
 
+        [Fact]
+        public async Task Create_Post_GivenValidModel_ShouldCallRepository()
+        {
+            // ARRANGE
+            var halmstad = new City().Halmstad();
+            var arrangement = halmstad.Laserdome();
+            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(arrangement);
+            Arrangement createdArrangement = null;
+            _mockCityRepository.Setup(m => m.GetBySlug(halmstad.Slug)).Returns(Task.FromResult(halmstad));
+            _mockArrangementsRepository.Setup(m => m.AddOrUpdate(It.IsAny<Arrangement>()))
+                .Callback<Arrangement>(c => createdArrangement = c)
+                .Returns(Task.CompletedTask);
 
-        //[Fact]
-        //public async Task Edit_Get_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
-        //{
-        //    // ARRANGE
-        //    _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult((City) null));
+            // ACT
+            await _sut.Create(viewModel);
 
-        //    // ACT
-        //    var result = await _sut.Edit("unknown_slug");
+            // ASSERT
+            createdArrangement.ShouldBeEquivalentTo(arrangement, opt => opt.Excluding(a => a.City));
+            _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Once);
+        }
 
-        //    // ASSERT
-        //    VerifyLogging(LogLevel.Warning);
-        //    result.Should().BeOfType<NotFoundResult>();
-        //}
+        [Fact]
+        public async Task Create_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(new City().Halmstad().Laserdome());
+            AddModelStateError(_sut);
 
-        //[Fact]
-        //public async Task Edit_Get_ShouldGetView_AndReturnItAsModel()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Vaxjo();
-        //    _mockCityRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
+            // ACT
+            var result = await _sut.Create(viewModel);
 
-        //    // ACT
-        //    var result = await _sut.Edit(city.Slug);
+            // ASSERT
+            _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Never);
+            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().Be(viewModel);
+        }
 
-        //    // ASSERT
-        //    _mockCityRepository.Verify(m => m.GetBySlug(city.Slug), Times.Once);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers());
-        //}
+        [Fact]
+        public async Task Create_Post_GivenUnknownCitySlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var halmstad = new City().Halmstad();
+            var busfabriken = new Arrangement().Busfabriken(halmstad);
+            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(busfabriken);
+            _mockCityRepository.Setup(m => m.GetBySlug(halmstad.Slug)).Returns(Task.FromResult((City)null));
+
+            // ACT
+            var result = await _sut.Create(viewModel);
+
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
+            VerifyLogging(LogLevel.Error);
+            _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().Be(viewModel);
+        }
+
+        [Fact]
+        public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var halmstad = new City().Halmstad();
+            var busfabriken = new Arrangement().Busfabriken(halmstad);
+            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(busfabriken);
+            _mockCityRepository.Setup(m => m.GetBySlug(halmstad.Slug)).Returns(Task.FromResult(halmstad));
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(halmstad.Slug, busfabriken.Slug)).Returns(Task.FromResult(busfabriken));
+
+            // ACT
+            var result = await _sut.Create(viewModel);
+
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
+            VerifyLogging(LogLevel.Warning);
+            _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().Be(viewModel);
+        }
+
+
+
+        [Fact]
+        public async Task Edit_Get_GivenUnknownSlugs_ShouldLogWarning_AndReturnNotFound()
+        {
+            // ARRANGE
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult((Arrangement)null));
+
+            // ACT
+            var result = await _sut.Edit("unknown_city_slug", "unknown_slug");
+
+            // ASSERT
+            VerifyLogging(LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Edit_Get_GivenUnknownCitySlug_ShouldLogWarning_AndReturnNotFound()
+        {
+            // ARRANGE
+            var laserdome = new City().Halmstad().Laserdome();
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult((Arrangement)null));
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(laserdome.City.Slug, laserdome.Slug)).Returns(Task.FromResult(laserdome));
+
+            // ACT
+            var result = await _sut.Edit("unknown_city_slug", laserdome.Slug);
+
+            // ASSERT
+            VerifyLogging(LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Edit_Get_GivenUnknownArrangementSlug_ShouldLogWarning_AndReturnNotFound()
+        {
+            // ARRANGE
+            var laserdome = new City().Halmstad().Laserdome();
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult((Arrangement)null));
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(laserdome.City.Slug, laserdome.Slug)).Returns(Task.FromResult(laserdome));
+
+            // ACT
+            var result = await _sut.Edit(laserdome.City.Slug, "unknown_slug");
+
+            // ASSERT
+            VerifyLogging(LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+
+        [Fact]
+        public async Task Edit_Get_ShouldGetView_AndReturnItAsModel()
+        {
+            // ARRANGE
+            var busfabriken = new City().Halmstad().Busfabriken();
+            _mockArrangementsRepository.Setup(m => m.GetBySlug(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(busfabriken));
+
+            // ACT
+            var result = await _sut.Edit(busfabriken.City.Slug, busfabriken.Slug);
+
+            // ASSERT
+            _mockArrangementsRepository.Verify(m => m.GetBySlug(busfabriken.City.Slug, busfabriken.Slug), Times.Once);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.ShouldBeEquivalentTo(busfabriken, opt => opt.ExcludingMissingMembers());
+        }
 
         //[Fact]
         //public async Task Edit_Post_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
@@ -276,34 +343,18 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
 
 
-        //private static CreateOrEditCityViewModel CreateCreateOrEditCityViewModel(City city)
-        //{
-        //    return new CreateOrEditCityViewModel
-        //    {
-        //        Name = city.Name,
-        //        Slug = city.Slug,
-        //        Latitude = city.Latitude,
-        //        Longitude = city.Longitude
-        //    };
-        //}
-
-        //private void AddModelStateError()
-        //{
-        //    _sut.ModelState.AddModelError("key", "error message");
-        //}
-
-        //private void VerifyLogging(LogLevel logLevel)
-        //{
-        //    _mockLogger.Verify(
-        //        m => m.Log(
-        //            logLevel,
-        //            It.IsAny<EventId>(),
-        //            //It.Is<FormattedLogValues>(v => v.ToString().Contains("CreateInvoiceFailed")),
-        //            It.IsAny<FormattedLogValues>(),
-        //            It.IsAny<Exception>(),
-        //            It.IsAny<Func<object, Exception, string>>()
-        //        )
-        //    );
-        //}
+        private void VerifyLogging(LogLevel logLevel)
+        {
+            _mockLogger.Verify(
+                m => m.Log(
+                    logLevel,
+                    It.IsAny<EventId>(),
+                    //It.Is<FormattedLogValues>(v => v.ToString().Contains("CreateInvoiceFailed")),
+                    It.IsAny<FormattedLogValues>(),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<object, Exception, string>>()
+                )
+            );
+        }
     }
 }

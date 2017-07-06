@@ -17,12 +17,12 @@ namespace Pixel.FixaBarnkalaset.Web
             // ADMIN
             CreateMap<Arrangement, Areas.Admin.ViewModels.CreateOrEditArrangementViewModel>();
             CreateMap<Arrangement, Areas.Admin.ViewModels.ArrangementsIndexViewModel.ArrangementViewModel>();
+            CreateMap<Areas.Admin.ViewModels.CreateOrEditArrangementViewModel, Arrangement>();
 
             CreateMap<City, Areas.Admin.ViewModels.CitiesIndexViewModel.CityViewModel>();
             CreateMap<City, Areas.Admin.ViewModels.CitiesIndexViewModel>();
             CreateMap<City, Areas.Admin.ViewModels.CreateOrEditCityViewModel>();
             CreateMap<Areas.Admin.ViewModels.CreateOrEditCityViewModel, City>();
-            CreateMap<Areas.Admin.ViewModels.CreateOrEditArrangementViewModel, Arrangement>();
         }
     }
 }

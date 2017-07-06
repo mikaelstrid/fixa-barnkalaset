@@ -38,53 +38,54 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
                 ?? new List<Arrangement>();
         }
 
-        public Arrangement GetBySlug(string citySlug, string arrangementSlug)
+        public Task<Arrangement> GetBySlug(string citySlug, string arrangementSlug)
         {
             _logger.LogDebug("GetBySlug: Get arrangement with slug {CitySlug}/{ArrangementSlug}", citySlug, arrangementSlug);
             return _dbContext
                 .Arrangements
                 .Include(a => a.City)
-                .SingleOrDefault(a =>
+                .SingleOrDefaultAsync(a =>
                     a.City.Slug.Equals(citySlug, StringComparison.CurrentCultureIgnoreCase)
                     && a.Slug.Equals(arrangementSlug, StringComparison.CurrentCultureIgnoreCase)
                 );
         }
 
-        public Arrangement GetById(int id)
+        public Task<Arrangement> GetById(int id)
         {
             _logger.LogDebug("GetById: Get arrangement with id {Id}", id);
             return _dbContext
                 .Arrangements
-                .Find(id);
+                .FindAsync(id);
         }
 
-        public void AddOrUpdate(Arrangement arrangement)
+        public async Task AddOrUpdate(Arrangement arrangement)
         {
-            _logger.LogDebug("AddOrUpdate: Adding or updating arrangement with id {Id} with data {Arrangement}", arrangement.Id, JsonConvert.SerializeObject(arrangement));
+            var serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            _logger.LogDebug("AddOrUpdate: Adding or updating arrangement with id {Id} with data {Arrangement}", arrangement.Id, JsonConvert.SerializeObject(arrangement, serializerSettings));
             if (arrangement.Id == default(int))
             {
-                _dbContext.Arrangements.Add(arrangement);
-                _logger.LogInformation("AddOrUpdate: Updated arrangement with id {Id} with data {Arrangement}", arrangement.Id, JsonConvert.SerializeObject(arrangement));
+                await _dbContext.Arrangements.AddAsync(arrangement);
+                _logger.LogInformation("AddOrUpdate: Updated arrangement with id {Id} with data {Arrangement}", arrangement.Id, JsonConvert.SerializeObject(arrangement, serializerSettings));
             }
             else
             {
                 _dbContext.Update(arrangement);
-                _logger.LogInformation("AddOrUpdate: Added arrangement with id {Id} with data {Arrangement}", arrangement.Id, JsonConvert.SerializeObject(arrangement));
+                _logger.LogInformation("AddOrUpdate: Added arrangement with id {Id} with data {Arrangement}", arrangement.Id, JsonConvert.SerializeObject(arrangement, serializerSettings));
             }
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Remove(int id)
+        public async Task Remove(int id)
         {
             _logger.LogDebug("Remove: Removing arrangement with id {Id}", id);
-            var arrangement = GetById(id);
+            var arrangement = await GetById(id);
             if (arrangement == null)
             {
                 _logger.LogInformation("Remove: Arrangement with id {Id} not found, continue", id);
                 return;
             }
             _dbContext.Arrangements.Remove(arrangement);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             _logger.LogInformation("Remove: Arrangement with id {Id} removed", id);
         }
     }

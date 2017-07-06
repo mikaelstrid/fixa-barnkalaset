@@ -41,6 +41,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         public string PhoneNumber { get; set; }
 
         [Display(Name = "E-postadress")]
+        [EmailAddress]
         public string EmailAddress { get; set; }
 
         [Display(Name = "Hemsida")]

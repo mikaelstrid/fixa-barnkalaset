@@ -19,6 +19,8 @@ namespace IntegrationTests.Utilities
         private const string SolutionName = "fixa-barnkalaset.sln";
         private readonly TestServer _server;
 
+        public bool IsInitialized { get; set; }
+
         public TestFixture()
             : this(Path.Combine(""))
         {

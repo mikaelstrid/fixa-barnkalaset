@@ -15,14 +15,15 @@ namespace IntegrationTests.Admin.Tests
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
     public class CreateArrangementTest : IntegrationTestBase
     {
+        private readonly City _populatedHalmstad;
         private const string Url = "/admin/arrangemang/skapa";
 
         public CreateArrangementTest(TestFixture<Startup> fixture) : base(fixture)
         {
             if (fixture.IsInitialized) return;
 
-            var halmstad = new City().Halmstad();
-            PopulateDatabaseWithCities(fixture, halmstad);
+            _populatedHalmstad = new City().Halmstad();
+            PopulateDatabaseWithCities(fixture, _populatedHalmstad);
             fixture.IsInitialized = true;
         }
         
@@ -140,9 +141,9 @@ namespace IntegrationTests.Admin.Tests
                 .Include(a => a.City)
                 .Single(a => a.City.Slug == halmstad.Slug && a.Slug == arrangement.Slug)
                 .ShouldBeEquivalentTo(arrangement, opt => opt
+                    .Including(a => a.CityId == _populatedHalmstad.Id)
                     .ExcludingMissingMembers()
                     .Excluding(a => a.Id)
-                    .Excluding(a => a.CityId)
                     .Excluding(a => a.City));
         }
     }

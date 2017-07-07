@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Pixel.FixaBarnkalaset.Core;
@@ -34,20 +36,25 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 
         public override int SaveChanges()
         {
+            SaveUpdatedByInformation();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            SaveUpdatedByInformation();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void SaveUpdatedByInformation()
+        {
             ChangeTracker.DetectChanges();
-
-            var entries = ChangeTracker.Entries()
-                .Where(e => 
-                    e.State == EntityState.Added 
-                    || e.State == EntityState.Modified);
-
+            var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
             foreach (var entry in entries)
             {
                 entry.Property("LastUpdatedUtc").CurrentValue = DateTime.UtcNow;
                 entry.Property("UpdatedBy").CurrentValue = _httpContextAccessor.HttpContext?.User.Identity.Name ?? "";
             }
-
-            return base.SaveChanges();
         }
     }
 }

@@ -19,10 +19,6 @@ namespace IntegrationTests.Public.Tests
         public async Task Details_GivenUnknownSlugs_ShouldReturn404()
         {
             // ARRANGE
-            var halmstad = new City().Halmstad();
-            PopulateDatabaseWithCities(halmstad);
-            var busfabriken = halmstad.Busfabriken();
-            PopulateDatabaseWithArrangements(busfabriken);
 
             // ACT
             var response = await Client.GetAsync("/arrangemang/okand-stad/okant-arrangemang");

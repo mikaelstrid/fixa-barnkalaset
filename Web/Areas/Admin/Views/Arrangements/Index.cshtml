@@ -19,7 +19,7 @@
                     <td data-test-slug="@arrangement.Slug">@arrangement.Name</td>
                     <td>@arrangement.CityName</td>
                     <td>@arrangement.Pitch</td>
-                    <td><a asp-action="Edit" asp-route-id="@arrangement.Id">Ändra</a></td>
+                    <td><a asp-action="Edit" asp-route-urlCitySlug="@arrangement.CitySlug" asp-route-urlSlug="@arrangement.Slug">Ändra</a></td>
                 </tr>
             }
         </tbody>

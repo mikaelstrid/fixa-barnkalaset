@@ -21,9 +21,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CityId");
-
-                    b.Property<int?>("CityId1");
+                    b.Property<int>("CityId");
 
                     b.Property<string>("CoverImage");
 
@@ -59,7 +57,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId1");
+                    b.HasIndex("CityId");
 
                     b.ToTable("Arrangements");
                 });
@@ -90,7 +88,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 {
                     b.HasOne("Pixel.FixaBarnkalaset.Core.City", "City")
                         .WithMany("Arrangements")
-                        .HasForeignKey("CityId1");
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

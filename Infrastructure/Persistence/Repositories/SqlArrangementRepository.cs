@@ -25,7 +25,10 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Arrangement>> GetAll()
         {
             _logger.LogDebug("GetAll: Get all arrangements");
-            return await _dbContext.Arrangements.ToListAsync();
+            return await _dbContext
+                .Arrangements
+                .Include(a => a.City)
+                .ToListAsync();
         }
 
         public IEnumerable<Arrangement> GetByCitySlug(string citySlug)

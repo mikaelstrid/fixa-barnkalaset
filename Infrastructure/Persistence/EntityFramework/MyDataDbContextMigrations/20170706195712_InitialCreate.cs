@@ -33,8 +33,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CityId = table.Column<string>(nullable: true),
-                    CityId1 = table.Column<int>(nullable: true),
+                    CityId = table.Column<int>(nullable: false),
                     CoverImage = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
@@ -56,17 +55,17 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 {
                     table.PrimaryKey("PK_Arrangements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Arrangements_Cities_CityId1",
-                        column: x => x.CityId1,
+                        name: "FK_Arrangements_Cities_CityId",
+                        column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Arrangements_CityId1",
+                name: "IX_Arrangements_CityId",
                 table: "Arrangements",
-                column: "CityId1");
+                column: "CityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

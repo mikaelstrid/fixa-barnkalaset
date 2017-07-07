@@ -135,7 +135,9 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         public async Task Create_Post_GivenInvalidModel_ShouldReturnViewWithModel()
         {
             // ARRANGE
-            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(new City().Halmstad().Laserdome());
+            var halmstad = new City().Halmstad();
+            var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(halmstad.Laserdome());
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) new List<City> {halmstad}));
             AddModelStateError(_sut);
 
             // ACT
@@ -143,9 +145,12 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Never);
-            _mockCityRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
             result.Should().BeOfType<ViewResult>();
-            (result as ViewResult).Model.Should().Be(viewModel);
+            var responseModel = (result as ViewResult).Model as CreateOrEditArrangementViewModel;
+            responseModel.Should().Be(viewModel);
+            responseModel.Cities.Count().Should().Be(1);
+
         }
 
         [Fact]
@@ -474,6 +479,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             var laserdomeHalmstad = halmstad.Laserdome();
             var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(busfabrikenHalmstad);
             _mockCityRepository.Setup(m => m.GetBySlug(halmstad.Slug)).Returns(Task.FromResult(halmstad));
+            _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) new List<City>{halmstad}));
             _mockArrangementsRepository.Setup(m => m.GetBySlug(halmstad.Slug, busfabrikenHalmstad.Slug)).Returns(Task.FromResult(busfabrikenHalmstad));
             _mockArrangementsRepository.Setup(m => m.GetBySlug(halmstad.Slug, laserdomeHalmstad.Slug)).Returns(Task.FromResult(laserdomeHalmstad));
             var changedSlug = laserdomeHalmstad.Slug;
@@ -486,8 +492,11 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _sut.ModelState.IsValid.Should().BeFalse();
             VerifyLogging(_mockLogger, LogLevel.Warning);
             _mockArrangementsRepository.Verify(m => m.AddOrUpdate(It.IsAny<Arrangement>()), Times.Never);
+            _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
             result.Should().BeOfType<ViewResult>();
-            (result as ViewResult).Model.Should().Be(viewModel);
+            var responseModel = (result as ViewResult).Model as CreateOrEditArrangementViewModel;
+            responseModel.Should().Be(viewModel);
+            responseModel.Cities.Count().Should().Be(1);
         }
     }
 }

@@ -139,17 +139,13 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 || existingArrangement.City.Slug != model.CitySlug)
             {
                 var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-                _logger.LogInformation("Edit POST: Edited arrangement from {OldArrangement} to {NewArrangement}",
-                    JsonConvert.SerializeObject(existingArrangement, settings), 
-                    JsonConvert.SerializeObject(model, settings));
+                _logger.LogInformation("Edit POST: Edited arrangement from {OldArrangement} to {NewArrangement}", JsonConvert.SerializeObject(existingArrangement, settings), JsonConvert.SerializeObject(model, settings));
 
                 if (existingArrangement.Slug != model.Slug)
                 {
                     if (await _arrangementRepository.GetBySlug(model.CitySlug, model.Slug) != null)
                     {
-                        _logger.LogWarning("Create POST: There is already an arrangement with city slug {CitySlug} and slug {Slug}", model.CitySlug, model.Slug);
-                        ModelState.AddModelError("Slug", "The slug combination must be unique");
-                        ModelState.AddModelError("CitySlug", "The slug combination must be unique");
+                        await HandleNonUniqueSlugCombination(model);
                         return View(model);
                     }
                 }
@@ -159,16 +155,13 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                     var city = await _cityRepository.GetBySlug(model.CitySlug);
                     if (city == null)
                     {
-                        _logger.LogWarning("Create POST: A city with slug {CitySlug} does not exist", model.CitySlug);
-                        ModelState.AddModelError("CitySlug", "The slug doesn't exist");
+                        await HandleNonExistingCity(model);
                         return View(model);
                     }
 
                     if (await _arrangementRepository.GetBySlug(model.CitySlug, model.Slug) != null)
                     {
-                        _logger.LogWarning("Create POST: There is already an arrangement with city slug {CitySlug} and slug {Slug}", model.CitySlug, model.Slug);
-                        ModelState.AddModelError("Slug", "The slug combination must be unique");
-                        ModelState.AddModelError("CitySlug", "The slug combination must be unique");
+                        await HandleNonUniqueSlugCombination(model);
                         return View(model);
                     }
 
@@ -200,7 +193,21 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        private async Task HandleNonExistingCity(CreateOrEditArrangementViewModel model)
+        {
+            _logger.LogWarning("Create POST: A city with slug {CitySlug} does not exist", model.CitySlug);
+            ModelState.AddModelError("CitySlug", "The slug doesn't exist");
+            model.Cities = await GetCitySelectListItems();
+        }
+
+        private async Task HandleNonUniqueSlugCombination(CreateOrEditArrangementViewModel model)
+        {
+            _logger.LogWarning("Create POST: There is already an arrangement with city slug {CitySlug} and slug {Slug}",
+                model.CitySlug, model.Slug);
+            ModelState.AddModelError("Slug", "The slug combination must be unique");
+            ModelState.AddModelError("CitySlug", "The slug combination must be unique");
+            model.Cities = await GetCitySelectListItems();
+        }
 
 
         private async Task<IEnumerable<SelectListItem>> GetCitySelectListItems()

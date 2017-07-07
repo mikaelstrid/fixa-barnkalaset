@@ -6,8 +6,6 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 {
     public class CreateOrEditArrangementViewModel
     {
-        public int Id { get; set; }
-
         [Required]
         [Display(Name = "Namn")]
         public string Name { get; set; }

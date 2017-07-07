@@ -21,7 +21,6 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 {
     public class ArrangementsControllerTests : ControllerTestBase<ArrangementsController>
     {
-        private readonly IMapper _mapper;
         private readonly Mock<ILogger<ArrangementsController>> _mockLogger;
         private readonly Mock<IArrangementRepository> _mockArrangementsRepository;
         private readonly Mock<ICityRepository> _mockCityRepository;
@@ -29,7 +28,6 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
         public ArrangementsControllerTests()
         {
-            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockLogger = new Mock<ILogger<ArrangementsController>>();
             _mockArrangementsRepository = new Mock<IArrangementRepository>();
             _mockCityRepository = new Mock<ICityRepository>();

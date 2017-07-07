@@ -1,13 +1,23 @@
 using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 using Moq;
+using Pixel.FixaBarnkalaset.Web;
 
-namespace UnitTests.Web.Tests.Admin.Controllers
+namespace UnitTests.Web.Tests
 {
     public abstract class ControllerTestBase<T> where T : Controller
     {
+        // ReSharper disable once InconsistentNaming
+        protected readonly IMapper _mapper;
+
+        protected ControllerTestBase()
+        {
+            _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
+        }
+
         protected static void AddModelStateError(ControllerBase controller)
         {
             controller.ModelState.AddModelError("key", "error message");

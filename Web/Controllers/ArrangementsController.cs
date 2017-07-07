@@ -9,13 +9,13 @@ using Pixel.FixaBarnkalaset.Web.Models;
 namespace Pixel.FixaBarnkalaset.Web.Controllers
 {
     [Route("arrangemang")]
-    public class Arrangements : Controller
+    public class ArrangementsController : Controller
     {
         private readonly IMapper _mapper;
         private readonly ICityRepository _cityRepository;
         private readonly IArrangementRepository _arrangementRepository;
 
-        public Arrangements(
+        public ArrangementsController(
             IMapper mapper,
             ICityRepository cityRepository,
             IArrangementRepository arrangementRepository)
@@ -31,12 +31,12 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             var city = await _cityRepository.GetBySlug(citySlug);
             if (city == null) return NotFound();
 
-            return View(new ArrangementIndexViewModel
+            return View(new ArrangementsIndexViewModel
             {
                 CityName = city.Name,
                 CitySlug = citySlug,
                 Arrangements =
-                    _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementIndexViewModel.ArrangementViewModel>>(
+                    _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(
                         city.Arrangements)
             });
         }

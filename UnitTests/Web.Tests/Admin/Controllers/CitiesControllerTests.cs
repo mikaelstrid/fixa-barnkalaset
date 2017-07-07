@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers;
 using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels;
 using UnitTests.Utilities.TestDataExtensions;
@@ -24,10 +22,9 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
         public CitiesControllerTests()
         {
-            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockLogger = new Mock<ILogger<CitiesController>>();
             _mockCityRepository = new Mock<ICityRepository>();
-            _sut = new CitiesController(mapper, _mockLogger.Object, _mockCityRepository.Object);
+            _sut = new CitiesController(_mapper, _mockLogger.Object, _mockCityRepository.Object);
         }
 
         [Fact]

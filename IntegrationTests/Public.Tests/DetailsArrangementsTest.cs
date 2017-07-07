@@ -11,12 +11,12 @@ using Xunit;
 namespace IntegrationTests.Public.Tests
 {
     // https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/testing
-    public class IndexArrangementsTest : IntegrationTestBase
+    public class DetailsArrangementsTest : IntegrationTestBase
     {
-        public IndexArrangementsTest(TestFixture<Startup> fixture) : base(fixture) { }
+        public DetailsArrangementsTest(TestFixture<Startup> fixture) : base(fixture) { }
 
         [Fact]
-        public async Task Index_GivenUnknownSlugs_ShouldReturn404()
+        public async Task Details_GivenUnknownSlugs_ShouldReturn404()
         {
             // ARRANGE
             var halmstad = new City().Halmstad();
@@ -25,31 +25,31 @@ namespace IntegrationTests.Public.Tests
             PopulateDatabaseWithArrangements(busfabriken);
 
             // ACT
-            var response = await Client.GetAsync("/arrangemang/okand-stad");
+            var response = await Client.GetAsync("/arrangemang/okand-stad/okant-arrangemang");
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
+
         [Fact]
-        public async Task Index_GivenCityWithTwoArrangements_ShouldReturnResponseWithCityName_AndTwoArrangements()
+        public async Task Details_GivenCityWithArrangement_ShouldReturnResponseWithCityName_AndArrangementInformation()
         {
             // ARRANGE
             var halmstad = new City().Halmstad();
             PopulateDatabaseWithCities(halmstad);
             var busfabriken = halmstad.Busfabriken();
-            var laserdome = halmstad.Laserdome();
-            PopulateDatabaseWithArrangements(busfabriken, laserdome);
+            PopulateDatabaseWithArrangements(busfabriken);
 
             // ACT
-            var response = await Client.GetAsync($"/arrangemang/{halmstad.Slug}");
+            var response = await Client.GetAsync($"/arrangemang/{halmstad.Slug}/{busfabriken.Slug}");
 
             // ASSERT
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            Regex.IsMatch(responseString, $"<h1.*>{halmstad.Name}</h1>").Should().BeTrue();
-            responseString.Should().Contain(busfabriken.Name);
-            responseString.Should().Contain(laserdome.Name);
+            Regex.IsMatch(responseString, $"<h2.*>.*{halmstad.Name}.*</h2>").Should().BeTrue();
+            Regex.IsMatch(responseString, $"<h1.*>{busfabriken.Name}</h1>").Should().BeTrue();
+            responseString.Should().Contain(busfabriken.Description);
         }
     }
 }

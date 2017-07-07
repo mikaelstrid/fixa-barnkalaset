@@ -99,6 +99,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddAutoMapper();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -85,7 +86,8 @@ namespace IntegrationTests.Utilities
             MyDataDbContext = new MyDataDbContext(
                 new DbContextOptionsBuilder<MyDataDbContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                    .Options);
+                    .Options,
+                new HttpContextAccessor());
             services.AddSingleton(MyDataDbContext);
             
             var myIdentityDataDbContext = new MyIdentityDbContext(

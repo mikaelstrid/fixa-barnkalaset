@@ -20,5 +20,7 @@
 
         public int CityId { get; set; }
         public virtual City City { get; set; }
+
+        public bool IsRemoved { get; set; }
     }
 }

@@ -15,15 +15,13 @@ namespace Pixel.FixaBarnkalaset.Core
         }
 
         public int Id { get; set; }
-
         public string Name { get; set; }
-
         public string Slug { get; set; }
-
         public double Latitude { get; set; }
-
         public double Longitude { get; set; }
 
         public virtual List<Arrangement> Arrangements { get; set; }
+
+        public bool IsRemoved { get; set; }
     }
 }

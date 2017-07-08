@@ -64,7 +64,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             if (await _cityRepository.GetBySlug(model.Slug) != null)
             {
                 _logger.LogWarning("Create POST: There already exist a city with slug {Slug}", model.Slug);
-                ModelState.AddModelError("Slug", "The slug already exists");
+                ModelState.AddModelError("Slug", $"Det finns redan en stad med sluggen {model.Slug}");
                 return View(model);
             }
 
@@ -114,7 +114,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             if (urlSlug != model.Slug && await _cityRepository.GetBySlug(model.Slug) != null)
             {
                 _logger.LogWarning("Edit POST: A city with slug {Slug} already exists.", model.Slug);
-                ModelState.AddModelError("Slug", "The slug already exists");
+                ModelState.AddModelError("Slug", $"Det finns redan en stad med sluggen {model.Slug}");
                 return View(model);
             }
 

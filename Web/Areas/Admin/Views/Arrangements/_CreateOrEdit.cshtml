@@ -100,3 +100,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                Name: 'empty',
+                Slug: 'empty',
+                CitySlug: 'empty',
+                EmailAddress: "email",
+                Latitude: 'regExp[/^-?\\d+,?\\d*$/]',
+                Longitude: 'regExp[/^-?\\d+,?\\d*$/]'
+            }
+        });
+</script>

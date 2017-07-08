@@ -68,15 +68,15 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             if (city == null)
             {
                 _logger.LogError("Edit GET: No city with slug {CitySlug} found when creating arrangement", model.CitySlug);
-                ModelState.AddModelError("CitySlug", "The city slug does not exist");
+                ModelState.AddModelError("CitySlug", $"Det finns ingen stad med sluggen {model.CitySlug}");
                 return View(model);
             }
 
             if (await _arrangementRepository.GetBySlug(model.CitySlug, model.Slug) != null)
             {
                 _logger.LogWarning("Create POST: There already exist a arrangement with {Slug} and city with slug {CitySlug}", model.Slug, model.CitySlug);
-                ModelState.AddModelError("Slug", "The slug already exists");
-                ModelState.AddModelError("CitySlug", "The slug already exists");
+                ModelState.AddModelError("Slug", $"Det finns redan ett arrangemang med sluggen {model.CitySlug}\\{model.Slug}");
+                ModelState.AddModelError("CitySlug", $"Det finns redan ett arrangemang med sluggen {model.CitySlug}\\{model.Slug}");
                 return View(model);
             }
 
@@ -196,7 +196,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         private async Task HandleNonExistingCity(CreateOrEditArrangementViewModel model)
         {
             _logger.LogWarning("Create POST: A city with slug {CitySlug} does not exist", model.CitySlug);
-            ModelState.AddModelError("CitySlug", "The slug doesn't exist");
+            ModelState.AddModelError("CitySlug", $"Sluggen {model.CitySlug} finns inte");
             model.Cities = await GetCitySelectListItems();
         }
 
@@ -204,8 +204,8 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         {
             _logger.LogWarning("Create POST: There is already an arrangement with city slug {CitySlug} and slug {Slug}",
                 model.CitySlug, model.Slug);
-            ModelState.AddModelError("Slug", "The slug combination must be unique");
-            ModelState.AddModelError("CitySlug", "The slug combination must be unique");
+            ModelState.AddModelError("Slug", $"Det finns redan ett arrangemang med sluggen {model.CitySlug}\\{model.Slug}");
+            ModelState.AddModelError("CitySlug", $"Det finns redan ett arrangemang med sluggen {model.CitySlug}\\{model.Slug}");
             model.Cities = await GetCitySelectListItems();
         }
 

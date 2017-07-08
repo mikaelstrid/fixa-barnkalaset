@@ -8,8 +8,8 @@ using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDataDbContextMigrations
 {
     [DbContext(typeof(MyDataDbContext))]
-    [Migration("20170708160015_AddIsRemovedToCity")]
-    partial class AddIsRemovedToCity
+    [Migration("20170708194515_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

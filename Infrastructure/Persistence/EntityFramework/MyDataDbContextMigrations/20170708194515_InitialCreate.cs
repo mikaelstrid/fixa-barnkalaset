@@ -15,6 +15,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsRemoved = table.Column<bool>(nullable: false),
                     LastUpdatedUtc = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
@@ -38,6 +39,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                     Description = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
                     GooglePlacesId = table.Column<string>(nullable: true),
+                    IsRemoved = table.Column<bool>(nullable: false),
                     LastUpdatedUtc = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),

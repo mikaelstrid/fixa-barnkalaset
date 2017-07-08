@@ -122,7 +122,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
             if (!env.IsEnvironment("Testing"))
             {
-                ConfigureDatabaseMigration(app);
+                ConfigureDatabaseMigration(app, env);
             }
 
             ConfigureIdentity(app, _env, Configuration);
@@ -143,13 +143,17 @@ namespace Pixel.FixaBarnkalaset.Web
             CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
         }
 
-        private static void ConfigureDatabaseMigration(IApplicationBuilder app)
+        private static void ConfigureDatabaseMigration(IApplicationBuilder app, IHostingEnvironment env)
         {
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 serviceScope.ServiceProvider.GetService<MyIdentityDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetService<MyDataDbContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
+
+                if (env.IsDevelopment())
+                {
+                    serviceScope.ServiceProvider.GetService<MyDataDbContext>().EnsureSeedData();
+                }
             }
         }
 

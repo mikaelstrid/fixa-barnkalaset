@@ -4,29 +4,34 @@
     Allmänt
 </h3>
 <div class="ui bottom attached segment">
-    <div class="field">
+    <div class="field" pf-validation-for="Name" pf-validationerror-class="error">
         <label asp-for="Name"></label>
         <input type="text" asp-for="Name">
+        <span asp-validation-for="Name"></span>
     </div>
     <div class="field">
         <button class="ui basic button" type="button" id="btnGetInformationFromGooglePlaces">Hämta info från Google Places</button>
         <span id="GooglePlacesName"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="Slug" pf-validationerror-class="error">
         <label asp-for="Slug"></label>
         <input type="text" asp-for="Slug">
+        <span asp-validation-for="Slug"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="CitySlug" pf-validationerror-class="error">
         <label asp-for="CitySlug"></label>
         <select asp-for="CitySlug" asp-items="Model.Cities"></select>
+        <span asp-validation-for="CitySlug"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="GooglePlacesId" pf-validationerror-class="error">
         <label asp-for="GooglePlacesId"></label>
         <input type="text" asp-for="GooglePlacesId">
+        <span asp-validation-for="GooglePlacesId"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="CoverImage" pf-validationerror-class="error">
         <label asp-for="CoverImage"></label>
         <input type="text" asp-for="CoverImage">
+        <span asp-validation-for="CoverImage"></span>
     </div>
 </div>
 
@@ -34,13 +39,15 @@
     Beskrivning
 </h3>
 <div class="ui bottom attached segment">
-    <div class="field">
+    <div class="field" pf-validation-for="Pitch" pf-validationerror-class="error">
         <label asp-for="Pitch"></label>
         <textarea rows="2" asp-for="Pitch"></textarea>
+        <span asp-validation-for="Pitch"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="Description" pf-validationerror-class="error">
         <label asp-for="Description"></label>
         <textarea asp-for="Description"></textarea>
+        <span asp-validation-for="Description"></span>
     </div>
 </div>
 
@@ -48,31 +55,37 @@
     Adress och kontaktuppgifter
 </h3>
 <div class="ui bottom attached segment">
-    <div class="field">
+    <div class="field" pf-validation-for="StreetAddress" pf-validationerror-class="error">
         <label asp-for="StreetAddress"></label>
         <input type="text" asp-for="StreetAddress">
+        <span asp-validation-for="StreetAddress"></span>
     </div>
     <div class="fields">
-        <div class="four wide field">
+        <div class="four wide field" pf-validation-for="PostalCode" pf-validationerror-class="error">
             <label asp-for="PostalCode"></label>
             <input type="text" asp-for="PostalCode">
+            <span asp-validation-for="PostalCode"></span>
         </div>
-        <div class="twelve wide field">
+        <div class="twelve wide field" pf-validation-for="PostalCity" pf-validationerror-class="error">
             <label asp-for="PostalCity"></label>
             <input type="text" asp-for="PostalCity">
+            <span asp-validation-for="PostalCity"></span>
         </div>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="PhoneNumber" pf-validationerror-class="error">
         <label asp-for="PhoneNumber"></label>
         <input type="text" asp-for="PhoneNumber">
+        <span asp-validation-for="PhoneNumber"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="EmailAddress" pf-validationerror-class="error">
         <label asp-for="EmailAddress"></label>
         <input type="text" asp-for="EmailAddress">
+        <span asp-validation-for="EmailAddress"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="Website" pf-validationerror-class="error">
         <label asp-for="Website"></label>
         <input type="text" asp-for="Website">
+        <span asp-validation-for="Website"></span>
     </div>
     <div class="field">
         <button class="ui basic button" type="button" id="btnOpenWebsite">Öppna hemsida</button>
@@ -85,13 +98,15 @@
 <div class="ui bottom attached segment">
     <div class="ui grid">
         <div class="six wide column">
-            <div class="field">
+            <div class="field" pf-validation-for="Latitude" pf-validationerror-class="error">
                 <label asp-for="Latitude"></label>
                 <input type="text" asp-for="Latitude">
+                <span asp-validation-for="Latitude"></span>
             </div>
-            <div class="field">
+            <div class="field" pf-validation-for="Longitude" pf-validationerror-class="error">
                 <label asp-for="Longitude"></label>
                 <input type="text" asp-for="Longitude">
+                <span asp-validation-for="Longitude"></span>
             </div>
             <button class="ui basic button" type="button" id="btnGetCoordinatesFromAddress">Hämta från adress</button>
         </div>

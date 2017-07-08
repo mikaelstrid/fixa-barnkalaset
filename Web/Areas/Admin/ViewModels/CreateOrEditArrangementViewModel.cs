@@ -6,11 +6,12 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 {
     public class CreateOrEditArrangementViewModel
     {
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
         [Display(Name = "Namn")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
+        [RegularExpression("^[abcdefghijklmnopqrstuvwxyz0123456789-]*$")]
         [Display(Name = "Slug")]
         public string Slug { get; set; }
 
@@ -30,6 +31,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         public string StreetAddress { get; set; }
 
         [Display(Name = "Postnummer")]
+        [RegularExpression("^\\d\\d\\d ?\\d\\d$", ErrorMessage = "Ogiltigt postnummer")]
         public string PostalCode { get; set; }
 
         [Display(Name = "Postort")]
@@ -45,15 +47,17 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         [Display(Name = "Hemsida")]
         public string Website { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
+        [Range(-90.0, 90.0, ErrorMessage = "Värdet ska vara mellan -90,0 och 90,0")]
         [Display(Name = "Latitud")]
         public double Latitude { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
+        [Range(-180.0, 180.0, ErrorMessage = "Värdet ska vara mellan -180,0 och 180,0")]
         [Display(Name = "Longitud")]
         public double Longitude { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
         [Display(Name = "Stad")]
         public string CitySlug { get; set; }
 

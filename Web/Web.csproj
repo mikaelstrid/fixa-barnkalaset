@@ -56,4 +56,9 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ModelBindingMessages.sv.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

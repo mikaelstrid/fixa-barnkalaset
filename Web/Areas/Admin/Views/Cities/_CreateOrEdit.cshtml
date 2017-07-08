@@ -4,13 +4,15 @@
     Allmänt
 </h3>
 <div class="ui bottom attached segment">
-    <div class="field">
+    <div class="field" pf-validation-for="Name" pf-validationerror-class="error">
         <label asp-for="Name"></label>
         <input type="text" asp-for="Name">
+        <span asp-validation-for="Name"></span>
     </div>
-    <div class="field">
+    <div class="field" pf-validation-for="Slug" pf-validationerror-class="error">
         <label asp-for="Slug"></label>
         <input type="text" asp-for="Slug">
+        <span asp-validation-for="Slug"></span>
     </div>
 </div>
 
@@ -20,13 +22,15 @@
 <div class="ui bottom attached segment">
     <div class="ui grid">
         <div class="six wide column">
-            <div class="field">
+            <div class="field" pf-validation-for="Latitude" pf-validationerror-class="error">
                 <label asp-for="Latitude"></label>
                 <input type="text" asp-for="Latitude">
+                <span asp-validation-for="Latitude"></span>
             </div>
-            <div class="field">
+            <div class="field" pf-validation-for="Longitude" pf-validationerror-class="error">
                 <label asp-for="Longitude"></label>
                 <input type="text" asp-for="Longitude">
+                <span asp-validation-for="Longitude"></span>
             </div>
             <button class="ui basic button" type="button" id="btnGetCoordinatesFromName">Hämta från namn</button>
         </div>
@@ -35,3 +39,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                Name: 'empty',
+                Slug: 'empty',
+                Latitude: 'regExp[/^-?\\d+,?\\d*$/]',
+                Longitude: 'regExp[/^-?\\d+,?\\d*$/]'
+            }
+        });
+</script>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{B45FB7BB-FF14-4513-BDDE-EF09F1078F68}"
 EndProject
@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devops", "Devops", "{4158C9F1-57E7-42AB-924B-ED13D00FCDD4}"
 	ProjectSection(SolutionItems) = preProject
+		DevOps\DropAllTables.sql = DevOps\DropAllTables.sql
 		DevOps\Manual deployment steps.md = DevOps\Manual deployment steps.md
 	EndProjectSection
 EndProject

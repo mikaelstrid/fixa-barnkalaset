@@ -7,3 +7,7 @@
 .footer.segment {
     padding: 2em 0em;
 }
+
+.ui.vertical.segment + .footer {
+    border-top: none !important;
+}

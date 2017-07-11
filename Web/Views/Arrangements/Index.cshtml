@@ -12,7 +12,7 @@
     <div class="ui stackable grid">
         @foreach (var arrangement in Model.Arrangements)
         {
-            <div class="eight wide tablet four wide computer column">
+            <div class="six wide tablet four wide computer column">
                 <a class="ui fluid card" href="@Url.Action("Details", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">
                     <div class="image" style="background-image: url('@arrangement.CoverImage'); background-size: cover; height: 200px"></div>
                     <div class="content">

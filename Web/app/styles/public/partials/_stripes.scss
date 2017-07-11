@@ -1,28 +1,12 @@
 ﻿@import "../modules/_variables";
 
-.ui.vertical.stripe {
-    padding: 8em 0em;
-}
-
-.ui.vertical.stripe h3 {
-    font-size: 2em;
-}
-
-.ui.vertical.stripe p {
-    font-size: 1.33em;
-}
-
-.ui.vertical.stripe .horizontal.divider {
-    margin: 3em 0em;
-}
-
 .quote.stripe.segment {
     padding: 0em;
 }
 
 .quote.stripe.segment .grid .column {
-    padding-top: 5em;
-    padding-bottom: 5em;
+    padding-top: 4em;
+    padding-bottom: 4em;
 }
 
 .quote.stripe.segment .grid .column .pxl-text-container {

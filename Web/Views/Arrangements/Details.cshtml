@@ -16,12 +16,12 @@
 
     <div class="ui stackable two column grid">
         <div class="row">
-            <div class="ten wide column">
+            <div class="seven wide tablet eight wide computer column">
                 <img class="ui fluid rounded image" src="@Model.CoverImage" />
                 <h3 class="ui medium header">Om arrangemanget</h3>
                 @Html.Raw(Model.Description)
             </div>
-            <div class="six wide column">
+            <div class="five wide tablet four wide computer column">
                 <div class="ui segment">
                     <iframe height="250"
                             width="100%"
@@ -29,9 +29,9 @@
                             style="border: 0"
                             src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
                             allowfullscreen></iframe>
-                    <div class="ui medium header">Kontaktuppgifter</div>
+                    <div class="ui header">Kontaktuppgifter</div>
 
-                    <div class="ui large relaxed list">
+                    <div class="ui relaxed list">
                         @if (!string.IsNullOrWhiteSpace(Model.StreetAddress) || !string.IsNullOrWhiteSpace(Model.PostalCode) || !string.IsNullOrWhiteSpace(Model.PostalCity))
                         {
                             <div class="item">

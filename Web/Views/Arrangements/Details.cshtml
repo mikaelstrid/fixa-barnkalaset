@@ -9,7 +9,10 @@
         <div class="active section">@Model.Name</div>
     </div>
     <h1 class="ui huge header">@Html.DisplayFor(m => m.Name)</h1>
-    <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>
+    @if (!string.IsNullOrWhiteSpace(Model.Pitch))
+    {
+        <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>
+    }
 
     <div class="ui stackable two column grid">
         <div class="row">
@@ -37,7 +40,7 @@
                                     @Html.DisplayFor(m => m.StreetAddress), @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)
                                 </div>
                             </div>
-                        }             
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
                         {
                             <div class="item">

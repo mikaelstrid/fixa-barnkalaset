@@ -1,20 +1,21 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementsIndexViewModel
 
-<div class="ui main container pxl-block">
+<div class="ui main container pxl-page">
     <h1 class="ui huge header">@Html.DisplayFor(m => m.CityName)</h1>
 
-    <div class="ui cards">
+    <div class="ui stackable grid">
         @foreach (var arrangement in Model.Arrangements)
         {
-            <div class="card pxl-arrangements-list-card">
-                <div class="image" style="background-image: url('@arrangement.CoverImage'); background-size: cover; height: 200px">
-                </div>
-                <div class="content">
-                    <a class="header" href="@Url.Action("Details", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">@arrangement.Name</a>
-                    <div class="description">
-                        @arrangement.Pitch
+            <div class="eight wide tablet four wide computer column">
+                <a class="ui fluid card" href="@Url.Action("Details", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">
+                    <div class="image" style="background-image: url('@arrangement.CoverImage'); background-size: cover; height: 200px"></div>
+                    <div class="content">
+                        <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
+                        <div class="description">
+                            @Html.DisplayFor(m => arrangement.Pitch)
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         }
     </div>

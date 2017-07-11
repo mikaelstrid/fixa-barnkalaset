@@ -1,11 +1,5 @@
 ﻿@import "../modules/_variables";
 
 .footer.segment {
-    padding: 3em 0em;
-}
-
-@media only screen and (max-width: 700px) {
-    .footer.segment {
-        padding: 2em 0em;
-    }
+    padding: 2em 0em;
 }

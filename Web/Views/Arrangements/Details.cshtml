@@ -1,31 +1,72 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementDetailsViewModel
 
-<div class="ui main container pxl-block">
-    <h2 class="ui medium header">@Html.ActionLink(Model.CityName, "Index")</h2>
+<div class="ui main container pxl-page">
+    <div class="ui breadcrumb">
+        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
+        <i class="right angle icon divider"></i>
+        <a class="section" href="@Url.Action("Index", new { citySlug = Model.CitySlug })">@Model.CityName</a>
+        <i class="right angle icon divider"></i>
+        <div class="active section">@Model.Name</div>
+    </div>
     <h1 class="ui huge header">@Html.DisplayFor(m => m.Name)</h1>
-    
+    <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>
+
     <div class="ui stackable two column grid">
         <div class="row">
-            <div class="nine wide left floated column typography-body">
-                <img class="ui fluid image pxl-details-page-cover-image" src="@Model.CoverImage" />
-                <p class="typography-premable">@Html.DisplayFor(m => m.Pitch)</p>
+            <div class="ten wide column">
+                <img class="ui fluid rounded image" src="@Model.CoverImage" />
+                <h3 class="ui medium header">Om arrangemanget</h3>
                 @Html.Raw(Model.Description)
             </div>
-            <div class="five wide right floated column">
-                <iframe height="250"
-                        width="100%"
-                        frameborder="0"
-                        style="border: 0"
-                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
-                        allowfullscreen></iframe>
-                <div class="ui medium header">Kontaktuppgifter</div>
-                <p>
-                    @Html.DisplayFor(m => m.StreetAddress)<br />
-                    @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)<br />
-                    @Html.DisplayFor(m => m.PhoneNumber)<br />
-                    @Html.DisplayFor(m => m.EmailAddress)<br />
-                </p>
-                <p><a href="@Model.Website">@Model.Website</a></p>
+            <div class="six wide column">
+                <div class="ui segment">
+                    <iframe height="250"
+                            width="100%"
+                            frameborder="0"
+                            style="border: 0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
+                            allowfullscreen></iframe>
+                    <div class="ui medium header">Kontaktuppgifter</div>
+
+                    <div class="ui large relaxed list">
+                        @if (!string.IsNullOrWhiteSpace(Model.StreetAddress) || !string.IsNullOrWhiteSpace(Model.PostalCode) || !string.IsNullOrWhiteSpace(Model.PostalCity))
+                        {
+                            <div class="item">
+                                <i class="marker icon"></i>
+                                <div class="content">
+                                    @Html.DisplayFor(m => m.StreetAddress), @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)
+                                </div>
+                            </div>
+                        }             
+                        @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+                        {
+                            <div class="item">
+                                <i class="phone icon"></i>
+                                <div class="content">
+                                    @Html.DisplayFor(m => m.PhoneNumber)
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.EmailAddress))
+                        {
+                            <div class="item">
+                                <i class="mail icon"></i>
+                                <div class="content">
+                                    <a href="@Model.EmailAddress)">@Html.DisplayFor(m => m.EmailAddress)</a>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Website))
+                        {
+                            <div class="item">
+                                <i class="linkify icon"></i>
+                                <div class="content">
+                                    <a href="@Model.Website">@Html.DisplayFor(m => m.Website)</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>

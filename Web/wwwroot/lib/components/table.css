@@ -21,7 +21,7 @@
   margin: 1em 0em;
   border: 1px solid rgba(34, 36, 38, 0.15);
   box-shadow: none;
-  border-radius: 0.28571429rem;
+  border-radius: 0.25rem;
   text-align: left;
   color: rgba(0, 0, 0, 0.87);
   border-collapse: separate;
@@ -56,7 +56,7 @@
   background: #F9FAFB;
   text-align: inherit;
   color: rgba(0, 0, 0, 0.87);
-  padding: 0.92857143em 0.78571429em;
+  padding: 0.9375em 0.8125em;
   vertical-align: inherit;
   font-style: none;
   font-weight: bold;
@@ -68,13 +68,13 @@
   border-left: none;
 }
 .ui.table thead tr:first-child > th:first-child {
-  border-radius: 0.28571429rem 0em 0em 0em;
+  border-radius: 0.25rem 0em 0em 0em;
 }
 .ui.table thead tr:first-child > th:last-child {
-  border-radius: 0em 0.28571429rem 0em 0em;
+  border-radius: 0em 0.25rem 0em 0em;
 }
 .ui.table thead tr:first-child > th:only-child {
-  border-radius: 0.28571429rem 0.28571429rem 0em 0em;
+  border-radius: 0.25rem 0.25rem 0em 0em;
 }
 
 /* Footer */
@@ -87,7 +87,7 @@
   background: #F9FAFB;
   text-align: inherit;
   color: rgba(0, 0, 0, 0.87);
-  padding: 0.78571429em 0.78571429em;
+  padding: 0.8125em 0.8125em;
   vertical-align: middle;
   font-style: normal;
   font-weight: normal;
@@ -97,13 +97,13 @@
   border-left: none;
 }
 .ui.table tfoot tr:first-child > th:first-child {
-  border-radius: 0em 0em 0em 0.28571429rem;
+  border-radius: 0em 0em 0em 0.25rem;
 }
 .ui.table tfoot tr:first-child > th:last-child {
-  border-radius: 0em 0em 0.28571429rem 0em;
+  border-radius: 0em 0em 0.25rem 0em;
 }
 .ui.table tfoot tr:first-child > th:only-child {
-  border-radius: 0em 0em 0.28571429rem 0.28571429rem;
+  border-radius: 0em 0em 0.25rem 0.25rem;
 }
 
 /* Table Row */
@@ -116,7 +116,7 @@
 
 /* Table Cells */
 .ui.table td {
-  padding: 0.78571429em 0.78571429em;
+  padding: 0.8125em 0.8125em;
   text-align: inherit;
 }
 
@@ -494,7 +494,7 @@
 .ui.table tbody tr td.selectable > a:not(.ui) {
   display: block;
   color: inherit;
-  padding: 0.78571429em 0.78571429em;
+  padding: 0.8125em 0.8125em;
 }
 
 /* Other States */
@@ -555,7 +555,7 @@
   margin-bottom: 0em;
   top: 0px;
   margin-top: 1em;
-  border-radius: 0.28571429rem 0.28571429rem 0em 0em;
+  border-radius: 0.25rem 0.25rem 0em 0em;
 }
 .ui.table[class*="top attached"]:first-child {
   margin-top: 0em;
@@ -568,7 +568,7 @@
   top: 0px;
   margin-bottom: 1em;
   box-shadow: none, none;
-  border-radius: 0em 0em 0.28571429rem 0.28571429rem;
+  border-radius: 0em 0em 0.25rem 0.25rem;
 }
 .ui[class*="bottom attached"].table:last-child {
   margin-bottom: 0em;
@@ -790,67 +790,67 @@
 /* Column Width */
 .ui.table th.one.wide,
 .ui.table td.one.wide {
-  width: 6.25%;
+  width: 8.33333333%;
 }
 .ui.table th.two.wide,
 .ui.table td.two.wide {
-  width: 12.5%;
+  width: 16.66666667%;
 }
 .ui.table th.three.wide,
 .ui.table td.three.wide {
-  width: 18.75%;
+  width: 25%;
 }
 .ui.table th.four.wide,
 .ui.table td.four.wide {
-  width: 25%;
+  width: 33.33333333%;
 }
 .ui.table th.five.wide,
 .ui.table td.five.wide {
-  width: 31.25%;
+  width: 41.66666667%;
 }
 .ui.table th.six.wide,
 .ui.table td.six.wide {
-  width: 37.5%;
+  width: 50%;
 }
 .ui.table th.seven.wide,
 .ui.table td.seven.wide {
-  width: 43.75%;
+  width: 58.33333333%;
 }
 .ui.table th.eight.wide,
 .ui.table td.eight.wide {
-  width: 50%;
+  width: 66.66666667%;
 }
 .ui.table th.nine.wide,
 .ui.table td.nine.wide {
-  width: 56.25%;
+  width: 75%;
 }
 .ui.table th.ten.wide,
 .ui.table td.ten.wide {
-  width: 62.5%;
+  width: 83.33333333%;
 }
 .ui.table th.eleven.wide,
 .ui.table td.eleven.wide {
-  width: 68.75%;
+  width: 91.66666667%;
 }
 .ui.table th.twelve.wide,
 .ui.table td.twelve.wide {
-  width: 75%;
+  width: 100%;
 }
 .ui.table th.thirteen.wide,
 .ui.table td.thirteen.wide {
-  width: 81.25%;
+  width: 108.33333333%;
 }
 .ui.table th.fourteen.wide,
 .ui.table td.fourteen.wide {
-  width: 87.5%;
+  width: 116.66666667%;
 }
 .ui.table th.fifteen.wide,
 .ui.table td.fifteen.wide {
-  width: 93.75%;
+  width: 125%;
 }
 .ui.table th.sixteen.wide,
 .ui.table td.sixteen.wide {
-  width: 100%;
+  width: 133.33333333%;
 }
 
 /*--------------

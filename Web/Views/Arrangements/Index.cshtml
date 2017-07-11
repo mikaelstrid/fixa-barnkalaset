@@ -1,6 +1,12 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementsIndexViewModel
 
 <div class="ui main container pxl-page">
+    <div class="ui breadcrumb">
+        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
+        <i class="right angle icon divider"></i>
+        <div class="active section">@Model.CityName</div>
+    </div>
+
     <h1 class="ui huge header">@Html.DisplayFor(m => m.CityName)</h1>
 
     <div class="ui stackable grid">

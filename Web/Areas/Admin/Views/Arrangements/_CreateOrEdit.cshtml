@@ -33,6 +33,14 @@
         <input type="text" asp-for="CoverImage">
         <span asp-validation-for="CoverImage"></span>
     </div>
+    <div class="field">
+        <button class="ui basic button" type="button" id="btnOpenCoverImage">Visa bilden i egen flik</button>
+        <button class="ui basic button" type="button" id="btnGetImagesFromGooglePlaces">Hämta bilder från Google Places</button>
+    </div>
+    <div class="field">
+        <div class="ui small images hidden" id="lstImagesFromGooglePlaces"></div>
+        @*<button class="ui basic button" type="button" id="btnGetAllImagesFromGooglePlaces">Hämta alla bilder från Google Places</button>*@
+    </div>
 </div>
 
 <h3 class="ui top attached header">

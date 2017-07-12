@@ -38,6 +38,7 @@
 
         $("#btnGetInformationFromGooglePlaces").click(() => {
             const name = $("#Name").val();
+            if (!name) return false;
             this.placesService.textSearch({ query: name },
                 (results, status) => {
                     if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -60,6 +61,32 @@
             return false;
         });
 
+        $("#btnOpenCoverImage").click(() => {
+            var url = $("#CoverImage").val();
+            if (url) 
+                $("<a>").attr("href", url).attr("target", "_blank")[0].click();
+            return false;
+        });
+
+        $("#btnGetImagesFromGooglePlaces").click(() => {
+            var placeId = $("#GooglePlacesId").val();
+            if (!placeId) {
+                console.log("No Google Places id specified")
+                return false;
+            }
+
+            this.placesService.getDetails({ placeId: placeId },
+                (place, detailedStatus) => {
+                    if (detailedStatus === google.maps.places.PlacesServiceStatus.OK) {
+                        this.updateImageList(place, false);
+                    } else {
+                        console.log(`"Kunde inte hämta detailjer för '${placeId}' pga ${detailedStatus}"`);
+                    }
+                });
+
+            return false;
+        });
+
         $("#btnOpenWebsite").click(() => {
             $("<a>").attr("href", $("#Website").val()).attr("target", "_blank")[0].click();
             return false;
@@ -68,9 +95,7 @@
 
     private updateInformationFromGooglePlaces(place: google.maps.places.PlaceResult): void {
         $("#GooglePlacesId").val(place.place_id);
-        if (place.photos.length > 0)
-            $("#CoverImage").val(place.photos[0].getUrl({ maxWidth: 1000 }));
-        
+        this.updateImageList(place, true);
         this.updateStreetAddress(place.address_components, "StreetAddress");
         this.updateAddressComponent(place.address_components, "postal_code", "PostalCode");
         this.updateAddressComponent(place.address_components, "postal_town", "PostalCity");
@@ -90,6 +115,29 @@
             function (data) {
                 $("#CitySlug").val(data.slug);
             });
+    }
+
+    private updateImageList(place: google.maps.places.PlaceResult, setCoverImage: boolean) {
+        let listElementInDom = $("#lstImagesFromGooglePlaces");
+        listElementInDom.addClass("hidden");
+        listElementInDom.empty();
+
+        if (place.photos.length > 0) {
+            listElementInDom.removeClass("hidden");
+            for (let image of place.photos) {
+                listElementInDom.append(`<img class=\"ui image\" data-url=\"${image.getUrl({ maxWidth: 812 })}\" src=\"${image.getUrl({ maxWidth: 600, maxHeight: 600 })}\">`);
+            }
+            $("#lstImagesFromGooglePlaces .image").click((e) => {
+                this.updateCoverImageUrl($(e.currentTarget).data("url"));
+                return false;
+            });
+            if (setCoverImage)
+                this.updateCoverImageUrl(place.photos[0].getUrl({ maxWidth: 812 }));
+        }
+    }
+
+    private updateCoverImageUrl(url: string) {
+        $("#CoverImage").val(url);
     }
 
     private updateAddressComponent(addressComponents: google.maps.GeocoderAddressComponent[], googleName: string, fieldId: string): void {

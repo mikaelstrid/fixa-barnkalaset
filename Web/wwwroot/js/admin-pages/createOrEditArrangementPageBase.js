@@ -28,6 +28,8 @@ var CreateOrEditArrangementPageBase = (function () {
         });
         $("#btnGetInformationFromGooglePlaces").click(function () {
             var name = $("#Name").val();
+            if (!name)
+                return false;
             _this.placesService.textSearch({ query: name }, function (results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     console.log("\"Tr\u00E4ffar p\u00E5 '" + name + "':\"");
@@ -49,6 +51,28 @@ var CreateOrEditArrangementPageBase = (function () {
             });
             return false;
         });
+        $("#btnOpenCoverImage").click(function () {
+            var url = $("#CoverImage").val();
+            if (url)
+                $("<a>").attr("href", url).attr("target", "_blank")[0].click();
+            return false;
+        });
+        $("#btnGetImagesFromGooglePlaces").click(function () {
+            var placeId = $("#GooglePlacesId").val();
+            if (!placeId) {
+                console.log("No Google Places id specified");
+                return false;
+            }
+            _this.placesService.getDetails({ placeId: placeId }, function (place, detailedStatus) {
+                if (detailedStatus === google.maps.places.PlacesServiceStatus.OK) {
+                    _this.updateImageList(place, false);
+                }
+                else {
+                    console.log("\"Kunde inte h\u00E4mta detailjer f\u00F6r '" + placeId + "' pga " + detailedStatus + "\"");
+                }
+            });
+            return false;
+        });
         $("#btnOpenWebsite").click(function () {
             $("<a>").attr("href", $("#Website").val()).attr("target", "_blank")[0].click();
             return false;
@@ -56,8 +80,7 @@ var CreateOrEditArrangementPageBase = (function () {
     };
     CreateOrEditArrangementPageBase.prototype.updateInformationFromGooglePlaces = function (place) {
         $("#GooglePlacesId").val(place.place_id);
-        if (place.photos.length > 0)
-            $("#CoverImage").val(place.photos[0].getUrl({ maxWidth: 1000 }));
+        this.updateImageList(place, true);
         this.updateStreetAddress(place.address_components, "StreetAddress");
         this.updateAddressComponent(place.address_components, "postal_code", "PostalCode");
         this.updateAddressComponent(place.address_components, "postal_town", "PostalCity");
@@ -72,6 +95,28 @@ var CreateOrEditArrangementPageBase = (function () {
         $.get("/api/cities/closest?latitude=" + place.geometry.location.lat() + "&longitude=" + place.geometry.location.lng(), function (data) {
             $("#CitySlug").val(data.slug);
         });
+    };
+    CreateOrEditArrangementPageBase.prototype.updateImageList = function (place, setCoverImage) {
+        var _this = this;
+        var listElementInDom = $("#lstImagesFromGooglePlaces");
+        listElementInDom.addClass("hidden");
+        listElementInDom.empty();
+        if (place.photos.length > 0) {
+            listElementInDom.removeClass("hidden");
+            for (var _i = 0, _a = place.photos; _i < _a.length; _i++) {
+                var image = _a[_i];
+                listElementInDom.append("<img class=\"ui image\" data-url=\"" + image.getUrl({ maxWidth: 812 }) + "\" src=\"" + image.getUrl({ maxWidth: 600, maxHeight: 600 }) + "\">");
+            }
+            $("#lstImagesFromGooglePlaces .image").click(function (e) {
+                _this.updateCoverImageUrl($(e.currentTarget).data("url"));
+                return false;
+            });
+            if (setCoverImage)
+                this.updateCoverImageUrl(place.photos[0].getUrl({ maxWidth: 812 }));
+        }
+    };
+    CreateOrEditArrangementPageBase.prototype.updateCoverImageUrl = function (url) {
+        $("#CoverImage").val(url);
     };
     CreateOrEditArrangementPageBase.prototype.updateAddressComponent = function (addressComponents, googleName, fieldId) {
         var value = GoogleMapsUtilties.getAddressComponent(addressComponents, googleName);

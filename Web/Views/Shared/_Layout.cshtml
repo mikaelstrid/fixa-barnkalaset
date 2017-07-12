@@ -46,20 +46,21 @@
                     <div class="header item pxl-brand">
                         @Html.ActionLink("Fixa barnkalaset", "Index", "Home")
                     </div>
-                        @if (!SignInManager.IsSignedIn(User))
-                        {
-                            <div class="right item">
-                                <a href="@Url.Action("Login", "Account")">
-                                    <i class="bordered circular user link icon pxl-icon"></i>
-                                </a>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="right item pxl-profile-image">
-                                <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
-                            </div>
-                        }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="right item pxl-profile-image">
+                            <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
+                        </div>
+                    }
+                    @*else
+                    {
+                        <div class="right item">
+                            <a href="@Url.Action("Login", "Account")">
+                                @*<i class="large user circle outline icon"></i>
+                                <i class="bordered circular user link icon pxl-icon"></i>
+                            </a>
+                        </div>
+                    }*@
                 </div>
             </div>
 
@@ -79,3 +80,6 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+
+

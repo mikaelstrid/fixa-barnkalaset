@@ -77,7 +77,7 @@
         this.updateAddressComponent(place.address_components, "street_address", "StreetAddress");
 
         $("#PhoneNumber").val(place.formatted_phone_number);
-        $("#Website").val(place.website);
+        $("#Website").val(place.website.replace(/\/+$/, ""));
 
         if (place.geometry && place.geometry.location) {
             this.updateLatLngTextboxes(place.geometry.location);

@@ -1,5 +1,21 @@
 ﻿@import "../../modules/_variables";
 
-.card .header {
-    font-weight: normal !important;
+.pxl-page-arrangements-index {
+    .card .header {
+        font-weight: normal !important;
+    }
+
+    @media only screen and (min-width: $tabletBreakpoint) {
+        .card .description {
+            height: 48px;
+            overflow: hidden;
+        }
+    }
+
+    @media only screen and (min-width: $computerBreakpoint) {
+        .card .description {
+            height: 72px;
+            overflow: hidden;
+        }
+    }
 }

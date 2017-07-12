@@ -31,7 +31,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         public string StreetAddress { get; set; }
 
         [Display(Name = "Postnummer")]
-        [RegularExpression("^\\d\\d\\d ?\\d\\d$", ErrorMessage = "Ogiltigt postnummer")]
+        [RegularExpression("^\\d\\d\\d ?\\d\\d$", ErrorMessage = "Värdet är inte en giltigt postnummer")]
         public string PostalCode { get; set; }
 
         [Display(Name = "Postort")]
@@ -41,7 +41,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         public string PhoneNumber { get; set; }
 
         [Display(Name = "E-postadress")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Värdet är inte en giltig e-postadress")]
         public string EmailAddress { get; set; }
 
         [Display(Name = "Hemsida")]

@@ -26,6 +26,10 @@
 }
 
 @media only screen and (max-width: $largestMobileScreen) {
+    .pxl-hero.segment {
+        padding: 0.5em 0;
+    }
+
     .pxl-hero .ui.huge.header {
         margin-top: 1em !important;
         font-size: 2em !important;

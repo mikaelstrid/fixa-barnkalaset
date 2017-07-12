@@ -12,8 +12,12 @@
 
 @media only screen and (max-width: $largestMobileScreen) {
     .pxl-page {
-        padding-top: 2em;
+        padding-top: 1rem;
         padding-bottom: 2em;
+
+        h1.huge.header {
+            margin-top: 1rem !important;
+        }
     }
 
     .pxl-block {

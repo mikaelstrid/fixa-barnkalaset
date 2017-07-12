@@ -11,3 +11,9 @@
 .ui.vertical.segment + .footer {
     border-top: none !important;
 }
+
+@media only screen and (max-width: $largestMobileScreen) {
+    .footer.segment {
+        padding: 1rem 0em;
+    }
+}

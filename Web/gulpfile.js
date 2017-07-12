@@ -40,5 +40,5 @@ gulp.task("default", ["js", "css"]);
 
 gulp.task("watch",
     function () {
-        gulp.watch("app/**/*.*", ["js", "css"]);
+        gulp.watch(["app/scripts/**/*.*", "app/styles/**/*.*"], ["js", "css"]);
     });

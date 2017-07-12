@@ -14,3 +14,13 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.quote.stripe.segment .icon {
+    margin-bottom: 0.5em;
+}
+
+@media only screen and (max-width: $largestMobileScreen) {
+    .quote.stripe.segment .icon {
+        margin-bottom: 0.25em;
+    }
+}

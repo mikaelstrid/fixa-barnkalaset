@@ -49,7 +49,9 @@
                         @if (!SignInManager.IsSignedIn(User))
                         {
                             <div class="right item">
-                                <a href="@Url.Action("Login", "Account")" class="ui inverted button">Logga in</a>
+                                <a href="@Url.Action("Login", "Account")">
+                                    <i class="bordered circular user link icon pxl-icon"></i>
+                                </a>
                             </div>
                         }
                         else

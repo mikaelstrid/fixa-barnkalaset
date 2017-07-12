@@ -11,6 +11,10 @@
     font-family: 'Gochi Hand', cursive;
 }
 
+.pxl-icon.bordered.circular {
+    box-shadow: 0em 0em 0em 0.1em rgba(255, 255, 255, 0.5) inset;
+}
+
 @media only screen and (max-width: $largestMobileScreen) {
     .secondary.menu .right.item {
         margin-left: 0;

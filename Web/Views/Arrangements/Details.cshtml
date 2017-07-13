@@ -1,6 +1,6 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementDetailsViewModel
 
-<div class="ui main container pxl-page">
+<div class="ui main container pxl-page pxl-page-arrangements-details">
     <div class="ui breadcrumb">
         <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
         <i class="right angle icon divider"></i>
@@ -18,6 +18,10 @@
         <div class="row">
             <div class="seven wide tablet eight wide computer column">
                 <img class="ui fluid rounded image" src="@Model.CoverImage" />
+                @if (!string.IsNullOrWhiteSpace(Model.CoverImageAttributions))
+                {
+                    <div class="attributions">Foto: @Html.Raw(Model.CoverImageAttributions)</div>
+                }
                 <h3 class="ui medium header">Om barnkalaset</h3>
                 @Html.Raw(Model.Description)
             </div>

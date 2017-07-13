@@ -104,19 +104,36 @@ var CreateOrEditArrangementPageBase = (function () {
         if (place.photos.length > 0) {
             listElementInDom.removeClass("hidden");
             for (var _i = 0, _a = place.photos; _i < _a.length; _i++) {
-                var image = _a[_i];
-                listElementInDom.append("<img class=\"ui image\" data-url=\"" + image.getUrl({ maxWidth: 812 }) + "\" src=\"" + image.getUrl({ maxWidth: 600, maxHeight: 600 }) + "\">");
+                var photo = _a[_i];
+                listElementInDom.append("<img \n                    class=\"ui image\"\n                    data-url=\"" + photo.getUrl({ maxWidth: 812 }) + "\" src=\"" + photo.getUrl({ maxWidth: 600, maxHeight: 600 }) + "\"\n                    data-html=\"" + this.makeAttributionsHtmlList(photo.html_attributions) + "\"\n                >");
             }
+            $("#lstImagesFromGooglePlaces .image").popup();
             $("#lstImagesFromGooglePlaces .image").click(function (e) {
                 _this.updateCoverImageUrl($(e.currentTarget).data("url"));
+                _this.updateCoverImageAttributions($(e.currentTarget).data("html"));
                 return false;
             });
-            if (setCoverImage)
+            if (setCoverImage) {
                 this.updateCoverImageUrl(place.photos[0].getUrl({ maxWidth: 812 }));
+                this.updateCoverImageAttributions(this.makeAttributionsHtmlList(place.photos[0].html_attributions));
+            }
         }
+    };
+    CreateOrEditArrangementPageBase.prototype.makeAttributionsHtmlList = function (html_attributions) {
+        var attributions = "";
+        for (var _i = 0, html_attributions_1 = html_attributions; _i < html_attributions_1.length; _i++) {
+            var attrib = html_attributions_1[_i];
+            attributions += attrib + ", ";
+        }
+        if (attributions.length >= 2)
+            attributions = attributions.substring(0, attributions.length - 2);
+        return attributions.replace(/"/g, "'");
     };
     CreateOrEditArrangementPageBase.prototype.updateCoverImageUrl = function (url) {
         $("#CoverImage").val(url);
+    };
+    CreateOrEditArrangementPageBase.prototype.updateCoverImageAttributions = function (attributions) {
+        $("#CoverImageAttributions").val(attributions);
     };
     CreateOrEditArrangementPageBase.prototype.updateAddressComponent = function (addressComponents, googleName, fieldId) {
         var value = GoogleMapsUtilties.getAddressComponent(addressComponents, googleName);

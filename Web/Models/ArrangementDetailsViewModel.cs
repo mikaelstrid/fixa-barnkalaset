@@ -7,6 +7,7 @@ namespace Pixel.FixaBarnkalaset.Web.Models
         public string Pitch { get; set; }
         public string Description { get; set; }
         public string CoverImage { get; set; }
+        public string CoverImageAttributions { get; set; }
         public string StreetAddress { get; set; }
         public string PostalCode { get; set; }
         public string PostalCity { get; set; }

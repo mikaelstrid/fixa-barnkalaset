@@ -27,6 +27,9 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         [Display(Name = "Omslagsbild")]
         public string CoverImage { get; set; }
 
+        [Display(Name = "Omslagsbild, tillskrivningar")]
+        public string CoverImageAttributions { get; set; }
+
         [Display(Name = "Gatuadress")]
         public string StreetAddress { get; set; }
 

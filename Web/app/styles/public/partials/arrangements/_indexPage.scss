@@ -1,6 +1,11 @@
 ﻿@import "../../modules/_variables";
 
 .pxl-page-arrangements-index {
+    .card .image {
+        background-size: cover;
+        height: 200px;
+    }
+
     .card .header {
         font-weight: normal !important;
     }

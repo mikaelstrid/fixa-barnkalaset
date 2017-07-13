@@ -124,20 +124,42 @@
 
         if (place.photos.length > 0) {
             listElementInDom.removeClass("hidden");
-            for (let image of place.photos) {
-                listElementInDom.append(`<img class=\"ui image\" data-url=\"${image.getUrl({ maxWidth: 812 })}\" src=\"${image.getUrl({ maxWidth: 600, maxHeight: 600 })}\">`);
+            for (let photo of place.photos) {
+                listElementInDom.append(`<img 
+                    class=\"ui image\"
+                    data-url=\"${photo.getUrl({ maxWidth: 812 })}\" src=\"${photo.getUrl({ maxWidth: 600, maxHeight: 600 })}\"
+                    data-html=\"${this.makeAttributionsHtmlList(photo.html_attributions)}\"
+                >`);
             }
+            $("#lstImagesFromGooglePlaces .image").popup();
             $("#lstImagesFromGooglePlaces .image").click((e) => {
                 this.updateCoverImageUrl($(e.currentTarget).data("url"));
+                this.updateCoverImageAttributions($(e.currentTarget).data("html"))
                 return false;
             });
-            if (setCoverImage)
+            if (setCoverImage) {
                 this.updateCoverImageUrl(place.photos[0].getUrl({ maxWidth: 812 }));
+                this.updateCoverImageAttributions(this.makeAttributionsHtmlList(place.photos[0].html_attributions));
+            }
         }
+    }
+
+    private makeAttributionsHtmlList(html_attributions: string[]): string {
+        let attributions = "";
+        for (let attrib of html_attributions) {
+            attributions += `${attrib}, `;
+        }
+        if (attributions.length >= 2)
+            attributions = attributions.substring(0, attributions.length - 2);
+        return attributions.replace(/"/g, "'");
     }
 
     private updateCoverImageUrl(url: string) {
         $("#CoverImage").val(url);
+    }
+
+    private updateCoverImageAttributions(attributions: string) {
+        $("#CoverImageAttributions").val(attributions);
     }
 
     private updateAddressComponent(addressComponents: google.maps.GeocoderAddressComponent[], googleName: string, fieldId: string): void {

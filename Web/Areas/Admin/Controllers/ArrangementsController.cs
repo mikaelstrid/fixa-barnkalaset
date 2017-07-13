@@ -56,7 +56,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public async Task<IActionResult> Create([Bind("Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
+        public async Task<IActionResult> Create([Bind("Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,CoverImageAttributions,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{urlCitySlug}/{urlSlug}/andra")]
-        public async Task<IActionResult> Edit(string urlCitySlug, string urlSlug, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
+        public async Task<IActionResult> Edit(string urlCitySlug, string urlSlug, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,GooglePlacesId,CoverImage,CoverImageAttributions,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
         {
             //if (id != arrangement.Id) return NotFound();
 
@@ -128,6 +128,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 || existingArrangement.Description != model.Description
                 || existingArrangement.GooglePlacesId != model.GooglePlacesId
                 || existingArrangement.CoverImage != model.CoverImage
+                || existingArrangement.CoverImageAttributions != model.CoverImageAttributions
                 || existingArrangement.StreetAddress != model.StreetAddress
                 || existingArrangement.PostalCode != model.PostalCode
                 || existingArrangement.PostalCity != model.PostalCity
@@ -174,6 +175,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 existingArrangement.Description = model.Description;
                 existingArrangement.GooglePlacesId = model.GooglePlacesId;
                 existingArrangement.CoverImage = model.CoverImage;
+                existingArrangement.CoverImageAttributions = model.CoverImageAttributions;
                 existingArrangement.StreetAddress = model.StreetAddress;
                 existingArrangement.PostalCode = model.PostalCode;
                 existingArrangement.PostalCity = model.PostalCity;

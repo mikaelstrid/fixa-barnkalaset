@@ -14,7 +14,7 @@
         {
             <div class="six wide tablet four wide computer column">
                 <a class="ui fluid card" href="@Url.Action("Details", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">
-                    <div class="image" style="background-image: url('@arrangement.CoverImage'); background-size: cover; height: 200px"></div>
+                    <div class="image" style="background-image: url('@arrangement.CoverImage');"></div>
                     <div class="content">
                         <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
                         <div class="description">
@@ -23,6 +23,18 @@
                     </div>
                 </a>
             </div>
+        }
+    </div>
+    
+    <div class="ui mini message">
+        Foto: 
+        @foreach (var arrangement in Model.Arrangements)
+        {
+            if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
+            {
+                @arrangement.Name<text> </text>
+                @Html.Raw(arrangement.CoverImageAttributions)<text> </text>
+            }
         }
     </div>
 </div>

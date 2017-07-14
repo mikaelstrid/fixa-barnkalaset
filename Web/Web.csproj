@@ -23,9 +23,39 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\images\laserdome-goteborg.jpg" />
-    <Content Include="wwwroot\images\laserdome-halmstad.jpg" />
-    <Content Include="wwwroot\images\parkour-goteborg.jpg" />
+    <Content Include="wwwroot\apple-touch-icon-114x114.png" />
+    <Content Include="wwwroot\apple-touch-icon-120x120.png" />
+    <Content Include="wwwroot\apple-touch-icon-144x144.png" />
+    <Content Include="wwwroot\apple-touch-icon-152x152.png" />
+    <Content Include="wwwroot\apple-touch-icon-57x57.png" />
+    <Content Include="wwwroot\apple-touch-icon-60x60.png" />
+    <Content Include="wwwroot\apple-touch-icon-72x72.png" />
+    <Content Include="wwwroot\apple-touch-icon-76x76.png" />
+    <Content Include="wwwroot\code.txt" />
+    <Content Include="wwwroot\favicon-128.png" />
+    <Content Include="wwwroot\favicon-16x16.png" />
+    <Content Include="wwwroot\favicon-196x196.png" />
+    <Content Include="wwwroot\favicon-32x32.png" />
+    <Content Include="wwwroot\favicon-96x96.png" />
+    <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-114x114.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-120x120.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-144x144.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-152x152.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-57x57.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-60x60.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-72x72.png" />
+    <Content Include="wwwroot\images\favicons\apple-touch-icon-76x76.png" />
+    <Content Include="wwwroot\images\favicons\mstile-144x144.png" />
+    <Content Include="wwwroot\images\favicons\mstile-150x150.png" />
+    <Content Include="wwwroot\images\favicons\mstile-310x150.png" />
+    <Content Include="wwwroot\images\favicons\mstile-310x310.png" />
+    <Content Include="wwwroot\images\favicons\mstile-70x70.png" />
+    <Content Include="wwwroot\mstile-144x144.png" />
+    <Content Include="wwwroot\mstile-150x150.png" />
+    <Content Include="wwwroot\mstile-310x150.png" />
+    <Content Include="wwwroot\mstile-310x310.png" />
+    <Content Include="wwwroot\mstile-70x70.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.0.2" />

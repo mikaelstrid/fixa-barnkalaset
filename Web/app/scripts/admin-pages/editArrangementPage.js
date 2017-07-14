@@ -16,6 +16,7 @@ var EditArrangementPage = (function (_super) {
     EditArrangementPage.prototype.initPage = function (latitude, longitude) {
         $("select.dropdown").dropdown();
         CKEDITOR.replace("Description");
+        CKEDITOR.replace("BookingConditions");
         this.initialLatitude = latitude;
         this.initialLongitude = longitude;
     };

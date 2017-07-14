@@ -22,8 +22,19 @@
                 {
                     <div class="attributions">Foto: @Html.Raw(Model.CoverImageAttributions)</div>
                 }
+                
                 <h3 class="ui medium header">Om barnkalaset</h3>
                 @Html.Raw(Model.Description)
+
+                <h3 class="ui medium header">Bokningsvillkor</h3>
+                @if (!string.IsNullOrWhiteSpace(Model.BookingConditions))
+                {
+                    @Html.Raw(Model.BookingConditions)
+                }
+                else
+                {
+                    <p>Kontakta arrangören för mer information.</p>
+                }
             </div>
             <div class="five wide tablet four wide computer column">
                 <div class="ui segment">

@@ -21,6 +21,9 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
+        [Display(Name = "Bokningsvillkor")]
+        public string BookingConditions { get; set; }
+
         [Display(Name = "Google Places id")]
         public string GooglePlacesId { get; set; }
 

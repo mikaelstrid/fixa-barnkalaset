@@ -7,6 +7,8 @@
         public string Slug { get; set; }
         public string Pitch { get; set; }
         public string Description { get; set; }
+        public string BookingConditions { get; set; }
+
         public string GooglePlacesId { get; set; }
         public string CoverImage { get; set; }
         public string CoverImageAttributions { get; set; }

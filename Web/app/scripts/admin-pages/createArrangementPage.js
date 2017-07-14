@@ -19,6 +19,7 @@ var CreateArrangementPage = (function (_super) {
         });
         $("select.dropdown").dropdown();
         CKEDITOR.replace("Description");
+        CKEDITOR.replace("BookingConditions");
     };
     return CreateArrangementPage;
 }(CreateOrEditArrangementPageBase));

@@ -13,5 +13,5 @@
     "node_modules",
     "wwwroot"
   ],
-  "compileOnSave": true
+  "compileOnSave": false
 }

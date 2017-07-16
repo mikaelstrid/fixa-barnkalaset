@@ -10,7 +10,7 @@
     protected initialLatitude: number;
     protected initialLongitude: number;
 
-    private initMap() {
+    public initMap() {
         this.mapElement = $("#map")[0];
         this.geocoder = new google.maps.Geocoder();
         this.map = new google.maps.Map(this.mapElement, {

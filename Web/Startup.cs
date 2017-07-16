@@ -113,7 +113,7 @@ namespace Pixel.FixaBarnkalaset.Web
             if (env.IsDevelopment() || env.IsEnvironment("Testing"))
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {

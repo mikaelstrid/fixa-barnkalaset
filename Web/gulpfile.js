@@ -64,12 +64,12 @@ gulp.task("clean-css", function() {
 // SEMANTIC
 var buildSemantic = require("./app/lib/semantic/tasks/build");
 gulp.task("build-semantic", buildSemantic);
-gulp.task("copy-semantic", ["build-semantic"], function() {
-    return gulp.src("app/lib/semantic/dist/semantic*.*")
-        .pipe(gulp.dest("wwwroot/lib"));
+gulp.task("copy-semantic", /*["build-semantic"],*/ function() {
+    return gulp.src(["app/lib/semantic/dist/semantic*.*", "app/lib/semantic/dist/themes*/**/*"])
+        .pipe(gulp.dest("wwwroot/lib/semantic"));
 });
 gulp.task("watch-semantic", function() { gulp.watch(["app/lib/semantic/src/site/**/*.*"], ["build-semantic", "copy-semantic"]); });
 
 gulp.task("clean-semantic", function() {
-    return del(["wwwroot/lib/semantic*.*"]);
+    return del(["wwwroot/lib/semantic/**/*"]);
 });

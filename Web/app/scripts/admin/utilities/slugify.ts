@@ -1,6 +1,6 @@
 ﻿// https://gist.github.com/mathewbyrne/1280286
 
-function slugify(text: string) {
+export function slugify(text: string) {
     const a = "àáåäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;";
     const b = "aaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------";
     const p = new RegExp(a.split("").join("|"), "g");

@@ -1,4 +1,6 @@
-﻿abstract class CreateOrEditCityPageBase {
+﻿import { Constants } from "../utilities/constants";
+
+export abstract class CreateOrEditCityPageBase {
 
     private mapElement: HTMLElement;
 
@@ -9,7 +11,7 @@
     protected initialLatitude: number;
     protected initialLongitude: number;
 
-    private initMap() {
+    protected initMap() {
         this.mapElement = $("#map")[0];
         this.geocoder = new google.maps.Geocoder();
         this.map = new google.maps.Map(this.mapElement, {

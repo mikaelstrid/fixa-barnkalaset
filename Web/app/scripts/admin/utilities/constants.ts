@@ -1,3 +1,3 @@
-﻿class Constants {
+﻿export class Constants {
     static locale = "sv";
 }

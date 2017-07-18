@@ -9,7 +9,7 @@
     </style>
 }
 
-<div class="ui main container text">
+<div class="ui main container text pxl-admin-page pxl-admin-page--city-create">
 
     <h1>Lägg till ny stad</h1>
 
@@ -22,9 +22,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        var page = new CreateCityPage();
-        page.initPage();
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&libraries=places&callback=page.initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&libraries=places"></script>
 }

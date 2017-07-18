@@ -1,4 +1,5 @@
 var gulp = require("gulp");
+var gutil = require("gulp-util");
 var sass = require("gulp-sass");
 var del = require("del");
 var browserify = require("browserify");
@@ -28,6 +29,7 @@ function bundleJS() {
             extensions: [".ts"]
         })
         .bundle()
+        .on("error", (err) => { gutil.log(err); })
         .pipe(source("bundle.min.js"))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
@@ -64,7 +66,7 @@ gulp.task("clean-css", function() {
 // SEMANTIC
 var buildSemantic = require("./app/lib/semantic/tasks/build");
 gulp.task("build-semantic", buildSemantic);
-gulp.task("copy-semantic", /*["build-semantic"],*/ function() {
+gulp.task("copy-semantic", ["build-semantic"], function() {
     return gulp.src(["app/lib/semantic/dist/semantic*.*", "app/lib/semantic/dist/themes*/**/*"])
         .pipe(gulp.dest("wwwroot/lib/semantic"));
 });

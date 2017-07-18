@@ -1,31 +1,31 @@
-﻿@using Pixel.FixaBarnkalaset.Core
+﻿@using System.Linq
 @model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CitiesIndexViewModel
 
 <div class="ui main container">
     <h1>Städer</h1>
     <table class="ui table">
         <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(m => m.Cities.First().Name)</th>
-                <th>@Html.DisplayNameFor(m => m.Cities.First().Slug)</th>
-                <th>@Html.DisplayNameFor(m => m.Cities.First().Latitude)</th>
-                <th>@Html.DisplayNameFor(m => m.Cities.First().Longitude)</th>
-                <th>@Html.DisplayNameFor(m => m.Cities.First().ArrangementsCount)</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Cities.First().Name)</th>
+            <th>@Html.DisplayNameFor(m => m.Cities.First().Slug)</th>
+            <th>@Html.DisplayNameFor(m => m.Cities.First().Latitude)</th>
+            <th>@Html.DisplayNameFor(m => m.Cities.First().Longitude)</th>
+            <th>@Html.DisplayNameFor(m => m.Cities.First().ArrangementsCount)</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var city in Model.Cities)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(m => city.Name)</td>
-                    <td data-test-slug="@city.Slug">@Html.DisplayFor(m => city.Slug)</td>
-                    <td>@Html.DisplayFor(m => city.Latitude)</td>
-                    <td>@Html.DisplayFor(m => city.Longitude)</td>
-                    <td>@Html.DisplayFor(m => city.ArrangementsCount)</td>
-                    <td><a asp-action="Edit" asp-route-urlSlug="@city.Slug">Ändra</a></td>
-                </tr>
-            }
+        @foreach (var city in Model.Cities)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m => city.Name)</td>
+                <td data-test-slug="@city.Slug">@Html.DisplayFor(m => city.Slug)</td>
+                <td>@Html.DisplayFor(m => city.Latitude)</td>
+                <td>@Html.DisplayFor(m => city.Longitude)</td>
+                <td>@Html.DisplayFor(m => city.ArrangementsCount)</td>
+                <td><a asp-action="Edit" asp-route-urlSlug="@city.Slug">Ändra</a></td>
+            </tr>
+        }
         </tbody>
     </table>
     <a asp-action="Create">Lägg till ny</a>

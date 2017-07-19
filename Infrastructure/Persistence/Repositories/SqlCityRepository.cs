@@ -44,7 +44,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 
         public async Task AddOrUpdate(City city)
         {
-            _logger.LogDebug("AddOrUpdate: Adding or updating city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city));
+            var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            _logger.LogDebug("AddOrUpdate: Adding or updating city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city, settings));
             var existingCity = await GetById(city.Id);
             if (existingCity != null)
             {
@@ -52,12 +53,12 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
                 existingCity.Latitude = city.Latitude;
                 existingCity.Longitude = city.Longitude;
                 _dbContext.Update(existingCity);
-                _logger.LogInformation("AddOrUpdate: Updated city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city));
+                _logger.LogInformation("AddOrUpdate: Updated city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city, settings));
             }
             else
             {
                 await _dbContext.Cities.AddAsync(city);
-                _logger.LogInformation("AddOrUpdate: Added city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city));
+                _logger.LogInformation("AddOrUpdate: Added city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city, settings));
             }
             await _dbContext.SaveChangesAsync();
         }

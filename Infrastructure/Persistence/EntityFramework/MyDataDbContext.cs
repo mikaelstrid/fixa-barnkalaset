@@ -22,8 +22,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
             _httpContextAccessor = httpContextAccessor;
         }
         
-        public DbSet<Arrangement> Arrangements { get; set; }
-        public DbSet<City> Cities { get; set; }
+        public virtual DbSet<Arrangement> Arrangements { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

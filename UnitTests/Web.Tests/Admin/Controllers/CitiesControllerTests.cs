@@ -278,6 +278,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             // ARRANGE
             var city = new City().Halmstad();
             var viewModel = CreateCreateOrEditCityViewModel(city);
+            var busfabriken = city.Busfabriken();
             _mockCityRepository.Setup(m => m.GetBySlug(city.Slug)).Returns(Task.FromResult(city));
             var changedSlug = "halmstad-ii";
             viewModel.Slug = changedSlug;

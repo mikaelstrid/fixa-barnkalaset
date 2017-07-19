@@ -123,7 +123,8 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 || existingCity.Latitude != model.Latitude 
                 || existingCity.Longitude != model.Longitude)
             {
-                _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}", JsonConvert.SerializeObject(existingCity), JsonConvert.SerializeObject(model));
+                var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}", JsonConvert.SerializeObject(existingCity, settings), JsonConvert.SerializeObject(model, settings));
                 existingCity.Name = model.Name;
                 existingCity.Slug = model.Slug;
                 existingCity.Latitude = model.Latitude;

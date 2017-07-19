@@ -1,5 +1,6 @@
 ﻿import { CreateCityPage } from "./pages/createCityPage";
 import { EditCityPage } from "./pages/editCityPage";
+import { CreateArrangementPage } from "./pages/createArrangementPage";
 
 $(document).ready(() => {
     bootstrap();
@@ -21,6 +22,13 @@ function bootstrap() {
         let page = new EditCityPage();
         page.initPage(editCityPage.data("latitude"), editCityPage.data("longitude"));
         console.log("Bootstrapping \"edit city page\" finished.");
+    }
+
+    if ($(".pxl-admin-page--arrangements-create").length > 0) {
+        console.log("Found \"create arrangement page\", start bootstrapping it...");
+        let page = new CreateArrangementPage();
+        page.initPage();
+        console.log("Bootstrapping \"create arrangement page\" finished.");
     }
 
     console.log("Bootstrapping procedure finished.");

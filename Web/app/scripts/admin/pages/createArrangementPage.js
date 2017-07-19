@@ -1,6 +1,5 @@
-﻿import { CreateOrEditArrangementPageBase } from "./createOrEditArrangementPageBase";
+import { CreateOrEditArrangementPageBase } from "./createOrEditArrangementPageBase";
 import { slugify } from "../utilities/slugify";
-
 export class CreateArrangementPage extends CreateOrEditArrangementPageBase {
     initPage() {
         $("#Name").change(function () {
@@ -9,7 +8,6 @@ export class CreateArrangementPage extends CreateOrEditArrangementPageBase {
         $("select.dropdown").dropdown();
         CKEDITOR.replace("Description");
         CKEDITOR.replace("BookingConditions");
-
         this.initMap();
     }
 }

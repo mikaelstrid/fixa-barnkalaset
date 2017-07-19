@@ -1,5 +1,5 @@
-﻿export class GoogleMapsUtilties {
-    static getAddressComponent(addressComponents: google.maps.GeocoderAddressComponent[], componentName: string): string {
+export class GoogleMapsUtilties {
+    static getAddressComponent(addressComponents, componentName) {
         for (let i = 0; i < addressComponents.length; i++) {
             const addressComponent = addressComponents[i];
             for (let j = 0; j < addressComponent.types.length; j++) {

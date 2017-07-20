@@ -1,8 +1,6 @@
-﻿import { CreateOrEditArrangementPageBase } from "./createOrEditArrangementPageBase";
-import { slugify } from "../utilities/slugify";
-
+import { CreateOrEditArrangementPageBase } from "./createOrEditArrangementPageBase";
 export class EditArrangementPage extends CreateOrEditArrangementPageBase {
-    initPage(latitude: number, longitude: number) {
+    initPage(latitude, longitude) {
         $("select.dropdown").dropdown();
         CKEDITOR.replace("Description");
         CKEDITOR.replace("BookingConditions");

@@ -1,5 +1,4 @@
 ﻿@using System.Globalization
-@using Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 @model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditArrangementViewModel
 
 @section Header
@@ -12,7 +11,7 @@
     </style>
 }
 
-<div class="ui main container text">
+<div class="ui main container text pxl-admin-page pxl-admin-page--arrangements-edit" data-latitude="@Model.Latitude.ToString(CultureInfo.InvariantCulture)" data-longitude="@Model.Longitude.ToString(CultureInfo.InvariantCulture)">
 
     <h1>Ändra arrangemang</h1>
 
@@ -25,9 +24,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        var page = new EditArrangementPage();
-        page.initPage(@Model.Latitude.ToString(CultureInfo.InvariantCulture), @Model.Longitude.ToString(CultureInfo.InvariantCulture));
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&libraries=places&callback=page.initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&libraries=places"></script>
 }

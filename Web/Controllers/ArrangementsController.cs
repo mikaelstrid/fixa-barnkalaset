@@ -35,6 +35,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 return NotFound();
             }
 
+            ViewData["Title"] = $"Barnkalas i {city.Name} | Fixa barnkalaset";
+            ViewData["Description"] = $"Här hittar du bra idéer för barnkalas i {city.Name}.";
+
             return View(new ArrangementsIndexViewModel
             {
                 CityName = city.Name,
@@ -59,6 +62,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 _logger.LogWarning("Details: No arrangement with slug {ArrangementSlug} found", arrangementSlug);
                 return NotFound();
             }
+
+            ViewData["Title"] = $"{arrangement.Name}, {city.Name} | Fixa barnkalaset";
+            ViewData["Description"] = $"{arrangement.Pitch}";
 
             var viewModel = _mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement);
             viewModel.CityName = city.Name;

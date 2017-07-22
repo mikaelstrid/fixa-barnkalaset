@@ -39,6 +39,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             {
                 Cities = _mapper.Map<IEnumerable<City>, IEnumerable<CitiesIndexViewModel.CityViewModel>>(cities)
             };
+            ViewData["Title"] = "Städer | Fixa barnkalaset";
             return View(model);
         }
 
@@ -46,6 +47,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public IActionResult Create()
         {
             _logger.LogDebug("Create GET: Called");
+            ViewData["Title"] = "Lägg till ny stad | Fixa barnkalaset";
             return View();
         }
 
@@ -88,6 +90,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 
             var model = _mapper.Map<City, CreateOrEditCityViewModel>(city);
             _logger.LogDebug("Edit GET: Returned model {Model}", JsonConvert.SerializeObject(model));
+            ViewData["Title"] = $"Ändra {city.Name} | Fixa barnkalaset";
             return View(model);
         }
 

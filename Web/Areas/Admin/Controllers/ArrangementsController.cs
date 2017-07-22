@@ -44,12 +44,14 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             {
                 Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(arrangements)
             };
+            ViewData["Title"] = "Arrangemang | Fixa barnkalaset";
             return View(model);
         }
 
         [Route("skapa")]
         public async Task<IActionResult> Create()
         {
+            ViewData["Title"] = "Lägg till nytt arrangemang | Fixa barnkalaset";
             return View(new CreateOrEditArrangementViewModel {Cities = await GetCitySelectListItems()});
         }
 
@@ -98,6 +100,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             
             var viewModel = _mapper.Map<Arrangement, CreateOrEditArrangementViewModel>(existingArrangement);
             viewModel.Cities = await GetCitySelectListItems();
+            ViewData["Title"] = $"Ändra {existingArrangement.Name} | Fixa barnkalaset";
             return View(viewModel);
         }
 

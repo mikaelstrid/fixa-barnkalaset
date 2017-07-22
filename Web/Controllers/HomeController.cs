@@ -24,6 +24,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
+            ViewData["Title"] = "Hitta det perfekta barnkalaset! | Fixa barnkalaset";
+            ViewData["Description"] = "Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset.";
+
             var cities = await _cityRepository.GetAll() ?? new List<City>();
             return View(new HomeIndexViewModel
             {

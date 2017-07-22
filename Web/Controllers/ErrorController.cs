@@ -10,5 +10,17 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         {
             return View();
         }
+
+        [Route("{code:int}")]
+        public IActionResult Error(int code)
+        {
+            return View();
+        }
+
+        [Route("")]
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

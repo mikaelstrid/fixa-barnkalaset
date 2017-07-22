@@ -117,8 +117,9 @@ namespace Pixel.FixaBarnkalaset.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/fel");
             }
+            app.UseStatusCodePagesWithReExecute("/fel/{0}");
 
             if (!env.IsEnvironment("Testing"))
             {
@@ -127,7 +128,6 @@ namespace Pixel.FixaBarnkalaset.Web
 
             ConfigureIdentity(app, _env, Configuration);
             app.UseStaticFiles();
-            app.UseStatusCodePagesWithReExecute("/fel/{0}");
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
         }
 

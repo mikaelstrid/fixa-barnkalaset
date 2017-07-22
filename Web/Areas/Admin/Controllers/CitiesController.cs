@@ -34,7 +34,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             _logger.LogDebug("Index: Called");
-            var cities = await _cityRepository.GetAll();
+            var cities = await _cityRepository.GetAll() ?? new List<City>();
             var model = new CitiesIndexViewModel
             {
                 Cities = _mapper.Map<IEnumerable<City>, IEnumerable<CitiesIndexViewModel.CityViewModel>>(cities)

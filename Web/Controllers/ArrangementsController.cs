@@ -39,7 +39,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             {
                 CityName = city.Name,
                 CitySlug = citySlug,
-                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(city.Arrangements)
+                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(city.Arrangements ?? new List<Arrangement>())
             });
         }
 

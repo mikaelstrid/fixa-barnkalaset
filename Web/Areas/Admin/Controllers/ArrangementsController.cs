@@ -39,7 +39,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             _logger.LogDebug("Index: Called");
-            var arrangements = await _arrangementRepository.GetAll();
+            var arrangements = await _arrangementRepository.GetAll() ?? new List<Arrangement>();
             var model = new ArrangementsIndexViewModel
             {
                 Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(arrangements)

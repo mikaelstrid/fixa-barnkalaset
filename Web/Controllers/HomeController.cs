@@ -24,7 +24,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            var cities = await _cityRepository.GetAll();
+            var cities = await _cityRepository.GetAll() ?? new List<City>();
             return View(new HomeIndexViewModel
             {
                 Cities = _mapper.Map<IEnumerable<City>, IEnumerable<HomeIndexViewModel.CityViewModel>>(cities)

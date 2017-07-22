@@ -16,15 +16,17 @@ namespace IntegrationTests.Public.Tests
         public IndexArrangementsTest(TestFixture<Startup> fixture) : base(fixture) { }
 
         [Fact]
-        public async Task Index_GivenUnknownSlugs_ShouldReturn404()
+        public async Task Index_GivenUnknownSlugs_ShouldReturn404_AndContainPrettyText()
         {
             // ARRANGE
 
             // ACT
             var response = await Client.GetAsync("/arrangemang/okand-stad");
+            var responseString = await response.Content.ReadAsStringAsync();
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            responseString.Should().Contain("Hoppsan").And.Contain("finns inte");
         }
 
         [Fact]

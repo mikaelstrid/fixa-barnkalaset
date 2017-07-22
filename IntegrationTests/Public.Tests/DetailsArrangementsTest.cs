@@ -22,9 +22,11 @@ namespace IntegrationTests.Public.Tests
 
             // ACT
             var response = await Client.GetAsync("/arrangemang/okand-stad/okant-arrangemang");
+            var responseString = await response.Content.ReadAsStringAsync();
 
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            responseString.Should().Contain("Hoppsan").And.Contain("finns inte");
         }
 
 

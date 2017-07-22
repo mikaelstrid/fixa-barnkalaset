@@ -50,7 +50,7 @@ namespace IntegrationTests.Admin.Tests
             // ASSERT
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseString = await response.Content.ReadAsStringAsync();
-            responseString.Should().Contain("<h1>Skapa arrangemang</h1>");
+            responseString.Should().Contain("<h1>Lägg till nytt arrangemang</h1>");
             Regex.Matches(responseString, "<option").Count.Should().Be(2);
             responseString.Should().Contain("<option value=\"halmstad\">Halmstad</option>");
             responseString.Should().Contain($"<option value=\"malmo\">Malm&#xF6;</option>");

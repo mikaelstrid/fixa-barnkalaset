@@ -127,6 +127,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
             ConfigureIdentity(app, _env, Configuration);
             app.UseStaticFiles();
+            app.UseStatusCodePagesWithReExecute("/fel/{0}");
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
         }
 

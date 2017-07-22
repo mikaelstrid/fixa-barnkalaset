@@ -33,10 +33,5 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 //CitiesInNorth = new[] { "Umeå" }
             });
         }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
     }
 }

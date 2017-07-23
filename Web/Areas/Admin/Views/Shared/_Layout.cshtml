@@ -19,6 +19,8 @@
     @RenderSection("Header", required: false)
 
     @Html.Raw(JavaScriptSnippet.FullScript)
+
+    @Html.Partial("_GoogleAnalytics")
 </head>
 <body>
     <div class="ui fixed menu">

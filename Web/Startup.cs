@@ -48,6 +48,7 @@ namespace Pixel.FixaBarnkalaset.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
             ConfigureServicesDatabase(services, _env, Configuration);
             ConfigureServicesMvc(services, _env);
             ConfigureServicesIdentity(services, _env);

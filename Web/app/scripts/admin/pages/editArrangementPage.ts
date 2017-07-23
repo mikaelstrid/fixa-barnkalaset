@@ -6,6 +6,7 @@ export class EditArrangementPage extends CreateOrEditArrangementPageBase {
         $("select.dropdown").dropdown();
         CKEDITOR.replace("Description");
         CKEDITOR.replace("BookingConditions");
+        CKEDITOR.replace("PriceInformation");
         this.initialLatitude = latitude;
         this.initialLongitude = longitude;
         this.initMap();

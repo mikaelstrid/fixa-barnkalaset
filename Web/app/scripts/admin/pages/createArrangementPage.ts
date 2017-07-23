@@ -9,6 +9,7 @@ export class CreateArrangementPage extends CreateOrEditArrangementPageBase {
         $("select.dropdown").dropdown();
         CKEDITOR.replace("Description");
         CKEDITOR.replace("BookingConditions");
+        CKEDITOR.replace("PriceInformation");
 
         this.initMap();
     }

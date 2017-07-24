@@ -9,32 +9,53 @@
 
     <h1 class="ui huge header">@Html.DisplayFor(m => m.CityName)</h1>
 
-    <div class="ui stackable grid">
-        @foreach (var arrangement in Model.Arrangements)
-        {
-            <div class="six wide tablet four wide computer column">
-                <a class="ui fluid card" href="@Url.Action("Details", new { citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug })">
-                    <div class="image" style="background-image: url('@arrangement.CoverImage');"></div>
-                    <div class="content">
-                        <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
-                        <div class="description">
-                            @Html.DisplayFor(m => arrangement.Pitch)
-                        </div>
-                    </div>
-                </a>
-            </div>
-        }
-    </div>
-    
-    <div class="pxl-html-attributions">
-        Foto:
-        @foreach (var arrangement in Model.Arrangements)
-        {
-            if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
+    @if (Model.Arrangements.Any())
+    {
+        <div class="ui stackable grid">
+            @foreach (var arrangement in Model.Arrangements)
             {
-                @arrangement.Name<text> </text>
-                @Html.Raw(arrangement.CoverImageAttributions)<text> </text>
+                <div class="six wide tablet four wide computer column">
+                    <a class="ui fluid card" href="@Url.Action("Details", new {citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug})">
+                        <div class="image" style="background-image: url('@arrangement.CoverImage');"></div>
+                        <div class="content">
+                            <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
+                            <div class="description">
+                                @Html.DisplayFor(m => arrangement.Pitch)
+                            </div>
+                        </div>
+                    </a>
+                </div>
             }
-        }
-    </div>
+        </div>
+
+        <div class="pxl-html-attributions">
+            Foto:
+            @foreach (var arrangement in Model.Arrangements)
+            {
+                if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
+                {
+                    @arrangement.Name<text> </text>
+                    @Html.Raw(arrangement.CoverImageAttributions)<text> </text>
+                }
+            }
+        </div>
+    }
+    else
+    {
+        <div class="ui padded segment">
+            <p class="ui medium header">Oj, här var det lite tomt</p>
+            <p>Antingen har vi inte riktigt hunnit lägga till några kalas i @Model.CityName ännu eller så har vi helt enkelt inte hittat några.</p>
+            <p>Har du några idéer på kalas som skulle kunna finnas här? Hör då gärna av dig till oss på <a href="mailto:kontakt@fixabarnkalaset.se">kontakt@fixabarnkalaset.se</a> så ska vi definitivt försöka lägga till dem.</p>
+        </div>
+    }
+
+    @if (Model.Arrangements.Any())
+    {
+        <div class="ui padded segment">
+            <p class="ui small header">Tycker du att något kalas saknas?</p>
+            <p>
+                Hör då gärna av dig till oss på <a href="mailto:kontakt@fixabarnkalaset.se">kontakt@fixabarnkalaset.se</a> så ska vi definitivt försöka lägga till det.
+            </p>
+        </div>
+    }
 </div>

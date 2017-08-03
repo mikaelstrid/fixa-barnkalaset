@@ -30,15 +30,15 @@
                     <h3 class="ui large header">Inte tid att skicka inbjudningskort?</h3>
                     <p>Om du inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
                 </div>
-                <a class="ui disabled button">Kommer snart</a>
+                @Html.ActionLink("Läs mer", "Index", "InvitationCards", null, new { @class = "ui button" })
             </div>
             <div class="column">
                 <i class="huge checked calendar icon"></i>
                 <div class="pxl-text-container">
                     <h3 class="ui large header">Håll reda på vilka som kommer</h3>
-                    <p>Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa andra meddelande eller e-post.</p>
+                    <p>Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa meddelande eller e-post.</p>
                 </div>
-                <a class="ui disabled button">Kommer snart</a>
+                @Html.ActionLink("Läs mer", "Index", "Rsvp", null, new { @class = "ui button"})
             </div>
         </div>
     </div>

@@ -133,6 +133,7 @@ namespace IntegrationTests.Admin.Tests
                 {"__RequestVerificationToken", context.AntiForgeryToken},
                 {"Name", arrangement.Name},
                 {"Slug", arrangement.Slug},
+                {"Type", arrangement.Type},
                 {"Pitch", arrangement.Pitch},
                 {"Description", arrangement.Description},
                 {"GooglePlacesId", arrangement.GooglePlacesId},

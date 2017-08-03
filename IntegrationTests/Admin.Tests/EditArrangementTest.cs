@@ -71,6 +71,7 @@ namespace IntegrationTests.Admin.Tests
                 {"__RequestVerificationToken", context.AntiForgeryToken},
                 {"Name", newName},
                 {"Slug", newSlug},
+                {"Type", _busfabriken.Type},
                 {"Pitch", _busfabriken.Pitch},
                 {"Description", _busfabriken.Description},
                 {"GooglePlacesId", _busfabriken.GooglePlacesId},

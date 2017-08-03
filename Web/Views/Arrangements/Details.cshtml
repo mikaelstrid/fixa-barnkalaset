@@ -8,9 +8,7 @@
         <i class="right angle icon divider"></i>
         <div class="active section">@Model.Name</div>
     </div>
-    <h1 class="ui huge header">
-        @Html.DisplayFor(m => m.Name)
-    </h1>
+    <h1 class="ui huge header">@Html.DisplayFor(m => m.Name)</h1>
     @if (!string.IsNullOrWhiteSpace(Model.Pitch))
     {
         <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>

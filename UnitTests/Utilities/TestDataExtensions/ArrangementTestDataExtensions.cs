@@ -11,6 +11,7 @@ namespace UnitTests.Utilities.TestDataExtensions
 
             arrangement.Name = "Busfabriken";
             arrangement.Slug = "busfabriken";
+            arrangement.Type = "Lekland";
             arrangement.City = arrangementCity;
             arrangement.CityId = arrangementCity.Id;
             arrangement.Pitch = "Busfabriken är ett inomhuslekland i djungelmiljö!";
@@ -37,6 +38,7 @@ namespace UnitTests.Utilities.TestDataExtensions
 
             arrangement.Name = "Laserdome";
             arrangement.Slug = "laserdome";
+            arrangement.Type = "Laserdome";
             arrangement.City = arrangementCity;
             arrangement.CityId = arrangementCity.Id;
             arrangement.Pitch = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";

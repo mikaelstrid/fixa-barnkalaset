@@ -91,12 +91,12 @@ namespace UnitTests.Web.Tests.Controllers
         }
 
         [Fact]
-        public async Task Index_GivenCityWithTwoArrangements_ShouldReturnCityWithTwoArrangementsInTheResponseModel()
+        public async Task Index_GivenCityWithTwoArrangements_ShouldReturnCityWithTwoArrangementsInAlphabeticalOrder_InTheResponseModel()
         {
             // ARRANGE
             var halmstad = new City().Halmstad();
-            var busfabriken = halmstad.Busfabriken();
             var laserdome = halmstad.Laserdome();
+            var busfabriken = halmstad.Busfabriken();
             _mockCityRepository.Setup(m => m.GetBySlug(halmstad.Slug)).Returns(Task.FromResult(halmstad));
 
             // ACT
@@ -109,7 +109,7 @@ namespace UnitTests.Web.Tests.Controllers
             {
                 CityName = halmstad.Name,
                 CitySlug = halmstad.Slug,
-                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(halmstad.Arrangements)
+                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(new List<Arrangement> { busfabriken, laserdome })
             });
         }
 

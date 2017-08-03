@@ -62,10 +62,12 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public async Task Index_GivenTwoCitiesFromRepository_ShouldReturnModelWithTwoCities()
+        public async Task Index_GivenTwoCitiesFromRepository_ShouldReturnModelWithTwoCities_InAlphabeticalOrder()
         {
             // ARRANGE
-            var cities = new List<City> {new City().Halmstad(), new City().Vaxjo()};
+            var halmstad = new City().Halmstad();
+            var vaxjo = new City().Vaxjo();
+            var cities = new List<City> {vaxjo, halmstad};
             _mockCityRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<City>) cities));
 
             // ACT
@@ -75,7 +77,8 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _mockCityRepository.Verify(m => m.GetAll(), Times.Once);
             var model = (result as ViewResult).Model as CitiesIndexViewModel;
             model.Cities.Count().Should().Be(2);
-            model.Cities.ShouldBeEquivalentTo(cities, opt => opt.ExcludingMissingMembers());
+            model.Cities.First().ShouldBeEquivalentTo(halmstad, opt => opt.ExcludingMissingMembers());
+            model.Cities.Skip(1).First().ShouldBeEquivalentTo(vaxjo, opt => opt.ExcludingMissingMembers());
         }
 
 

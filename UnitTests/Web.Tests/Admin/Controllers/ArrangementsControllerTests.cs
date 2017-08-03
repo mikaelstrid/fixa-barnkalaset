@@ -69,11 +69,13 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public async Task Index_GivenTwoCitiesFromRepository_ShouldReturnModelWithTwoCities()
+        public async Task Index_GivenTwoArrangementsFromRepository_ShouldReturnModelWithTwoArrangements_InAlphabeticalOrder()
         {
             // ARRANGE
             var halmstad = new City().Halmstad();
-            var arrangements = new List<Arrangement> { halmstad.Busfabriken(), halmstad.Laserdome() };
+            var busfabriken = halmstad.Busfabriken();
+            var laserdome = halmstad.Laserdome();
+            var arrangements = new List<Arrangement> { laserdome, busfabriken };
             _mockArrangementsRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<Arrangement>)arrangements));
 
             // ACT
@@ -83,7 +85,8 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             _mockArrangementsRepository.Verify(m => m.GetAll(), Times.Once);
             var model = (result as ViewResult).Model as ArrangementsIndexViewModel;
             model.Arrangements.Count().Should().Be(2);
-            model.Arrangements.ShouldBeEquivalentTo(arrangements, opt => opt.ExcludingMissingMembers());
+            model.Arrangements.First().ShouldBeEquivalentTo(busfabriken, opt => opt.ExcludingMissingMembers());
+            model.Arrangements.Skip(1).First().ShouldBeEquivalentTo(laserdome, opt => opt.ExcludingMissingMembers());
         }
 
 

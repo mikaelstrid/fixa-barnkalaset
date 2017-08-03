@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +38,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             var cities = await _cityRepository.GetAll() ?? new List<City>();
             var model = new CitiesIndexViewModel
             {
-                Cities = _mapper.Map<IEnumerable<City>, IEnumerable<CitiesIndexViewModel.CityViewModel>>(cities)
+                Cities = _mapper.Map<IEnumerable<City>, IEnumerable<CitiesIndexViewModel.CityViewModel>>(cities.OrderBy(c => c.Name))
             };
             ViewData["Title"] = "Städer | Fixa barnkalaset";
             return View(model);

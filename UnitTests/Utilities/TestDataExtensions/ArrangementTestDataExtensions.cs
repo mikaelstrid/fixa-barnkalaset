@@ -27,7 +27,8 @@ namespace UnitTests.Utilities.TestDataExtensions
             arrangement.Latitude = 56.6727278;
             arrangement.Longitude = 12.8881324;
 
-            arrangementCity.Arrangements = new List<Arrangement> {arrangement};
+            arrangementCity.Arrangements = arrangementCity.Arrangements ?? new List<Arrangement>();
+            arrangementCity.Arrangements.Add(arrangement);
 
             return arrangement;
         }
@@ -54,7 +55,8 @@ namespace UnitTests.Utilities.TestDataExtensions
             arrangement.Latitude = 56.689355;
             arrangement.Longitude = 12.870398;
 
-            arrangementCity.Arrangements = new List<Arrangement> { arrangement };
+            arrangementCity.Arrangements = arrangementCity.Arrangements ?? new List<Arrangement>();
+            arrangementCity.Arrangements.Add(arrangement);
 
             return arrangement;
         }

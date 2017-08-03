@@ -42,7 +42,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             var arrangements = await _arrangementRepository.GetAll() ?? new List<Arrangement>();
             var model = new ArrangementsIndexViewModel
             {
-                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(arrangements)
+                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(arrangements.OrderBy(a => a.Name))
             };
             ViewData["Title"] = "Arrangemang | Fixa barnkalaset";
             return View(model);

@@ -50,16 +50,12 @@ namespace UnitTests.Utilities.TestDataExtensions
 
         public static Arrangement Busfabriken(this City city)
         {
-            var arrangement = new Arrangement().Busfabriken(city);
-            city.Arrangements = new List<Arrangement> { arrangement };
-            return arrangement;
+            return new Arrangement().Busfabriken(city);
         }
 
         public static Arrangement Laserdome(this City city)
         {
-            var arrangement = new Arrangement().Laserdome(city);
-            city.Arrangements = new List<Arrangement> { arrangement };
-            return arrangement;
+            return new Arrangement().Laserdome(city);
         }
     }
 }

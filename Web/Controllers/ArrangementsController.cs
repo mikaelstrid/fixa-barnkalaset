@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -38,11 +39,12 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             ViewData["Title"] = $"Barnkalas i {city.Name} | Fixa barnkalaset";
             ViewData["Description"] = $"Här hittar du bra idéer för barnkalas i {city.Name}.";
 
+            var arrangements = city.Arrangements ?? new List<Arrangement>();
             return View(new ArrangementsIndexViewModel
             {
                 CityName = city.Name,
                 CitySlug = citySlug,
-                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(city.Arrangements ?? new List<Arrangement>())
+                Arrangements = _mapper.Map<IEnumerable<Arrangement>, IEnumerable<ArrangementsIndexViewModel.ArrangementViewModel>>(arrangements.OrderBy(a => a.Name))
             });
         }
 

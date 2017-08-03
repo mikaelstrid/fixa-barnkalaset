@@ -23,6 +23,11 @@
         <select asp-for="CitySlug" asp-items="Model.Cities"></select>
         <span asp-validation-for="CitySlug"></span>
     </div>
+    <div class="field" pf-validation-for="Type" pf-validationerror-class="error">
+        <label asp-for="Type"></label>
+        <input type="text" asp-for="Type">
+        <span asp-validation-for="Type"></span>
+    </div>
     <div class="field" pf-validation-for="GooglePlacesId" pf-validationerror-class="error">
         <label asp-for="GooglePlacesId"></label>
         <input type="text" asp-for="GooglePlacesId">

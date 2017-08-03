@@ -18,6 +18,9 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
             [Display(Name = "Slug")]
             public string Slug { get; set; }
 
+            [Display(Name = "Typ")]
+            public string Type { get; set; }
+
             [Display(Name = "Stad")]
             public string CityName { get; set; }
 

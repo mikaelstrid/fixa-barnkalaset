@@ -58,7 +58,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("skapa")]
-        public async Task<IActionResult> Create([Bind("Name,Slug,CitySlug,Pitch,Description,BookingConditions,PriceInformation,GooglePlacesId,CoverImage,CoverImageAttributions,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
+        public async Task<IActionResult> Create([Bind("Name,Slug,CitySlug,Type,Pitch,Description,BookingConditions,PriceInformation,GooglePlacesId,CoverImage,CoverImageAttributions,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{urlCitySlug}/{urlSlug}/andra")]
-        public async Task<IActionResult> Edit(string urlCitySlug, string urlSlug, [Bind("Id,Name,Slug,CitySlug,Pitch,Description,BookingConditions,PriceInformation,GooglePlacesId,CoverImage,CoverImageAttributions,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
+        public async Task<IActionResult> Edit(string urlCitySlug, string urlSlug, [Bind("Id,Name,Slug,CitySlug,Type,Pitch,Description,BookingConditions,PriceInformation,GooglePlacesId,CoverImage,CoverImageAttributions,StreetAddress,PostalCode,PostalCity,PhoneNumber,EmailAddress,Website,Latitude,Longitude")] CreateOrEditArrangementViewModel model)
         {
             //if (id != arrangement.Id) return NotFound();
 
@@ -126,7 +126,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             
             if (existingArrangement.Name != model.Name
                 || existingArrangement.Slug != model.Slug
-                || existingArrangement.Slug != model.Slug
+                || existingArrangement.Type != model.Type
                 || existingArrangement.Pitch != model.Pitch
                 || existingArrangement.Description != model.Description
                 || existingArrangement.BookingConditions != model.BookingConditions
@@ -176,6 +176,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 
                 existingArrangement.Name = model.Name;
                 existingArrangement.Slug = model.Slug;
+                existingArrangement.Type = model.Type;
                 existingArrangement.Pitch = model.Pitch;
                 existingArrangement.Description = model.Description;
                 existingArrangement.BookingConditions = model.BookingConditions;

@@ -15,6 +15,10 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         [Display(Name = "Slug")]
         public string Slug { get; set; }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
+        [Display(Name = "Typ")]
+        public string Type { get; set; }
+
         [Display(Name = "Pitch")]
         public string Pitch { get; set; }
 

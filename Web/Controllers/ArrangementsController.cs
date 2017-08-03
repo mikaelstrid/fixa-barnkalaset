@@ -9,7 +9,7 @@ using Pixel.FixaBarnkalaset.Web.Models;
 
 namespace Pixel.FixaBarnkalaset.Web.Controllers
 {
-    [Route("arrangemang")]
+    [Route("kalas")]
     public class ArrangementsController : Controller
     {
         private readonly IMapper _mapper;

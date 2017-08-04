@@ -36,5 +36,12 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 //CitiesInNorth = new[] { "Umeå" }
             });
         }
+
+        [Route("cookies")]
+        public IActionResult Cookies()
+        {
+            ViewData["Title"] = "Cookies | Fixa barnkalaset";
+            return View();
+        }
     }
 }

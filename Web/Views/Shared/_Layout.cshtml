@@ -34,12 +34,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
 
     @Html.Raw(JavaScriptSnippet.FullScript)
-    
+
     @Html.Partial("_GoogleAnalytics")
 </head>
 <body>
     <!-- Page Contents -->
     <div class="pusher">
+        <div class="ui center aligned attached basic segment pxl-cookie-info" style="display: none;">
+            Cookies hjälper oss att leverera våra tjänster. Genom att använda tjänsterna, accepterar du att vi använder cookies. @Html.ActionLink("Läs mer", "Cookies", "Home")&nbsp;&nbsp;&nbsp;<a class="ui mini button close">OK</a>
+        </div>
         <div class="ui inverted vertical masthead center aligned segment pxl-hero">
             <div class="ui container">
                 <div class="ui large secondary inverted menu">
@@ -53,14 +56,14 @@
                         </div>
                     }
                     @*else
-                    {
-                        <div class="right item">
-                            <a href="@Url.Action("Login", "Account")">
-                                @*<i class="large user circle outline icon"></i>
-                                <i class="bordered circular user link icon pxl-icon"></i>
-                            </a>
-                        </div>
-                    }*@
+                        {
+                            <div class="right item">
+                                <a href="@Url.Action("Login", "Account")">
+                                    @*<i class="large user circle outline icon"></i>
+                                    <i class="bordered circular user link icon pxl-icon"></i>
+                                </a>
+                            </div>
+                        }*@
                 </div>
             </div>
 
@@ -72,14 +75,28 @@
 
         <div class="ui center aligned vertical footer segment">
             <div class="ui container">
-                Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>.<br/>Med reservation för inaktuella och/eller felaktiga uppgifter.
+                Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>.<br />Med reservation för inaktuella och/eller felaktiga uppgifter.
             </div>
         </div>
     </div>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+        if (document.cookie.indexOf("pxlca") === -1) {
+            $(".pxl-cookie-info").show();
+
+            $(".pxl-cookie-info .close")
+                .on("click",
+                function () {
+                    $(this)
+                        .closest(".pxl-cookie-info")
+                        .transition("fade");
+                    var d = new Date();
+                    d.setFullYear(d.getFullYear() + 1);
+                    document.cookie = "pxlca=1;expires=" + d.toUTCString();
+                });
+        }
+    </script>
 </body>
 </html>
-
-
-

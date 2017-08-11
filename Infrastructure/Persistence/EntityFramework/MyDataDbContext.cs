@@ -27,11 +27,11 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<City>().Property<DateTime>("LastUpdatedUtc");
-            builder.Entity<City>().Property<string>("UpdatedBy");
+            builder.Entity<City>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
+            builder.Entity<City>().Property<string>("UpdatedBy").HasField("_updatedBy");
 
-            builder.Entity<Arrangement>().Property<DateTime>("LastUpdatedUtc");
-            builder.Entity<Arrangement>().Property<string>("UpdatedBy");
+            builder.Entity<Arrangement>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
+            builder.Entity<Arrangement>().Property<string>("UpdatedBy").HasField("_updatedBy");
         }
 
         public override int SaveChanges()

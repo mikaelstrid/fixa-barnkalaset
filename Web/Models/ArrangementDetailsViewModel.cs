@@ -1,3 +1,5 @@
+using System;
+
 namespace Pixel.FixaBarnkalaset.Web.Models
 {
     public class ArrangementDetailsViewModel
@@ -21,5 +23,7 @@ namespace Pixel.FixaBarnkalaset.Web.Models
         public double Longitude { get; set; }
         public string CityName { get; set; }
         public string CitySlug { get; set; }
+
+        public DateTime LastUpdatedUtc { get; set; }
     }
 }

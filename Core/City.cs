@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.Core
 {
-    public class City
+    public class City : Entity
     {
         public City() { }
 
@@ -14,14 +14,11 @@ namespace Pixel.FixaBarnkalaset.Core
             Longitude = longitude;
         }
 
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
         public virtual List<Arrangement> Arrangements { get; set; }
-
-        public bool IsRemoved { get; set; }
     }
 }

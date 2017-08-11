@@ -9,6 +9,7 @@
         <div class="active section">@Model.Name</div>
     </div>
     <h1 class="ui huge header">@Html.DisplayFor(m => m.Name)</h1>
+    <p class="ui small">Senast uppdaterad: @Model.LastUpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>
     @if (!string.IsNullOrWhiteSpace(Model.Pitch))
     {
         <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>

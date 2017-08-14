@@ -47,7 +47,9 @@ namespace IntegrationTests.Admin.Tests
             _fixture.MyDataDbContext.Cities
                 .Single(c => c.Slug == city.Slug)
                 .ShouldBeEquivalentTo(new City(newName, newSlug, newLatitude, city.Longitude) { Arrangements = new List<Arrangement>() },
-                opt => opt.Excluding(c => c.Id));
+                opt => opt
+                    .Excluding(c => c.Id)
+                    .Excluding(c => c.LastUpdatedUtc));
         }
     }
 }

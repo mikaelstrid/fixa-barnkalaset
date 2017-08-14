@@ -164,7 +164,8 @@ namespace IntegrationTests.Admin.Tests
                 .ShouldBeEquivalentTo(expectedArrangement, opt => opt
                     .ExcludingMissingMembers()
                     .Excluding(a => a.Id)
-                    .Excluding(a => a.City));
+                    .Excluding(a => a.City)
+                    .Excluding(c => c.LastUpdatedUtc));
         }
     }
 }

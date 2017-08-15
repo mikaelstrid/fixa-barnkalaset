@@ -11,7 +11,7 @@
                 </div>
             </h2>
             @{
-                var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="ui large form">
                     <div class="ui padded segment">
                         <p>Hos oss använder du ditt Facebook-konto för att logga in så att du slipper hålla reda på fler användaruppgifter.</p>
@@ -19,7 +19,7 @@
 
                         @foreach (var provider in loginProviders)
                         {
-                            <button type="submit" class="ui labeled icon large button pxl-button-@provider.AuthenticationScheme.ToLowerInvariant()" name="provider" value="@provider.AuthenticationScheme" title="Logga in med @provider.DisplayName"><i class="white large facebook square icon"></i> Logga in med @provider.AuthenticationScheme</button>
+                            <button type="submit" class="ui labeled icon large button pxl-button-@provider.Name.ToLowerInvariant()" name="provider" value="@provider.Name" title="Logga in med @provider.DisplayName"><i class="white large @provider.Name.ToLowerInvariant() square icon"></i> Logga in med @provider.Name</button>
                         }
                     </div>
                 </form>

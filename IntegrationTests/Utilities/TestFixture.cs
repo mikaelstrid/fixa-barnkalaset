@@ -36,7 +36,6 @@ namespace IntegrationTests.Utilities
                 .UseContentRoot(contentRoot)
                 .ConfigureServices(ConfigureServices)
                 .UseEnvironment("Testing")
-                .UseApplicationInsights()
                 .UseStartup(typeof(TStartup));
 
             _server = new TestServer(builder);

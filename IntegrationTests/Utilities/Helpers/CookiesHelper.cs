@@ -18,7 +18,7 @@ namespace IntegrationTests.Utilities.Helpers
             {
                 SetCookieHeaderValue.ParseList(values.ToList()).ToList().ForEach(cookie =>
                 {
-                    result.Add(cookie.Name, cookie.Value);
+                    result.Add(cookie.Name.ToString(), cookie.Value.ToString());
                 });
             }
             return result;

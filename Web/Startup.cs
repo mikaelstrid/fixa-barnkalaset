@@ -4,7 +4,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
+using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Redirection;
 
 namespace Pixel.FixaBarnkalaset.Web
@@ -85,16 +85,28 @@ namespace Pixel.FixaBarnkalaset.Web
                 services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); });
         }
 
-        private static void ConfigureServicesIdentity(IServiceCollection services, IHostingEnvironment env)
+        private void ConfigureServicesIdentity(IServiceCollection services, IHostingEnvironment env)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>(o =>
-                {
-                    o.Cookies.ApplicationCookie.LoginPath = new PathString("/konto/logga-in");
-                    o.Cookies.ApplicationCookie.LogoutPath = new PathString("/konto/logga-ut");
-                    o.Cookies.ApplicationCookie.AccessDeniedPath = new PathString("/konto/atkomst-nekad");
-                })
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<MyIdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/konto/logga-in";
+                options.LogoutPath = "/konto/logga-ut";
+                options.AccessDeniedPath = "/konto/atkomst-nekad";
+            });
+
+            if (!env.IsEnvironment("Testing"))
+            {
+                services.AddAuthentication()
+                .AddFacebook(options =>
+                {
+                    options.AppId = Configuration["auth:facebook:appid"];
+                    options.AppSecret = Configuration["auth:facebook:appsecret"];
+                });
+            }
         }
 
         private static void ConfigureServicesApplication(IServiceCollection services, IHostingEnvironment env)
@@ -165,21 +177,12 @@ namespace Pixel.FixaBarnkalaset.Web
 
         private static void ConfigureIdentity(IApplicationBuilder app, IHostingEnvironment env, IConfigurationRoot configuration)
         {
-            app.UseIdentity();
+            app.UseAuthentication();
 
             app.EnsureRolesCreated();
             if (env.IsEnvironment("Testing"))
             {
                 app.AddTestingUsers();
-            }
-
-            if (!env.IsEnvironment("Testing"))
-            {
-                app.UseFacebookAuthentication(new FacebookOptions()
-                {
-                    AppId = configuration["Authentication:Facebook:AppId"],
-                    AppSecret = configuration["Authentication:Facebook:AppSecret"]
-                });
             }
         }
     }

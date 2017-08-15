@@ -11,12 +11,19 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Redirection
     {
         public int StatusCode { get; } = (int)HttpStatusCode.MovedPermanently;
         public bool ExcludeLocalhost { get; set; } = true;
+        public bool ExcludeAzurewebsitesNet { get; set; } = true;
 
         public void ApplyRule(RewriteContext context)
         {
             var request = context.HttpContext.Request;
             var host = request.Host;
             if (host.Host.StartsWith("www", StringComparison.OrdinalIgnoreCase))
+            {
+                context.Result = RuleResult.ContinueRules;
+                return;
+            }
+
+            if (ExcludeAzurewebsitesNet && host.Host.EndsWith("azurewebsites.net", StringComparison.OrdinalIgnoreCase))
             {
                 context.Result = RuleResult.ContinueRules;
                 return;

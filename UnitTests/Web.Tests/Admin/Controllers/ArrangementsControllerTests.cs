@@ -52,7 +52,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public async Task Index_GivenNoArrangementsFromRepository_ShouldReturnModelWithNoArrangements()
+        public async Task Index_GivenNoArrangements_ShouldReturnModelWithNoArrangements()
         {
             // ARRANGE
             _mockArrangementsRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<Arrangement>)new List<Arrangement>()));
@@ -69,7 +69,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
         [Fact]
-        public async Task Index_GivenTwoArrangementsFromRepository_ShouldReturnModelWithTwoArrangements_InAlphabeticalOrder()
+        public async Task Index_GivenTwoArrangementsInSameCityShouldReturnModelWithTwoArrangements_InAlphabeticalOrder()
         {
             // ARRANGE
             var halmstad = new City().Halmstad();
@@ -87,6 +87,28 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             model.Arrangements.Count().Should().Be(2);
             model.Arrangements.First().ShouldBeEquivalentTo(busfabriken, opt => opt.ExcludingMissingMembers());
             model.Arrangements.Skip(1).First().ShouldBeEquivalentTo(laserdome, opt => opt.ExcludingMissingMembers());
+        }
+
+        [Fact]
+        public async Task Index_GivenTwoArrangementsInDifferentCities_ShouldReturnModelWithTwoArrangements_SortedByCityName()
+        {
+            // ARRANGE
+            var halmstad = new City().Halmstad();
+            var halmstadLaserdome = halmstad.Laserdome();
+            var malmo = new City().Malmo();
+            var malmoBusfabriken = malmo.Busfabriken();
+            var arrangements = new List<Arrangement> { malmoBusfabriken, halmstadLaserdome };
+            _mockArrangementsRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<Arrangement>)arrangements));
+
+            // ACT
+            var result = await _sut.Index();
+
+            // ASSERT
+            _mockArrangementsRepository.Verify(m => m.GetAll(), Times.Once);
+            var model = (result as ViewResult).Model as ArrangementsIndexViewModel;
+            model.Arrangements.Count().Should().Be(2);
+            model.Arrangements.First().ShouldBeEquivalentTo(halmstadLaserdome, opt => opt.ExcludingMissingMembers());
+            model.Arrangements.Skip(1).First().ShouldBeEquivalentTo(malmoBusfabriken, opt => opt.ExcludingMissingMembers());
         }
 
 

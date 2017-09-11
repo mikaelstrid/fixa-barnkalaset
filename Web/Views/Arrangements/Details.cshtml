@@ -28,24 +28,18 @@
                 @Html.Raw(Model.Description)
 
                 <h3 class="ui medium header">Bokningsvillkor</h3>
-                @if (!string.IsNullOrWhiteSpace(Model.BookingConditions))
+                @*@if (!string.IsNullOrWhiteSpace(Model.BookingConditions))
                 {
                     @Html.Raw(Model.BookingConditions)
-                }
-                else
-                {
-                    <p>Kontakta arrangören för mer information.</p>
-                }
+                }*@
+                <p>Kontakta arrangören för mer information.</p>
 
                 <h3 class="ui medium header">Prisinformation</h3>
-                @if (!string.IsNullOrWhiteSpace(Model.PriceInformation))
+                @*@if (!string.IsNullOrWhiteSpace(Model.PriceInformation))
                 {
                     @Html.Raw(Model.PriceInformation)
-                }
-                else
-                {
-                    <p>Kontakta arrangören för mer information.</p>
-                }
+                }*@
+                <p>Kontakta arrangören för mer information.</p>
             </div>
             <div class="five wide tablet four wide computer column">
                 <div class="ui segment">

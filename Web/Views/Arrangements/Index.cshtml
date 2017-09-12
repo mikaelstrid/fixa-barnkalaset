@@ -25,19 +25,11 @@
                             </div>
                         </div>
                     </a>
+                    @if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
+                    {
+                        <div class="pxl-html-attribution">Foto: @Html.Raw(arrangement.CoverImageAttributions)</div>
+                    }
                 </div>
-            }
-        </div>
-
-        <div class="pxl-html-attributions">
-            Foto:
-            @foreach (var arrangement in Model.Arrangements)
-            {
-                if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
-                {
-                    @arrangement.Name<text> </text>
-                    @Html.Raw(arrangement.CoverImageAttributions)<text> </text>
-                }
             }
         </div>
     }
@@ -59,4 +51,5 @@
             </p>
         </div>
     }
+    <img src="~/images/powered_by_google_on_white_hdpi.png" alt="Powered by Google" width="125" />
 </div>

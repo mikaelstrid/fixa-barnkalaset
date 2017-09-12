@@ -38,7 +38,7 @@ export abstract class CreateOrEditCityPageBase {
     }
 
     private getLookupAddress(): string {
-        return $("#Name").val();
+        return $("#Name").val().toString();
     }
 
     private updateMap(location: google.maps.LatLng): void {

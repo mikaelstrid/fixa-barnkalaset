@@ -25,7 +25,7 @@ export class CreateOrEditCityPageBase {
         });
     }
     getLookupAddress() {
-        return $("#Name").val();
+        return $("#Name").val().toString();
     }
     updateMap(location) {
         if (this.marker) {

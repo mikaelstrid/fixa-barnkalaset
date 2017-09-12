@@ -26,7 +26,7 @@ export class CreateOrEditArrangementPageBase {
             return false;
         });
         $("#btnGetInformationFromGooglePlaces").click(() => {
-            const name = $("#Name").val();
+            const name = $("#Name").val().toString();
             if (!name)
                 return false;
             this.placesService.textSearch({ query: name }, (results, status) => {
@@ -51,7 +51,7 @@ export class CreateOrEditArrangementPageBase {
             return false;
         });
         $("#btnOpenCoverImage").click(() => {
-            var url = $("#CoverImage").val();
+            var url = $("#CoverImage").val().toString();
             if (url)
                 $("<a>").attr("href", url).attr("target", "_blank")[0].click();
             return false;
@@ -62,7 +62,7 @@ export class CreateOrEditArrangementPageBase {
                 console.log("No Google Places id specified");
                 return false;
             }
-            this.placesService.getDetails({ placeId: placeId }, (place, detailedStatus) => {
+            this.placesService.getDetails({ placeId: placeId.toString() }, (place, detailedStatus) => {
                 if (detailedStatus === google.maps.places.PlacesServiceStatus.OK) {
                     this.updateImageList(place, false);
                 }
@@ -73,7 +73,7 @@ export class CreateOrEditArrangementPageBase {
             return false;
         });
         $("#btnOpenWebsite").click(() => {
-            $("<a>").attr("href", $("#Website").val()).attr("target", "_blank")[0].click();
+            $("<a>").attr("href", $("#Website").val().toString()).attr("target", "_blank")[0].click();
             return false;
         });
     }

@@ -4,7 +4,7 @@ export class CreateCityPage extends CreateOrEditCityPageBase {
     initPage() {
         console.log("CreateCityPage.initPage");
         $("#Name").change(function () {
-            $("#Slug").val(slugify($(this).val()));
+            $("#Slug").val(slugify($(this).val().toString()));
         });
         this.initMap();
     }

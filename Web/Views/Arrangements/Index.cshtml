@@ -7,7 +7,8 @@
         <div class="active section">@Model.CityName</div>
     </div>
 
-    <h1 class="ui huge header">@Html.DisplayFor(m => m.CityName)</h1>
+    <h1 class="ui huge header">Barnkalas i @Html.DisplayFor(m => m.CityName)</h1>
+    <p>Här hittar du olika ställen som arrangerar barnkalas i @Model.CityName. Det är ett enkelt sätt att ge ditt barn ett fantastiskt kalas med sina kompisar utan att behöva städa och fixa hemma.</p>
 
     @if (Model.Arrangements.Any())
     {

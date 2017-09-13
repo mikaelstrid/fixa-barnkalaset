@@ -9,7 +9,7 @@
 
     <h1 class="ui huge header">Barnkalas i @Html.DisplayFor(m => m.CityName)</h1>
     <p>Här hittar du olika ställen som arrangerar barnkalas i @Model.CityName. Det är ett enkelt sätt att ge ditt barn ett fantastiskt kalas med sina kompisar utan att behöva städa och fixa hemma.</p>
-
+    
     @if (Model.Arrangements.Any())
     {
         <div class="ui stackable grid">
@@ -17,7 +17,7 @@
             {
                 <div class="six wide tablet four wide computer column">
                     <a class="ui fluid card" href="@Url.Action("Details", new {citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug})">
-                        <div class="image" style="background-image: url('@arrangement.CoverImage');"></div>
+                        <div class="image" style="background-image: url('@(arrangement.CoverImage ?? "/images/balloons-1869790.jpg")');"></div>
                         <div class="content">
                             <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
                             <div class="meta">@Html.DisplayFor(m => arrangement.Type)</div>

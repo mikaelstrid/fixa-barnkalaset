@@ -33,7 +33,7 @@ namespace IntegrationTests.Public.Tests
             // ASSERT
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            responseString.Should().Contain("<option value=\"/kalas/halmstad\">Halmstad</option>");
+            responseString.Should().Contain("<option value=\"/barnkalas/halmstad\">Halmstad</option>");
         }
     }
 }

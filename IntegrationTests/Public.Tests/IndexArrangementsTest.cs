@@ -21,7 +21,7 @@ namespace IntegrationTests.Public.Tests
             // ARRANGE
 
             // ACT
-            var response = await Client.GetAsync("/kalas/okand-stad");
+            var response = await Client.GetAsync("/barnkalas/okand-stad");
             var responseString = await response.Content.ReadAsStringAsync();
 
             // ASSERT
@@ -40,7 +40,7 @@ namespace IntegrationTests.Public.Tests
             PopulateDatabaseWithArrangements(busfabriken, laserdome);
 
             // ACT
-            var response = await Client.GetAsync($"/kalas/{halmstad.Slug}");
+            var response = await Client.GetAsync($"/barnkalas/{halmstad.Slug}");
 
             // ASSERT
             response.EnsureSuccessStatusCode();

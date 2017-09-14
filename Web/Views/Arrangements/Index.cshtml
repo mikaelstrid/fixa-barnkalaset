@@ -17,7 +17,7 @@
             {
                 <div class="six wide tablet four wide computer column">
                     <a class="ui fluid card" href="@Url.Action("Details", new {citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug})">
-                        <div class="image" style="background-image: url('@(arrangement.CoverImage ?? "/images/balloons-1869790.jpg")');"></div>
+                        <div class="image lazy" data-src="@(arrangement.CoverImage ?? "/images/balloons-1869790.jpg")"></div>
                         <div class="content">
                             <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
                             <div class="meta">@Html.DisplayFor(m => arrangement.Type)</div>
@@ -54,3 +54,14 @@
     }
     <img src="~/images/powered_by_google_on_white_hdpi.png" alt="Powered by Google" width="125" />
 </div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/10.2.0/lazyload.min.js"></script>
+    <script>
+        var myLazyLoad = new LazyLoad({
+            elements_selector: ".lazy"
+        });
+    </script>
+}
+

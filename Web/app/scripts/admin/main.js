@@ -6,7 +6,7 @@ $(document).ready(() => {
     bootstrap();
 });
 function bootstrap() {
-    console.log("Starting bootstrapping procedure...");
+    console.log("Starting admin bootstrapping procedure...");
     if ($(".pxl-admin-page--cities-create").length > 0) {
         console.log("Found \"create city page\", start bootstrapping it...");
         let page = new CreateCityPage();
@@ -33,5 +33,5 @@ function bootstrap() {
         page.initPage(editArrangementPage.data("latitude"), editArrangementPage.data("longitude"));
         console.log("Bootstrapping \"edit arrangement page\" finished.");
     }
-    console.log("Bootstrapping procedure finished.");
+    console.log("Bootstrapping admin procedure finished.");
 }

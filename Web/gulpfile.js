@@ -17,7 +17,7 @@ gulp.task("default", ["watch-js", "watch-css", "watch-semantic"]);
 var watchedBrowserify = watchify(browserify({
     basedir: ".",
     debug: true,
-    entries: ["app/scripts/admin/main.ts"],
+    entries: ["app/scripts/admin/main.ts", "app/scripts/public/main.ts"],
     cache: {},
     packageCache: {}
 }).plugin(tsify));

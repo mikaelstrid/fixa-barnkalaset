@@ -1,6 +1,10 @@
 ﻿@import "../../modules/_variables";
 
-.pxl-page-arrangements-index {
+.pxl-public-page--arrangements-index {
+    .pxl-filter-form {
+        margin-bottom: 1rem;
+    } 
+    
     .card .image {
         background-size: cover;
         height: 200px;

@@ -1,6 +1,6 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementsIndexViewModel
 
-<div class="ui main container pxl-page pxl-page-arrangements-index">
+<div class="ui main container pxl-public-page pxl-public-page--arrangements-index">
     <div class="ui breadcrumb">
         <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
         <i class="right angle icon divider"></i>
@@ -12,10 +12,20 @@
     
     @if (Model.Arrangements.Any())
     {
+        <form class="ui form pxl-filter-form">
+            <select id="typeFilter" multiple="" class="ui fluid dropdown">
+                <option value="">Filtrera på typ av barnkalas</option>
+                @foreach (var type in Model.Arrangements.Select(a => a.Type).Distinct().OrderBy(t => t))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </form>
+
         <div class="ui stackable grid">
             @foreach (var arrangement in Model.Arrangements)
-            {
-                <div class="six wide tablet four wide computer column">
+                {
+                <div class="six wide tablet four wide computer column pxl-arrangement" data-type="@arrangement.Type">
                     <a class="ui fluid card" href="@Url.Action("Details", new {citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug})">
                         <div class="image lazy" data-src="@(arrangement.CoverImage ?? "/images/balloons-1869790.jpg")"></div>
                         <div class="content">
@@ -56,12 +66,13 @@
 </div>
 
 @section Scripts
-{
+    {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/10.2.0/lazyload.min.js"></script>
     <script>
         var myLazyLoad = new LazyLoad({
             elements_selector: ".lazy"
         });
+        $('select.dropdown').dropdown();
     </script>
 }
 

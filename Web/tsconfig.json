@@ -1,6 +1,7 @@
 {
   "files": [
-    "app/scripts/admin/main.ts"
+    "app/scripts/admin/main.ts",
+    "app/scripts/public/main.ts"
   ],
   "compilerOptions": {
     "noImplicitAny": true,

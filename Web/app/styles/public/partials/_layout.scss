@@ -1,6 +1,6 @@
 ﻿@import "../modules/_variables";
 
-.pxl-page {
+.pxl-public-page {
     padding-top: 2em;
     padding-bottom: 4em;
 }
@@ -11,7 +11,7 @@
 }
 
 @media only screen and (max-width: $largestMobileScreen) {
-    .pxl-page {
+    .pxl-public-page {
         padding-top: 1rem;
         padding-bottom: 2em;
 

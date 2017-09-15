@@ -3,8 +3,12 @@
 .pxl-public-page--arrangements-index {
     .pxl-filter-form {
         margin-bottom: 1rem;
-    } 
-    
+    }
+
+    .pxl-arrangement-count {
+        color: $primaryColor;
+    }
+
     .card .image {
         background-size: cover;
         height: 200px;

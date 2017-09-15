@@ -15,12 +15,14 @@
         <form class="ui form pxl-filter-form">
             <select id="typeFilter" multiple="" class="ui fluid dropdown">
                 <option value="">Filtrera på typ av barnkalas</option>
-                @foreach (var type in Model.Arrangements.Select(a => a.Type).Distinct().OrderBy(t => t))
+                @foreach (var type in Model.Arrangements.GroupBy(a => a.Type).OrderBy(g => g.Key).Select(g => new { Name = g.Key, Count = g.Count()}))
                 {
-                    <option value="@type">@type</option>
+                    <option value="@type.Name">@type.Name (@type.Count)</option>
                 }
             </select>
         </form>
+
+        <p class="pxl-arrangement-count">Visar <span id="arrangementCount">@Model.Arrangements.Count()</span> barnkalas</p>
 
         <div class="ui stackable grid">
             @foreach (var arrangement in Model.Arrangements)

@@ -16,6 +16,8 @@
                     $(this).toggle(visible);
                 });
             }
+
+            $('#arrangementCount').text($('.pxl-arrangement:visible').length);
         });
     }
 }

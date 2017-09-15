@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Models;
+using Pixel.FixaBarnkalaset.Web.Utilities;
 
 namespace Pixel.FixaBarnkalaset.Web.Controllers
 {
@@ -12,13 +13,16 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICityRepository _cityRepository;
+        private readonly ISitemapGenerator _sitemapGenerator;
 
         public HomeController(
             IMapper mapper,
-            ICityRepository cityRepository)
+            ICityRepository cityRepository,
+            ISitemapGenerator sitemapGenerator)
         {
             _mapper = mapper;
             _cityRepository = cityRepository;
+            _sitemapGenerator = sitemapGenerator;
         }
 
         [Route("")]
@@ -42,6 +46,13 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         {
             ViewData["Title"] = "Cookies | Fixa barnkalaset";
             return View();
+        }
+
+        [Route("sitemap.xml")]
+        public async Task<ActionResult> SitemapXml()
+        {
+            var xml = await _sitemapGenerator.GetAsString(_cityRepository);
+            return Content(xml, "application/xml");
         }
     }
 }

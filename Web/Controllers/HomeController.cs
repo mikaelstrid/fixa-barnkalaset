@@ -36,9 +36,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(new HomeIndexViewModel
             {
                 Cities = _mapper.Map<IEnumerable<City>, IEnumerable<HomeIndexViewModel.CityViewModel>>(cities.OrderBy(c => c.Name))
-                //CitiesInSouth = new[] { "Göteborg", "Malmö", "Linköping", "Helsingborg", "Jönköping", "Norrköping", "Lund", "Borås", "Halmstad", "Växjö" },
-                //CitiesInMiddle = new[] { "Stockholm", "Uppsala", "Västerås", "Örebro", "Gävle", "Södertälje", "Eskilstuna", "Karlstad" },
-                //CitiesInNorth = new[] { "Umeå" }
             });
         }
 

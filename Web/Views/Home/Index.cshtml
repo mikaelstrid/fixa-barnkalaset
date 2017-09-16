@@ -7,10 +7,8 @@
 @section Hero 
 {
     <div class="ui text container">
-    <h1 class="ui inverted huge header">
-        Hitta det perfekta barnkalaset
-    </h1>
-    <h3 class="ui inverted large header">Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset.</h3>
+    <h1 class="ui inverted huge header">Hitta det perfekta barnkalaset</h1>
+    <h3 class="ui inverted large header">Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.</h3>
     <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
         <option value="">Välj stad...</option>
         @foreach (var city in Model.Cities)
@@ -27,8 +25,8 @@
             <div class="column">
                 <i class="huge mail outline icon"></i>
                 <div class="pxl-text-container">
-                    <h3 class="ui large header">Inte tid att skicka inbjudningskort?</h3>
-                    <p>Om du inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
+                    <h3 class="ui large header">Skicka riktiga inbjudningskort</h3>
+                    <p>Vill du gärna skicka inbjudningskort med posten men inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
                 </div>
                 @Html.ActionLink("Läs mer", "Index", "InvitationCards", null, new { @class = "ui button" })
             </div>
@@ -36,7 +34,7 @@
                 <i class="huge checked calendar icon"></i>
                 <div class="pxl-text-container">
                     <h3 class="ui large header">Håll reda på vilka som kommer</h3>
-                    <p>Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa meddelande eller e-post.</p>
+                    <p>Känns det stökigt att hålla kolla på vilka som svarat och kanske lite pinsamt att påminna dem? Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa meddelande eller e-post.</p>
                 </div>
                 @Html.ActionLink("Läs mer", "Index", "Rsvp", null, new { @class = "ui button"})
             </div>

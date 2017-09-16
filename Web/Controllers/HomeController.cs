@@ -30,7 +30,11 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Hitta det perfekta barnkalaset! | Fixa barnkalaset";
-            ViewData["Description"] = "Vi har samlat en massa bra ställen som hjälper dig att fixa det perfekta barnkalaset.";
+            ViewData["Description"] = "Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.";
+
+            ViewData["OgTitle"] = "Hitta det perfekta barnkalaset!";
+            ViewData["OgDescription"] = "Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.";
+            ViewData["OgImage"] = Request?.Scheme + "://" + Request?.Host + "/images/balloons-1869790_1200_630.jpg";
 
             var cities = await _cityRepository.GetAll() ?? new List<City>();
             return View(new HomeIndexViewModel

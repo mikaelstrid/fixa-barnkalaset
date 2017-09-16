@@ -16,7 +16,7 @@
                     $(this).toggle(visible);
                 });
             }
-
+            $(this).dropdown('hide');
             $('#arrangementCount').text($('.pxl-arrangement:visible').length);
         });
     }

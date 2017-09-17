@@ -1,4 +1,4 @@
 ﻿User-Agent: *
 Disallow: /admin/
-
-Sitemap: https://www.fixabarnkalaset.se/sitemap.xml
+Disallow: /fel/
+Disallow: /konto/

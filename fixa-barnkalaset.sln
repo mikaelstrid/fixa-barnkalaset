@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{B45FB7BB-FF14-4513-BDDE-EF09F1078F68}"
 EndProject
@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{9A0B96
 		Assets\favicon-large.png = Assets\favicon-large.png
 		Assets\favicon-small-512x512.html = Assets\favicon-small-512x512.html
 		Assets\favicon-small.png = Assets\favicon-small.png
+		Assets\logo-1024x1024.jpg = Assets\logo-1024x1024.jpg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebJobs", "WebJobs", "{6C6C8AE9-04FE-4626-8B8D-382232B4D0E5}"

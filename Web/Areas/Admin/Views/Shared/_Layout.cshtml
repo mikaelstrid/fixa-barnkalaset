@@ -7,8 +7,6 @@
     <title>@ViewData["Title"]</title>
     @Html.Partial("_Favicons")
 
-    @*<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">*@
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" />
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -19,41 +17,17 @@
     @RenderSection("Header", required: false)
 
     @Html.Raw(JavaScriptSnippet.FullScript)
-
-    @Html.Partial("_GoogleAnalytics")
 </head>
 <body>
     <div class="ui fixed menu">
         <div class="ui container">
             <a href="@Url.Action("Index", "Arrangements")" class="header item">
-                @*<img class="logo" src="assets/images/logo.png">*@
                 Admin
             </a>
             <a href="@Url.Action("Index", "Cities")" class="item">Städer</a>
             <a href="@Url.Action("Index", "Arrangements")" class="item">Arrangemang</a>
-            @*<div class="ui simple dropdown item">
-                    Dropdown <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item" href="#">Link Item</a>
-                        <a class="item" href="#">Link Item</a>
-                        <div class="divider"></div>
-                        <div class="header">Header Item</div>
-                        <div class="item">
-                            <i class="dropdown icon"></i>
-                            Sub Menu
-                            <div class="menu">
-                                <a class="item" href="#">Link Item</a>
-                                <a class="item" href="#">Link Item</a>
-                            </div>
-                        </div>
-                        <a class="item" href="#">Link Item</a>
-                    </div>
-                </div>*@
         </div>
     </div>
-
-    <p id="greeting">Loading ...</p>
-
     @RenderBody()
     <script src="~/js/bundle.min.js"></script>
     <script>

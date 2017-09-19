@@ -114,6 +114,7 @@ namespace Pixel.FixaBarnkalaset.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseRewriter(new RewriteOptions().Add(new RedirectWwwRule()));
+            app.UseRewriter(new RewriteOptions().AddRedirect("^kalas/(.*)", "barnkalas/$1", 301));
 
             ConfigureLogging(loggerFactory, Configuration);
 

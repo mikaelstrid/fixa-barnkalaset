@@ -46,9 +46,22 @@
 {
     <script>
         $('select.dropdown').dropdown();
-        $('select#citySelector').change(function () {
-            if ($(this).val() !== "") {
-                window.location = $(this).val();
+        $('select#citySelector').change(function() {
+            if (window.ga) {
+                var selectedCityName = $("option:selected", $(this)).text();
+                ga('send',
+                    'event',
+                    {
+                        eventCategory: 'Search',
+                        eventAction: 'citySelector',
+                        eventLabel: selectedCityName,
+                        transport: 'beacon'
+                    });
+            }
+
+            var selectedCityValue = $(this).val();
+            if (selectedCityValue !== "") {
+                window.location = selectedCityValue;
             }
         });
     </script>

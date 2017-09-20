@@ -18,6 +18,15 @@
             }
             $(this).dropdown('hide');
             $('#arrangementCount').text($('.pxl-arrangement:visible').length);
+
+            if ((<any>window).ga) {
+                ga('send', 'event', {
+                    eventCategory: 'Search',
+                    eventAction: 'typeFilter',
+                    eventLabel: selectedTypes.toString(),
+                    transport: 'beacon'
+                });
+            }
         });
     }
 }

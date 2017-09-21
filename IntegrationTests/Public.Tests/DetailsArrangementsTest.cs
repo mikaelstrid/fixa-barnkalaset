@@ -45,7 +45,7 @@ namespace IntegrationTests.Public.Tests
             // ASSERT
             //response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            Regex.IsMatch(responseString, $"<h1.*>{busfabriken.Name}</h1>").Should().BeTrue();
+            Regex.IsMatch(responseString, $"<h1.*>Barnkalas på {busfabriken.Name}</h1>").Should().BeTrue();
             responseString.Should().Contain(busfabriken.Description);
         }
     }

@@ -104,6 +104,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddAutoMapper();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
+            services.AddTransient<IBlogPostRepository, SqlBlogPostRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddTransient<ISitemapGenerator, SitemapGenerator>();

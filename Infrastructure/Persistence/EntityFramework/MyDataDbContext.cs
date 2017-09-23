@@ -10,7 +10,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 {
     // Add-Migration InitialCreate -Project Infrastructure -StartupProject Web -Context MyDataDbContext -OutputDir Persistence/EntityFramework/MyDataDbContextMigrations
     // Update-Database -Project Infrastructure -StartupProject Web -Context MyDataDbContext
-    // Remove-Migration
+    // Update-Database -Project Infrastructure -StartupProject Web -Context MyDataDbContext –TargetMigration: AddArrangementType
+    // Remove-Migration -Project Infrastructure -Context MyDataDbContext
     public class MyDataDbContext : DbContext
     {
         // https://csharp.christiannagel.com/2016/11/07/efcorefields/
@@ -24,6 +25,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
         
         public virtual DbSet<Arrangement> Arrangements { get; set; }
         public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<BlogPost> BlogPosts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +34,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 
             builder.Entity<Arrangement>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
             builder.Entity<Arrangement>().Property<string>("UpdatedBy").HasField("_updatedBy");
+
+            builder.Entity<BlogPost>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
+            builder.Entity<BlogPost>().Property<string>("UpdatedBy").HasField("_updatedBy");
         }
 
         public override int SaveChanges()

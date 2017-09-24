@@ -1,0 +1,18 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditBlogPostViewModel
+   
+@section Header
+    {
+    <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+}
+
+<div class="ui main container text pxl-admin-page pxl-admin-page--blog-posts-create">
+
+    <h1>Lägg till ny bloggpost</h1>
+
+    <form class="ui form" asp-action="Create">
+
+        @Html.Partial("_CreateOrEdit", Model)
+
+        <button class="ui secondary button" type="submit">Spara</button>
+    </form>
+</div>

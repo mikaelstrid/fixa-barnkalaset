@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
@@ -25,55 +26,54 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
             return await _dbContext.BlogPosts.ToListAsync();
         }
 
-        //public async Task<City> GetById(int id)
-        //{
-        //    _logger.LogDebug("GetById: Get city with id {Id}", id);
-        //    return await _dbContext.Cities
-        //        .Include(c => c.Arrangements)
-        //        .SingleOrDefaultAsync(c => c.Id == id);
-        //}
+        public async Task<BlogPost> GetById(int id)
+        {
+            _logger.LogDebug("GetById: Get blog post with id {Id}", id);
+            return await _dbContext.BlogPosts.SingleOrDefaultAsync(c => c.Id == id);
+        }
 
-        //public async Task<City> GetBySlug(string slug)
-        //{
-        //    _logger.LogDebug("GetBySlug: Get city with slug {Slug}", slug);
-        //    return await _dbContext.Cities
-        //        .Include(c => c.Arrangements)
-        //        .SingleOrDefaultAsync(c => c.Slug == slug);
-        //}
+        public async Task<BlogPost> GetBySlug(string slug)
+        {
+            _logger.LogDebug("GetBySlug: Get blog post with slug {Slug}", slug);
+            return await _dbContext.BlogPosts.SingleOrDefaultAsync(c => c.Slug == slug);
+        }
 
-        //public async Task AddOrUpdate(City city)
-        //{
-        //    var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-        //    _logger.LogDebug("AddOrUpdate: Adding or updating city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city, settings));
-        //    var existingCity = await GetById(city.Id);
-        //    if (existingCity != null)
-        //    {
-        //        existingCity.Name = city.Name;
-        //        existingCity.Latitude = city.Latitude;
-        //        existingCity.Longitude = city.Longitude;
-        //        _dbContext.Update(existingCity);
-        //        _logger.LogInformation("AddOrUpdate: Updated city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city, settings));
-        //    }
-        //    else
-        //    {
-        //        await _dbContext.Cities.AddAsync(city);
-        //        _logger.LogInformation("AddOrUpdate: Added city with id {Id} with data {City}", city.Id, JsonConvert.SerializeObject(city, settings));
-        //    }
-        //    await _dbContext.SaveChangesAsync();
-        //}
+        public async Task AddOrUpdate(BlogPost blogPost)
+        {
+            var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            _logger.LogDebug("AddOrUpdate: Adding or updating blog post with id {Id} with data {BlogPost}", blogPost.Id, JsonConvert.SerializeObject(blogPost, settings));
+            var existingBlogPost = await GetById(blogPost.Id);
+            if (existingBlogPost != null)
+            {
+                existingBlogPost.Title = blogPost.Title;
+                existingBlogPost.Slug = blogPost.Slug;
+                existingBlogPost.Preamble = blogPost.Preamble;
+                existingBlogPost.Body = blogPost.Body;
+                existingBlogPost.IsPublished = blogPost.IsPublished;
+                existingBlogPost.PublishedUtc = blogPost.PublishedUtc;
+                _dbContext.Update(existingBlogPost);
+                _logger.LogInformation("AddOrUpdate: Updated blog post with id {Id} with data {BlogPost}", blogPost.Id, JsonConvert.SerializeObject(blogPost, settings));
+            }
+            else
+            {
+                await _dbContext.BlogPosts.AddAsync(blogPost);
+                _logger.LogInformation("AddOrUpdate: Added blog post with id {Id} with data {BlogPost}", blogPost.Id, JsonConvert.SerializeObject(blogPost, settings));
+            }
+            await _dbContext.SaveChangesAsync();
+        }
 
-        //public async Task Remove(int id)
-        //{
-        //    _logger.LogDebug("Remove: Removing city with id {Id}", id);
-        //    var city = await GetById(id);
-        //    if (city == null)
-        //    {
-        //        _logger.LogInformation("Remove: City with id {Id} not found, continue", id);
-        //        return;
-        //    }
-        //    _dbContext.Cities.Remove(city);
-        //    await _dbContext.SaveChangesAsync();
-        //    _logger.LogInformation("Remove: City with id {Id} removed", id);
-        //}
+        public async Task Remove(int id)
+        {
+            _logger.LogDebug("Remove: Removing blog post with id {Id}", id);
+            var blogPost = await GetById(id);
+            if (blogPost == null)
+            {
+                _logger.LogInformation("Remove: Blog post with id {Id} not found, continue", id);
+                return;
+            }
+            _dbContext.BlogPosts.Remove(blogPost);
+            await _dbContext.SaveChangesAsync();
+            _logger.LogInformation("Remove: Blog post with id {Id} removed", id);
+        }
     }
 }

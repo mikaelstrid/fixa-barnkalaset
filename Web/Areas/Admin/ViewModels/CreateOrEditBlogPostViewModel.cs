@@ -21,6 +21,6 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         public bool IsPublished { get; set; }
 
         [Display(Name = "Publiceringsdatum")]
-        public DateTime PublishedUtc { get; set; }
+        public DateTime? PublishedUtc { get; set; }
     }
 }

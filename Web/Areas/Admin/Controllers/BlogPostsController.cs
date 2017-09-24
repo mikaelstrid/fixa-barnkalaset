@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -44,38 +43,38 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route("skapa")]
-        //public IActionResult Create()
-        //{
-        //    _logger.LogDebug("Create GET: Called");
-        //    ViewData["Title"] = "Lägg till ny stad | Fixa barnkalaset";
-        //    return View();
-        //}
+        [Route("skapa")]
+        public IActionResult Create()
+        {
+            _logger.LogDebug("Create GET: Called");
+            ViewData["Title"] = "Lägg till ny bloggpost | Fixa barnkalaset";
+            return View();
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("skapa")]
-        //public async Task<IActionResult> Create([Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel model)
-        //{
-        //    _logger.LogDebug("Create POST: called");
-        //    if (!ModelState.IsValid)
-        //    {
-        //        _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
-        //        return View(model);
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("skapa")]
+        public async Task<IActionResult> Create([Bind("Title,Slug,Preamble,Body,IsPublished,PublishedUtc")] CreateOrEditBlogPostViewModel model)
+        {
+            _logger.LogDebug("Create POST: called");
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
+                return View(model);
+            }
 
-        //    if (await _blogPostRepository.GetBySlug(model.Slug) != null)
-        //    {
-        //        _logger.LogWarning("Create POST: There already exist a city with slug {Slug}", model.Slug);
-        //        ModelState.AddModelError("Slug", $"Det finns redan en stad med sluggen {model.Slug}");
-        //        return View(model);
-        //    }
+            if (await _blogPostRepository.GetBySlug(model.Slug) != null)
+            {
+                _logger.LogWarning("Create POST: There already exist a blog post with slug {Slug}", model.Slug);
+                ModelState.AddModelError("Slug", $"Det finns redan en bloggpost med sluggen {model.Slug}");
+                return View(model);
+            }
 
-        //    var city = new City(model.Name, model.Slug, model.Latitude, model.Longitude);
-        //    await _blogPostRepository.AddOrUpdate(city);
-        //    _logger.LogInformation("Create POST: Created city {City} with slug {Slug}", JsonConvert.SerializeObject(city), model.Slug);
-        //    return RedirectToAction("Index");
-        //}
+            var blogPost = _mapper.Map<CreateOrEditBlogPostViewModel, BlogPost>(model);
+            await _blogPostRepository.AddOrUpdate(blogPost);
+            _logger.LogInformation("Create POST: Created blog post {BlogPost} with slug {Slug}", JsonConvert.SerializeObject(blogPost), model.Slug);
+            return RedirectToAction("Index");
+        }
 
 
         //[Route("{urlSlug}/andra")]

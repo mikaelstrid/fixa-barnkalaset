@@ -6,9 +6,9 @@ namespace Pixel.FixaBarnkalaset.Core.Interfaces
     public interface IBlogPostRepository
     {
         Task<IEnumerable<BlogPost>> GetAll();
-        //Task<City> GetById(int id);
-        //Task<City> GetBySlug(string slug);
-        //Task AddOrUpdate(City model);
-        //Task Remove(int id);
+        Task<BlogPost> GetById(int id);
+        Task<BlogPost> GetBySlug(string slug);
+        Task AddOrUpdate(BlogPost model);
+        Task Remove(int id);
     }
 }

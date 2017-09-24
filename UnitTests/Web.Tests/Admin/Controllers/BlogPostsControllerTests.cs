@@ -16,13 +16,15 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 {
     public class BlogPostsControllerTests : ControllerTestBase<BlogPostsController>
     {
+        private readonly Mock<ILogger<BlogPostsController>> _mockLogger;
         private readonly Mock<IBlogPostRepository> _mockBlogPostRepository;
         private readonly BlogPostsController _sut;
 
         public BlogPostsControllerTests()
         {
             _mockBlogPostRepository = new Mock<IBlogPostRepository>();
-            _sut = new BlogPostsController(_mapper, new Mock<ILogger<BlogPostsController>>().Object, _mockBlogPostRepository.Object);
+            _mockLogger = new Mock<ILogger<BlogPostsController>>();
+            _sut = new BlogPostsController(_mapper, _mockLogger.Object, _mockBlogPostRepository.Object);
         }
 
         [Fact]
@@ -36,7 +38,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _mockBlogPostRepository.Verify(m => m.GetAll(), Times.Once);
-            var model = GetViewModel(result);
+            var model = GetViewModel<BlogPostsIndexViewModel>(result);
             model.Should().NotBeNull();
             model.BlogPosts.Should().NotBeNull();
             model.BlogPosts.Count().Should().Be(0);
@@ -53,7 +55,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _mockBlogPostRepository.Verify(m => m.GetAll(), Times.Once);
-            var model = GetViewModel(result);
+            var model = GetViewModel<BlogPostsIndexViewModel>(result);
             model.Should().NotBeNull();
             model.BlogPosts.Should().NotBeNull();
             model.BlogPosts.Count().Should().Be(0);
@@ -75,7 +77,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
             // ASSERT
             _mockBlogPostRepository.Verify(m => m.GetAll(), Times.Once);
-            var model = GetViewModel(result);
+            var model = GetViewModel<BlogPostsIndexViewModel>(result);
             model.BlogPosts.Count().Should().Be(4);
             model.BlogPosts.First().ShouldBeEquivalentTo(blogpost0905, opt => opt.ExcludingMissingMembers());
             model.BlogPosts.Skip(1).First().ShouldBeEquivalentTo(blogpost1017, opt => opt.ExcludingMissingMembers());
@@ -84,129 +86,73 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         }
 
 
-        //[Fact]
-        //public async Task Index_GivenTwoBlogPostsOneNotPublished_ShouldReturnModelWithOnlyThePublishedBlogPost()
-        //{
-        //    // ARRANGE
-        //    var blogpost0905 = new BlogPost().PubliceradFemteSeptember();
-        //    var blogpostUnpublished = new BlogPost().EjPubliceradIngetPubliceringsDatum();
-        //    var blogPosts = new List<BlogPost> { blogpost0905, blogpostUnpublished };
-        //    _mockBlogPostRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<BlogPost>)blogPosts));
 
-        //    // ACT
-        //    var result = await _sut.Index();
+        [Fact]
+        public void Create_Get_ShouldOnlyReturnView()
+        {
+            // ARRANGE
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetAll(), Times.Once);
-        //    var model = GetViewModel(result);
-        //    model.BlogPosts.Count().Should().Be(1);
-        //    model.BlogPosts.First().ShouldBeEquivalentTo(blogpost0905, opt => opt.ExcludingMissingMembers());
-        //}
+            // ACT
+            var result = _sut.Create();
 
-        //[Fact]
-        //public async Task Index_GivenTwoBlogPostsOneUnpublishedWithFuturePublishedDate_ShouldReturnModelWithOnlyThePublishedBlogPost()
-        //{
-        //    // ARRANGE
-        //    var blogpost0905 = new BlogPost().PubliceradFemteSeptember();
-        //    var blogpostUnpublished = new BlogPost().EjPubliceradPubliceringsDatumElfteNovember();
-        //    var blogPosts = new List<BlogPost> { blogpost0905, blogpostUnpublished };
-        //    _mockBlogPostRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<BlogPost>)blogPosts));
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            (result as ViewResult).Model.Should().BeNull();
+        }
 
-        //    // ACT
-        //    var result = await _sut.Index();
+        [Fact]
+        public async Task Create_Post_GivenValidModel_ShouldCallRepository()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradFemteSeptember();
+            var model = CreateCreateOrEditBlogPostViewModel(blogPost);
+            BlogPost createdBlogPost = null;
+            _mockBlogPostRepository.Setup(m => m.AddOrUpdate(It.IsAny<BlogPost>()))
+                .Callback<BlogPost>(p => createdBlogPost = p)
+                .Returns(Task.CompletedTask);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetAll(), Times.Once);
-        //    var model = GetViewModel(result);
-        //    model.BlogPosts.Count().Should().Be(1);
-        //    model.BlogPosts.First().ShouldBeEquivalentTo(blogpost0905, opt => opt.ExcludingMissingMembers());
-        //}
+            // ACT
+            await _sut.Create(model);
 
-        //[Fact]
-        //public async Task Index_GivenTwoBlogPostsOnePublishedWithFuturePublishedDate_ShouldReturnModelWithOnlyThePublishedBlogPost()
-        //{
-        //    // ARRANGE
-        //    var blogpost0905 = new BlogPost().PubliceradFemteSeptember();
-        //    var blogpostFuturePublishedDate = new BlogPost().EjPubliceradPubliceringsDatumElfteNovember();
-        //    var blogPosts = new List<BlogPost> { blogpost0905, blogpostFuturePublishedDate };
-        //    _mockBlogPostRepository.Setup(m => m.GetAll()).Returns(Task.FromResult((IEnumerable<BlogPost>)blogPosts));
+            // ASSERT
+            createdBlogPost.ShouldBeEquivalentTo(blogPost);
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Once);
+        }
 
-        //    // ACT
-        //    var result = await _sut.Index();
+        [Fact]
+        public async Task Create_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var model = CreateCreateOrEditBlogPostViewModel(new BlogPost().PubliceradFemteSeptember());
+            AddModelStateError(_sut);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetAll(), Times.Once);
-        //    var model = GetViewModel(result);
-        //    model.BlogPosts.Count().Should().Be(1);
-        //    model.BlogPosts.First().ShouldBeEquivalentTo(blogpost0905, opt => opt.ExcludingMissingMembers());
-        //}
+            // ACT
+            var result = await _sut.Create(model);
 
-        //[Fact]
-        //public void Create_Get_ShouldOnlyReturnView()
-        //{
-        //    // ARRANGE
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            GetViewModel<CreateOrEditBlogPostViewModel>(result).Should().Be(model);
+        }
 
-        //    // ACT
-        //    var result = _sut.Create();
+        [Fact]
+        public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var model = CreateCreateOrEditBlogPostViewModel(new BlogPost().PubliceradFemteSeptember());
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(model.Slug)).Returns(Task.FromResult(new BlogPost().PubliceradSjuttondeOktober()));
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().BeNull();
-        //}
+            // ACT
+            var result = await _sut.Create(model);
 
-        //[Fact]
-        //public async Task Create_Post_GivenValidModel_ShouldCallRepository()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Halmstad();
-        //    var model = CreateCreateOrEditCityViewModel(city);
-        //    City createdCity = null;
-        //    _mockBlogPostRepository.Setup(m => m.AddOrUpdate(It.IsAny<City>()))
-        //        .Callback<City>(c => createdCity = c)
-        //        .Returns(Task.CompletedTask);
-
-        //    // ACT
-        //    await _sut.Create(model);
-
-        //    // ASSERT
-        //    createdCity.ShouldBeEquivalentTo(city);
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Once);
-        //}
-
-        //[Fact]
-        //public async Task Create_Post_GivenInvalidModel_ShouldReturnViewWithModel()
-        //{
-        //    // ARRANGE
-        //    var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
-        //    AddModelStateError(_sut);
-
-        //    // ACT
-        //    var result = await _sut.Create(model);
-
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().Be(model);
-        //}
-
-        //[Fact]
-        //public async Task Create_Post_GivenExistingSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
-        //{
-        //    // ARRANGE
-        //    var model = CreateCreateOrEditCityViewModel(new City().Halmstad());
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(model.Slug)).Returns(Task.FromResult(new City().Halmstad()));
-
-        //    // ACT
-        //    var result = await _sut.Create(model);
-
-        //    // ASSERT
-        //    _sut.ModelState.IsValid.Should().BeFalse();
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().Be(model);
-        //}
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Never);
+            result.Should().BeOfType<ViewResult>();
+            GetViewModel<CreateOrEditBlogPostViewModel>(result).Should().Be(model);
+        }
 
 
 
@@ -354,21 +300,22 @@ namespace UnitTests.Web.Tests.Admin.Controllers
         //}
 
 
-        private static BlogPostsIndexViewModel GetViewModel(IActionResult result)
+        private static T GetViewModel<T>(IActionResult result) where T : class
         {
-            return (result as ViewResult).Model as BlogPostsIndexViewModel;
+            return (result as ViewResult).Model as T;
         }
-
-
-        //private static CreateOrEditCityViewModel CreateCreateOrEditCityViewModel(City city)
-        //{
-        //    return new CreateOrEditCityViewModel
-        //    {
-        //        Name = city.Name,
-        //        Slug = city.Slug,
-        //        Latitude = city.Latitude,
-        //        Longitude = city.Longitude
-        //    };
-        //}
+        
+        private static CreateOrEditBlogPostViewModel CreateCreateOrEditBlogPostViewModel(BlogPost blogPost)
+        {
+            return new CreateOrEditBlogPostViewModel
+            {
+                Title = blogPost.Title,
+                Slug = blogPost.Slug,
+                Preamble = blogPost.Preamble,
+                Body = blogPost.Body,
+                IsPublished = blogPost.IsPublished,
+                PublishedUtc = blogPost.PublishedUtc
+            };
+        }
     }
 }

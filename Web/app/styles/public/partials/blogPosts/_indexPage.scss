@@ -1,0 +1,10 @@
+﻿@import "../../modules/_variables";
+
+.pxl-public-page--arrangements-index {
+    .item--published-date {
+    }
+
+    .item:not(:last-child) {
+        margin-bottom: 3em !important;
+    }
+}

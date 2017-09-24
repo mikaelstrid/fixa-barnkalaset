@@ -31,5 +31,11 @@ namespace IntegrationTests.Public.Tests
             Fixture.MyDataDbContext.Arrangements.AddRange(arrangements);
             Fixture.MyDataDbContext.SaveChanges();
         }
+
+        protected void PopulateDatabaseWithBlogPosts(params BlogPost[] blogPosts)
+        {
+            Fixture.MyDataDbContext.BlogPosts.AddRange(blogPosts);
+            Fixture.MyDataDbContext.SaveChanges();
+        }
     }
 }

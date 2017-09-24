@@ -10,8 +10,12 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             // PUBLIC
             CreateMap<City, HomeIndexViewModel.CityViewModel>();
+
             CreateMap<Arrangement, ArrangementsIndexViewModel.ArrangementViewModel>();
             CreateMap<Arrangement, ArrangementDetailsViewModel>();
+
+            CreateMap<BlogPost, BlogPostsIndexViewModel.BlogPostViewModel>();
+
 
             // ADMIN
             CreateMap<Arrangement, Areas.Admin.ViewModels.ArrangementsIndexViewModel.ArrangementViewModel>();

@@ -1,0 +1,26 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.BlogPostsIndexViewModel
+
+<div class="ui main container pxl-public-page pxl-public-page--arrangements-index">
+    <div class="ui breadcrumb">
+        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
+        <i class="right angle icon divider"></i>
+        <div class="active section">Barnkalasbloggen</div>
+    </div>
+
+    <h1 class="ui huge header">Barnkalasbloggen</h1>
+
+    <div class="ui items">
+        @foreach (var blogPost in Model.BlogPosts)
+        {
+            <div class="item">
+                <div class="content">
+                    @Html.ActionLink(blogPost.Title, "Details", new { slug = blogPost.Slug }, new { @class = "header"})
+                    <div class="description">
+                        <p>@blogPost.Preamble</p>
+                        @Html.ActionLink("Läs mer", "Details", new { slug = blogPost.Slug })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

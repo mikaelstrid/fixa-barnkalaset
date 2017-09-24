@@ -54,5 +54,38 @@ namespace UnitTests.Utilities.TestDataExtensions
             blogPost.PublishedUtc = DateTime.Parse("2017-11-11 09:12"); 
             return blogPost;
         }
+
+        public static BlogPost PubliceradIgar(this BlogPost blogPost)
+        {
+            blogPost.Title = "De bästa barnkalasen i Halmstad 2017";
+            blogPost.Slug = "de-basta-barnkalasen-i-halmstad-2017";
+            blogPost.Preamble = "Vi har listat våra favoriter bland barnkalasen i Halmstad.";
+            blogPost.Body = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus porta urna, ac lobortis dui pharetra id. Nam massa nulla, cursus vitae leo id, pulvinar mattis tortor. Vivamus eu elit ante. Integer lacinia felis magna, id sollicitudin mauris vestibulum eu. Nam sit amet dapibus diam, eget aliquet sem. In erat ante, vulputate nec fringilla vel, tempus et enim. In a vulputate dolor. Praesent laoreet, dolor faucibus gravida auctor, nunc est placerat justo, quis egestas diam est quis urna. Fusce non nulla dui. Ut imperdiet sapien ut tempus viverra. Etiam fringilla aliquet nunc, quis tempor velit elementum at.</p><p>Sed volutpat placerat nibh, non auctor nunc vulputate vel. Morbi egestas urna et lorem mattis, ac feugiat felis tincidunt. Nulla blandit porttitor augue sit amet porta. Nunc tincidunt odio id est ultricies sollicitudin. Aliquam auctor urna eu turpis malesuada, a tincidunt sapien efficitur. Fusce eget fringilla lacus. Morbi sollicitudin, massa quis faucibus consequat, orci magna venenatis diam, et rhoncus mauris risus in tortor. Cras vitae nibh dui. Nulla facilisi. Vivamus dignissim, neque a bibendum iaculis, neque mauris ornare nisl, id tristique tellus felis ut urna. Donec vulputate euismod dignissim. Suspendisse pellentesque pharetra consectetur. Praesent vehicula suscipit scelerisque. Donec quis mauris ut lacus condimentum ultrices sed vel mi. Etiam nec dui laoreet, elementum erat eu, auctor nisi. Pellentesque commodo, lectus feugiat rhoncus vestibulum, nisl magna egestas ipsum, id feugiat dui ex vel erat.</p>";
+            blogPost.IsPublished = true;
+            blogPost.PublishedUtc = DateTime.UtcNow.AddDays(-1);
+            return blogPost;
+        }
+
+        public static BlogPost PubliceradImorgon(this BlogPost blogPost)
+        {
+            blogPost.Title = "De bästa barnkalasen i Halmstad 2017";
+            blogPost.Slug = "de-basta-barnkalasen-i-halmstad-2017";
+            blogPost.Preamble = "Vi har listat våra favoriter bland barnkalasen i Halmstad.";
+            blogPost.Body = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus porta urna, ac lobortis dui pharetra id. Nam massa nulla, cursus vitae leo id, pulvinar mattis tortor. Vivamus eu elit ante. Integer lacinia felis magna, id sollicitudin mauris vestibulum eu. Nam sit amet dapibus diam, eget aliquet sem. In erat ante, vulputate nec fringilla vel, tempus et enim. In a vulputate dolor. Praesent laoreet, dolor faucibus gravida auctor, nunc est placerat justo, quis egestas diam est quis urna. Fusce non nulla dui. Ut imperdiet sapien ut tempus viverra. Etiam fringilla aliquet nunc, quis tempor velit elementum at.</p><p>Sed volutpat placerat nibh, non auctor nunc vulputate vel. Morbi egestas urna et lorem mattis, ac feugiat felis tincidunt. Nulla blandit porttitor augue sit amet porta. Nunc tincidunt odio id est ultricies sollicitudin. Aliquam auctor urna eu turpis malesuada, a tincidunt sapien efficitur. Fusce eget fringilla lacus. Morbi sollicitudin, massa quis faucibus consequat, orci magna venenatis diam, et rhoncus mauris risus in tortor. Cras vitae nibh dui. Nulla facilisi. Vivamus dignissim, neque a bibendum iaculis, neque mauris ornare nisl, id tristique tellus felis ut urna. Donec vulputate euismod dignissim. Suspendisse pellentesque pharetra consectetur. Praesent vehicula suscipit scelerisque. Donec quis mauris ut lacus condimentum ultrices sed vel mi. Etiam nec dui laoreet, elementum erat eu, auctor nisi. Pellentesque commodo, lectus feugiat rhoncus vestibulum, nisl magna egestas ipsum, id feugiat dui ex vel erat.</p>";
+            blogPost.IsPublished = true;
+            blogPost.PublishedUtc = DateTime.UtcNow.AddDays(1);
+            return blogPost;
+        }
+
+        public static BlogPost PubliceradForraVeckan(this BlogPost blogPost)
+        {
+            blogPost.Title = "De bästa barnkalasen i Halmstad 2017";
+            blogPost.Slug = "de-basta-barnkalasen-i-halmstad-2017";
+            blogPost.Preamble = "Vi har listat våra favoriter bland barnkalasen i Halmstad.";
+            blogPost.Body = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus porta urna, ac lobortis dui pharetra id. Nam massa nulla, cursus vitae leo id, pulvinar mattis tortor. Vivamus eu elit ante. Integer lacinia felis magna, id sollicitudin mauris vestibulum eu. Nam sit amet dapibus diam, eget aliquet sem. In erat ante, vulputate nec fringilla vel, tempus et enim. In a vulputate dolor. Praesent laoreet, dolor faucibus gravida auctor, nunc est placerat justo, quis egestas diam est quis urna. Fusce non nulla dui. Ut imperdiet sapien ut tempus viverra. Etiam fringilla aliquet nunc, quis tempor velit elementum at.</p><p>Sed volutpat placerat nibh, non auctor nunc vulputate vel. Morbi egestas urna et lorem mattis, ac feugiat felis tincidunt. Nulla blandit porttitor augue sit amet porta. Nunc tincidunt odio id est ultricies sollicitudin. Aliquam auctor urna eu turpis malesuada, a tincidunt sapien efficitur. Fusce eget fringilla lacus. Morbi sollicitudin, massa quis faucibus consequat, orci magna venenatis diam, et rhoncus mauris risus in tortor. Cras vitae nibh dui. Nulla facilisi. Vivamus dignissim, neque a bibendum iaculis, neque mauris ornare nisl, id tristique tellus felis ut urna. Donec vulputate euismod dignissim. Suspendisse pellentesque pharetra consectetur. Praesent vehicula suscipit scelerisque. Donec quis mauris ut lacus condimentum ultrices sed vel mi. Etiam nec dui laoreet, elementum erat eu, auctor nisi. Pellentesque commodo, lectus feugiat rhoncus vestibulum, nisl magna egestas ipsum, id feugiat dui ex vel erat.</p>";
+            blogPost.IsPublished = true;
+            blogPost.PublishedUtc = DateTime.UtcNow.AddDays(-7);
+            return blogPost;
+        }
     }
 }

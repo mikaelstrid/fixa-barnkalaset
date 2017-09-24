@@ -276,13 +276,7 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             result.Should().BeOfType<RedirectToActionResult>();
         }
 
-
-        private static T GetViewModel<T>(IActionResult result) where T : class
-        {
-            result.Should().BeOfType<ViewResult>();
-            return (result as ViewResult).Model as T;
-        }
-        
+       
         private static CreateOrEditBlogPostViewModel CreateCreateOrEditBlogPostViewModel(BlogPost blogPost)
         {
             return new CreateOrEditBlogPostViewModel

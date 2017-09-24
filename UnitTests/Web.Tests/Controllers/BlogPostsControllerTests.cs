@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
@@ -115,55 +116,68 @@ namespace UnitTests.Web.Tests.Controllers
 
 
 
-        //[Fact]
-        //public async Task Details_GivenUnknownCity_ShouldLogAndReturnNotFound()
-        //{
-        //    // ARRANGE
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult((City)null));
+        [Fact]
+        public async Task Details_GivenUnknownSlug_ShouldLogAndReturnNotFound()
+        {
+            // ARRANGE
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult((BlogPost)null));
 
-        //    // ACT
-        //    var result = await _sut.Details("unknown_city_slug", "unknown_arrangement_slug");
+            // ACT
+            var result = await _sut.Details("unknown__slug");
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetBySlug(It.IsAny<string>()), Times.Once);
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //    result.Should().BeOfType<NotFoundResult>();
-        //}
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.GetBySlug(It.IsAny<string>()), Times.Once);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
 
-        //[Fact]
-        //public async Task Details_GivenKnownCityButUnknownArrangement_ShouldLogAndReturnNotFound()
-        //{
-        //    // ARRANGE
-        //    var malmo = new City().Malmo();
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(malmo.Slug)).Returns(Task.FromResult(malmo));
-        //    _mockArrangementRepository.Setup(m => m.GetBySlug(malmo.Slug, "unknown_arrangement_slug")).Returns(Task.FromResult((Arrangement) null));
+        [Fact]
+        public async Task Details_GivenSlugOfPublishedBlogPost_ShouldReturnResponseModel()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradIgar();
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
 
-        //    // ACT
-        //    var result = await _sut.Details(malmo.Slug, "unknown_arrangement_slug");
+            // ACT
+            var result = await _sut.Details(blogPost.Slug);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetBySlug(It.IsAny<string>()), Times.Once);
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //    result.Should().BeOfType<NotFoundResult>();
-        //}
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.GetBySlug(blogPost.Slug), Times.Once);
+            var viewModel = GetViewModel<BlogPostDetailsViewModel>(result);
+            viewModel.ShouldBeEquivalentTo(_mapper.Map<BlogPost, BlogPostDetailsViewModel>(blogPost));
+        }
 
-        //[Fact]
-        //public async Task Details_GivenArrangementMatchingSlugs_ShouldReturnResponseModel()
-        //{
-        //    // ARRANGE
-        //    var halmstad = new City().Halmstad();
-        //    var busfabriken = halmstad.Busfabriken();
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(halmstad.Slug)).Returns(Task.FromResult(halmstad));
-        //    _mockArrangementRepository.Setup(m => m.GetBySlug(halmstad.Slug, busfabriken.Slug)).Returns(Task.FromResult(busfabriken));
+        [Fact]
+        public async Task Details_GivenSlugOfUnpublishedBlogPost_ShouldLogAndReturnNotFound()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().EjPubliceradIngetPubliceringsDatum();
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
 
-        //    // ACT
-        //    var result = await _sut.Details(halmstad.Slug, busfabriken.Slug);
+            // ACT
+            var result = await _sut.Details(blogPost.Slug);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetBySlug(It.IsAny<string>()), Times.Once);
-        //    _mockArrangementRepository.Verify(m => m.GetBySlug(halmstad.Slug, busfabriken.Slug), Times.Once);
-        //    var responseModel = (result as ViewResult).Model as ArrangementDetailsViewModel;
-        //    responseModel.ShouldBeEquivalentTo(_mapper.Map<Arrangement, ArrangementDetailsViewModel>(busfabriken));
-        //}
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.GetBySlug(blogPost.Slug), Times.Once);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Details_GivenSlugOfFuturePublishedBlogPost_ShouldLogAndReturnNotFound()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradImorgon();
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
+
+            // ACT
+            var result = await _sut.Details(blogPost.Slug);
+
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.GetBySlug(blogPost.Slug), Times.Once);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
     }
 }

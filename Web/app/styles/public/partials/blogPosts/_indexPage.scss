@@ -1,9 +1,6 @@
 ﻿@import "../../modules/_variables";
 
-.pxl-public-page--arrangements-index {
-    .item--published-date {
-    }
-
+.pxl-public-page--blog-posts-index {
     .item:not(:last-child) {
         margin-bottom: 3em !important;
     }

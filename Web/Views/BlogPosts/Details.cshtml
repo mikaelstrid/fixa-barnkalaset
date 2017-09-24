@@ -1,0 +1,22 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.BlogPostDetailsViewModel
+
+<div class="ui main text container pxl-public-page pxl-public-page--blog-posts-details">
+    <div class="ui breadcrumb">
+        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
+        <i class="right angle icon divider"></i>
+        <a class="section" href="@Url.Action("Index", "BlogPosts")">Barnkalasbloggen</a>
+        <i class="right angle icon divider"></i>
+        <div class="active section">@Model.Title</div>
+    </div>
+
+    <h1 class="ui huge header">@Model.Title</h1>
+    
+    @if (Model.PublishedUtc.HasValue)
+    {
+        <p>Publicerad @Model.PublishedUtc.Value.ToLocalTime().ToString("yyyy-MM-dd")</p>
+    }
+
+    <p class="pxl-preamble">@Model.Preamble</p>
+
+    <p>@Html.Raw(Model.Body)</p>
+</div>

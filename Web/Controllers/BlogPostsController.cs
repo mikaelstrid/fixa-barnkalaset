@@ -48,32 +48,31 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             });
         }
 
-        //[Route("{citySlug}/{arrangementSlug}")]
-        //public async Task<IActionResult> Details(string citySlug, string arrangementSlug)
-        //{
-        //    var city = await _blogPostRepository.GetBySlug(citySlug);
-        //    if (city == null)
-        //    {
-        //        _logger.LogWarning("Details: No city with slug {CitySlug} found", citySlug);
-        //        return NotFound();
-        //    }
+        [Route("{slug}")]
+        public async Task<IActionResult> Details(string slug)
+        {
+            var blogPost = await _blogPostRepository.GetBySlug(slug);
+            if (blogPost == null)
+            {
+                _logger.LogWarning("Details: No blog post with slug {Slug} found", slug);
+                return NotFound();
+            }
 
-        //    var arrangement = await _arrangementRepository.GetBySlug(citySlug, arrangementSlug);
-        //    if (arrangement == null)
-        //    {
-        //        _logger.LogWarning("Details: No arrangement with slug {ArrangementSlug} found", arrangementSlug);
-        //        return NotFound();
-        //    }
+            if (!blogPost.IsPublished || blogPost.PublishedUtc > DateTime.UtcNow)
+            {
+                _logger.LogWarning("Details: Blog post with slug {Slug} is not published yet", slug);
+                return NotFound();
+            }
 
-        //    ViewData["Title"] = $"Barnkalas på {arrangement.Name}, {city.Name} | Fixa barnkalaset";
-        //    ViewData["Description"] = $"{arrangement.Pitch}";
+            ViewData["Title"] = $"{blogPost.Title} | Fixa barnkalaset";
+            ViewData["Description"] = blogPost.Preamble;
 
-        //    ViewData["OgTitle"] = $"Barnkalas på {arrangement.Name}, {city.Name}";
-        //    ViewData["OgDescription"] = $"{arrangement.Pitch}";
+            ViewData["OgTitle"] = blogPost.Title;
+            ViewData["OgDescription"] = blogPost.Preamble;
+            ViewData["OgImage"] = Request?.Scheme + "://" + Request?.Host + "/images/balloons-1869790_1200_630.jpg";
 
-        //    var viewModel = _mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement);
-        //    viewModel.CityName = city.Name;
-        //    return View(viewModel);
-        //}
+            var viewModel = _mapper.Map<BlogPost, BlogPostDetailsViewModel>(blogPost);
+            return View(viewModel);
+        }
     }
 }

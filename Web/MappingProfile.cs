@@ -15,6 +15,7 @@ namespace Pixel.FixaBarnkalaset.Web
             CreateMap<Arrangement, ArrangementDetailsViewModel>();
 
             CreateMap<BlogPost, BlogPostsIndexViewModel.BlogPostViewModel>();
+            CreateMap<BlogPost, BlogPostDetailsViewModel>();
 
 
             // ADMIN

@@ -17,7 +17,7 @@
         @foreach (var blogPost in Model.BlogPosts)
         {
             <tr>
-                <td>@Html.DisplayFor(m => blogPost.Title)</td>
+                <td data-test-slug="@blogPost.Slug">>@Html.DisplayFor(m => blogPost.Title)</td>
                 <td>
                     @if (blogPost.IsPublished)
                     {

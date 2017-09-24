@@ -5,9 +5,11 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 {
     public class CreateOrEditBlogPostViewModel
     {
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
         [Display(Name = "Rubrik")]
         public string Title { get; set; }
 
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Fältet är obligatoriskt")]
         [Display(Name = "Slug")]
         public string Slug { get; set; }
 

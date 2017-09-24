@@ -39,7 +39,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
             {
                 BlogPosts = _mapper.Map<IEnumerable<BlogPost>, IEnumerable<BlogPostsIndexViewModel.BlogPostViewModel>>(blogPosts)
             };
-            ViewData["Title"] = "Bloggposter | Fixa barnkalaset";
+            ViewData["Title"] = "Bloggposter";
             return View(model);
         }
 
@@ -47,7 +47,7 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         public IActionResult Create()
         {
             _logger.LogDebug("Create GET: Called");
-            ViewData["Title"] = "Lägg till ny bloggpost | Fixa barnkalaset";
+            ViewData["Title"] = "Lägg till ny bloggpost";
             return View();
         }
 
@@ -77,69 +77,73 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
         }
 
 
-        //[Route("{urlSlug}/andra")]
-        //public async Task<IActionResult> Edit(string urlSlug)
-        //{
-        //    _logger.LogDebug("Edit GET: Edit called with slug {Slug}", urlSlug);
-        //    var city = await _blogPostRepository.GetBySlug(urlSlug);
-        //    if (city == null)
-        //    {
-        //        _logger.LogWarning("Edit GET: No city with slug {Slug} found when getting city", urlSlug);
-        //        return NotFound();
-        //    }
+        [Route("{urlSlug}/andra")]
+        public async Task<IActionResult> Edit(string urlSlug)
+        {
+            _logger.LogDebug("Edit GET: Edit called with slug {Slug}", urlSlug);
+            var blogPost = await _blogPostRepository.GetBySlug(urlSlug);
+            if (blogPost == null)
+            {
+                _logger.LogWarning("Edit GET: No blog post with slug {Slug} found when getting blog post", urlSlug);
+                return NotFound();
+            }
 
-        //    var model = _mapper.Map<City, CreateOrEditCityViewModel>(city);
-        //    _logger.LogDebug("Edit GET: Returned model {Model}", JsonConvert.SerializeObject(model));
-        //    ViewData["Title"] = $"Ändra {city.Name} | Fixa barnkalaset";
-        //    return View(model);
-        //}
+            var model = _mapper.Map<BlogPost, CreateOrEditBlogPostViewModel>(blogPost);
+            _logger.LogDebug("Edit GET: Returned model {Model}", JsonConvert.SerializeObject(model));
+            ViewData["Title"] = "Ändra bloggpost";
+            return View(model);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Route("{urlSlug}/andra")]
-        //public async Task<IActionResult> Edit(string urlSlug, [Bind("Name,Slug,Latitude,Longitude")] CreateOrEditCityViewModel model)
-        //{
-        //    _logger.LogDebug("Edit POST: Edit called with slug {Slug} and model {Model}", urlSlug, JsonConvert.SerializeObject(model));
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{urlSlug}/andra")]
+        public async Task<IActionResult> Edit(string urlSlug, [Bind("Title,Slug,Preamble,Body,IsPublished,PublishedUtc")] CreateOrEditBlogPostViewModel model)
+        {
+            _logger.LogDebug("Edit POST: Edit called with slug {Slug} and model {Model}", urlSlug, JsonConvert.SerializeObject(model));
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        _logger.LogWarning("Edit POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
-        //        return View(model);
-        //    }
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Edit POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
+                return View(model);
+            }
 
-        //    var existingCity = await _blogPostRepository.GetBySlug(urlSlug);
-        //    if (existingCity == null)
-        //    {
-        //        _logger.LogWarning("Edit POST: No city with slug {Slug} found when updating city", urlSlug);
-        //        return NotFound();
-        //    }
+            var existingBlogPost = await _blogPostRepository.GetBySlug(urlSlug);
+            if (existingBlogPost == null)
+            {
+                _logger.LogWarning("Edit POST: No blog post with slug {Slug} found when updating blog post", urlSlug);
+                return NotFound();
+            }
 
-        //    if (urlSlug != model.Slug && await _blogPostRepository.GetBySlug(model.Slug) != null)
-        //    {
-        //        _logger.LogWarning("Edit POST: A city with slug {Slug} already exists.", model.Slug);
-        //        ModelState.AddModelError("Slug", $"Det finns redan en stad med sluggen {model.Slug}");
-        //        return View(model);
-        //    }
+            if (urlSlug != model.Slug && await _blogPostRepository.GetBySlug(model.Slug) != null)
+            {
+                _logger.LogWarning("Edit POST: A blog post with slug {Slug} already exists.", model.Slug);
+                ModelState.AddModelError("Slug", $"Det finns redan en bloggpost med sluggen {model.Slug}");
+                return View(model);
+            }
 
-        //    if (existingCity.Name != model.Name 
-        //        || existingCity.Slug != model.Slug 
-        //        || existingCity.Latitude != model.Latitude 
-        //        || existingCity.Longitude != model.Longitude)
-        //    {
-        //        var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-        //        _logger.LogInformation("Edit POST: Edited city from {OldCity} to {NewCity}", JsonConvert.SerializeObject(existingCity, settings), JsonConvert.SerializeObject(model, settings));
-        //        existingCity.Name = model.Name;
-        //        existingCity.Slug = model.Slug;
-        //        existingCity.Latitude = model.Latitude;
-        //        existingCity.Longitude = model.Longitude;
-        //        await _blogPostRepository.AddOrUpdate(existingCity);
-        //    }
-        //    else
-        //    {
-        //        _logger.LogInformation("Edit POST: No changes detected");
-        //    }
+            if (existingBlogPost.Title != model.Title
+                || existingBlogPost.Slug != model.Slug
+                || existingBlogPost.Preamble != model.Preamble
+                || existingBlogPost.Body != model.Body
+                || existingBlogPost.IsPublished != model.IsPublished
+                || existingBlogPost.PublishedUtc != model.PublishedUtc)
+            {
+                var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                _logger.LogInformation("Edit POST: Edited blog post from {OldBlogPost} to {NewBlogPost}", JsonConvert.SerializeObject(existingBlogPost, settings), JsonConvert.SerializeObject(model, settings));
+                existingBlogPost.Title = model.Title;
+                existingBlogPost.Slug = model.Slug;
+                existingBlogPost.Preamble = model.Preamble;
+                existingBlogPost.Body = model.Body;
+                existingBlogPost.IsPublished = model.IsPublished;
+                existingBlogPost.PublishedUtc = model.PublishedUtc;
+                await _blogPostRepository.AddOrUpdate(existingBlogPost);
+            }
+            else
+            {
+                _logger.LogInformation("Edit POST: No changes detected");
+            }
 
-        //    return RedirectToAction("Index");
-        //}
+            return RedirectToAction("Index");
+        }
     }
 }

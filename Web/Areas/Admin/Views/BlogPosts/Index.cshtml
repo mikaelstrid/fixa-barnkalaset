@@ -25,7 +25,7 @@
                     }
                 </td>
                 <td>@Html.DisplayFor(m => blogPost.PublishedUtc)</td>
-                <td>@*<a asp-action="Edit" asp-route-urlSlug="@city.Slug">Ändra</a>*@</td>
+                <td><a asp-action="Edit" asp-route-urlSlug="@blogPost.Slug">Ändra</a></td>
             </tr>
         }
         </tbody>

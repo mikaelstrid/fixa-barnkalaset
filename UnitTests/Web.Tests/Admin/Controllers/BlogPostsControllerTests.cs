@@ -156,152 +156,130 @@ namespace UnitTests.Web.Tests.Admin.Controllers
 
 
 
-        //[Fact]
-        //public async Task Edit_Get_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
-        //{
-        //    // ARRANGE
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult((City) null));
+        [Fact]
+        public async Task Edit_Get_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
+        {
+            // ARRANGE
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult((BlogPost)null));
 
-        //    // ACT
-        //    var result = await _sut.Edit("unknown_slug");
+            // ACT
+            var result = await _sut.Edit("unknown_slug");
 
-        //    // ASSERT
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //    result.Should().BeOfType<NotFoundResult>();
-        //}
+            // ASSERT
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
 
-        //[Fact]
-        //public async Task Edit_Get_ShouldGetView_AndReturnItAsModel()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Vaxjo();
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
+        [Fact]
+        public async Task Edit_Get_ShouldGetView_AndReturnItAsModel()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradSjuttondeOktober();
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
 
-        //    // ACT
-        //    var result = await _sut.Edit(city.Slug);
+            // ACT
+            var result = await _sut.Edit(blogPost.Slug);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.GetBySlug(city.Slug), Times.Once);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.ShouldBeEquivalentTo(city, opt => opt.ExcludingMissingMembers());
-        //}
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.GetBySlug(blogPost.Slug), Times.Once);
+            GetViewModel<CreateOrEditBlogPostViewModel>(result).ShouldBeEquivalentTo(blogPost, opt => opt.ExcludingMissingMembers());
+        }
 
-        //[Fact]
-        //public async Task Edit_Post_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
-        //{
-        //    // ARRANGE
+        [Fact]
+        public async Task Edit_Post_GivenUnknownSlug_ShouldLogWarning_AndReturnNotFound()
+        {
+            // ARRANGE
 
-        //    // ACT
-        //    var result = await _sut.Edit("unknown_slug", CreateCreateOrEditCityViewModel(new City().Halmstad()));
+            // ACT
+            var result = await _sut.Edit("unknown_slug", CreateCreateOrEditBlogPostViewModel(new BlogPost().PubliceradSjuttondeOktober()));
 
-        //    // ASSERT
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //    result.Should().BeOfType<NotFoundResult>();
-        //}
+            // ASSERT
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            result.Should().BeOfType<NotFoundResult>();
+        }
 
-        //[Fact]
-        //public async Task Edit_Post_GivenInvalidModel_ShouldLogWarning_AndOnlyReturnViewWithModelReceivedAsInput()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Halmstad();
-        //    var viewModel = CreateCreateOrEditCityViewModel(city);
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
-        //    AddModelStateError(_sut);
+        [Fact]
+        public async Task Edit_Post_GivenInvalidModel_ShouldLogWarning_AndOnlyReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradSjuttondeOktober();
+            var viewModel = CreateCreateOrEditBlogPostViewModel(blogPost);
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
+            AddModelStateError(_sut);
 
-        //    // ACT
-        //    var result = await _sut.Edit(city.Slug, viewModel);
+            // ACT
+            var result = await _sut.Edit(blogPost.Slug, viewModel);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().Be(viewModel);
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //}
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Never);
+            GetViewModel<CreateOrEditBlogPostViewModel>(result).Should().Be(viewModel);
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+        }
 
-        //[Fact]
-        //public async Task Edit_Post_GivenDuplicateSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
-        //{
-        //    // ARRANGE
-        //    var cityUnderTest = new City().Halmstad();
-        //    var otherExistingCity = new City().Vaxjo();
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(cityUnderTest.Slug)).Returns(Task.FromResult(cityUnderTest));
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(otherExistingCity.Slug)).Returns(Task.FromResult(otherExistingCity));
+        [Fact]
+        public async Task Edit_Post_GivenDuplicateSlug_ShouldAddModelStateError_AndReturnViewWithModelReceivedAsInput()
+        {
+            // ARRANGE
+            var blogPostUnderTest = new BlogPost().PubliceradSjuttondeOktober();
+            var otherExistingBlogPost = new BlogPost().PubliceradFemteSeptember();
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(blogPostUnderTest.Slug)).Returns(Task.FromResult(blogPostUnderTest));
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(otherExistingBlogPost.Slug)).Returns(Task.FromResult(otherExistingBlogPost));
 
-        //    // ACT
-        //    var model = CreateCreateOrEditCityViewModel(cityUnderTest);
-        //    var originalSlug = model.Slug;
-        //    model.Slug = otherExistingCity.Slug;
-        //    var result = await _sut.Edit(originalSlug, model);
+            // ACT
+            var model = CreateCreateOrEditBlogPostViewModel(blogPostUnderTest);
+            var originalSlug = model.Slug;
+            model.Slug = otherExistingBlogPost.Slug;
+            var result = await _sut.Edit(originalSlug, model);
 
-        //    // ASSERT
-        //    _sut.ModelState.IsValid.Should().BeFalse();
-        //    VerifyLogging(_mockLogger, LogLevel.Warning);
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    result.Should().BeOfType<ViewResult>();
-        //    (result as ViewResult).Model.Should().Be(model);
-        //}
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
+            VerifyLogging(_mockLogger, LogLevel.Warning);
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Never);
+            GetViewModel<CreateOrEditBlogPostViewModel>(result).Should().Be(model);
+        }
 
 
 
-        //[Fact]
-        //public async Task Edit_Post_GivenNoChanges_ShouldLogInformation_AndNotUpdateTheDatabase()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Halmstad();
-        //    var viewModel = CreateCreateOrEditCityViewModel(city);
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
+        [Fact]
+        public async Task Edit_Post_GivenNoChanges_ShouldLogInformation_AndNotUpdateTheDatabase()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradSjuttondeOktober();
+            var viewModel = CreateCreateOrEditBlogPostViewModel(blogPost);
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
 
-        //    // ACT
-        //    var result = await _sut.Edit(city.Slug, viewModel);
+            // ACT
+            var result = await _sut.Edit(blogPost.Slug, viewModel);
 
-        //    // ASSERT
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<City>()), Times.Never);
-        //    VerifyLogging(_mockLogger, LogLevel.Information);
-        //    result.Should().BeOfType<RedirectToActionResult>();
-        //}
+            // ASSERT
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.IsAny<BlogPost>()), Times.Never);
+            VerifyLogging(_mockLogger, LogLevel.Information);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
 
-        //[Fact]
-        //public async Task Edit_Post_GivenChangedCityName_ShouldLogInformation_AndUpdateCityInDatabase()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Halmstad();
-        //    var viewModel = CreateCreateOrEditCityViewModel(city);
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(city));
-        //    var changedName = "Halmstad II";
-        //    viewModel.Name = changedName;
+        [Fact]
+        public async Task Edit_Post_GivenChangedBlogPostTitle_ShouldLogInformation_AndUpdateBlogPostInDatabase()
+        {
+            // ARRANGE
+            var blogPost = new BlogPost().PubliceradSjuttondeOktober();
+            var viewModel = CreateCreateOrEditBlogPostViewModel(blogPost);
+            _mockBlogPostRepository.Setup(m => m.GetBySlug(It.IsAny<string>())).Returns(Task.FromResult(blogPost));
+            var changedTitle = "Ny titel";
+            viewModel.Title = changedTitle;
 
-        //    // ACT
-        //    var result = await _sut.Edit(city.Slug, viewModel);
+            // ACT
+            var result = await _sut.Edit(blogPost.Slug, viewModel);
 
-        //    // ASSERT
-        //    VerifyLogging(_mockLogger, LogLevel.Information);
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.Is<City>(c => c.Name == changedName)), Times.Once);
-        //    result.Should().BeOfType<RedirectToActionResult>();
-        //}
-
-        //[Fact]
-        //public async Task Edit_Post_GivenChangedCitySlug_ShouldLogInformation_AndUpdateCityInDatabase()
-        //{
-        //    // ARRANGE
-        //    var city = new City().Halmstad();
-        //    var viewModel = CreateCreateOrEditCityViewModel(city);
-        //    var busfabriken = city.Busfabriken();
-        //    _mockBlogPostRepository.Setup(m => m.GetBySlug(city.Slug)).Returns(Task.FromResult(city));
-        //    var changedSlug = "halmstad-ii";
-        //    viewModel.Slug = changedSlug;
-
-        //    // ACT
-        //    var result = await _sut.Edit(city.Slug, viewModel);
-
-        //    // ASSERT
-        //    VerifyLogging(_mockLogger, LogLevel.Information);
-        //    _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.Is<City>(c => c.Slug == changedSlug)), Times.Once);
-        //    result.Should().BeOfType<RedirectToActionResult>();
-        //}
+            // ASSERT
+            VerifyLogging(_mockLogger, LogLevel.Information);
+            _mockBlogPostRepository.Verify(m => m.AddOrUpdate(It.Is<BlogPost>(p => p.Title == changedTitle)), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
 
 
         private static T GetViewModel<T>(IActionResult result) where T : class
         {
+            result.Should().BeOfType<ViewResult>();
             return (result as ViewResult).Model as T;
         }
         

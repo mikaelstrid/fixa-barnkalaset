@@ -3,6 +3,7 @@ import { EditCityPage } from "./pages/editCityPage";
 import { CreateArrangementPage } from "./pages/createArrangementPage";
 import { EditArrangementPage } from "./pages/editArrangementPage";
 import { CreateBlogPostPage } from "./pages/createBlogPostPage";
+import { EditBlogPostPage } from "./pages/editBlogPostPage";
 
 $(document).ready(() => {
     bootstrap();
@@ -46,6 +47,14 @@ function bootstrap() {
         let page = new CreateBlogPostPage();
         page.initPage();
         console.log("Bootstrapping \"create blog post page\" finished.");
+    }
+
+    let editBlogPostPage = $(".pxl-admin-page--blog-posts-edit");
+    if (editBlogPostPage.length > 0) {
+        console.log("Found \"edit blog post page\", start bootstrapping it...");
+        let page = new EditBlogPostPage();
+        page.initPage();
+        console.log("Bootstrapping \"edit blog post page\" finished.");
     }
 
     console.log("Bootstrapping admin procedure finished.");

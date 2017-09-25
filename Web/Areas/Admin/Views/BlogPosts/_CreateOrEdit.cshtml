@@ -1,8 +1,5 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditBlogPostViewModel
 
-@*<h3 class="ui top attached header">
-    Allmänt
-</h3>*@
 <div class="ui bottom attached segment">
     <div class="field" pf-validation-for="Title" pf-validationerror-class="error">
         <label asp-for="Title"></label>
@@ -24,11 +21,6 @@
         <input type="date" asp-for="PublishedUtc">
         <span asp-validation-for="PublishedUtc"></span>
     </div>
-    <div class="field" pf-validation-for="Preamble" pf-validationerror-class="error">
-        <label asp-for="Preamble"></label>
-        <input type="text" asp-for="Preamble">
-        <span asp-validation-for="Preamble"></span>
-    </div>
     <div class="field" pf-validation-for="Body" pf-validationerror-class="error">
         <label asp-for="Body"></label>
         <textarea asp-for="Body"></textarea>
@@ -37,13 +29,11 @@
 </div>
 
 <script>
-    //$('.ui.form')
-    //    .form({
-    //        fields: {
-    //            Name: 'empty',
-    //            Slug: 'empty',
-    //            Latitude: 'regExp[/^-?\\d+,?\\d*$/]',
-    //            Longitude: 'regExp[/^-?\\d+,?\\d*$/]'
-    //        }
-    //    });
+    $('.ui.form')
+        .form({
+            fields: {
+                Title: 'empty',
+                Slug: 'empty'
+            }
+        });
 </script>

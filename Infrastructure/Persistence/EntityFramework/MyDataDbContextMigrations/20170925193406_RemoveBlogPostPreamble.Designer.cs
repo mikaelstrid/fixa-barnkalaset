@@ -8,9 +8,10 @@ using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDataDbContextMigrations
 {
     [DbContext(typeof(MyDataDbContext))]
-    partial class MyDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170925193406_RemoveBlogPostPreamble")]
+    partial class RemoveBlogPostPreamble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

@@ -7,17 +7,20 @@
         <div class="active section">Barnkalasbloggen</div>
     </div>
 
-    <h1 class="ui huge header">Barnkalasbloggen</h1>
+    <h1 class="ui huge header center aligned">Barnkalasbloggen</h1>
 
     <div class="ui items">
         @foreach (var blogPost in Model.BlogPosts)
         {
             <div class="item">
                 <div class="content">
-                    @Html.ActionLink(blogPost.Title, "Details", new { slug = blogPost.Slug }, new { @class = "header"})
+                    @Html.ActionLink(blogPost.Title, "Details", new {slug = blogPost.Slug}, new {@class = "header center aligned"})
+                    @if (blogPost.PublishedUtc.HasValue)
+                    {
+                        <p class="published-date center aligned">@blogPost.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
+                    }
                     <div class="description">
-                        <p>@blogPost.Preamble</p>
-                        @Html.ActionLink("Läs mer", "Details", new { slug = blogPost.Slug })
+                        @Html.Raw(blogPost.Body)
                     </div>
                 </div>
             </div>

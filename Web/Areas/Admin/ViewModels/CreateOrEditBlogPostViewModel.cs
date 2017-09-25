@@ -13,9 +13,6 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
         [Display(Name = "Slug")]
         public string Slug { get; set; }
 
-        [Display(Name = "Ingress")]
-        public string Preamble { get; set; }
-
         [Display(Name = "Brödtext")]
         public string Body { get; set; }
 

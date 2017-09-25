@@ -62,7 +62,6 @@ namespace IntegrationTests.Admin.Tests
                 {"__RequestVerificationToken", context.AntiForgeryToken},
                 {"Title", blogPost.Title},
                 {"Slug", blogPost.Slug},
-                {"Preamble", blogPost.Preamble},
                 {"Body", blogPost.Body},
                 {"IsPublished", blogPost.IsPublished.ToString()},
                 {"PublishedUtc", blogPost.PublishedUtc.ToString()}

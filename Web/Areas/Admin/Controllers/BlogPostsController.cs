@@ -123,7 +123,6 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
 
             if (existingBlogPost.Title != model.Title
                 || existingBlogPost.Slug != model.Slug
-                || existingBlogPost.Preamble != model.Preamble
                 || existingBlogPost.Body != model.Body
                 || existingBlogPost.IsPublished != model.IsPublished
                 || existingBlogPost.PublishedUtc != model.PublishedUtc)
@@ -132,7 +131,6 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.Controllers
                 _logger.LogInformation("Edit POST: Edited blog post from {OldBlogPost} to {NewBlogPost}", JsonConvert.SerializeObject(existingBlogPost, settings), JsonConvert.SerializeObject(model, settings));
                 existingBlogPost.Title = model.Title;
                 existingBlogPost.Slug = model.Slug;
-                existingBlogPost.Preamble = model.Preamble;
                 existingBlogPost.Body = model.Body;
                 existingBlogPost.IsPublished = model.IsPublished;
                 existingBlogPost.PublishedUtc = model.PublishedUtc;

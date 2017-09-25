@@ -4,4 +4,24 @@
     .item:not(:last-child) {
         margin-bottom: 3em !important;
     }
+
+    .item:first-child {
+        margin-top: 2em !important;
+    }
+
+    .center.aligned {
+        display: block !important;
+        text-align: center;
+    }
+
+    .published-date {
+        margin-top: 0.5em !important;
+        font-size: 1rem !important;
+    }
+
+    @media only screen and (min-width: $tabletBreakpoint) {
+        .item:not(:last-child) {
+            margin-bottom: 5em !important;
+        }
+    }
 }

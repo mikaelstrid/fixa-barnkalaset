@@ -47,7 +47,6 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
             {
                 existingBlogPost.Title = blogPost.Title;
                 existingBlogPost.Slug = blogPost.Slug;
-                existingBlogPost.Preamble = blogPost.Preamble;
                 existingBlogPost.Body = blogPost.Body;
                 existingBlogPost.IsPublished = blogPost.IsPublished;
                 existingBlogPost.PublishedUtc = blogPost.PublishedUtc;

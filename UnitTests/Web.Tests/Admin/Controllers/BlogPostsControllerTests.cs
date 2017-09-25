@@ -283,7 +283,6 @@ namespace UnitTests.Web.Tests.Admin.Controllers
             {
                 Title = blogPost.Title,
                 Slug = blogPost.Slug,
-                Preamble = blogPost.Preamble,
                 Body = blogPost.Body,
                 IsPublished = blogPost.IsPublished,
                 PublishedUtc = blogPost.PublishedUtc

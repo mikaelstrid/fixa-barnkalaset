@@ -65,10 +65,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             }
 
             ViewData["Title"] = $"{blogPost.Title} | Fixa barnkalaset";
-            ViewData["Description"] = blogPost.Preamble;
 
             ViewData["OgTitle"] = blogPost.Title;
-            ViewData["OgDescription"] = blogPost.Preamble;
+            ViewData["OgDescription"] = blogPost.Body;
             ViewData["OgImage"] = Request?.Scheme + "://" + Request?.Host + "/images/balloons-1869790_1200_630.jpg";
 
             var viewModel = _mapper.Map<BlogPost, BlogPostDetailsViewModel>(blogPost);

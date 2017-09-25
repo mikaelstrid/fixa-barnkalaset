@@ -8,8 +8,6 @@ namespace Pixel.FixaBarnkalaset.Core
 
         public string Slug { get; set; }
 
-        public string Preamble { get; set; }
-
         public string Body { get; set; }
 
         public bool IsPublished { get; set; }

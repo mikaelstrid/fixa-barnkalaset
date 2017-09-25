@@ -5,18 +5,14 @@
         <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
         <i class="right angle icon divider"></i>
         <a class="section" href="@Url.Action("Index", "BlogPosts")">Barnkalasbloggen</a>
-        <i class="right angle icon divider"></i>
-        <div class="active section">@Model.Title</div>
     </div>
 
-    <h1 class="ui huge header">@Model.Title</h1>
+    <h1 class="ui large header center aligned">@Model.Title</h1>
     
     @if (Model.PublishedUtc.HasValue)
     {
-        <p>Publicerad @Model.PublishedUtc.Value.ToLocalTime().ToString("yyyy-MM-dd")</p>
+        <p class="center aligned">@Model.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
     }
-
-    <p class="pxl-preamble">@Model.Preamble</p>
 
     <p>@Html.Raw(Model.Body)</p>
 </div>

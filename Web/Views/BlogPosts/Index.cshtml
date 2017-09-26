@@ -9,21 +9,21 @@
 
     <h1 class="ui huge header center aligned">Barnkalasbloggen</h1>
 
-    <div class="ui items">
+    <div class="ui items" itemscope itemtype="http://schema.org/Blog">
         @foreach (var blogPost in Model.BlogPosts)
         {
-            <div class="item">
+            <article class="item" itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="content">
-                    @Html.ActionLink(blogPost.Title, "Details", new {slug = blogPost.Slug}, new {@class = "header center aligned"})
+                    @Html.ActionLink(blogPost.Title, "Details", new {slug = blogPost.Slug}, new {@class = "header center aligned", itemprop = "name" })
                     @if (blogPost.PublishedUtc.HasValue)
                     {
-                        <p class="published-date center aligned">@blogPost.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
+                        <p class="published-date center aligned" itemprop="datePublished">@blogPost.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
                     }
-                    <div class="description">
+                    <div class="description" itemprop="articleBody">
                         @Html.Raw(blogPost.Body)
                     </div>
                 </div>
-            </div>
+            </article>
         }
     </div>
 </div>

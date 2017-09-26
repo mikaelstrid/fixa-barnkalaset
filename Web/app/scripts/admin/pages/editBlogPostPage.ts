@@ -1,5 +1,6 @@
-﻿export class EditBlogPostPage {
+﻿import { CreateOrEditBlogPostPageBase } from "./createOrEditBlogPostPageBase";
+export class EditBlogPostPage extends CreateOrEditBlogPostPageBase {
     initPage() {
-        CKEDITOR.replace("Body");
+        this.initEditor();
     }
 }

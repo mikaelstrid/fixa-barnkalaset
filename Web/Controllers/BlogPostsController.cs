@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -65,13 +66,34 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             }
 
             ViewData["Title"] = $"{blogPost.Title} | Fixa barnkalaset";
+            ViewData["Description"] = LimitLength(blogPost.Body, 160, true);
 
             ViewData["OgTitle"] = blogPost.Title;
-            ViewData["OgDescription"] = blogPost.Body;
+            ViewData["OgDescription"] = LimitLength(blogPost.Body, 300, true);
             ViewData["OgImage"] = Request?.Scheme + "://" + Request?.Host + "/images/balloons-1869790_1200_630.jpg";
 
             var viewModel = _mapper.Map<BlogPost, BlogPostDetailsViewModel>(blogPost);
             return View(viewModel);
         }
+
+
+        private static string LimitLength(string inputString, int length, bool appendEllipsis)
+        {
+            var strippedInput = StripHtml(inputString);
+            if (appendEllipsis)
+            {
+                return strippedInput.Length <= length ? strippedInput : $"{strippedInput.Substring(0, length - 3)}...";
+            }
+            else
+            {
+                return strippedInput.Length <= length ? strippedInput : strippedInput.Substring(0, length);
+            }
+        }
+
+        private static string StripHtml(string inputString)
+        {
+            return Regex.Replace(inputString, "<.*?>", "");
+        }
+
     }
 }

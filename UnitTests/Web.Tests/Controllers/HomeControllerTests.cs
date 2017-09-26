@@ -19,15 +19,17 @@ namespace UnitTests.Web.Tests.Controllers
     {
         private readonly HomeController _sut;
         private readonly Mock<ICityRepository> _mockCityRepository;
+        private readonly Mock<IBlogPostRepository> _mockBlogPostRepository;
         private readonly Mock<ISitemapGenerator> _mockSitemapGenerator;
 
         public HomeControllerTests()
         {
             var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockCityRepository = new Mock<ICityRepository>();
+            _mockBlogPostRepository = new Mock<IBlogPostRepository>();
             _mockSitemapGenerator = new Mock<ISitemapGenerator>();
 
-            _sut = new HomeController(mapper, _mockCityRepository.Object, _mockSitemapGenerator.Object);
+            _sut = new HomeController(mapper, _mockCityRepository.Object, _mockBlogPostRepository.Object, _mockSitemapGenerator.Object);
         }
 
         [Fact]

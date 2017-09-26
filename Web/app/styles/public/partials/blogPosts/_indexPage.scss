@@ -6,7 +6,7 @@
     }
 
     .item:first-child {
-        margin-top: 2em !important;
+        margin-top: 1em !important;
     }
 
     .center.aligned {
@@ -20,8 +20,12 @@
     }
 
     @media only screen and (min-width: $tabletBreakpoint) {
+        .item:first-child {
+            margin-top: 0em !important;
+        }
+
         .item:not(:last-child) {
-            margin-bottom: 5em !important;
+            margin-bottom: 4em !important;
         }
     }
 }

@@ -22,14 +22,14 @@ namespace Pixel.FixaBarnkalaset.Web.Utilities
             _actionAccessor = actionAccessor;
         }
 
-        public async Task<string> GetAsString(ICityRepository cityRepository)
+        public async Task<string> GetAsString(ICityRepository cityRepository, IBlogPostRepository blogPostRepository)
         {
-            var sitemapNodes = GetSitemapNodes(cityRepository);
+            var sitemapNodes = GetSitemapNodes(cityRepository, blogPostRepository);
             var xml = GetSitemapDocument(await sitemapNodes);
             return xml;
         }
 
-        private async Task<IEnumerable<SitemapNode>> GetSitemapNodes(ICityRepository cityRepository)
+        private async Task<IEnumerable<SitemapNode>> GetSitemapNodes(ICityRepository cityRepository, IBlogPostRepository blogPostRepository)
         {
             var urlHelper = _urlHelperFactory.GetUrlHelper(_actionAccessor.ActionContext);
 
@@ -46,7 +46,7 @@ namespace Pixel.FixaBarnkalaset.Web.Utilities
                     Url = urlHelper.AbsoluteAction("Index", "Arrangements", new { citySlug = city.Slug }),
                     Priority = 0.9,
                     Frequency = SitemapFrequency.Daily,
-                    LastModified = city.Arrangements.Max(c => c.LastUpdatedUtc)
+                    LastModified = city.Arrangements.Any() ? city.Arrangements.Max(c => c.LastUpdatedUtc) : city.LastUpdatedUtc
                 });
 
                 foreach (var arrangement in city.Arrangements)
@@ -59,6 +59,25 @@ namespace Pixel.FixaBarnkalaset.Web.Utilities
                         LastModified = arrangement.LastUpdatedUtc
                     });
                 }
+            }
+
+            var blogPosts = (await blogPostRepository.GetAll()).ToList();
+            nodes.Add(new SitemapNode
+            {
+                Url = urlHelper.AbsoluteAction("Index", "BlogPosts"),
+                Priority = 1,
+                Frequency = SitemapFrequency.Daily,
+                LastModified = blogPosts.Any() ? blogPosts.Max(c => c.LastUpdatedUtc) : (DateTime?) null
+            });
+            foreach (var blogPost in blogPosts)
+            {
+                nodes.Add(new SitemapNode
+                {
+                    Url = urlHelper.AbsoluteAction("Details", "BlogPosts", new { slug = blogPost.Slug }),
+                    Priority = 1.0,
+                    Frequency = SitemapFrequency.Weekly,
+                    LastModified = blogPost.LastUpdatedUtc
+                });
             }
             
             return nodes;
@@ -108,3 +127,4 @@ namespace Pixel.FixaBarnkalaset.Web.Utilities
         }
     }
 }
+

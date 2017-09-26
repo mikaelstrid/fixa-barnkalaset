@@ -14,15 +14,18 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICityRepository _cityRepository;
+        private readonly IBlogPostRepository _blogPostRepository;
         private readonly ISitemapGenerator _sitemapGenerator;
 
         public HomeController(
             IMapper mapper,
             ICityRepository cityRepository,
+            IBlogPostRepository blogPostRepository,
             ISitemapGenerator sitemapGenerator)
         {
             _mapper = mapper;
             _cityRepository = cityRepository;
+            _blogPostRepository = blogPostRepository;
             _sitemapGenerator = sitemapGenerator;
         }
 
@@ -53,7 +56,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Route("sitemap.xml")]
         public async Task<ActionResult> SitemapXml()
         {
-            var xml = await _sitemapGenerator.GetAsString(_cityRepository);
+            var xml = await _sitemapGenerator.GetAsString(_cityRepository, _blogPostRepository);
             return Content(xml, "application/xml");
         }
     }

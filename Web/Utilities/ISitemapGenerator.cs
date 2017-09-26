@@ -5,6 +5,6 @@ namespace Pixel.FixaBarnkalaset.Web.Utilities
 {
     public interface ISitemapGenerator
     {
-        Task<string> GetAsString(ICityRepository cityRepository);
+        Task<string> GetAsString(ICityRepository cityRepository, IBlogPostRepository blogPostRepository);
     }
 }

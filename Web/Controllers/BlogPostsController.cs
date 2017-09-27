@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Web.Models;
 
 namespace Pixel.FixaBarnkalaset.Web.Controllers
@@ -59,7 +62,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 return NotFound();
             }
 
-            if (!blogPost.IsPublished || blogPost.PublishedUtc > DateTime.UtcNow)
+            if ((User == null || !User.IsInRole(Roles.Admin)) && !blogPost.IsPublished || blogPost.PublishedUtc > DateTime.UtcNow)
             {
                 _logger.LogWarning("Details: Blog post with slug {Slug} is not published yet", slug);
                 return NotFound();
@@ -94,6 +97,5 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         {
             return Regex.Replace(inputString, "<.*?>", "");
         }
-
     }
 }

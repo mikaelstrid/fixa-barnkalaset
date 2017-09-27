@@ -95,6 +95,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         private static string StripHtml(string inputString)
         {
+            if (inputString == null) return "";
             return Regex.Replace(inputString, "<.*?>", "");
         }
     }

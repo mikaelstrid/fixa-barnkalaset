@@ -61,7 +61,7 @@ namespace Pixel.FixaBarnkalaset.Web.Utilities
                 }
             }
 
-            var blogPosts = (await blogPostRepository.GetAll()).ToList();
+            var blogPosts = (await blogPostRepository.GetAll()).Where(p => p.IsPublished && p.PublishedUtc < DateTime.UtcNow).ToList();
             nodes.Add(new SitemapNode
             {
                 Url = urlHelper.AbsoluteAction("Index", "BlogPosts"),

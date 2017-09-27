@@ -116,6 +116,8 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             app.UseRewriter(new RewriteOptions().Add(new RedirectWwwRule()));
             app.UseRewriter(new RewriteOptions().AddRedirect("^kalas/(.*)", "barnkalas/$1", 301));
+            app.UseRewriter(new RewriteOptions().AddRedirect("^blogg$", "barnkalasbloggen", 301));
+            app.UseRewriter(new RewriteOptions().AddRedirect("^blogg/(.*)", "barnkalasbloggen/$1", 301));
 
             ConfigureLogging(loggerFactory, Configuration);
 

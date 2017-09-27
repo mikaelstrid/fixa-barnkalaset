@@ -24,7 +24,7 @@ namespace IntegrationTests.Public.Tests
             PopulateDatabaseWithBlogPosts(blogPost1, blogPost2);
 
             // ACT
-            var response = await Client.GetAsync("/blogg");
+            var response = await Client.GetAsync("/barnkalasbloggen");
 
             // ASSERT
             response.EnsureSuccessStatusCode();

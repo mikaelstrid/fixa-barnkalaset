@@ -21,7 +21,7 @@ namespace IntegrationTests.Public.Tests
             // ARRANGE
 
             // ACT
-            var response = await Client.GetAsync("/blogg/okand-slug");
+            var response = await Client.GetAsync("/barnkalasbloggen/okand-slug");
             var responseString = await response.Content.ReadAsStringAsync();
 
             // ASSERT
@@ -38,7 +38,7 @@ namespace IntegrationTests.Public.Tests
             PopulateDatabaseWithBlogPosts(blogPost);
 
             // ACT
-            var response = await Client.GetAsync($"/blogg/{blogPost.Slug}");
+            var response = await Client.GetAsync($"/barnkalasbloggen/{blogPost.Slug}");
 
             // ASSERT
             response.EnsureSuccessStatusCode();

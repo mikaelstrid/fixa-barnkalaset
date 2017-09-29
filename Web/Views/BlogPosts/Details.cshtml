@@ -1,0 +1,20 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.BlogPostDetailsViewModel
+
+<div class="ui main text container pxl-public-page pxl-public-page--blog-posts-details">
+    <article itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="ui breadcrumb">
+            <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
+            <i class="right angle icon divider"></i>
+            <a class="section" href="@Url.Action("Index", "BlogPosts")">Barnkalasbloggen</a>
+        </div>
+
+        <h1 class="ui large header center aligned" itemprop="name">@Model.Title</h1>
+
+        @if (Model.PublishedUtc.HasValue)
+        {
+            <p class="center aligned" itemprop="datePublished">@Model.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
+        }
+
+        <div itemprop="articleBody">@Html.Raw(Model.Body)</div>
+    </article>
+</div>

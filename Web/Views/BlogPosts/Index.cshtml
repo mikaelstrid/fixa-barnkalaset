@@ -1,0 +1,29 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.BlogPostsIndexViewModel
+
+<div class="ui main text container pxl-public-page pxl-public-page--blog-posts-index">
+    <div class="ui breadcrumb">
+        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
+        <i class="right angle icon divider"></i>
+        <div class="active section">Barnkalasbloggen</div>
+    </div>
+
+    <h1 class="ui huge header center aligned">Barnkalasbloggen</h1>
+
+    <div class="ui items" itemscope itemtype="http://schema.org/Blog">
+        @foreach (var blogPost in Model.BlogPosts)
+        {
+            <article class="item" itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting">
+                <div class="content">
+                    @Html.ActionLink(blogPost.Title, "Details", new {slug = blogPost.Slug}, new {@class = "header center aligned", itemprop = "name" })
+                    @if (blogPost.PublishedUtc.HasValue)
+                    {
+                        <p class="published-date center aligned" itemprop="datePublished">@blogPost.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
+                    }
+                    <div class="description" itemprop="articleBody">
+                        @Html.Raw(blogPost.Body)
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+</div>

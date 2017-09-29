@@ -4,22 +4,23 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    var userProfilePictureUrl = "";
-    if (SignInManager.IsSignedIn(User))
-    {
-        var user = await UserManager.GetUserAsync(User);
-        userProfilePictureUrl = $"https://graph.facebook.com/v2.9/{user.NameIdentifier}/picture";
-    }
+//var userProfilePictureUrl = "";
+//if (SignInManager.IsSignedIn(User))
+//{
+//    var user = await UserManager.GetUserAsync(User);
+//    userProfilePictureUrl = $"https://graph.facebook.com/v2.9/{user.NameIdentifier}/picture";
+//}
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <meta name="description" content="@ViewData["Description"]" />
+    @Html.Partial("_OgTags")
     @Html.Partial("_Favicons")
 
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
@@ -32,7 +33,11 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
 
-    @Html.Partial("_GoogleAnalytics")
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        @Html.Partial("_GoogleAnalytics")
+        @Html.Partial("_FacebookAnalytics")
+    }
 </head>
 <body>
     <!-- Page Contents -->
@@ -46,12 +51,17 @@
                     <div class="header item pxl-brand">
                         @Html.ActionLink("Fixa barnkalaset", "Index", "Home")
                     </div>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <div class="right item">
-                            <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
-                        </div>
-                    }
+                    <div class="right menu">
+                        <a class="ui item" href="@Url.Action("Index", "BlogPosts")">
+                            <i class="heart icon"></i> Blogg
+                        </a>
+                    </div>
+                    @*@if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="right item">
+                                <img id="userProfilePicture" class="ui mini circular image" src="@userProfilePictureUrl">
+                            </div>
+                        }*@
                     @*else
                         {
                             <div class="right item">
@@ -72,10 +82,14 @@
 
         <div class="ui center aligned vertical footer segment">
             <div class="ui container">
-                Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>.<br />Med reservation för inaktuella och/eller felaktiga uppgifter.
+                Fixa barnkalaset av <a href="http://www.pixeldigitalbyra.se">Pixel Digitalbyrå</a>.<br />
+                <a href="mailto:info@fixabarnkalaset.se">info@fixabarnkalaset.se</a><br />
+                Med reservation för inaktuella och/eller felaktiga uppgifter.
             </div>
         </div>
     </div>
+
+    <script src="~/js/bundle.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 

@@ -49,6 +49,7 @@ namespace IntegrationTests.Admin.Tests
                 .ShouldBeEquivalentTo(new City(newName, newSlug, newLatitude, city.Longitude) { Arrangements = new List<Arrangement>() },
                 opt => opt
                     .Excluding(c => c.Id)
+                    .Excluding(c => c.UpdatedBy)
                     .Excluding(c => c.LastUpdatedUtc));
         }
     }

@@ -1,6 +1,14 @@
 ﻿@import "../../modules/_variables";
 
-.pxl-page-arrangements-index {
+.pxl-public-page--arrangements-index {
+    .pxl-filter-form {
+        margin-bottom: 1rem;
+    }
+
+    .pxl-arrangement-count {
+        color: $primaryColor;
+    }
+
     .card .image {
         background-size: cover;
         height: 200px;
@@ -10,9 +18,9 @@
         font-weight: normal !important;
     }
 
-    .pxl-html-attributions {
-        margin-top: 2em;
-        margin-bottom: 2em;
+    .pxl-html-attribution {
+        margin-top: -20px;
+        font-size: 10px;
     }
 
     @media only screen and (min-width: $tabletBreakpoint) {

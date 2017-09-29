@@ -125,5 +125,11 @@ namespace IntegrationTests.Admin.Tests
             fixture.MyDataDbContext.Arrangements.AddRange(arrangements);
             fixture.MyDataDbContext.SaveChanges();
         }
+
+        protected static void PopulateDatabaseWithBlogPosts(TestFixture<Startup> fixture, params BlogPost[] blogPosts)
+        {
+            fixture.MyDataDbContext.BlogPosts.AddRange(blogPosts);
+            fixture.MyDataDbContext.SaveChanges();
+        }
     }
 }

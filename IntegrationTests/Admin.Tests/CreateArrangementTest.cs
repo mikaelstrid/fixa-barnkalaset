@@ -165,7 +165,8 @@ namespace IntegrationTests.Admin.Tests
                     .ExcludingMissingMembers()
                     .Excluding(a => a.Id)
                     .Excluding(a => a.City)
-                    .Excluding(c => c.LastUpdatedUtc));
+                    .Excluding(a => a.UpdatedBy)
+                    .Excluding(a => a.LastUpdatedUtc));
         }
     }
 }

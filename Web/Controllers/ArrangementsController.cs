@@ -10,7 +10,7 @@ using Pixel.FixaBarnkalaset.Web.Models;
 
 namespace Pixel.FixaBarnkalaset.Web.Controllers
 {
-    [Route("kalas")]
+    [Route("barnkalas")]
     public class ArrangementsController : Controller
     {
         private readonly IMapper _mapper;
@@ -39,6 +39,10 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             ViewData["Title"] = $"Barnkalas i {city.Name} | Fixa barnkalaset";
             ViewData["Description"] = $"Här hittar du bra idéer för barnkalas i {city.Name}.";
 
+            ViewData["OgTitle"] = $"Barnkalas i {city.Name}";
+            ViewData["OgDescription"] = $"Här hittar du bra idéer för barnkalas i {city.Name}.";
+            ViewData["OgImage"] = Request?.Scheme + "://" + Request?.Host + "/images/balloons-1869790_1200_630.jpg";
+
             var arrangements = city.Arrangements ?? new List<Arrangement>();
             return View(new ArrangementsIndexViewModel
             {
@@ -65,8 +69,11 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 return NotFound();
             }
 
-            ViewData["Title"] = $"{arrangement.Name}, {city.Name} | Fixa barnkalaset";
+            ViewData["Title"] = $"Barnkalas på {arrangement.Name}, {city.Name} | Fixa barnkalaset";
             ViewData["Description"] = $"{arrangement.Pitch}";
+
+            ViewData["OgTitle"] = $"Barnkalas på {arrangement.Name}, {city.Name}";
+            ViewData["OgDescription"] = $"{arrangement.Pitch}";
 
             var viewModel = _mapper.Map<Arrangement, ArrangementDetailsViewModel>(arrangement);
             viewModel.CityName = city.Name;

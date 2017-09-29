@@ -1,0 +1,33 @@
+﻿@using System.Linq
+@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.BlogPostsIndexViewModel
+
+<div class="ui main container">
+    <h1>Bloggposter</h1>
+    <a asp-action="Create">Lägg till ny</a>
+    <table class="ui table">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.BlogPosts.First().Title)</th>
+            <th>@Html.DisplayNameFor(m => m.BlogPosts.First().IsPublished)</th>
+            <th>@Html.DisplayNameFor(m => m.BlogPosts.First().PublishedUtc)</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var blogPost in Model.BlogPosts)
+        {
+            <tr>
+                <td data-test-slug="@blogPost.Slug">@Html.DisplayFor(m => blogPost.Title)</td>
+                <td>
+                    @if (blogPost.IsPublished)
+                    {
+                        <i class="checkmark icon"></i>
+                    }
+                </td>
+                <td>@Html.DisplayFor(m => blogPost.PublishedUtc)</td>
+                <td><a asp-action="Edit" asp-route-urlSlug="@blogPost.Slug">Ändra</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -10,18 +10,23 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             // PUBLIC
             CreateMap<City, HomeIndexViewModel.CityViewModel>();
+
             CreateMap<Arrangement, ArrangementsIndexViewModel.ArrangementViewModel>();
             CreateMap<Arrangement, ArrangementDetailsViewModel>();
+
+            CreateMap<BlogPost, BlogPostsIndexViewModel.BlogPostViewModel>();
+            CreateMap<BlogPost, BlogPostDetailsViewModel>();
+
 
             // ADMIN
             CreateMap<Arrangement, Areas.Admin.ViewModels.ArrangementsIndexViewModel.ArrangementViewModel>();
             CreateMap<Arrangement, Areas.Admin.ViewModels.CreateOrEditArrangementViewModel>().ReverseMap();
-            //CreateMap<Areas.Admin.ViewModels.CreateOrEditArrangementViewModel, Arrangement>();
             
             CreateMap<City, Areas.Admin.ViewModels.CitiesIndexViewModel.CityViewModel>();
-            CreateMap<City, Areas.Admin.ViewModels.CitiesIndexViewModel>();
             CreateMap<City, Areas.Admin.ViewModels.CreateOrEditCityViewModel>().ReverseMap();
-            //CreateMap<Areas.Admin.ViewModels.CreateOrEditCityViewModel, City>();
+
+            CreateMap<BlogPost, Areas.Admin.ViewModels.BlogPostsIndexViewModel.BlogPostViewModel>();
+            CreateMap<BlogPost, Areas.Admin.ViewModels.CreateOrEditBlogPostViewModel>().ReverseMap();
         }
     }
 }

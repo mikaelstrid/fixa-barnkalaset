@@ -1,6 +1,6 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementDetailsViewModel
 
-<div class="ui main container pxl-page pxl-page-arrangements-details">
+<div class="ui main container pxl-public-page pxl-public-page--arrangements-details">
     <div class="ui breadcrumb">
         <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
         <i class="right angle icon divider"></i>
@@ -8,8 +8,8 @@
         <i class="right angle icon divider"></i>
         <div class="active section">@Model.Name</div>
     </div>
-    <h1 class="ui huge header">@Html.DisplayFor(m => m.Name)</h1>
-    <p class="ui small">Senast uppdaterad: @Model.LastUpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>
+    <h1 class="ui huge header">Barnkalas på @Html.DisplayFor(m => m.Name)</h1>
+    @*<p class="ui small">Senast uppdaterad: @Model.LastUpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>*@
     @if (!string.IsNullOrWhiteSpace(Model.Pitch))
     {
         <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>
@@ -28,24 +28,18 @@
                 @Html.Raw(Model.Description)
 
                 <h3 class="ui medium header">Bokningsvillkor</h3>
-                @if (!string.IsNullOrWhiteSpace(Model.BookingConditions))
+                @*@if (!string.IsNullOrWhiteSpace(Model.BookingConditions))
                 {
                     @Html.Raw(Model.BookingConditions)
-                }
-                else
-                {
-                    <p>Kontakta arrangören för mer information.</p>
-                }
+                }*@
+                <p>Kontakta arrangören för mer information.</p>
 
                 <h3 class="ui medium header">Prisinformation</h3>
-                @if (!string.IsNullOrWhiteSpace(Model.PriceInformation))
+                @*@if (!string.IsNullOrWhiteSpace(Model.PriceInformation))
                 {
                     @Html.Raw(Model.PriceInformation)
-                }
-                else
-                {
-                    <p>Kontakta arrangören för mer information.</p>
-                }
+                }*@
+                <p>Kontakta arrangören för mer information.</p>
             </div>
             <div class="five wide tablet four wide computer column">
                 <div class="ui segment">
@@ -81,7 +75,7 @@
                             <div class="item">
                                 <i class="mail icon"></i>
                                 <div class="content">
-                                    <a href="@Model.EmailAddress)">@Html.DisplayFor(m => m.EmailAddress)</a>
+                                    <a id="emailAddressLink" href="mailto:@Model.EmailAddress">@Html.DisplayFor(m => m.EmailAddress)</a>
                                 </div>
                             </div>
                         }
@@ -90,7 +84,7 @@
                             <div class="item">
                                 <i class="linkify icon"></i>
                                 <div class="content">
-                                    <a href="@Model.Website">@Html.DisplayFor(m => m.Website)</a>
+                                    <a id="externalWebsiteLink" href="@Model.Website">@Html.DisplayFor(m => m.Website)</a>
                                 </div>
                             </div>
                         }

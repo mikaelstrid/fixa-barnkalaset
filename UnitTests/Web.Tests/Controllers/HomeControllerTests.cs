@@ -9,6 +9,7 @@ using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Controllers;
 using Pixel.FixaBarnkalaset.Web.Models;
+using Pixel.FixaBarnkalaset.Web.Utilities;
 using Xunit;
 // ReSharper disable PossibleNullReferenceException
 
@@ -18,12 +19,17 @@ namespace UnitTests.Web.Tests.Controllers
     {
         private readonly HomeController _sut;
         private readonly Mock<ICityRepository> _mockCityRepository;
+        private readonly Mock<IBlogPostRepository> _mockBlogPostRepository;
+        private readonly Mock<ISitemapGenerator> _mockSitemapGenerator;
 
         public HomeControllerTests()
         {
             var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
             _mockCityRepository = new Mock<ICityRepository>();
-            _sut = new HomeController(mapper, _mockCityRepository.Object);
+            _mockBlogPostRepository = new Mock<IBlogPostRepository>();
+            _mockSitemapGenerator = new Mock<ISitemapGenerator>();
+
+            _sut = new HomeController(mapper, _mockCityRepository.Object, _mockBlogPostRepository.Object, _mockSitemapGenerator.Object);
         }
 
         [Fact]

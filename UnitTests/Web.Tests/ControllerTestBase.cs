@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
@@ -35,6 +36,12 @@ namespace UnitTests.Web.Tests
                     It.IsAny<Func<object, Exception, string>>()
                 )
             );
+        }
+
+        protected static T GetViewModel<T>(IActionResult result) where T : class
+        {
+            result.Should().BeOfType<ViewResult>();
+            return (result as ViewResult).Model as T;
         }
     }
 }

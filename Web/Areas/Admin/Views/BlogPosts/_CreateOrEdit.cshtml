@@ -1,0 +1,39 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditBlogPostViewModel
+
+<div class="ui bottom attached segment">
+    <div class="field" pf-validation-for="Title" pf-validationerror-class="error">
+        <label asp-for="Title"></label>
+        <input type="text" asp-for="Title">
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div class="field" pf-validation-for="Slug" pf-validationerror-class="error">
+        <label asp-for="Slug"></label>
+        <input type="text" asp-for="Slug">
+        <span asp-validation-for="Slug"></span>
+    </div>
+    <div class="field" pf-validation-for="IsPublished" pf-validationerror-class="error">
+        <label asp-for="IsPublished"></label>
+        <input type="checkbox" asp-for="IsPublished">
+        <span asp-validation-for="IsPublished"></span>
+    </div>
+    <div class="field" pf-validation-for="PublishedUtc" pf-validationerror-class="error">
+        <label asp-for="PublishedUtc"></label>
+        <input type="date" asp-for="PublishedUtc">
+        <span asp-validation-for="PublishedUtc"></span>
+    </div>
+    <div class="field" pf-validation-for="Body" pf-validationerror-class="error">
+        <label asp-for="Body"></label>
+        <textarea asp-for="Body"></textarea>
+        <span asp-validation-for="Body"></span>
+    </div>
+</div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                Title: 'empty',
+                Slug: 'empty'
+            }
+        });
+</script>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
 using Pixel.FixaBarnkalaset.Infrastructure.Redirection;
+using Pixel.FixaBarnkalaset.Web.Utilities;
 
 namespace Pixel.FixaBarnkalaset.Web
 {
@@ -103,8 +105,8 @@ namespace Pixel.FixaBarnkalaset.Web
                 services.AddAuthentication()
                 .AddFacebook(options =>
                 {
-                    options.AppId = Configuration["auth:facebook:appid"];
-                    options.AppSecret = Configuration["auth:facebook:appsecret"];
+                    options.AppId = Configuration["Authentication:Facebook:AppId"];
+                    options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                 });
             }
         }
@@ -114,7 +116,10 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddAutoMapper();
             services.AddTransient<IArrangementRepository, SqlArrangementRepository>();
             services.AddTransient<ICityRepository, SqlCityRepository>();
+            services.AddTransient<IBlogPostRepository, SqlBlogPostRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddTransient<ISitemapGenerator, SitemapGenerator>();
         }
 
 
@@ -122,6 +127,9 @@ namespace Pixel.FixaBarnkalaset.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseRewriter(new RewriteOptions().Add(new RedirectWwwRule()));
+            app.UseRewriter(new RewriteOptions().AddRedirect("^kalas/(.*)", "barnkalas/$1", 301));
+            app.UseRewriter(new RewriteOptions().AddRedirect("^blogg$", "barnkalasbloggen", 301));
+            app.UseRewriter(new RewriteOptions().AddRedirect("^blogg/(.*)", "barnkalasbloggen/$1", 301));
 
             ConfigureLogging(loggerFactory, Configuration);
 

@@ -2,11 +2,13 @@ import { CreateCityPage } from "./pages/createCityPage";
 import { EditCityPage } from "./pages/editCityPage";
 import { CreateArrangementPage } from "./pages/createArrangementPage";
 import { EditArrangementPage } from "./pages/editArrangementPage";
+import { CreateBlogPostPage } from "./pages/createBlogPostPage";
+import { EditBlogPostPage } from "./pages/editBlogPostPage";
 $(document).ready(() => {
     bootstrap();
 });
 function bootstrap() {
-    console.log("Starting bootstrapping procedure...");
+    console.log("Starting admin bootstrapping procedure...");
     if ($(".pxl-admin-page--cities-create").length > 0) {
         console.log("Found \"create city page\", start bootstrapping it...");
         let page = new CreateCityPage();
@@ -33,5 +35,18 @@ function bootstrap() {
         page.initPage(editArrangementPage.data("latitude"), editArrangementPage.data("longitude"));
         console.log("Bootstrapping \"edit arrangement page\" finished.");
     }
-    console.log("Bootstrapping procedure finished.");
+    if ($(".pxl-admin-page--blog-posts-create").length > 0) {
+        console.log("Found \"create blog post page\", start bootstrapping it...");
+        let page = new CreateBlogPostPage();
+        page.initPage();
+        console.log("Bootstrapping \"create blog post page\" finished.");
+    }
+    let editBlogPostPage = $(".pxl-admin-page--blog-posts-edit");
+    if (editBlogPostPage.length > 0) {
+        console.log("Found \"edit blog post page\", start bootstrapping it...");
+        let page = new EditBlogPostPage();
+        page.initPage();
+        console.log("Bootstrapping \"edit blog post page\" finished.");
+    }
+    console.log("Bootstrapping admin procedure finished.");
 }

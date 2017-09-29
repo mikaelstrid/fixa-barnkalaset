@@ -29,6 +29,9 @@ namespace Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels
 
             [Display(Name = "Pitch")]
             public string Pitch { get; set; }
+
+            [Display(Name = "Omslagsbild")]
+            public string CoverImage { get; set; }
         }
     }
 }

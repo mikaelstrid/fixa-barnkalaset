@@ -1,0 +1,4 @@
+﻿User-Agent: *
+Disallow: /admin/
+Disallow: /fel/
+Disallow: /konto/

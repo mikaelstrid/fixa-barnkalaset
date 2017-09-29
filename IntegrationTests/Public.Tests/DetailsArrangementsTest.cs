@@ -21,7 +21,7 @@ namespace IntegrationTests.Public.Tests
             // ARRANGE
 
             // ACT
-            var response = await Client.GetAsync("/kalas/okand-stad/okant-arrangemang");
+            var response = await Client.GetAsync("/barnkalas/okand-stad/okant-arrangemang");
             var responseString = await response.Content.ReadAsStringAsync();
 
             // ASSERT
@@ -40,12 +40,12 @@ namespace IntegrationTests.Public.Tests
             PopulateDatabaseWithArrangements(busfabriken);
 
             // ACT
-            var response = await Client.GetAsync($"/kalas/{halmstad.Slug}/{busfabriken.Slug}");
+            var response = await Client.GetAsync($"/barnkalas/{halmstad.Slug}/{busfabriken.Slug}");
 
             // ASSERT
             //response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            Regex.IsMatch(responseString, $"<h1.*>{busfabriken.Name}</h1>").Should().BeTrue();
+            Regex.IsMatch(responseString, $"<h1.*>Barnkalas på {busfabriken.Name}</h1>").Should().BeTrue();
             responseString.Should().Contain(busfabriken.Description);
         }
     }

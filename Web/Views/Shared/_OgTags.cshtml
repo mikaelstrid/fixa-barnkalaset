@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<meta property="og:url" content="@Context.Request.GetDisplayUrl()" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="@ViewData["OgTitle"]" />
+<meta property="og:description" content="@ViewData["OgDescription"]" />
+@if (ViewData["OgImage"] != null)
+{
+    <meta property="og:image" content="@ViewData["OgImage"]" />
+}
+<meta property="fb:app_id" content="@Configuration["Authentication:Facebook:AppId"]"/>
+<meta property="og:locale" content="sv_SE" />

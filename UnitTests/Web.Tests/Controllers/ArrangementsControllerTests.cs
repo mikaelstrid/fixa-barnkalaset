@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
-using Pixel.FixaBarnkalaset.Web;
 using Pixel.FixaBarnkalaset.Web.Controllers;
 using Pixel.FixaBarnkalaset.Web.Models;
 using UnitTests.Utilities.TestDataExtensions;

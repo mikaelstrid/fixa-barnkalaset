@@ -40,7 +40,7 @@ export abstract class CreateOrEditArrangementPageBase {
         });
 
         $("#btnGetInformationFromGooglePlaces").click(() => {
-            const name = $("#Name").val();
+            const name = $("#Name").val().toString();
             if (!name) return false;
             this.placesService.textSearch({ query: name },
                 (results, status) => {
@@ -65,7 +65,7 @@ export abstract class CreateOrEditArrangementPageBase {
         });
 
         $("#btnOpenCoverImage").click(() => {
-            var url = $("#CoverImage").val();
+            var url = $("#CoverImage").val().toString();
             if (url) 
                 $("<a>").attr("href", url).attr("target", "_blank")[0].click();
             return false;
@@ -78,7 +78,7 @@ export abstract class CreateOrEditArrangementPageBase {
                 return false;
             }
 
-            this.placesService.getDetails({ placeId: placeId },
+            this.placesService.getDetails({ placeId: placeId.toString() },
                 (place, detailedStatus) => {
                     if (detailedStatus === google.maps.places.PlacesServiceStatus.OK) {
                         this.updateImageList(place, false);
@@ -91,7 +91,7 @@ export abstract class CreateOrEditArrangementPageBase {
         });
 
         $("#btnOpenWebsite").click(() => {
-            $("<a>").attr("href", $("#Website").val()).attr("target", "_blank")[0].click();
+            $("<a>").attr("href", $("#Website").val().toString()).attr("target", "_blank")[0].click();
             return false;
         });
     }

@@ -1,22 +1,35 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementsIndexViewModel
 
-<div class="ui main container pxl-page pxl-page-arrangements-index">
+<div class="ui main container pxl-public-page pxl-public-page--arrangements-index">
     <div class="ui breadcrumb">
         <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
         <i class="right angle icon divider"></i>
         <div class="active section">@Model.CityName</div>
     </div>
 
-    <h1 class="ui huge header">@Html.DisplayFor(m => m.CityName)</h1>
-
+    <h1 class="ui huge header">Barnkalas i @Html.DisplayFor(m => m.CityName)</h1>
+    <p class="pxl-preamble">Här hittar du de bästa barnkalasen i @Model.CityName. Ett enkelt sätt att ge ditt barn ett fantastiskt kalas med sina kompisar utan att behöva städa och fixa hemma!</p>
+    
     @if (Model.Arrangements.Any())
     {
+        <form class="ui form pxl-filter-form">
+            <select id="typeFilter" multiple="" class="ui fluid dropdown">
+                <option value="">Filtrera på typ av barnkalas</option>
+                @foreach (var type in Model.Arrangements.GroupBy(a => a.Type).OrderBy(g => g.Key).Select(g => new { Name = g.Key, Count = g.Count()}))
+                {
+                    <option value="@type.Name">@type.Name (@type.Count)</option>
+                }
+            </select>
+        </form>
+
+        <p class="pxl-arrangement-count">Visar <span id="arrangementCount">@Model.Arrangements.Count()</span> barnkalas</p>
+
         <div class="ui stackable grid">
             @foreach (var arrangement in Model.Arrangements)
-            {
-                <div class="six wide tablet four wide computer column">
+                {
+                <div class="six wide tablet four wide computer column pxl-arrangement" data-type="@arrangement.Type">
                     <a class="ui fluid card" href="@Url.Action("Details", new {citySlug = Model.CitySlug, arrangementSlug = arrangement.Slug})">
-                        <div class="image" style="background-image: url('@arrangement.CoverImage');"></div>
+                        <div class="image lazy" data-src="@(arrangement.CoverImage ?? "/images/balloons-1869790.jpg")"></div>
                         <div class="content">
                             <div class="header">@Html.DisplayFor(m => arrangement.Name)</div>
                             <div class="meta">@Html.DisplayFor(m => arrangement.Type)</div>
@@ -25,19 +38,11 @@
                             </div>
                         </div>
                     </a>
+                    @if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
+                    {
+                        <div class="pxl-html-attribution">Foto: @Html.Raw(arrangement.CoverImageAttributions)</div>
+                    }
                 </div>
-            }
-        </div>
-
-        <div class="pxl-html-attributions">
-            Foto:
-            @foreach (var arrangement in Model.Arrangements)
-            {
-                if (!string.IsNullOrWhiteSpace(arrangement.CoverImageAttributions))
-                {
-                    @arrangement.Name<text> </text>
-                    @Html.Raw(arrangement.CoverImageAttributions)<text> </text>
-                }
             }
         </div>
     }
@@ -46,7 +51,7 @@
         <div class="ui padded segment">
             <p class="ui medium header">Oj, här var det lite tomt</p>
             <p>Antingen har vi inte riktigt hunnit lägga till några kalas i @Model.CityName ännu eller så har vi helt enkelt inte hittat några.</p>
-            <p>Har du några idéer på kalas som skulle kunna finnas här? Hör då gärna av dig till oss på <a href="mailto:kontakt@fixabarnkalaset.se">kontakt@fixabarnkalaset.se</a> så ska vi definitivt försöka lägga till dem.</p>
+            <p>Har du några idéer på kalas som skulle kunna finnas här? Hör då gärna av dig till oss på <a href="mailto:info@fixabarnkalaset.se">info@fixabarnkalaset.se</a> så ska vi definitivt försöka lägga till dem.</p>
         </div>
     }
 
@@ -55,8 +60,21 @@
         <div class="ui padded segment">
             <p class="ui small header">Tycker du att något kalas saknas?</p>
             <p>
-                Hör då gärna av dig till oss på <a href="mailto:kontakt@fixabarnkalaset.se">kontakt@fixabarnkalaset.se</a> så ska vi definitivt försöka lägga till det.
+                Hör då gärna av dig till oss på <a href="mailto:info@fixabarnkalaset.se">info@fixabarnkalaset.se</a> så ska vi definitivt försöka lägga till det.
             </p>
         </div>
     }
+    <img src="~/images/powered_by_google_on_white_hdpi.png" alt="Powered by Google" width="125" />
 </div>
+
+@section Scripts
+    {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/10.2.0/lazyload.min.js"></script>
+    <script>
+        var myLazyLoad = new LazyLoad({
+            elements_selector: ".lazy"
+        });
+        $('select.dropdown').dropdown();
+    </script>
+}
+

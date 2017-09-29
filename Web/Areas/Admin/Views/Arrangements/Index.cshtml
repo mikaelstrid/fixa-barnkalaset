@@ -3,12 +3,15 @@
 <div class="ui main container">
 
     <h1>Arrangemang</h1>
+    <a asp-action="Create">Lägg till nytt</a>
     <table class="ui table">
         <thead>
             <tr>
-                <th>Namn</th>
                 <th>Stad</th>
+                <th>Namn</th>
+                <th>Typ</th>
                 <th>Pitch</th>
+                <th>Bild</th>
                 <th></th>
             </tr>
         </thead>
@@ -16,14 +19,19 @@
             @foreach (var arrangement in Model.Arrangements)
             {
                 <tr>
-                    <td data-test-slug="@arrangement.Slug">@arrangement.Name</td>
                     <td>@arrangement.CityName</td>
+                    <td data-test-slug="@arrangement.Slug">@arrangement.Name</td>
+                    <td>@arrangement.Type</td>
                     <td>@arrangement.Pitch</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(arrangement.CoverImage))
+                        {
+                            <i class="checkmark icon"></i>
+                        }
+                    </td>
                     <td><a asp-action="Edit" asp-route-urlCitySlug="@arrangement.CitySlug" asp-route-urlSlug="@arrangement.Slug">Ändra</a></td>
                 </tr>
             }
         </tbody>
     </table>
-    <a asp-action="Create">Lägg till nytt</a>
-
 </div>

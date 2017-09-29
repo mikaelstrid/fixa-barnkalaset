@@ -72,6 +72,32 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                     b.ToTable("Arrangements");
                 });
 
+            modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.BlogPost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Body");
+
+                    b.Property<bool>("IsPublished");
+
+                    b.Property<bool>("IsRemoved");
+
+                    b.Property<DateTime>("LastUpdatedUtc");
+
+                    b.Property<DateTime?>("PublishedUtc");
+
+                    b.Property<string>("Slug");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogPosts");
+                });
+
             modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.City", b =>
                 {
                     b.Property<int>("Id")

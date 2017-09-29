@@ -93,6 +93,7 @@ namespace IntegrationTests.Admin.Tests
                 .ShouldBeEquivalentTo(city, opt => opt
                     .ExcludingMissingMembers()
                     .Excluding(c => c.Id)
+                    .Excluding(c => c.UpdatedBy)
                     .Excluding(c => c.LastUpdatedUtc));
         }
     }

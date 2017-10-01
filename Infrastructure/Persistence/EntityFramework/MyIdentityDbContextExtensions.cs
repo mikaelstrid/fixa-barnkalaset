@@ -8,10 +8,14 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
     // https://github.com/rowanmiller/UnicornStore/blob/master/UnicornStore/src/UnicornStore/Models/Identity/IdentityExtensions.cs
     public static class MyIdentityDbContextExtensions
     {
-        public static void EnsureRolesCreated(this IApplicationBuilder app)
+        public static void EnsureRolesCreated(this IApplicationBuilder app, string envEnvironmentName)
         {
-            var context = app.ApplicationServices.GetService<MyIdentityDbContext>();
-            if (!context.AllMigrationsApplied()) return;
+            // Had to disable this due to a problem in .NET Core 2.0
+            if (envEnvironmentName != "Testing")
+            {
+                var context = app.ApplicationServices.GetService<MyIdentityDbContext>();
+                if (!context.AllMigrationsApplied()) return;
+            }
 
             var roleManager = app.ApplicationServices.GetService<RoleManager<IdentityRole>>();
             foreach (var role in Roles.All)

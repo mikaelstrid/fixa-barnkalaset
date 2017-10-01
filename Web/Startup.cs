@@ -187,7 +187,7 @@ namespace Pixel.FixaBarnkalaset.Web
         {
             app.UseAuthentication();
 
-            app.EnsureRolesCreated();
+            app.EnsureRolesCreated(env.EnvironmentName);
             if (env.IsEnvironment("Testing"))
             {
                 app.AddTestingUsers();

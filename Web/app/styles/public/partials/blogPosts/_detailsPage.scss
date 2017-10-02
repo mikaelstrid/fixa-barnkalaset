@@ -1,11 +1,18 @@
 ﻿@import "../../modules/_variables";
 
 .pxl-public-page--blog-posts-details {
+    .ui.large.header {
+        margin-top: 1em !important;
+    }
+
     .center.aligned {
         display: block !important;
         text-align: center;
     }
 
     @media only screen and (min-width: $tabletBreakpoint) {
+        .ui.large.header {
+            margin-top: 1.2em !important;
+        }
     }
 }

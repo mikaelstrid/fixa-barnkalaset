@@ -1,0 +1,27 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.WhoViewModel
+
+<div class="ui main container pxl-public-page">
+    <div class="ui main container text">
+
+        <h1>Skicka inbjudningskort, steg 1 av X</h1>
+
+        <form class="ui form" asp-action="Who">
+            <div class="field" pf-validation-for="NameOfBirthdayChild" pf-validationerror-class="error">
+                <label asp-for="NameOfBirthdayChild"></label>
+                <input type="text" asp-for="NameOfBirthdayChild">
+                <span asp-validation-for="NameOfBirthdayChild"></span>
+            </div>
+
+            <button class="ui secondary button right floated" type="submit">Fortsätt</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                NameOfBirthdayChild: 'empty'
+            }
+        });
+</script>

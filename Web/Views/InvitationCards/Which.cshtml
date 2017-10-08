@@ -1,0 +1,88 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.WhoViewModel
+
+<div class="ui main container  pxl-public-page pxl-public-page--invitation-cards-which" >
+    <div class="ui main container">
+
+        <h1>Skicka inbjudningskort, steg 5 av X</h1>
+
+        <table class="ui unstackable table" id="guestTable">
+            <thead>
+                <tr>
+                    <th>Förnamn</th>
+                    <th>Efternamn</th>
+                    <th>Gatuadress</th>
+                    <th>Postnummer</th>
+                    <th>Postort</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Kevin</td>
+                    <td>Forsell</td>
+                    <td>Fagaredsvägen 27</td>
+                    <td>412 90</td>
+                    <td>Lindome</td>
+                </tr>
+                <tr>
+                    <td>Oscar</td>
+                    <td>Gustafsson</td>
+                    <td>Lilla bergsvägen 198</td>
+                    <td>412 90</td>
+                    <td>Kungsbacka</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="ui positive labeled icon button" id="addGuestButton"><i class="plus icon"></i>Lägg till</button>
+
+        <div class="ui tiny modal">
+            <i class="close icon"></i>
+            <div class="header">
+                Lägg till gäst
+            </div>
+            <div class="content">
+                <div class="ui tiny error message hidden" id="apiErrorMessage">Det gick inte att lägga till gästen, försök igen.</div>
+                <form class="ui form">
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Förnamn</label>
+                                <input type="text" name="FirstName" value="Kalle">
+                            </div>
+                            <div class="field">
+                                <label>Efternamn</label>
+                                <input type="text" name="LastName" value="Karlsson">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Gatuadress</label>
+                        <input type="text" name="StreetAddress" value="Korsvägen 11">
+                    </div>
+                    <div class="field">
+                        <div class="fields">
+                            <div class="four wide field">
+                                <label>Postnummer</label>
+                                <input type="text" name="PostalCode" value="302 56">
+                            </div>
+                            <div class="eight wide field">
+                                <label>Postort</label>
+                                <input type="text" name="PostalCity" value="Halmstad">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <div class="ui cancel button">
+                    Avbryt
+                </div>
+
+                <div class="ui positive right labeled icon button">
+                    Lägg till
+                    <i class="plus icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

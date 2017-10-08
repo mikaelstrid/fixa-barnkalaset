@@ -1,0 +1,41 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.WhenViewModel
+
+<div class="ui main container pxl-public-page">
+    <div class="ui main container text">
+
+        <h1>Skicka inbjudningskort, steg 3 av X</h1>
+
+        <form class="ui form" asp-action="When">
+            <div class="field" pf-validation-for="PartyDate" pf-validationerror-class="error">
+                <label asp-for="PartyDate"></label>
+                <input type="date" asp-for="PartyDate">
+                <span asp-validation-for="PartyDate"></span>
+            </div>
+            
+            <div class="field" pf-validation-for="PartyStartTime" pf-validationerror-class="error">
+                <label asp-for="PartyStartTime"></label>
+                <input type="time" asp-for="PartyStartTime">
+                <span asp-validation-for="PartyStartTime"></span>
+            </div>
+            
+            <div class="field" pf-validation-for="PartyEndTime" pf-validationerror-class="error">
+                <label asp-for="PartyEndTime"></label>
+                <input type="time" asp-for="PartyEndTime">
+                <span asp-validation-for="PartyEndTime"></span>
+            </div>
+
+            <button class="ui secondary button right floated" type="submit">Fortsätt</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                PartyDate: 'empty',
+                PartyStartTime: 'empty',
+                PartyEndTime: 'empty'
+            }
+        });
+</script>

@@ -1,0 +1,51 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.WhereViewModel
+
+<div class="ui main container pxl-public-page">
+    <div class="ui main container text">
+
+        <h1>Skicka inbjudningskort, steg 2 av X</h1>
+
+        <form class="ui form" asp-action="Where">
+            <div class="field" pf-validation-for="PartyType" pf-validationerror-class="error">
+                <label asp-for="PartyType"></label>
+                <input type="text" asp-for="PartyType" placeholder="födelsedagskalas, bowlingkalas, kalas">
+                <span asp-validation-for="PartyType"></span>
+            </div>
+
+            <div class="field" pf-validation-for="PartyLocationName" pf-validationerror-class="error">
+                <label asp-for="PartyLocationName"></label>
+                <input type="text" asp-for="PartyLocationName" placeholder="hemma hos oss, på Laserdome Göteborg">
+                <span asp-validation-for="PartyLocationName"></span>
+            </div>
+
+            <div class="field" pf-validation-for="StreetAddress" pf-validationerror-class="error">
+                <label asp-for="StreetAddress"></label>
+                <input type="text" asp-for="StreetAddress">
+                <span asp-validation-for="StreetAddress"></span>
+            </div>
+
+            <div class="field" pf-validation-for="PostalCode" pf-validationerror-class="error">
+                <label asp-for="PostalCode"></label>
+                <input type="text" asp-for="PostalCode">
+                <span asp-validation-for="PostalCode"></span>
+            </div>
+
+            <div class="field" pf-validation-for="PostalCity" pf-validationerror-class="error">
+                <label asp-for="PostalCity"></label>
+                <input type="text" asp-for="PostalCity">
+                <span asp-validation-for="PostalCity"></span>
+            </div>
+
+            <button class="ui secondary button right floated" type="submit">Fortsätt</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                StreetAddress: 'empty'
+            }
+        });
+</script>

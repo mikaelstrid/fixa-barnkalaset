@@ -1,26 +1,21 @@
 ﻿import { IndexArrangementsPage } from "./pages/indexArrangementsPage";
 import { DetailsArrangementPage } from "./pages/detailsArrangementPage";
+import { WhichInvitationCardsPage } from "./pages/whichInvitationCardsPage";
 
 $(document).ready(() => {
     bootstrap();
 });
 
 function bootstrap() {
-    console.log("Starting public bootstrapping procedure...");
+    var pages = [
+        { pageClassSuffix: "arrangements-index", ctorFunc: () => new IndexArrangementsPage() },
+        { pageClassSuffix: "arrangements-details", ctorFunc: () => new IndexArrangementsPage() },
+        { pageClassSuffix: "invitation-cards-which", ctorFunc: () => new WhichInvitationCardsPage() }
+    ];
 
-    if ($(".pxl-public-page--arrangements-index").length > 0) {
-        console.log("Found \"index arrangements page\", start bootstrapping it...");
-        let page = new IndexArrangementsPage();
-        page.initPage();
-        console.log("Bootstrapping \"index arrangements page\" finished.");
+    for (let p of pages) {
+        if ($(`.pxl-public-page--${p.pageClassSuffix}`).length > 0) {
+            p.ctorFunc().initPage();
+        }
     }
-
-    if ($(".pxl-public-page--arrangements-details").length > 0) {
-        console.log("Found \"details arrangement page\", start bootstrapping it...");
-        let page = new DetailsArrangementPage();
-        page.initPage();
-        console.log("Bootstrapping \"details arrangement page\" finished.");
-    }
-
-    console.log("Bootstrapping public procedure finished.");
 }

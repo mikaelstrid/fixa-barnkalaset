@@ -1,0 +1,34 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.RsvpViewModel
+
+<div class="ui main container pxl-public-page">
+    <div class="ui main container text">
+
+        <h1>Skicka inbjudningskort, steg 4 av X</h1>
+
+        <form class="ui form" asp-action="Rsvp">
+            
+            <div class="field" pf-validation-for="RsvpDate" pf-validationerror-class="error">
+                <label asp-for="RsvpDate"></label>
+                <input type="date" asp-for="RsvpDate">
+                <span asp-validation-for="RsvpDate"></span>
+            </div>
+
+            <div class="field" pf-validation-for="Description" pf-validationerror-class="error">
+                <label asp-for="Description"></label>
+                <textarea type="text" asp-for="Description" placeholder="t.ex. &quot;via SMS 070-123 45 67&quot; eller &quot;via telefon/SMS på 070-123 45 67 eller e-post karin@@gmail.com.&quot;"></textarea>
+                <span asp-validation-for="Description"></span>
+            </div>
+
+            <button class="ui secondary button right floated" type="submit">Fortsätt</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('.ui.form')
+        .form({
+            fields: {
+                RsvpDate: 'empty'
+            }
+        });
+</script>

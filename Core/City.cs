@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.Core
 {
-    public class City : Entity
+    public class City : Entity<int>
     {
         public City() { }
 

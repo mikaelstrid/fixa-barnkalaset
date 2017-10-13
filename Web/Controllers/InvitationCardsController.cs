@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels;
 
 namespace Pixel.FixaBarnkalaset.Web.Controllers
@@ -7,8 +12,13 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
     [Route("inbjudningskort")]
     public class InvitationCardsController : Controller
     {
-        public InvitationCardsController()
+        private readonly ILogger<InvitationCardsController> _logger;
+        private readonly IPartyRepository _partyRepository;
+
+        public InvitationCardsController(ILogger<InvitationCardsController> logger, IPartyRepository partyRepository)
         {
+            _logger = logger;
+            _partyRepository = partyRepository;
             ViewData["Title"] = "Inbjudningskort | Fixa barnkalaset";
             ViewData["Description"] = "Vi hjälper dig att designa, trycka och skicka inbjudningskorten.";
         }
@@ -19,35 +29,42 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View();
         }
 
-        [Route("vem")]
+        [Route("vem-fyller-ar")]
         [Authorize]
         public IActionResult Who()
         {
             return View();
         }
 
-        [Route("vem")]
+        [Route("vem-fyller-ar")]
         [HttpPost]
         [Authorize]
-        public IActionResult Who(WhoViewModel model)
+        public async Task<IActionResult> Who(WhoViewModel model)
         {
+            _logger.LogDebug("Who POST: called with model {Model}", JsonConvert.SerializeObject(model));
+
             if (!ModelState.IsValid)
             {
-                return View();
+                _logger.LogWarning("Create POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
+                return View(model);
             }
+
+            var invitationCard = new Party {NameOfBirthdayChild = model.NameOfBirthdayChild};
+            await _partyRepository.AddOrUpdate(invitationCard);
+            _logger.LogInformation("Who POST: Created invitation card {Party}", JsonConvert.SerializeObject(invitationCard));
 
             return RedirectToAction("Where");
         }
 
 
-        [Route("var")]
+        [Route("var-ar-kalaset")]
         [Authorize]
         public IActionResult Where()
         {
             return View();
         }
 
-        [Route("var")]
+        [Route("var-ar-kalaset")]
         [HttpPost]
         [Authorize]
         public IActionResult Where(WhereViewModel model)
@@ -56,14 +73,14 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
 
-        [Route("nar")]
+        [Route("nar-ar-kalaset")]
         [Authorize]
         public IActionResult When()
         {
             return View();
         }
 
-        [Route("nar")]
+        [Route("nar-ar-kalaset")]
         [HttpPost]
         [Authorize]
         public IActionResult When(WhenViewModel model)
@@ -72,14 +89,14 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
 
-        [Route("vilka")]
+        [Route("vilka-ska-ni-bjuda")]
         [Authorize]
         public IActionResult Which()
         {
             return View();
         }
 
-        [Route("vilka")]
+        [Route("vilka-ska-ni-bjuda")]
         [HttpPost]
         [Authorize]
         public IActionResult Which(WhichViewModel model)

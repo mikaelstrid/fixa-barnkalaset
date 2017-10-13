@@ -26,6 +26,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
         public virtual DbSet<Arrangement> Arrangements { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<BlogPost> BlogPosts { get; set; }
+        public virtual DbSet<Party> Parties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +38,9 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
 
             builder.Entity<BlogPost>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
             builder.Entity<BlogPost>().Property<string>("UpdatedBy").HasField("_updatedBy");
+
+            builder.Entity<Party>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
+            builder.Entity<Party>().Property<string>("UpdatedBy").HasField("_updatedBy");
         }
 
         public override int SaveChanges()

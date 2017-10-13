@@ -2,13 +2,13 @@
 
 namespace Pixel.FixaBarnkalaset.Core
 {
-    public abstract class Entity
+    public abstract class Entity<T>
     {
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         private DateTime _lastUpdatedUtc = DateTime.MinValue;
         private string _updatedBy = string.Empty;
 
-        public int Id { get; set; }
+        public T Id { get; set; }
         public bool IsRemoved { get; set; }
 
         // ReSharper disable ConvertToAutoProperty

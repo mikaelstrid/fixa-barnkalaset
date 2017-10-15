@@ -4,6 +4,8 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 {
     public class WhereViewModel
     {
+        public string NameOfBirthdayChild { get; set; }
+
         [Display(Name = "Vad är det för sorts kalas?")]
         public string PartyType { get; set; }
         

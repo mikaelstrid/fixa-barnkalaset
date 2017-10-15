@@ -6,7 +6,6 @@ using Moq;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Web.Controllers;
-using Pixel.FixaBarnkalaset.Web.Models;
 using Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels;
 using Xunit;
 // ReSharper disable PossibleNullReferenceException
@@ -15,16 +14,15 @@ namespace UnitTests.Web.Tests.Controllers
 {
     public class InvitationCardsControllerTests : ControllerTestBase<InvitationCardsController>
     {
-        private readonly Mock<ILogger<InvitationCardsController>> _mockLogger;
-        private readonly Mock<IPartyRepository> _mockInvitationCardRepository;
+        private readonly Mock<IPartyRepository> _mockPartyRepository;
 
         private readonly InvitationCardsController _sut;
 
         public InvitationCardsControllerTests()
         {
-            _mockLogger = new Mock<ILogger<InvitationCardsController>>();
-            _mockInvitationCardRepository = new Mock<IPartyRepository>();
-            _sut = new InvitationCardsController(_mockLogger.Object, _mockInvitationCardRepository.Object);
+            var mockLogger = new Mock<ILogger<InvitationCardsController>>();
+            _mockPartyRepository = new Mock<IPartyRepository>();
+            _sut = new InvitationCardsController(_mapper, mockLogger.Object, _mockPartyRepository.Object);
         }
 
         [Fact]
@@ -36,7 +34,7 @@ namespace UnitTests.Web.Tests.Controllers
             var result = _sut.Who();
 
             // ASSERT
-            _mockInvitationCardRepository.Verify(m => m.GetById(It.IsAny<string>()), Times.Never);
+            _mockPartyRepository.Verify(m => m.GetById(It.IsAny<string>()), Times.Never);
             GetViewModel<WhoViewModel>(result).Should().BeNull();
         }
 
@@ -52,7 +50,7 @@ namespace UnitTests.Web.Tests.Controllers
             var result = await _sut.Who(model);
 
             // ASSERT
-            _mockInvitationCardRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
             GetViewModel<WhoViewModel>(result).Should().Be(model);
         }
 
@@ -66,8 +64,49 @@ namespace UnitTests.Web.Tests.Controllers
             var result = await _sut.Who(model);
 
             // ASSERT
-            _mockInvitationCardRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(c => c.NameOfBirthdayChild == model.NameOfBirthdayChild)), Times.Once);
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(c => c.NameOfBirthdayChild == model.NameOfBirthdayChild)), Times.Once);
             result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+
+        [Fact]
+        public async Task Where_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        {
+            // ARRANGE
+
+            // ACT
+            var result = await _sut.Where("PKFN");
+
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Where_Get_ShouldGetPartyFromRepository()
+        {
+            // ARRANGE
+            var id = "PKFN";
+
+            // ACT
+            await _sut.Where(id);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
+        }
+
+        [Fact]
+        public async Task Where_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.Where(id);
+
+            // ASSERT
+            GetViewModel<WhereViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
     }
 }

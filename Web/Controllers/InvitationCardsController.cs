@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,11 +13,13 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
     [Route("inbjudningskort")]
     public class InvitationCardsController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<InvitationCardsController> _logger;
         private readonly IPartyRepository _partyRepository;
 
-        public InvitationCardsController(ILogger<InvitationCardsController> logger, IPartyRepository partyRepository)
+        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository)
         {
+            _mapper = mapper;
             _logger = logger;
             _partyRepository = partyRepository;
             ViewData["Title"] = "Inbjudningskort | Fixa barnkalaset";
@@ -49,21 +52,25 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 return View(model);
             }
 
-            var invitationCard = new Party {NameOfBirthdayChild = model.NameOfBirthdayChild};
-            await _partyRepository.AddOrUpdate(invitationCard);
-            _logger.LogInformation("Who POST: Created invitation card {Party}", JsonConvert.SerializeObject(invitationCard));
+            var party = new Party {NameOfBirthdayChild = model.NameOfBirthdayChild};
+            await _partyRepository.AddOrUpdate(party);
+            _logger.LogInformation("Who POST: Created invitation card {Party}", JsonConvert.SerializeObject(party));
 
-            return RedirectToAction("Where");
+            return RedirectToAction("Where", new { partyId = party.Id });
         }
 
 
-        [Route("var-ar-kalaset")]
-        //[Route("{partyId}/var-ar-kalaset")]
+        [Route("{partyId}/var-ar-kalaset")]
         [Authorize]
-        public IActionResult Where()
-        //public IActionResult Where(string partyId)
+        public async Task<IActionResult> Where(string partyId)
         {
-            return View();
+            var party = await _partyRepository.GetById(partyId);
+
+            if (party == null)
+                return NotFound();
+
+            var viewModel = _mapper.Map<Party, WhereViewModel>(party);
+            return View(viewModel);
         }
 
         [Route("var-ar-kalaset")]

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Web.Models;
+using Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels;
 
 namespace Pixel.FixaBarnkalaset.Web
 {
@@ -16,6 +17,8 @@ namespace Pixel.FixaBarnkalaset.Web
 
             CreateMap<BlogPost, BlogPostsIndexViewModel.BlogPostViewModel>();
             CreateMap<BlogPost, BlogPostDetailsViewModel>();
+
+            CreateMap<Party, WhereViewModel>();
 
 
             // ADMIN

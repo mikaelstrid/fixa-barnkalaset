@@ -5,40 +5,26 @@ namespace Pixel.FixaBarnkalaset.Core.Business
 {
     public class PartyIdGenerator : IPartyIdGenerator
     {
-        private const int NumberOfAttempts = 10000;
         private const string AllowedCharacters = "ABCDEFGHJKMNPQRETUVWXYZ2346789";
         private const int Length = 4;
 
-        private readonly IPartyRepository _partyRepository;
         private readonly Random _random;
 
-        public PartyIdGenerator(IPartyRepository partyRepository)
+        public PartyIdGenerator()
         {
-            _partyRepository = partyRepository;
             _random = new Random(unchecked((int)DateTime.Now.Ticks));
         }
 
         public string Next()
         {
-            var attempt = 0;
-
-            while (attempt < NumberOfAttempts)
+            var id = "";
+            while (id.Length < Length)
             {
-                attempt++;
-
-                var id = "";
-                while (id.Length < Length)
-                {
-                    var c = GetRandomCharacter();
-                    if (!id.Contains(c))
-                        id += c;
-                }
-
-                if (_partyRepository.GetById(id) == null)
-                    return id;
+                var c = GetRandomCharacter();
+                if (!id.Contains(c))
+                    id += c;
             }
-
-            throw new Exception($"Could not generate new id in {NumberOfAttempts} attempts");
+            return id;
         }
 
         private string GetRandomCharacter()

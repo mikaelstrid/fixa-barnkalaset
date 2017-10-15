@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44369/admin/bloggposter",
+      "applicationUrl": "https://localhost:44369/inbjudningskort/vem-fyller-ar",
       "sslPort": 44369
     }
   },

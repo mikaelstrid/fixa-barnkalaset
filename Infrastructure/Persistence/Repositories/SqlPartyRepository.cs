@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 {
     public class SqlPartyRepository : IPartyRepository
     {
+        private const int NumberOfAttemptsToGenerateUniqueId = 10000;
+
         private readonly MyDataDbContext _dbContext;
         private readonly ILogger _logger;
         private readonly IPartyIdGenerator _partyIdGenerator;
@@ -43,7 +46,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
 
             if (entity.Id == null)
             {
-                entity.Id = _partyIdGenerator.Next();
+                entity.Id = await GetPartyId();
                 await _dbContext.Parties.AddAsync(entity);
                 _logger.LogInformation("AddOrUpdate: Added party with id {Id} with data {Entity}", entity.Id, json);
             }
@@ -55,6 +58,25 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
                 _logger.LogInformation("AddOrUpdate: Updated party with id {Id} with data {Entity}", entity.Id, json);
             }
             await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task<string> GetPartyId()
+        {
+            var attempt = 0;
+
+            while (attempt < NumberOfAttemptsToGenerateUniqueId)
+            {
+                attempt++;
+                var id = _partyIdGenerator.Next();
+
+                if (await GetById(id) == null)
+                {
+                    _logger.LogDebug("GetPartyId: Id '{Id}' generated in {NumberOfAttempts}", id, attempt);
+                    return id;
+                }
+            }
+
+            throw new Exception($"Could not generate new id in {NumberOfAttemptsToGenerateUniqueId} attempts");
         }
 
         public async Task Remove(string id)

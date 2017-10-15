@@ -9,6 +9,6 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
         public DateTime RsvpDate { get; set; }
 
         [Display(Name = "Beskriv hur ni vill att gästerna ska svara")]
-        public string Description { get; set; }
+        public string RsvpDescription { get; set; }
     }
 }

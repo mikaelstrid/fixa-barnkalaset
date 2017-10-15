@@ -58,8 +58,10 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("var-ar-kalaset")]
+        //[Route("{partyId}/var-ar-kalaset")]
         [Authorize]
         public IActionResult Where()
+        //public IActionResult Where(string partyId)
         {
             return View();
         }

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Pixel.FixaBarnkalaset.Core.Business;
 using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
@@ -121,7 +122,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddTransient<ISitemapGenerator, SitemapGenerator>();
-            services.AddTransient<IPartyIdGenerator, IPartyIdGenerator>();
+            services.AddTransient<IPartyIdGenerator, PartyIdGenerator>();
         }
 
 

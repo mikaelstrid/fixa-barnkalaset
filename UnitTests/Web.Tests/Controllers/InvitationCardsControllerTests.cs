@@ -108,5 +108,79 @@ namespace UnitTests.Web.Tests.Controllers
             // ASSERT
             GetViewModel<WhereViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
+
+
+
+        [Fact]
+        public async Task Where_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var model = new WhereViewModel();
+            AddModelStateError(_sut);
+
+            // ACT
+            var result = await _sut.Where(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
+            GetViewModel<WhereViewModel>(result).Should().Be(model);
+        }
+
+        [Fact]
+        public async Task Where_Post_GivenValidModel_ShouldGetPartyFromRepository()
+        {
+            // ARRANGE
+            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
+
+            // ACT
+            await _sut.Where(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(model.Id), Times.Once);
+        }
+
+        [Fact]
+        public async Task Where_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
+        {
+            // ARRANGE
+            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
+
+            // ACT
+            var result = await _sut.Where(model);
+
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Where_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
+        {
+            // ARRANGE
+            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
+            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party { Id = model.Id, StreetAddress = model.StreetAddress}));
+
+            // ACT
+            var result = await _sut.Where(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Never);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public async Task Where_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
+        {
+            // ARRANGE
+            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
+            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party { Id = model.Id }));
+
+            // ACT
+            var result = await _sut.Where(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
     }
 }

@@ -79,39 +79,21 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Where(WhereViewModel model)
         {
-            _logger.LogDebug("Where POST: called with model {Model}", JsonConvert.SerializeObject(model));
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Where POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
-                return View(model);
-            }
-
-            var existingParty = await _partyRepository.GetById(model.Id);
-            if (existingParty == null)
-                return NotFound();
-
-            if (existingParty.Type != model.PartyLocationName
-                || existingParty.LocationName != model.PartyLocationName
-                || existingParty.StreetAddress != model.StreetAddress
-                || existingParty.PostalCode != model.PostalCode
-                || existingParty.PostalCity != model.PostalCity)
-            {
-                var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-                _logger.LogInformation("Where POST: Edited party from {OldParty} to {NewParty}", JsonConvert.SerializeObject(existingParty, settings), JsonConvert.SerializeObject(model, settings));
-                existingParty.Type = model.PartyType;
-                existingParty.LocationName = model.PartyLocationName;
-                existingParty.StreetAddress = model.StreetAddress;
-                existingParty.PostalCode = model.PostalCode;
-                existingParty.PostalCity = model.PostalCity;
-                await _partyRepository.AddOrUpdate(existingParty);
-            }
-            else
-            {
-                _logger.LogInformation("Where POST: No changes detected");
-            }
-
-            return RedirectToAction("When", new { partyId = existingParty.Id });
+            return await UpdatePartyInformation(nameof(Where), nameof(When), model,
+                (p, m) => p.Type != m.PartyLocationName
+                          || p.LocationName != m.PartyLocationName
+                          || p.StreetAddress != m.StreetAddress
+                          || p.PostalCode != m.PostalCode
+                          || p.PostalCity != m.PostalCity,
+                (m, p) =>
+                {
+                    p.Type = m.PartyType;
+                    p.LocationName = m.PartyLocationName;
+                    p.StreetAddress = m.StreetAddress;
+                    p.PostalCode = m.PostalCode;
+                    p.PostalCity = m.PostalCity;
+                }
+            );
         }
 
 
@@ -148,8 +130,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         {
             return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
         }
-
-
+        
         private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase
         {
             _logger.LogDebug("{MethodName} POST: called with model {model}", methodName, JsonConvert.SerializeObject(model));

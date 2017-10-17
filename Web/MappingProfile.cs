@@ -19,6 +19,7 @@ namespace Pixel.FixaBarnkalaset.Web
             CreateMap<BlogPost, BlogPostDetailsViewModel>();
 
             CreateMap<Party, WhereViewModel>();
+            CreateMap<Party, WhenViewModel>();
 
 
             // ADMIN

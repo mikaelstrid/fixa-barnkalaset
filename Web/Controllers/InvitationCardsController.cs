@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -114,20 +115,70 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
 
-        [Route("nar-ar-kalaset")]
+        [Route("{partyId}/nar-ar-kalaset")]
         [Authorize]
-        public IActionResult When()
+        public async Task<IActionResult> When(string partyId)
         {
-            return View();
+            var party = await _partyRepository.GetById(partyId);
+
+            if (party == null)
+                return NotFound();
+
+            var viewModel = _mapper.Map<Party, WhenViewModel>(party);
+            return View(viewModel);
         }
 
-        [Route("nar-ar-kalaset")]
+        [Route("{partyId}/nar-ar-kalaset")]
         [HttpPost]
         [Authorize]
-        public IActionResult When(WhenViewModel model)
+        public async Task<IActionResult> When(WhenViewModel model)
         {
-            return RedirectToAction("Which");
+            return await UpdatePartyInformation(nameof(When), nameof(Which), model,
+                (p, m) => p.StartTime != ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime)
+                       || p.EndTime != ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime),
+                (m, p) =>
+                {
+                    p.StartTime = ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime);
+                    p.EndTime = ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime);
+                }
+            );
         }
+
+        private static DateTime ConcatenateDateAndTime(DateTime date, DateTime time)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
+        }
+
+
+        private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase
+        {
+            _logger.LogDebug("{MethodName} POST: called with model {model}", methodName, JsonConvert.SerializeObject(model));
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("{MethodName} POST: Invalid model state {ModelState}", methodName, JsonConvert.SerializeObject(ModelState));
+                return View(model);
+            }
+
+            var existingParty = await _partyRepository.GetById(model.Id);
+            if (existingParty == null)
+                return NotFound();
+
+            if (checkIfUpdatedFunc(existingParty, model))
+            {
+                var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                _logger.LogInformation("{MethodName} POST: Edited party from {OldParty} to {NewParty}", methodName, JsonConvert.SerializeObject(existingParty, settings), JsonConvert.SerializeObject(model, settings));
+                updateAction(model, existingParty);
+                await _partyRepository.AddOrUpdate(existingParty);
+            }
+            else
+            {
+                _logger.LogInformation("{MethodName} POST: No changes detected", methodName);
+            }
+
+            return RedirectToAction(redirectToAction, new { partyId = existingParty.Id });
+        }
+
 
 
         [Route("vilka-ska-ni-bjuda")]

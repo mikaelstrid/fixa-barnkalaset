@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 {
-    public class WhenViewModel
+    public class WhenViewModel : InvitationViewModelBase
     {
+        public string NameOfBirthdayChild { get; set; }
+
         [Required]
         [Display(Name = "Datum (obligatoriskt)")]
         public DateTime PartyDate { get; set; }
@@ -16,5 +18,11 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
         [Required]
         [Display(Name = "Sluttid (obligatorisk)")]
         public DateTime PartyEndTime { get; set; }
+    }
+
+    public abstract class InvitationViewModelBase
+    {
+        [Required]
+        public string Id { get; set; }
     }
 }

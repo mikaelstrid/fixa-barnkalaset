@@ -1,0 +1,10 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
+{
+    public abstract class InvitationViewModelBase
+    {
+        [Required]
+        public string Id { get; set; }
+    }
+}

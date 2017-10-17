@@ -66,10 +66,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         public async Task<IActionResult> Where(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
-
-            if (party == null)
-                return NotFound();
-
+            if (party == null) return NotFound();
             var viewModel = _mapper.Map<Party, WhereViewModel>(party);
             return View(viewModel);
         }
@@ -102,11 +99,10 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         public async Task<IActionResult> When(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
-
-            if (party == null)
-                return NotFound();
-
+            if (party == null) return NotFound();
             var viewModel = _mapper.Map<Party, WhenViewModel>(party);
+            if (viewModel.PartyDate == DateTime.MinValue)
+                viewModel.PartyDate = DateTime.Today;
             return View(viewModel);
         }
 
@@ -131,6 +127,54 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
         }
         
+        
+        [Route("{partyId}/vilka-ska-ni-bjuda")]
+        [Authorize]
+        public async Task<IActionResult> Which(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, WhichViewModel>(party);
+            return View(viewModel);
+        }
+
+        //[Route("{partyId}/vilka-ska-ni-bjuda")]
+        //[HttpPost]
+        //[Authorize]
+        //public async Task<IActionResult> Which(WhichViewModel model)
+        //{
+        //    return RedirectToAction("Rsvp");
+        //}
+
+
+        [Route("{partyId}/osa")]
+        [Authorize]
+        public async Task<IActionResult> Rsvp(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, RsvpViewModel>(party);
+            return View(viewModel);
+        }
+
+        [Route("{partyId}/osa")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Rsvp(RsvpViewModel model)
+        {
+            return RedirectToAction("Index");
+        }
+
+
+        [Route("{id:regex([[\\w\\d]]{{4}})}")]
+        [Authorize]
+        public IActionResult Index(string id)
+        {
+            return View();
+        }
+
+
+
         private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase
         {
             _logger.LogDebug("{MethodName} POST: called with model {model}", methodName, JsonConvert.SerializeObject(model));
@@ -160,45 +204,5 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return RedirectToAction(redirectToAction, new { partyId = existingParty.Id });
         }
 
-
-
-        [Route("vilka-ska-ni-bjuda")]
-        [Authorize]
-        public IActionResult Which()
-        {
-            return View();
-        }
-
-        [Route("vilka-ska-ni-bjuda")]
-        [HttpPost]
-        [Authorize]
-        public IActionResult Which(WhichViewModel model)
-        {
-            return RedirectToAction("Rsvp");
-        }
-
-
-        [Route("osa")]
-        [Authorize]
-        public IActionResult Rsvp()
-        {
-            return View();
-        }
-
-        [Route("osa")]
-        [HttpPost]
-        [Authorize]
-        public IActionResult Rsp(RsvpViewModel model)
-        {
-            return RedirectToAction("Index");
-        }
-
-
-        [Route("{id:regex([[\\w\\d]]{{4}})}")]
-        [Authorize]
-        public IActionResult Index(string id)
-        {
-            return View();
-        }
     }
 }

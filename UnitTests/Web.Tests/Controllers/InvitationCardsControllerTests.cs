@@ -111,7 +111,37 @@ namespace UnitTests.Web.Tests.Controllers
             GetViewModel<WhereViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
 
+        [Fact]
+        public async Task Where_Get_GivenParty_ShouldMapPartyTypeCorrectly()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var partyType = "actionkalas";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", Type = partyType };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
+            // ACT
+            var result = await _sut.Where(id);
+
+            // ASSERT
+            GetViewModel<WhereViewModel>(result).PartyType.Should().Be(partyType);
+        }
+
+        [Fact]
+        public async Task Where_Get_GivenParty_ShouldMapPartyLocationCorrectly()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var locationName = "Hemma hos oss";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", LocationName = locationName};
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.Where(id);
+
+            // ASSERT
+            GetViewModel<WhereViewModel>(result).PartyLocationName.Should().Be(locationName);
+        }
 
         [Fact]
         public async Task Where_Post_GivenInvalidModel_ShouldReturnViewWithModel()
@@ -226,6 +256,42 @@ namespace UnitTests.Web.Tests.Controllers
             GetViewModel<WhenViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
 
+        [Fact]
+        public async Task When_Get_GivenPartyHasNoPartyDate_SetTodayInTheViewModel()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.When(id);
+
+            // ASSERT
+            GetViewModel<WhenViewModel>(result).PartyDate.Should().Be(DateTime.Today);
+        }
+
+        [Fact]
+        public async Task When_Get_GivenIfPartyHasPartyDate_PartyTimeShouldBeMappedCorrectly()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var startTime = DateTime.Parse("2017-10-30 13:00");
+            var endTime = DateTime.Parse("2017-10-30 15:00");
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", StartTime = startTime, EndTime = endTime};
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.When(id);
+
+            // ASSERT
+            var viewModel = GetViewModel<WhenViewModel>(result);
+            viewModel.PartyDate.Should().Be(startTime.Date);
+            viewModel.PartyStartTime.Should().Be(startTime);
+            viewModel.PartyEndTime.Should().Be(endTime);
+        }
+
+
 
         [Fact]
         public async Task When_Post_GivenInvalidModel_ShouldReturnViewWithModel()
@@ -308,6 +374,90 @@ namespace UnitTests.Web.Tests.Controllers
             result.Should().BeOfType<RedirectToActionResult>();
         }
 
+
+
+        [Fact]
+        public async Task Which_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        {
+            // ARRANGE
+
+            // ACT
+            var result = await _sut.Which("PKFN");
+
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Which_Get_ShouldGetPartyFromRepository()
+        {
+            // ARRANGE
+            var id = "PKFN";
+
+            // ACT
+            await _sut.Which(id);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
+        }
+
+        [Fact]
+        public async Task Which_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.Which(id);
+
+            // ASSERT
+            GetViewModel<WhichViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+        }
+
+
+
+
+        [Fact]
+        public async Task Rsvp_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        {
+            // ARRANGE
+
+            // ACT
+            var result = await _sut.Rsvp("PKFN");
+
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Rsvp_Get_ShouldGetPartyFromRepository()
+        {
+            // ARRANGE
+            var id = "PKFN";
+
+            // ACT
+            await _sut.Rsvp(id);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
+        }
+
+        [Fact]
+        public async Task Rsvp_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.Rsvp(id);
+
+            // ASSERT
+            GetViewModel<RsvpViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+        }
 
     }
 }

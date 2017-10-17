@@ -19,10 +19,4 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
         [Display(Name = "Sluttid (obligatorisk)")]
         public DateTime PartyEndTime { get; set; }
     }
-
-    public abstract class InvitationViewModelBase
-    {
-        [Required]
-        public string Id { get; set; }
-    }
 }

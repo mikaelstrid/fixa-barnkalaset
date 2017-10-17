@@ -6,18 +6,20 @@
         <h1>Skicka inbjudningskort, steg 3 av X</h1>
 
         <form class="ui form" asp-action="When">
+            @Html.HiddenFor(m => m.Id)
+
             <div class="field" pf-validation-for="PartyDate" pf-validationerror-class="error">
                 <label asp-for="PartyDate"></label>
                 <input type="date" asp-for="PartyDate">
                 <span asp-validation-for="PartyDate"></span>
             </div>
-            
+
             <div class="field" pf-validation-for="PartyStartTime" pf-validationerror-class="error">
                 <label asp-for="PartyStartTime"></label>
                 <input type="time" asp-for="PartyStartTime">
                 <span asp-validation-for="PartyStartTime"></span>
             </div>
-            
+
             <div class="field" pf-validation-for="PartyEndTime" pf-validationerror-class="error">
                 <label asp-for="PartyEndTime"></label>
                 <input type="time" asp-for="PartyEndTime">

@@ -257,21 +257,6 @@ namespace UnitTests.Web.Tests.Controllers
         }
 
         [Fact]
-        public async Task When_Get_GivenPartyHasNoPartyDate_SetTodayInTheViewModel()
-        {
-            // ARRANGE
-            var id = "PKFN";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
-            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
-
-            // ACT
-            var result = await _sut.When(id);
-
-            // ASSERT
-            GetViewModel<WhenViewModel>(result).PartyDate.Should().Be(DateTime.Today);
-        }
-
-        [Fact]
         public async Task When_Get_GivenIfPartyHasPartyDate_PartyTimeShouldBeMappedCorrectly()
         {
             // ARRANGE
@@ -291,8 +276,6 @@ namespace UnitTests.Web.Tests.Controllers
             viewModel.PartyEndTime.Should().Be(endTime);
         }
 
-
-
         [Fact]
         public async Task When_Post_GivenInvalidModel_ShouldReturnViewWithModel()
         {
@@ -306,6 +289,19 @@ namespace UnitTests.Web.Tests.Controllers
             // ASSERT
             _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
             GetViewModel<WhenViewModel>(result).Should().Be(model);
+        }
+
+        [Fact]
+        public async Task When_Post_GivenDateTimeMinValues_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var model = new WhenViewModel { Id = "1234", PartyDate = DateTime.MinValue, PartyStartTime = DateTime.MinValue, PartyEndTime = DateTime.MaxValue};
+
+            // ACT
+            var result = await _sut.When(model);
+
+            // ASSERT
+            _sut.ModelState.IsValid.Should().BeFalse();
         }
 
         [Fact]
@@ -362,8 +358,8 @@ namespace UnitTests.Web.Tests.Controllers
             _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
             {
                 Id = model.Id,
-                StartTime = model.PartyStartTime.AddDays(2),
-                EndTime = model.PartyEndTime.AddDays(2)
+                StartTime = model.PartyStartTime.Value.AddDays(2),
+                EndTime = model.PartyEndTime.Value.AddDays(2)
             }));
 
             // ACT
@@ -459,5 +455,85 @@ namespace UnitTests.Web.Tests.Controllers
             GetViewModel<RsvpViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
 
+        [Fact]
+        public async Task Rsvp_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var model = new RsvpViewModel();
+            AddModelStateError(_sut);
+
+            // ACT
+            var result = await _sut.Rsvp(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
+            GetViewModel<RsvpViewModel>(result).Should().Be(model);
+        }
+
+        [Fact]
+        public async Task Rsvp_Post_GivenValidModel_ShouldGetPartyFromRepository()
+        {
+            // ARRANGE
+            var model = new RsvpViewModel { Id = "PKFN" };
+
+            // ACT
+            await _sut.Rsvp(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(model.Id), Times.Once);
+        }
+
+        [Fact]
+        public async Task Rsvp_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
+        {
+            // ARRANGE
+            var model = new RsvpViewModel { Id = "PKFN" };
+
+            // ACT
+            var result = await _sut.Rsvp(model);
+
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Rsvp_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
+        {
+            // ARRANGE
+            var model = new RsvpViewModel { Id = "PKFN", RsvpDate = DateTime.Parse("2017-10-17"), RsvpDescription = "" };
+            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
+            {
+                Id = model.Id,
+                RsvpDate = model.RsvpDate,
+                RsvpDescription = model.RsvpDescription
+            }));
+
+            // ACT
+            var result = await _sut.Rsvp(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Never);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public async Task Rsvp_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
+        {
+            // ARRANGE
+            var model = new RsvpViewModel { Id = "PKFN", RsvpDate = DateTime.Parse("2017-10-17"), RsvpDescription = "" };
+            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
+            {
+                Id = model.Id,
+                RsvpDate = model.RsvpDate.Value.AddDays(1),
+                RsvpDescription = model.RsvpDescription
+            }));
+
+            // ACT
+            var result = await _sut.Rsvp(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
     }
 }

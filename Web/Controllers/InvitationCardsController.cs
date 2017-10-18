@@ -101,8 +101,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             var party = await _partyRepository.GetById(partyId);
             if (party == null) return NotFound();
             var viewModel = _mapper.Map<Party, WhenViewModel>(party);
-            if (viewModel.PartyDate == DateTime.MinValue)
-                viewModel.PartyDate = DateTime.Today;
             return View(viewModel);
         }
 
@@ -122,9 +120,11 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             );
         }
 
-        private static DateTime ConcatenateDateAndTime(DateTime date, DateTime time)
+        private static DateTime? ConcatenateDateAndTime(DateTime? date, DateTime? time)
         {
-            return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
+            return date.HasValue && time.HasValue
+                ? new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hour, time.Value.Minute, 0)
+                : (DateTime?) null;
         }
         
         
@@ -162,7 +162,15 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Rsvp(RsvpViewModel model)
         {
-            return RedirectToAction("Index");
+            return await UpdatePartyInformation(nameof(Rsvp), nameof(Who), model,
+                (p, m) => p.RsvpDate != m.RsvpDate
+                       || p.RsvpDescription != m.RsvpDescription,
+                (m, p) =>
+                {
+                    p.RsvpDate = m.RsvpDate;
+                    p.RsvpDescription = m.RsvpDescription;
+                }
+            );
         }
 
 

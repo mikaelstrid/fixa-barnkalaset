@@ -7,33 +7,36 @@
 
         <table class="ui unstackable table" id="guestTable">
             <thead>
-                <tr>
-                    <th>Förnamn</th>
-                    <th>Efternamn</th>
-                    <th>Gatuadress</th>
-                    <th>Postnummer</th>
-                    <th>Postort</th>
-                </tr>
+            <tr>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
+                <th>Gatuadress</th>
+                <th>Postnummer</th>
+                <th>Postort</th>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Kevin</td>
-                    <td>Forsell</td>
-                    <td>Fagaredsvägen 27</td>
-                    <td>412 90</td>
-                    <td>Lindome</td>
-                </tr>
-                <tr>
-                    <td>Oscar</td>
-                    <td>Gustafsson</td>
-                    <td>Lilla bergsvägen 198</td>
-                    <td>412 90</td>
-                    <td>Kungsbacka</td>
-                </tr>
+            <tr>
+                <td>Kevin</td>
+                <td>Forsell</td>
+                <td>Fagaredsvägen 27</td>
+                <td>412 90</td>
+                <td>Lindome</td>
+            </tr>
+            <tr>
+                <td>Oscar</td>
+                <td>Gustafsson</td>
+                <td>Lilla bergsvägen 198</td>
+                <td>412 90</td>
+                <td>Kungsbacka</td>
+            </tr>
             </tbody>
         </table>
 
         <button class="ui positive labeled icon button" id="addGuestButton"><i class="plus icon"></i>Lägg till</button>
+                        
+        <a href="@Url.Action("Rsvp", null, new { partyId = @Model.Id })" class="ui secondary button right floated">Fortsätt</a>
+
 
         <div class="ui tiny modal">
             <i class="close icon"></i>

@@ -9,14 +9,14 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 
         [Required]
         [Display(Name = "Datum (obligatoriskt)")]
-        public DateTime PartyDate { get; set; }
+        public DateTime? PartyDate { get; set; }
 
         [Required]
         [Display(Name = "Starttid (obligatorisk)")]
-        public DateTime PartyStartTime { get; set; }
+        public DateTime? PartyStartTime { get; set; }
 
         [Required]
         [Display(Name = "Sluttid (obligatorisk)")]
-        public DateTime PartyEndTime { get; set; }
+        public DateTime? PartyEndTime { get; set; }
     }
 }

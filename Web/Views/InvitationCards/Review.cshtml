@@ -1,4 +1,4 @@
-﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.WhereViewModel
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ReviewViewModel
 
 <div class="ui main container pxl-public-page">
     <div class="ui main container text">
@@ -16,10 +16,10 @@
                 <span asp-validation-for="PartyType"></span>
             </div>
 
-            <div class="field" pf-validation-for="LocationName" pf-validationerror-class="error">
-                <label asp-for="LocationName"></label>
-                <input type="text" asp-for="LocationName" placeholder="hemma hos oss, på Laserdome Göteborg">
-                <span asp-validation-for="LocationName"></span>
+            <div class="field" pf-validation-for="PartyLocationName" pf-validationerror-class="error">
+                <label asp-for="PartyLocationName"></label>
+                <input type="text" asp-for="PartyLocationName" placeholder="hemma hos oss, på Laserdome Göteborg">
+                <span asp-validation-for="PartyLocationName"></span>
             </div>
 
             <div class="field" pf-validation-for="StreetAddress" pf-validationerror-class="error">

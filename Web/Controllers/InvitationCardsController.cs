@@ -77,15 +77,15 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         public async Task<IActionResult> Where(WhereViewModel model)
         {
             return await UpdatePartyInformation(nameof(Where), nameof(When), model,
-                (p, m) => p.Type != m.PartyLocationName
-                          || p.LocationName != m.PartyLocationName
+                (p, m) => p.PartyType != m.LocationName
+                          || p.LocationName != m.LocationName
                           || p.StreetAddress != m.StreetAddress
                           || p.PostalCode != m.PostalCode
                           || p.PostalCity != m.PostalCity,
                 (m, p) =>
                 {
-                    p.Type = m.PartyType;
-                    p.LocationName = m.PartyLocationName;
+                    p.PartyType = m.PartyType;
+                    p.LocationName = m.LocationName;
                     p.StreetAddress = m.StreetAddress;
                     p.PostalCode = m.PostalCode;
                     p.PostalCity = m.PostalCity;
@@ -162,7 +162,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Rsvp(RsvpViewModel model)
         {
-            return await UpdatePartyInformation(nameof(Rsvp), nameof(Who), model,
+            return await UpdatePartyInformation(nameof(Rsvp), nameof(Review), model,
                 (p, m) => p.RsvpDate != m.RsvpDate
                        || p.RsvpDescription != m.RsvpDescription,
                 (m, p) =>
@@ -172,6 +172,18 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 }
             );
         }
+
+
+        [Route("{partyId}/granska")]
+        [Authorize]
+        public async Task<IActionResult> Review(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
+            return View(viewModel);
+        }
+
 
 
         [Route("{id:regex([[\\w\\d]]{{4}})}")]

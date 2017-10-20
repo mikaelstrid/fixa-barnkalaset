@@ -12,7 +12,7 @@ namespace Pixel.FixaBarnkalaset.Core
 
         public DateTime? EndTime { get; set; }
 
-        public string Type { get; set; }
+        public string PartyType { get; set; }
 
         public string LocationName { get; set; }
 

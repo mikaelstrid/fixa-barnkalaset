@@ -19,15 +19,7 @@ namespace Pixel.FixaBarnkalaset.Web
             CreateMap<BlogPost, BlogPostsIndexViewModel.BlogPostViewModel>();
             CreateMap<BlogPost, BlogPostDetailsViewModel>();
 
-            CreateMap<Party, WhereViewModel>()
-                .ForMember(
-                    dest => dest.PartyType,
-                    opt => opt.MapFrom(src => src.Type)
-                )
-                .ForMember(
-                    dest => dest.PartyLocationName,
-                    opt => opt.MapFrom(src => src.LocationName)
-                );
+            CreateMap<Party, WhereViewModel>();
             CreateMap<Party, WhenViewModel>()
                 .ForMember(
                     dest => dest.PartyDate,

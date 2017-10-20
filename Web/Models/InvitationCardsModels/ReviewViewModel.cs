@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 {
-    public class WhereViewModel : InvitationViewModelBase
+    public class ReviewViewModel : InvitationViewModelBase
     {
         public string NameOfBirthdayChild { get; set; }
 
@@ -10,7 +10,7 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
         public string PartyType { get; set; }
         
         [Display(Name = "Var ska ni vara?")]
-        public string LocationName { get; set; }
+        public string PartyLocationName { get; set; }
 
         [Required]
         [Display(Name = "Gatuadress (obligatorisk)")]

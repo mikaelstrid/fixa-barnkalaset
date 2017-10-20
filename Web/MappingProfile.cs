@@ -31,15 +31,15 @@ namespace Pixel.FixaBarnkalaset.Web
             CreateMap<Party, WhenViewModel>()
                 .ForMember(
                     dest => dest.PartyDate,
-                    opt => opt.MapFrom(src => src.StartTime.HasValue ? src.StartTime.Value.Date : DateTime.MinValue)
+                    opt => opt.MapFrom(src => src.StartTime.HasValue ? src.StartTime.Value.Date : (DateTime?) null)
                 )
                 .ForMember(
                     dest => dest.PartyStartTime,
-                    opt => opt.MapFrom(src => src.StartTime ?? DateTime.MinValue)
+                    opt => opt.MapFrom(src => src.StartTime)
                 )
                 .ForMember(
                     dest => dest.PartyEndTime,
-                    opt => opt.MapFrom(src => src.EndTime ?? DateTime.MinValue)
+                    opt => opt.MapFrom(src => src.EndTime)
                 );
             CreateMap<Party, WhichViewModel>();
             CreateMap<Party, RsvpViewModel>();

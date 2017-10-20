@@ -257,6 +257,24 @@ namespace UnitTests.Web.Tests.Controllers
         }
 
         [Fact]
+        public async Task When_Get_GivenIfPartyHasNoPartyDate_PartyTimeShouldBeMappedCorrectly()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", StartTime = null, EndTime = null };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+
+            // ACT
+            var result = await _sut.When(id);
+
+            // ASSERT
+            var viewModel = GetViewModel<WhenViewModel>(result);
+            viewModel.PartyDate.Should().BeNull();
+            viewModel.PartyStartTime.Should().BeNull();
+            viewModel.PartyEndTime.Should().BeNull();
+        }
+
+        [Fact]
         public async Task When_Get_GivenIfPartyHasPartyDate_PartyTimeShouldBeMappedCorrectly()
         {
             // ARRANGE
@@ -289,19 +307,6 @@ namespace UnitTests.Web.Tests.Controllers
             // ASSERT
             _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
             GetViewModel<WhenViewModel>(result).Should().Be(model);
-        }
-
-        [Fact]
-        public async Task When_Post_GivenDateTimeMinValues_ShouldReturnViewWithModel()
-        {
-            // ARRANGE
-            var model = new WhenViewModel { Id = "1234", PartyDate = DateTime.MinValue, PartyStartTime = DateTime.MinValue, PartyEndTime = DateTime.MaxValue};
-
-            // ACT
-            var result = await _sut.When(model);
-
-            // ASSERT
-            _sut.ModelState.IsValid.Should().BeFalse();
         }
 
         [Fact]

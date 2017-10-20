@@ -543,45 +543,44 @@ namespace UnitTests.Web.Tests.Controllers
 
 
 
-        //[Fact]
-        //public async Task Review_Get_GivenNullFromRepository_ShouldReturnNotFound()
-        //{
-        //    // ARRANGE
+        [Fact]
+        public async Task Review_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        {
+            // ARRANGE
 
-        //    // ACT
-        //    var result = await _sut.Review("PKFN");
+            // ACT
+            var result = await _sut.Review("PKFN");
 
-        //    // ASSERT
-        //    result.Should().BeOfType<NotFoundResult>();
-        //}
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
 
-        //[Fact]
-        //public async Task Review_Get_ShouldGetPartyFromRepository()
-        //{
-        //    // ARRANGE
-        //    var id = "PKFN";
+        [Fact]
+        public async Task Review_Get_ShouldGetPartyFromRepository()
+        {
+            // ARRANGE
+            var id = "PKFN";
 
-        //    // ACT
-        //    await _sut.Review(id);
+            // ACT
+            await _sut.Review(id);
 
-        //    // ASSERT
-        //    _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
-        //}
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
+        }
 
-        //[Fact]
-        //public async Task Review_Get_ShouldGetPartyFromRepository_AndReturnModel()
-        //{
-        //    // ARRANGE
-        //    var id = "PKFN";
-        //    var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
-        //    _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+        [Fact]
+        public async Task Review_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        {
+            // ARRANGE
+            var id = "PKFN";
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
-        //    // ACT
-        //    var result = await _sut.Review(id);
+            // ACT
+            var result = await _sut.Review(id);
 
-        //    // ASSERT
-        //    GetViewModel<ReviewViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
-        //}
-
+            // ASSERT
+            GetViewModel<ReviewViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+        }
     }
 }

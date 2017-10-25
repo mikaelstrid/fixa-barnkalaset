@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using Pixel.FixaBarnkalaset.Core;
+using Pixel.FixaBarnkalaset.Web.ApiControllers;
 using Pixel.FixaBarnkalaset.Web.Models;
 using Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels;
 

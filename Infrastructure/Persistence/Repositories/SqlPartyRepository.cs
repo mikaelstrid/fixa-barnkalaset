@@ -82,13 +82,13 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
         public async Task Remove(string id)
         {
             _logger.LogDebug("Remove: Removing party with id {Id}", id);
-            var invitationCard = await GetById(id);
-            if (invitationCard == null)
+            var existingParty = await GetById(id);
+            if (existingParty == null)
             {
                 _logger.LogInformation("Remove: party with id {Id} not found, continue", id);
                 return;
             }
-            _dbContext.Parties.Remove(invitationCard);
+            _dbContext.Parties.Remove(existingParty);
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation("Remove: party with id {Id} removed", id);
         }

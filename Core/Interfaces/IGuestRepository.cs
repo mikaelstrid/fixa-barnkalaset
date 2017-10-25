@@ -1,6 +1,6 @@
 ﻿namespace Pixel.FixaBarnkalaset.Core.Interfaces
 {
-    public interface IPartyRepository : IRepository<Party, string>
+    public interface IGuestRepository : IRepository<Guest, int>
     {
     }
 }

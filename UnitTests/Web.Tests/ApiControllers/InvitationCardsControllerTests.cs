@@ -18,6 +18,7 @@ namespace UnitTests.Web.Tests.ApiControllers
         private readonly Mock<ILogger<InvitationCardsController>> _mockLogger;
         private readonly Mock<IPartyRepository> _mockPartyRepository;
         private readonly Mock<IGuestRepository> _mockGuestRepository;
+        private readonly Mock<IInvitationRepository> _mockInvitationRepository;
         private readonly InvitationCardsController _sut;
 
         public InvitationCardsControllerTests()
@@ -26,7 +27,8 @@ namespace UnitTests.Web.Tests.ApiControllers
             _mockLogger = new Mock<ILogger<InvitationCardsController>>();
             _mockPartyRepository = new Mock<IPartyRepository>();
             _mockGuestRepository = new Mock<IGuestRepository>();
-            _sut = new InvitationCardsController(mapper, _mockLogger.Object, _mockPartyRepository.Object, _mockGuestRepository.Object);
+            _mockInvitationRepository = new Mock<IInvitationRepository>();
+            _sut = new InvitationCardsController(mapper, _mockLogger.Object, _mockPartyRepository.Object, _mockGuestRepository.Object, _mockInvitationRepository.Object);
         }
 
         [Fact]
@@ -88,6 +90,69 @@ namespace UnitTests.Web.Tests.ApiControllers
 
 
 
+
+        [Fact]
+        public async Task AddInvitation_GivenInvalidModel_ShouldReturnBadRequest()
+        {
+            // ARRANGE
+            var model = new AddInvitationApiModel();
+            _sut.ModelState.AddModelError("Name", "Is invalid");
+
+            // ACT
+            var result = await _sut.AddInvitation(model);
+
+            // ASSERT
+            result.Should().BeOfType<BadRequestResult>();
+        }
+
+        [Fact]
+        public async Task AddInvitation_GivenUnknownPartyId_ShouldReturnNotFound()
+        {
+            // ARRANGE
+            var model = new AddInvitationApiModel { PartyId = "1234", GuestId = 1 };
+            _mockGuestRepository.Setup(m => m.GetById(It.IsAny<int>())).Returns(Task.FromResult(new Guest()));
+
+            // ACT
+            var result = await _sut.AddInvitation(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(model.PartyId), Times.Once);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task AddInvitation_GivenUnknownGuestId_ShouldReturnNotFound()
+        {
+            // ARRANGE
+            var model = new AddInvitationApiModel { PartyId = "1234", GuestId = 1 };
+            _mockPartyRepository.Setup(m => m.GetById(It.IsAny<string>())).Returns(Task.FromResult(new Party()));
+
+            // ACT
+            var result = await _sut.AddInvitation(model);
+
+            // ASSERT
+            _mockGuestRepository.Verify(m => m.GetById(model.GuestId), Times.Once);
+            result.Should().BeOfType<NotFoundResult>();
+        }
+        
+        [Fact]
+        public async Task AddInvitation_GivenValidModel_ShouldCreateInvitation()
+        {
+            // ARRANGE
+            var model = new AddInvitationApiModel { PartyId = "1234", GuestId = 1 };
+            _mockGuestRepository.Setup(m => m.GetById(It.IsAny<int>())).Returns(Task.FromResult(new Guest()));
+            _mockPartyRepository.Setup(m => m.GetById(It.IsAny<string>())).Returns(Task.FromResult(new Party()));
+
+            // ACT
+            await _sut.AddInvitation(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.GetById(model.PartyId), Times.Once);
+            _mockGuestRepository.Verify(m => m.GetById(model.GuestId), Times.Once);
+            _mockInvitationRepository.Verify(m => m.AddOrUpdate(It.IsAny<Invitation>()), Times.Once);
+        }
+
+        
 
         private static AddGuestApiModel CreateValidGuestApiModel()
         {

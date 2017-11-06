@@ -16,10 +16,10 @@ namespace UnitTests.Infrastructure.Tests.Persistence.Repositories
 
         public SqlPartyRepositoryTests()
         {
-            _existingParty = new Party { Id = "ABCD-12" };
+            _existingParty = new Party { Id = "ABCD" };
             var mockContext = MyDataDbContextHelper.CreateMockDbContext(parties: new[] { _existingParty });
             _mockPartyIdGenerator = new Mock<IPartyIdGenerator>();
-            _mockPartyIdGenerator.Setup(m => m.Next()).Returns("DCBA-21");
+            _mockPartyIdGenerator.Setup(m => m.Next()).Returns("DCBA");
             _sut = new SqlPartyRepository(mockContext.Object, new Mock<ILogger<SqlPartyRepository>>().Object, _mockPartyIdGenerator.Object);
         }
 

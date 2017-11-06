@@ -119,10 +119,12 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<ICityRepository, SqlCityRepository>();
             services.AddTransient<IBlogPostRepository, SqlBlogPostRepository>();
             services.AddTransient<IPartyRepository, SqlPartyRepository>();
+            services.AddTransient<IInvitationRepository, SqlInvitationRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddTransient<ISitemapGenerator, SitemapGenerator>();
             services.AddTransient<IPartyIdGenerator, PartyIdGenerator>();
+            services.AddTransient<IInvitationIdGenerator, InvitationIdGenerator>();
         }
 
 

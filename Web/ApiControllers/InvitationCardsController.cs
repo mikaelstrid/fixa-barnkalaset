@@ -32,7 +32,7 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             _invitationRepository = invitationRepository;
         }
 
-        [Route("add-guest")]
+        [Route("guests")]
         [HttpPost]
         public async Task<IActionResult> AddGuest([FromBody] AddGuestApiModel model)
         {
@@ -60,10 +60,10 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             await _guestRepository.AddOrUpdate(guest);
             _logger.LogInformation("AddGuest: Added guest {Guest} with id {GuestId}", JsonConvert.SerializeObject(guest), guest.Id);
             
-            return Ok(guest.Id);
+            return Ok(guest);
         }
 
-        [Route("add-invitation")]
+        [Route("invitations")]
         [HttpPost]
         public async Task<IActionResult> AddInvitation([FromBody] AddInvitationApiModel model)
         {
@@ -95,7 +95,7 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             await _invitationRepository.AddOrUpdate(invitation);
             _logger.LogInformation("AddInvitation: Added invitation {Invitation} with id {InvitationId}", JsonConvert.SerializeObject(invitation), invitation.Id);
 
-            return Ok($"{invitation.PartyId}-{invitation.Id}");
+            return Ok(invitation);
         }
     }
 }

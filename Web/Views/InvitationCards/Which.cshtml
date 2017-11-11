@@ -35,10 +35,10 @@
 
         <button class="ui positive labeled icon button" id="addGuestButton"><i class="plus icon"></i>Lägg till</button>
                         
-        <a href="@Url.Action("Rsvp", null, new { partyId = @Model.Id })" class="ui secondary button right floated">Fortsätt</a>
+        <a href="@Url.Action("Rsvp", null, new { partyId = Model.Id })" class="ui secondary button right floated">Fortsätt</a>
 
 
-        <div class="ui tiny modal">
+        <div class="ui tiny modal" data-party-id="@Model.Id">
             <i class="close icon"></i>
             <div class="header">
                 Lägg till gäst

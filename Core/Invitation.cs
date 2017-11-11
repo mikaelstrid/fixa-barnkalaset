@@ -7,5 +7,7 @@
 
         public int GuestId { get; set; }
         public Guest Guest { get; set; }
+
+        public string CompositeId => $"{PartyId}-{Id}";
     }
 }

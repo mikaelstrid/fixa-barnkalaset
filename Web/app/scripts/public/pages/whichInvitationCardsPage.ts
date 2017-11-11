@@ -18,14 +18,14 @@ export class WhichInvitationCardsPage {
                     PostalCity: 'empty'
                 }
             });
-        
+
         $("#addGuestButton").click(() => {
             var self = this;
             $('.ui.modal')
                 .modal({
                     onApprove: function () {
                         if (self.validateAddGuestForm()) {
-                            self.addGuest();
+                            self.addGuest($('.ui.modal').data('party-id'));
                         }
                         return false;
                     },
@@ -38,7 +38,7 @@ export class WhichInvitationCardsPage {
     }
 
 
-    private validateAddGuestForm() : boolean {
+    private validateAddGuestForm(): boolean {
         if ($('.ui.form').form('is valid')) {
             return true;
         } else {
@@ -47,9 +47,10 @@ export class WhichInvitationCardsPage {
         }
     }
 
-    private addGuest(): void {
+    private addGuest(partyId: string): void {
         let $form = $(".ui.form");
         let guestModel = {
+            partyId: partyId,
             firstName: $("input[name='FirstName']", $form).val().toString(),
             lastName: $("input[name='LastName']", $form).val().toString(),
             streetAddress: $("input[name='StreetAddress']", $form).val().toString(),
@@ -58,12 +59,41 @@ export class WhichInvitationCardsPage {
         };
 
         $(".ui.modal .ui.error.message").hide();
-        $.post("/api/invitationcards/add-guest", guestModel)
-            .done(() => {
-                this.appendAddedGuestToTable(guestModel);
-                this.clearAddGuestForm();
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            'type': 'POST',
+            'url': "/api/invitationcards/guests",
+            'data': JSON.stringify(guestModel),
+            'dataType': 'json',
+        })
+            .done(data => {
+                let invitationModel = {
+                    partyId: partyId,
+                    guestId: data.id
+                };
+
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    'type': 'POST',
+                    'url': "/api/invitationcards/invitations",
+                    'data': JSON.stringify(invitationModel),
+                    'dataType': 'json',
+                })
+                    .done(data => {
+                        this.appendAddedGuestToTable(guestModel);
+                        this.clearAddGuestForm();
+                    })
+                    .fail(() => {
+                        $(".ui.modal .ui.error.message").show();
+                    });
             })
-            .fail(() => { 
+            .fail(() => {
                 $(".ui.modal .ui.error.message").show();
             });
     }

@@ -71,7 +71,7 @@ namespace UnitTests.Web.Tests.ApiControllers
 
             // ASSERT
             _mockPartyRepository.Verify(m => m.GetById(model.PartyId), Times.Once);
-            result.Should().BeOfType<OkResult>();
+            result.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]

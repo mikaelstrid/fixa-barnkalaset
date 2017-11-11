@@ -16,20 +16,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Kevin</td>
-                <td>Forsell</td>
-                <td>Fagaredsvägen 27</td>
-                <td>412 90</td>
-                <td>Lindome</td>
-            </tr>
-            <tr>
-                <td>Oscar</td>
-                <td>Gustafsson</td>
-                <td>Lilla bergsvägen 198</td>
-                <td>412 90</td>
-                <td>Kungsbacka</td>
-            </tr>
+            @foreach (var invitation in Model.Invitations)
+            {
+                <tr>
+                    <td>@invitation.FirstName</td>
+                    <td>@invitation.LastName</td>
+                    <td>@invitation.StreetAddress</td>
+                    <td>@invitation.PostalCode</td>
+                    <td>@invitation.PostalCity</td>
+                </tr>
+            }
             </tbody>
         </table>
 

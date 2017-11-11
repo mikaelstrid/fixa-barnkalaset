@@ -93,9 +93,10 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
                 GuestId = model.GuestId
             };
             await _invitationRepository.AddOrUpdate(invitation);
-            _logger.LogInformation("AddInvitation: Added invitation {Invitation} with id {InvitationId}", JsonConvert.SerializeObject(invitation), invitation.Id);
+            var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            _logger.LogInformation("AddInvitation: Added invitation {Invitation} with id {InvitationId}", JsonConvert.SerializeObject(invitation, settings), invitation.Id);
 
-            return Ok(invitation);
+            return Ok(invitation.CompositeId);
         }
     }
 }

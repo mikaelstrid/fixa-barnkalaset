@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using Pixel.FixaBarnkalaset.Core;
 using Pixel.FixaBarnkalaset.Web.ApiControllers;
@@ -34,7 +35,19 @@ namespace Pixel.FixaBarnkalaset.Web
                     dest => dest.PartyEndTime,
                     opt => opt.MapFrom(src => src.EndTime)
                 );
-            CreateMap<Party, WhichViewModel>();
+            CreateMap<Party, WhichViewModel>()
+                .ForMember(
+                    dest => dest.Invitations,
+                    opt => opt.MapFrom(src => src.Invitations.Select(i => new WhichViewModel.InvitationViewModel
+                    {
+                        Id = i.CompositeId,
+                        FirstName = i.Guest.FirstName,
+                        LastName = i.Guest.LastName,
+                        StreetAddress = i.Guest.StreetAddress,
+                        PostalCode = i.Guest.PostalCode,
+                        PostalCity = i.Guest.PostalCity
+                    }))
+                );
             CreateMap<Party, RsvpViewModel>();
             CreateMap<Party, ReviewViewModel>()
                 .ForMember(

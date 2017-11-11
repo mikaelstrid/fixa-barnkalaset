@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Pixel.FixaBarnkalaset.Core;
@@ -12,6 +13,15 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
         public SqlPartyRepository(MyDataDbContext dbContext, ILogger<SqlPartyRepository> logger, IPartyIdGenerator partyIdGenerator)
             : base(dbContext, logger, partyIdGenerator)
         {
+        }
+
+        public override async Task<Party> GetById(string id)
+        {
+            Logger.LogDebug("GetById: Get {Entity} with id {Id}", typeof(SqlPartyRepository).Name, id);
+            return await DbSet
+                .Include(p => p.Invitations)
+                .ThenInclude(i => i.Guest)
+                .SingleOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task AddOrUpdate(Party party)

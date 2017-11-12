@@ -33,6 +33,8 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View();
         }
 
+
+
         [Route("vem-fyller-ar")]
         [Authorize]
         public IActionResult Who()
@@ -59,6 +61,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
             return RedirectToAction("Where", new { partyId = party.Id });
         }
+
 
 
         [Route("{partyId}/var-ar-kalaset")]
@@ -94,6 +97,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
 
+
         [Route("{partyId}/nar-ar-kalaset")]
         [Authorize]
         public async Task<IActionResult> When(string partyId)
@@ -127,6 +131,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 : (DateTime?) null;
         }
         
+
         
         [Route("{partyId}/vilka-ska-ni-bjuda")]
         [Authorize]
@@ -138,13 +143,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        //[Route("{partyId}/vilka-ska-ni-bjuda")]
-        //[HttpPost]
-        //[Authorize]
-        //public async Task<IActionResult> Which(WhichViewModel model)
-        //{
-        //    return RedirectToAction("Rsvp");
-        //}
 
 
         [Route("{partyId}/osa")]
@@ -172,6 +170,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 }
             );
         }
+
 
 
         [Route("{partyId}/granska")]

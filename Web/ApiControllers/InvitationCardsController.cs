@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -64,6 +63,8 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             return Ok(guest);
         }
 
+
+
         [Route("invitations")]
         [HttpPost]
         public async Task<IActionResult> AddInvitation([FromBody] AddInvitationApiModel model)
@@ -99,6 +100,18 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
 
             return Ok(invitation.CompositeId);
         }
+
+        [Route("invitations/{invitationId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteInvitation(string invitationId)
+        {
+            _logger.LogDebug("DeleteInvitation: Removing invitation with id {InvitationId}", invitationId);
+            await _invitationRepository.Remove(invitationId);
+            _logger.LogInformation("DeleteInvitation: Removed invitation with id {InvitationId}", invitationId);
+            return Ok();
+        }
+
+
 
         [Route("add-guest-and-invitation")]
         [HttpPost]

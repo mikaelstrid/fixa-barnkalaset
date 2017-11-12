@@ -88,6 +88,10 @@ namespace UnitTests.Web.Tests.ApiControllers
             _mockGuestRepository.Verify(m => m.AddOrUpdate(It.IsAny<Guest>()), Times.Once);
         }
 
+        private static AddGuestApiModel CreateValidGuestApiModel()
+        {
+            return new AddGuestApiModel { PartyId = "1234", FirstName = "Leo", LastName = "Bovin", StreetAddress = "Korsvägen 1", PostalCode = "412 10", PostalCity = "GÖteborg" };
+        }
 
 
 
@@ -154,9 +158,17 @@ namespace UnitTests.Web.Tests.ApiControllers
 
         
 
-        private static AddGuestApiModel CreateValidGuestApiModel()
+        [Fact]
+        public async Task RemoveInvitation_ShouldCallRepository()
         {
-            return new AddGuestApiModel { PartyId = "1234",  FirstName = "Leo", LastName = "Bovin", StreetAddress = "Korsvägen 1", PostalCode = "412 10", PostalCity = "GÖteborg"};
+            // ARRANGE
+            var invitationId = "ABCD-12";
+
+            // ACT
+            await _sut.DeleteInvitation(invitationId);
+
+            // ASSERT
+            _mockInvitationRepository.Verify(m => m.Remove(invitationId), Times.Once);
         }
     }
 }

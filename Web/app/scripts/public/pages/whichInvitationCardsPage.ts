@@ -6,6 +6,11 @@
     postalCity: string;
 }
 
+interface InvitationModel {
+    id: string;
+    guest: GuestModel;
+}
+
 export class WhichInvitationCardsPage {
     initPage() {
         $('.ui.form')
@@ -19,8 +24,9 @@ export class WhichInvitationCardsPage {
                 }
             });
 
-        $("#addGuestButton").click(() => {
+        $('#addGuestButton').click(() => {
             var self = this;
+            $('#removeErrorMessage').hide();
             $('.ui.modal')
                 .modal({
                     onApprove: function () {
@@ -34,6 +40,11 @@ export class WhichInvitationCardsPage {
                     }
                 })
                 .modal('show')
+        });
+
+        $('[data-remove-invitation-button]').click(event => {
+            let invitationId = $(event.currentTarget).data('invitation-id');
+            this.removeInvitation(invitationId);
         });
     }
 
@@ -70,7 +81,11 @@ export class WhichInvitationCardsPage {
             'dataType': 'json',
         })
             .done(data => {
-                this.appendAddedGuestToTable(guestModel);
+                let invitation = {
+                    id: data,
+                    guest: guestModel
+                };
+                this.appendAddedInvitationToTable(invitation);
                 this.clearAddGuestForm();
             })
             .fail(() => {
@@ -78,16 +93,36 @@ export class WhichInvitationCardsPage {
             });
     }
 
-    private appendAddedGuestToTable(guest: GuestModel): void {
-        $('#guestTable > tbody:last-child').append(`
-            <tr>
-                <td>${guest.firstName}</td>
-                <td>${guest.lastName}</td>
-                <td>${guest.streetAddress}</td>
-                <td>${guest.postalCode}</td> 
-                <td>${guest.postalCity}</td>
+    private removeInvitation(invitationId: string): void {
+        $('#removeErrorMessage').hide();
+        $.ajax({
+                'type': 'DELETE',
+                'url': '/api/invitationcards/invitations/' + invitationId,
+            })
+            .done(data => {
+                this.removeInvitationFromTable(invitationId);
+            })
+            .fail(() => {
+                $('#removeErrorMessage').show();
+            });
+    }
+
+
+    private appendAddedInvitationToTable(invitation: InvitationModel): void {
+        $('#invitationTable > tbody:last-child').append(`
+            <tr data-invitation-id='${invitation.id}'>
+                <td>${invitation.guest.firstName}</td>
+                <td>${invitation.guest.lastName}</td>
+                <td>${invitation.guest.streetAddress}</td>
+                <td>${invitation.guest.postalCode}</td> 
+                <td>${invitation.guest.postalCity}</td>
+                <td><a id="removeInvitationButton" data-invitation-id="${invitation.id}"><i class="trash outline link icon"></i></a></td>
             </tr>
         `);
+    }
+
+    private removeInvitationFromTable(invitationId: string): void {
+        $('#invitationTable tr[data-invitation-id="' + invitationId + '"]').remove();
     }
 
     private clearAddGuestForm(): void {

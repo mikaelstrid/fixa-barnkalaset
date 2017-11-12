@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -97,6 +98,24 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             _logger.LogInformation("AddInvitation: Added invitation {Invitation} with id {InvitationId}", JsonConvert.SerializeObject(invitation, settings), invitation.Id);
 
             return Ok(invitation.CompositeId);
+        }
+
+        [Route("add-guest-and-invitation")]
+        [HttpPost]
+        public async Task<IActionResult> AddGuestAndInvitation([FromBody] AddGuestApiModel model)
+        {
+            var addGuestResult = await AddGuest(model);
+
+            if (!(addGuestResult is OkObjectResult okGuestResult))
+                return addGuestResult;
+
+            var invitationResult = await AddInvitation(new AddInvitationApiModel
+            {
+                PartyId = model.PartyId,
+                GuestId = ((Guest) okGuestResult.Value).Id
+            });
+
+            return invitationResult;
         }
     }
 }

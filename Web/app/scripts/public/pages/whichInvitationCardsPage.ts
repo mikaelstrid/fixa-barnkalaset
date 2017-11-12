@@ -65,33 +65,13 @@ export class WhichInvitationCardsPage {
                 'Content-Type': 'application/json'
             },
             'type': 'POST',
-            'url': "/api/invitationcards/guests",
+            'url': "/api/invitationcards/add-guest-and-invitation",
             'data': JSON.stringify(guestModel),
             'dataType': 'json',
         })
             .done(data => {
-                let invitationModel = {
-                    partyId: partyId,
-                    guestId: data.id
-                };
-
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    'type': 'POST',
-                    'url': "/api/invitationcards/invitations",
-                    'data': JSON.stringify(invitationModel),
-                    'dataType': 'json',
-                })
-                    .done(data => {
-                        this.appendAddedGuestToTable(guestModel);
-                        this.clearAddGuestForm();
-                    })
-                    .fail(() => {
-                        $(".ui.modal .ui.error.message").show();
-                    });
+                this.appendAddedGuestToTable(guestModel);
+                this.clearAddGuestForm();
             })
             .fail(() => {
                 $(".ui.modal .ui.error.message").show();

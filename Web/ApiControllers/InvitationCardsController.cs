@@ -63,6 +63,16 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             return Ok(guest);
         }
 
+        [Route("guests/{guestId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteGuest(int guestId)
+        {
+            _logger.LogDebug("DeleteGuest: Removing guest with id {GuestId}", guestId);
+            await _guestRepository.Remove(guestId);
+            _logger.LogInformation("DeleteGuest: Removed guest with id {GuestId}", guestId);
+            return Ok();
+        }
+
 
 
         [Route("invitations")]
@@ -129,6 +139,16 @@ namespace Pixel.FixaBarnkalaset.Web.ApiControllers
             });
 
             return invitationResult;
+        }
+
+        [Route("remove-guest-and-invitation/{invitationId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteGuestAndInvitation(string invitationId)
+        {
+            var invitation = await _invitationRepository.GetById(invitationId);
+            await _invitationRepository.Remove(invitationId);
+            await _guestRepository.Remove(invitation.GuestId);
+            return Ok();
         }
     }
 }

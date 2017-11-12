@@ -97,7 +97,7 @@ export class WhichInvitationCardsPage {
         $('#removeErrorMessage').hide();
         $.ajax({
                 'type': 'DELETE',
-                'url': '/api/invitationcards/invitations/' + invitationId,
+                'url': '/api/invitationcards/remove-guest-and-invitation/' + invitationId,
             })
             .done(data => {
                 this.removeInvitationFromTable(invitationId);

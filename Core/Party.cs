@@ -31,5 +31,8 @@ namespace Pixel.FixaBarnkalaset.Core
         //public Arrangement Arrangement { get; set; }
 
         public List<Invitation> Invitations { get; set; }
+
+        public int? InvitationCardTemplateId { get; set; }
+        public InvitationCardTemplate InvitationCardTemplate { get; set; }
     }
 }

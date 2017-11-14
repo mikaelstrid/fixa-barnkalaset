@@ -1,0 +1,28 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ChooseTemplateViewModel
+
+<div class="ui main container pxl-public-page">
+    <div class="ui main container">
+
+        <h1>Hur ska inbjudningskortet se ut?</h1>
+
+        <div class="ui special cards">
+            @foreach (var template in Model.AvailableTemplates)
+            {
+                <div class="card">
+                    <div class="image">
+                        <img src="@template.ThumbnailUrl">
+                    </div>
+                    <div class="content">
+                        <div class="center aligned">
+                            <form method="post">
+                                <input type="hidden" name="SelectedTemplateId" value="@template.Id" />
+                                <input type="hidden" name="Id" value="@Model.Id"/>
+                                <button type="submit" class="ui button">Välj mall</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

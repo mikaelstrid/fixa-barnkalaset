@@ -62,7 +62,8 @@ namespace Pixel.FixaBarnkalaset.Web
                     dest => dest.PartyEndTime,
                     opt => opt.MapFrom(src => src.EndTime)
                 );
-
+            CreateMap<Party, ChooseTemplateViewModel>();
+            CreateMap<InvitationCardTemplate, ChooseTemplateViewModel.TemplateViewModel>();
 
             // ADMIN
             CreateMap<Arrangement, Areas.Admin.ViewModels.ArrangementsIndexViewModel.ArrangementViewModel>();

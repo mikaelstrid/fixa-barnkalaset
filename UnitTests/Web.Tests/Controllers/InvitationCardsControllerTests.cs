@@ -16,14 +16,15 @@ namespace UnitTests.Web.Tests.Controllers
     public class InvitationCardsControllerTests : ControllerTestBase<InvitationCardsController>
     {
         private readonly Mock<IPartyRepository> _mockPartyRepository;
-
+        private readonly Mock<IInvitationCardTemplateRepository> _mockInvitationCardTemplateRepository;
         private readonly InvitationCardsController _sut;
 
         public InvitationCardsControllerTests()
         {
             var mockLogger = new Mock<ILogger<InvitationCardsController>>();
             _mockPartyRepository = new Mock<IPartyRepository>();
-            _sut = new InvitationCardsController(_mapper, mockLogger.Object, _mockPartyRepository.Object);
+            _mockInvitationCardTemplateRepository = new Mock<IInvitationCardTemplateRepository>();
+            _sut = new InvitationCardsController(_mapper, mockLogger.Object, _mockPartyRepository.Object, _mockInvitationCardTemplateRepository.Object);
         }
 
         [Fact]

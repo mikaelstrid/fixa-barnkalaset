@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -17,12 +19,14 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<InvitationCardsController> _logger;
         private readonly IPartyRepository _partyRepository;
+        private readonly IInvitationCardTemplateRepository _invitationCardTemplateRepository;
 
-        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository)
+        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository, IInvitationCardTemplateRepository invitationCardTemplateRepository)
         {
             _mapper = mapper;
             _logger = logger;
             _partyRepository = partyRepository;
+            _invitationCardTemplateRepository = invitationCardTemplateRepository;
             ViewData["Title"] = "Inbjudningskort | Fixa barnkalaset";
             ViewData["Description"] = "Vi hjälper dig att designa, trycka och skicka inbjudningskorten.";
         }
@@ -160,7 +164,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Rsvp(RsvpViewModel model)
         {
-            return await UpdatePartyInformation(nameof(Rsvp), nameof(Review), model,
+            return await UpdatePartyInformation(nameof(Rsvp), nameof(ChooseTemplate), model,
                 (p, m) => p.RsvpDate != m.RsvpDate
                        || p.RsvpDescription != m.RsvpDescription,
                 (m, p) =>
@@ -170,7 +174,33 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 }
             );
         }
+        
 
+
+        [Route("{partyId}/valj-mall")]
+        [Authorize]
+        public async Task<IActionResult> ChooseTemplate(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, ChooseTemplateViewModel>(party);
+
+            var availableTemplates = await _invitationCardTemplateRepository.GetAll();
+            viewModel.AvailableTemplates = _mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
+            
+            return View(viewModel);
+        }
+
+        [Route("{partyId}/valj-mall")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
+        {
+            return await UpdatePartyInformation(nameof(ChooseTemplate), nameof(Review), model,
+                (p, m) => p.InvitationCardTemplateId != m.SelectedTemplateId,
+                (m, p) => { p.InvitationCardTemplateId = m.SelectedTemplateId; }
+            );
+        }
 
 
         [Route("{partyId}/granska")]

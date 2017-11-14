@@ -11,9 +11,10 @@ using System;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDataDbContextMigrations
 {
     [DbContext(typeof(MyDataDbContext))]
-    partial class MyDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171113195816_AddInvitationCardTemplate")]
+    partial class AddInvitationCardTemplate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,8 +199,6 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.Property<DateTime?>("EndTime");
 
-                    b.Property<int?>("InvitationCardTemplateId");
-
                     b.Property<bool>("IsRemoved");
 
                     b.Property<DateTime>("LastUpdatedUtc");
@@ -228,8 +227,6 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvitationCardTemplateId");
-
                     b.ToTable("Parties");
                 });
 
@@ -252,13 +249,6 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                         .WithMany("Invitations")
                         .HasForeignKey("PartyId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Pixel.FixaBarnkalaset.Core.Party", b =>
-                {
-                    b.HasOne("Pixel.FixaBarnkalaset.Core.InvitationCardTemplate", "InvitationCardTemplate")
-                        .WithMany()
-                        .HasForeignKey("InvitationCardTemplateId");
                 });
 #pragma warning restore 612, 618
         }

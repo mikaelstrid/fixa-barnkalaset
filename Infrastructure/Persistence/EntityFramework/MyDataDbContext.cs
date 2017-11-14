@@ -29,6 +29,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
         public virtual DbSet<Party> Parties { get; set; }
         public virtual DbSet<Guest> Guests { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
+        public virtual DbSet<InvitationCardTemplate> InvitationCardTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -47,8 +48,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework
             builder.Entity<Guest>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
             builder.Entity<Guest>().Property<string>("UpdatedBy").HasField("_updatedBy");
 
-            builder.Entity<Invitation>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
-            builder.Entity<Invitation>().Property<string>("UpdatedBy").HasField("_updatedBy");
+            builder.Entity<InvitationCardTemplate>().Property<DateTime>("LastUpdatedUtc").HasField("_lastUpdatedUtc");
+            builder.Entity<InvitationCardTemplate>().Property<string>("UpdatedBy").HasField("_updatedBy");
 
             builder.Entity<Invitation>().HasKey(i => new { i.PartyId, i.Id });
         }

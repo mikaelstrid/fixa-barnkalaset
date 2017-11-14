@@ -126,6 +126,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<ISitemapGenerator, SitemapGenerator>();
             services.AddTransient<IPartyIdGenerator, PartyIdGenerator>();
             services.AddTransient<IInvitationIdGenerator, InvitationIdGenerator>();
+            services.AddTransient<IInvitationCardTemplateRepository, SqlInvitationCardTemplateRepository>();
         }
 
 

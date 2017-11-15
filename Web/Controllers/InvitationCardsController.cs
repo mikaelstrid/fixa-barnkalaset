@@ -40,7 +40,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("vem-fyller-ar")]
-        [Authorize]
         public IActionResult Who()
         {
             return View();
@@ -48,7 +47,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         [Route("vem-fyller-ar")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Who(WhoViewModel model)
         {
             _logger.LogDebug("Who POST: called with model {Model}", JsonConvert.SerializeObject(model));
@@ -69,7 +67,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("{partyId}/var-ar-kalaset")]
-        [Authorize]
         public async Task<IActionResult> Where(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -80,7 +77,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         [Route("{partyId}/var-ar-kalaset")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Where(WhereViewModel model)
         {
             return await UpdatePartyInformation(nameof(Where), nameof(When), model,
@@ -103,7 +99,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("{partyId}/nar-ar-kalaset")]
-        [Authorize]
         public async Task<IActionResult> When(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -114,7 +109,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         [Route("{partyId}/nar-ar-kalaset")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> When(WhenViewModel model)
         {
             return await UpdatePartyInformation(nameof(When), nameof(Which), model,
@@ -138,7 +132,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         
         [Route("{partyId}/vilka-ska-ni-bjuda")]
-        [Authorize]
         public async Task<IActionResult> Which(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -150,7 +143,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("{partyId}/osa")]
-        [Authorize]
         public async Task<IActionResult> Rsvp(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -161,7 +153,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         [Route("{partyId}/osa")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Rsvp(RsvpViewModel model)
         {
             return await UpdatePartyInformation(nameof(Rsvp), nameof(ChooseTemplate), model,
@@ -178,7 +169,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("{partyId}/valj-mall")]
-        [Authorize]
         public async Task<IActionResult> ChooseTemplate(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -193,7 +183,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
         [Route("{partyId}/valj-mall")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
         {
             return await UpdatePartyInformation(nameof(ChooseTemplate), nameof(Review), model,
@@ -204,7 +193,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("{partyId}/granska")]
-        [Authorize]
         public async Task<IActionResult> Review(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -215,15 +203,14 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
 
-        [Route("{id:regex([[\\w\\d]]{{4}})}")]
-        [Authorize]
-        public IActionResult Index(string id)
-        {
-            return View();
-        }
+        //[Route("{id:regex([[\\w\\d]]{{4}})}")]
+        //public IActionResult Index(string id)
+        //{
+        //    return View();
+        //}
 
-
-
+        
+        
         private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase
         {
             _logger.LogDebug("{MethodName} POST: called with model {model}", methodName, JsonConvert.SerializeObject(model));
@@ -252,6 +239,5 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
             return RedirectToAction(redirectToAction, new { partyId = existingParty.Id });
         }
-
     }
 }

@@ -28,6 +28,7 @@
     <meta name="description" content="@ViewData["Description"]" />
     @Html.Partial("_OgTags")
     @Html.Partial("_Favicons")
+    @RenderSection("MetaData", required: false)
 
     <link href="https://fonts.googleapis.com/css?family=Gochi+Hand" rel="stylesheet">
 

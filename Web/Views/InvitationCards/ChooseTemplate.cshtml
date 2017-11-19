@@ -1,14 +1,18 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ChooseTemplateViewModel
 
+@section MetaData
+{
+    <meta name="robots" content="noindex">
+}
+
 <div class="ui main container pxl-public-page">
-    <div class="ui main container">
+    <h1 class="ui large header">Välj mall</h1>
 
-        <h1>Hur ska inbjudningskortet se ut?</h1>
-
-        <div class="ui special cards">
-            @foreach (var template in Model.AvailableTemplates)
-            {
-                <div class="card">
+    <div class="ui stackable grid">
+        @foreach (var template in Model.AvailableTemplates)
+        {
+            <div class="six wide tablet four wide computer column">
+                <div class="ui fluid card">
                     <div class="image">
                         <img src="@template.ThumbnailUrl">
                     </div>
@@ -16,13 +20,13 @@
                         <div class="center aligned">
                             <form method="post">
                                 <input type="hidden" name="SelectedTemplateId" value="@template.Id" />
-                                <input type="hidden" name="Id" value="@Model.Id"/>
+                                <input type="hidden" name="Id" value="@Model.Id" />
                                 <button type="submit" class="ui button">Välj mall</button>
                             </form>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
 </div>

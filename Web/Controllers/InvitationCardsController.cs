@@ -165,8 +165,16 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 }
             );
         }
-        
 
+
+        [Route("valj-mall")]
+        public async Task<IActionResult> ChooseTemplate()
+        {
+            var viewModel = new ChooseTemplateViewModel();
+            var availableTemplates = await _invitationCardTemplateRepository.GetAll();
+            viewModel.AvailableTemplates = _mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
+            return View(viewModel);
+        }
 
         [Route("{partyId}/valj-mall")]
         public async Task<IActionResult> ChooseTemplate(string partyId)

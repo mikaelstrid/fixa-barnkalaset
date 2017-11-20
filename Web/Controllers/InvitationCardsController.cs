@@ -235,7 +235,12 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [Route("gaster")]
         public IActionResult Guests()
         {
-            return View(new WhichViewModel { Invitations = new List<WhichViewModel.InvitationViewModel>()});
+            return View(new WhichViewModel { Invitations = new List<WhichViewModel.InvitationViewModel>
+            {
+                new WhichViewModel.InvitationViewModel { Id = "1", FirstName = "Tuva", LastName = "Lindberg", StreetAddress = "Fjäderskrudsvägen 27", PostalCode = "437 38", PostalCity = "Lindome"},
+                new WhichViewModel.InvitationViewModel { Id = "1", FirstName = "Tuva", LastName = "Lindberg", StreetAddress = "Fjäderskrudsvägen 27", PostalCode = "437 38", PostalCity = "Lindome"}
+            }
+            });
         }
 
 

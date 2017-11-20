@@ -14,6 +14,9 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
             public string StreetAddress { get; set; }
             public string PostalCode { get; set; }
             public string PostalCity { get; set; }
+
+            public string FullName => $"{FirstName} {LastName}";
+            public string FullAddress => $"{StreetAddress}, {PostalCode} {PostalCity}";
         }
     }
 }

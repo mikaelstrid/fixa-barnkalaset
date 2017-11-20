@@ -167,15 +167,6 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         }
 
 
-        [Route("valj-mall")]
-        public async Task<IActionResult> ChooseTemplate()
-        {
-            var viewModel = new ChooseTemplateViewModel();
-            var availableTemplates = await _invitationCardTemplateRepository.GetAll();
-            viewModel.AvailableTemplates = _mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
-            return View(viewModel);
-        }
-
         [Route("{partyId}/valj-mall")]
         public async Task<IActionResult> ChooseTemplate(string partyId)
         {
@@ -189,15 +180,15 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("{partyId}/valj-mall")]
-        [HttpPost]
-        public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
-        {
-            return await UpdatePartyInformation(nameof(ChooseTemplate), nameof(Review), model,
-                (p, m) => p.InvitationCardTemplateId != m.SelectedTemplateId,
-                (m, p) => { p.InvitationCardTemplateId = m.SelectedTemplateId; }
-            );
-        }
+        //[Route("{partyId}/valj-mall")]
+        //[HttpPost]
+        //public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
+        //{
+        //    return await UpdatePartyInformation(nameof(ChooseTemplate), nameof(Review), model,
+        //        (p, m) => p.InvitationCardTemplateId != m.SelectedTemplateId,
+        //        (m, p) => { p.InvitationCardTemplateId = m.SelectedTemplateId; }
+        //    );
+        //}
 
 
         [Route("{partyId}/granska")]
@@ -211,14 +202,51 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
 
+
+        [Route("valj-mall")]
+        public async Task<IActionResult> ChooseTemplate()
+        {
+            var viewModel = new ChooseTemplateViewModel();
+            var availableTemplates = await _invitationCardTemplateRepository.GetAll();
+            viewModel.AvailableTemplates = _mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
+            return View(viewModel);
+        }
+
+        [Route("valj-mall")]
+        [HttpPost]
+        public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
+        {
+            return RedirectToAction("PartyInformation");
+        }
+
+        [Route("kalas-info")]
+        public IActionResult PartyInformation()
+        {
+            return View();
+        }
+
+        [Route("kalas-info")]
+        [HttpPost]
+        public IActionResult PartyInformation(PartyInformationViewModel model)
+        {
+            return RedirectToAction("Guests");
+        }
+        
+        [Route("gaster")]
+        public IActionResult Guests()
+        {
+            return View(new WhichViewModel { Invitations = new List<WhichViewModel.InvitationViewModel>()});
+        }
+
+
         //[Route("{id:regex([[\\w\\d]]{{4}})}")]
         //public IActionResult Index(string id)
         //{
         //    return View();
         //}
 
-        
-        
+
+
         private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase
         {
             _logger.LogDebug("{MethodName} POST: called with model {model}", methodName, JsonConvert.SerializeObject(model));

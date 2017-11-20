@@ -1,0 +1,83 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.PartyInformationViewModel
+
+@section MetaData
+    {
+    <meta name="robots" content="noindex">
+}
+
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards-party-information">
+
+    <h1 class="ui medium header">Kalasinformation</h1>
+
+    <form class="ui form unstackable" asp-action="PartyInformation">
+        <div class="field" pf-validation-for="NameOfBirthdayChild" pf-validationerror-class="error">
+            <label asp-for="NameOfBirthdayChild"></label>
+            <input type="text" asp-for="NameOfBirthdayChild" placeholder="t.ex. Kalles eller Lisas">
+            <span asp-validation-for="NameOfBirthdayChild"></span>
+        </div>
+
+        <div class="field" pf-validation-for="PartyDate" pf-validationerror-class="error">
+            <label asp-for="PartyDate"></label>
+            <input type="date" asp-for="PartyDate">
+            <span asp-validation-for="PartyDate"></span>
+        </div>
+        
+        <div class="fields">
+            <div class="six wide field" pf-validation-for="PartyStartTime" pf-validationerror-class="error">
+                <label asp-for="PartyStartTime"></label>
+                <input type="time" asp-for="PartyStartTime">
+                <span asp-validation-for="PartyStartTime"></span>
+            </div>
+
+            <div class="six wide field" pf-validation-for="PartyEndTime" pf-validationerror-class="error">
+                <label asp-for="PartyEndTime"></label>
+                <input type="time" asp-for="PartyEndTime">
+                <span asp-validation-for="PartyEndTime"></span>
+            </div>
+        </div>
+        
+        <div class="field" pf-validation-for="LocationName" pf-validationerror-class="error">
+            <label asp-for="LocationName"></label>
+            <input type="text" asp-for="LocationName" placeholder="t.ex. på Universeum">
+            <span asp-validation-for="LocationName"></span>
+        </div>
+
+        <div class="field" pf-validation-for="StreetAddress" pf-validationerror-class="error">
+            <label asp-for="StreetAddress"></label>
+            <input type="text" asp-for="StreetAddress">
+            <span asp-validation-for="StreetAddress"></span>
+        </div>
+
+        <div class="fields">
+            <div class="four wide field" pf-validation-for="PostalCode" pf-validationerror-class="error">
+                <label asp-for="PostalCode"></label>
+                <input type="text" asp-for="PostalCode">
+                <span asp-validation-for="PostalCode"></span>
+            </div>
+
+            <div class="eight wide field" pf-validation-for="PostalCity" pf-validationerror-class="error">
+                <label asp-for="PostalCity"></label>
+                <input type="text" asp-for="PostalCity">
+                <span asp-validation-for="PostalCity"></span>
+            </div>
+        </div>
+
+        <button class="fluid ui button" type="submit">Fortsätt</button>
+    </form>
+</div>
+
+<script>
+    //$('.ui.form')
+    //    .form({
+    //        fields: {
+    //            NameOfBirthdayChild: 'empty',
+    //            PartyDate: 'empty',
+    //            PartyStartTime: 'empty',
+    //            PartyEndTime: 'empty',
+    //            LocationName: 'empty',
+    //            StreetAddress: 'empty',
+    //            PostalCode: 'empty',
+    //            PostalCity: 'empty'
+    //        }
+    //    });
+</script>

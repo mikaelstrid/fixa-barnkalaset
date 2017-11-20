@@ -1,0 +1,20 @@
+﻿@import "../modules/_variables";
+
+.pxl-public-page--invitation-cards-choose-template,
+.pxl-public-page--invitation-cards-party-information {
+    padding-top: 2rem;
+}
+
+.pxl-public-page--invitation-cards-party-information {
+    @media only screen and (max-width: $largestMobileScreen) {
+        padding-top: 2rem;
+
+        .ui.form .fields {
+            margin-bottom: 1em;
+        }
+
+        .ui.form button[type="submit"] {
+            margin-top: 2em;
+        }
+    }
+}

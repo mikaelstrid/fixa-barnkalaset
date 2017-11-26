@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 {
-    public class PartyInformationViewModel
+    public class PartyInformationViewModel : InvitationViewModelBase
     {
         [Required]
         [Display(Name = "Vems kalas är det?")]

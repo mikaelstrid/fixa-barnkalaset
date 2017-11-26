@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -27,238 +29,131 @@ namespace UnitTests.Web.Tests.Controllers
             _sut = new InvitationCardsController(_mapper, mockLogger.Object, _mockPartyRepository.Object, _mockInvitationCardTemplateRepository.Object);
         }
 
-        [Fact]
-        public void Who_Get_ShouldOnlyReturnView()
-        {
-            // ARRANGE
-
-            // ACT
-            var result = _sut.Who();
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(It.IsAny<string>()), Times.Never);
-            GetViewModel<WhoViewModel>(result).Should().BeNull();
-        }
-
+        
 
         [Fact]
-        public async Task Who_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        public async Task ChooseTemplate_Get_ShouldReturnViewWithModelWithAvailableTemplates()
         {
             // ARRANGE
-            var model = new WhoViewModel { NameOfBirthdayChild = "Julia" };
+            _mockInvitationCardTemplateRepository.Setup(m => m.GetAll())
+                .Returns(Task.FromResult(new List<InvitationCardTemplate> { new InvitationCardTemplate() } as IEnumerable<InvitationCardTemplate>));
             AddModelStateError(_sut);
 
             // ACT
-            var result = await _sut.Who(model);
+            var result = await _sut.ChooseTemplate();
+
+            // ASSERT
+            _mockInvitationCardTemplateRepository.Verify(m => m.GetAll(), Times.Once);
+            GetViewModel<ChooseTemplateViewModel>(result).AvailableTemplates.Count().Should().Be(1);
+        }
+
+
+        [Fact]
+        public async Task ChooseTemplate_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        {
+            // ARRANGE
+            var model = new ChooseTemplateViewModel { SelectedTemplateId = 1 };
+            AddModelStateError(_sut);
+
+            // ACT
+            var result = await _sut.ChooseTemplate(model);
 
             // ASSERT
             _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
-            GetViewModel<WhoViewModel>(result).Should().Be(model);
+            GetViewModel<ChooseTemplateViewModel>(result).Should().Be(model);
         }
 
         [Fact]
-        public async Task Who_Post_GivenValidModel_ShouldCallRepository()
+        public async Task ChooseTemplate_Post_GivenInvalidModel_ShouldReturnViewWithModelWithAvailableTemplates()
         {
             // ARRANGE
-            var model = new WhoViewModel { NameOfBirthdayChild = "Julia" };
+            _mockInvitationCardTemplateRepository.Setup(m => m.GetAll())
+                .Returns(Task.FromResult(new List<InvitationCardTemplate> { new InvitationCardTemplate()} as IEnumerable<InvitationCardTemplate>));
+            var model = new ChooseTemplateViewModel { SelectedTemplateId = 1 };
+            AddModelStateError(_sut);
 
             // ACT
-            var result = await _sut.Who(model);
+            var result = await _sut.ChooseTemplate(model);
 
             // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(c => c.NameOfBirthdayChild == model.NameOfBirthdayChild)), Times.Once);
-            result.Should().BeOfType<RedirectToActionResult>();
+            _mockInvitationCardTemplateRepository.Verify(m => m.GetAll(), Times.Once);
+            GetViewModel<ChooseTemplateViewModel>(result).AvailableTemplates.Count().Should().Be(1);
         }
 
+        [Fact]
+        public async Task ChooseTemplate_Post_GivenValidModel_ShouldCallRepository()
+        {
+            // ARRANGE
+            var model = new ChooseTemplateViewModel { SelectedTemplateId = 1 };
+
+            // ACT
+            var result = await _sut.ChooseTemplate(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(c => c.InvitationCardTemplateId == model.SelectedTemplateId)), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+        
 
 
         [Fact]
-        public async Task Where_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        public async Task PartyInformation_Get_GivenNullFromRepository_ShouldReturnNotFound()
         {
             // ARRANGE
 
             // ACT
-            var result = await _sut.Where("PKFN");
+            var result = await _sut.PartyInformation("PKFN");
 
             // ASSERT
             result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
-        public async Task Where_Get_ShouldGetPartyFromRepository()
+        public async Task PartyInformation_Get_ShouldGetPartyFromRepository()
         {
             // ARRANGE
             var id = "PKFN";
 
             // ACT
-            await _sut.Where(id);
+            await _sut.PartyInformation(id);
 
             // ASSERT
             _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
         }
 
         [Fact]
-        public async Task Where_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        public async Task PartyInformation_Get_ShouldGetPartyFromRepository_AndReturnModel()
         {
             // ARRANGE
             var id = "PKFN";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+            var party = new Party { Id = id, InvitationCardTemplateId = 4 };
             _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
             // ACT
-            var result = await _sut.Where(id);
+            var result = await _sut.PartyInformation(id);
 
             // ASSERT
-            GetViewModel<WhereViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+            GetViewModel<PartyInformationViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
 
         [Fact]
-        public async Task Where_Get_GivenParty_ShouldMapPartyTypeCorrectly()
-        {
-            // ARRANGE
-            var id = "PKFN";
-            var partyType = "actionkalas";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", PartyType = partyType };
-            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
-
-            // ACT
-            var result = await _sut.Where(id);
-
-            // ASSERT
-            GetViewModel<WhereViewModel>(result).PartyType.Should().Be(partyType);
-        }
-
-        [Fact]
-        public async Task Where_Get_GivenParty_ShouldMapPartyLocationCorrectly()
+        public async Task PartyInformation_Get_GivenParty_ShouldMapPartyLocationCorrectly()
         {
             // ARRANGE
             var id = "PKFN";
             var locationName = "Hemma hos oss";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", LocationName = locationName};
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", LocationName = locationName };
             _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
             // ACT
-            var result = await _sut.Where(id);
+            var result = await _sut.PartyInformation(id);
 
             // ASSERT
-            GetViewModel<WhereViewModel>(result).LocationName.Should().Be(locationName);
+            GetViewModel<PartyInformationViewModel>(result).LocationName.Should().Be(locationName);
         }
 
         [Fact]
-        public async Task Where_Post_GivenInvalidModel_ShouldReturnViewWithModel()
-        {
-            // ARRANGE
-            var model = new WhereViewModel();
-            AddModelStateError(_sut);
-
-            // ACT
-            var result = await _sut.Where(model);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
-            GetViewModel<WhereViewModel>(result).Should().Be(model);
-        }
-
-        [Fact]
-        public async Task Where_Post_GivenValidModel_ShouldGetPartyFromRepository()
-        {
-            // ARRANGE
-            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
-
-            // ACT
-            await _sut.Where(model);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(model.Id), Times.Once);
-        }
-
-        [Fact]
-        public async Task Where_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
-        {
-            // ARRANGE
-            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
-
-            // ACT
-            var result = await _sut.Where(model);
-
-            // ASSERT
-            result.Should().BeOfType<NotFoundResult>();
-        }
-
-        [Fact]
-        public async Task Where_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
-        {
-            // ARRANGE
-            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
-            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party { Id = model.Id, StreetAddress = model.StreetAddress}));
-
-            // ACT
-            var result = await _sut.Where(model);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Never);
-            result.Should().BeOfType<RedirectToActionResult>();
-        }
-
-        [Fact]
-        public async Task Where_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
-        {
-            // ARRANGE
-            var model = new WhereViewModel { Id = "PKFN", StreetAddress = "Korsvägen 11" };
-            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party { Id = model.Id }));
-
-            // ACT
-            var result = await _sut.Where(model);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Once);
-            result.Should().BeOfType<RedirectToActionResult>();
-        }
-
-
-
-        [Fact]
-        public async Task When_Get_GivenNullFromRepository_ShouldReturnNotFound()
-        {
-            // ARRANGE
-
-            // ACT
-            var result = await _sut.When("PKFN");
-
-            // ASSERT
-            result.Should().BeOfType<NotFoundResult>();
-        }
-
-        [Fact]
-        public async Task When_Get_ShouldGetPartyFromRepository()
-        {
-            // ARRANGE
-            var id = "PKFN";
-
-            // ACT
-            await _sut.When(id);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
-        }
-
-        [Fact]
-        public async Task When_Get_ShouldGetPartyFromRepository_AndReturnModel()
-        {
-            // ARRANGE
-            var id = "PKFN";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
-            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
-
-            // ACT
-            var result = await _sut.When(id);
-
-            // ASSERT
-            GetViewModel<WhenViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
-        }
-
-        [Fact]
-        public async Task When_Get_GivenIfPartyHasNoPartyDate_PartyTimeShouldBeMappedCorrectly()
+        public async Task PartyInformation_Get_GivenIfPartyHasNoPartyDate_PartyTimeShouldBeMappedCorrectly()
         {
             // ARRANGE
             var id = "PKFN";
@@ -266,145 +161,135 @@ namespace UnitTests.Web.Tests.Controllers
             _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
             // ACT
-            var result = await _sut.When(id);
+            var result = await _sut.PartyInformation(id);
 
             // ASSERT
-            var viewModel = GetViewModel<WhenViewModel>(result);
+            var viewModel = GetViewModel<PartyInformationViewModel>(result);
             viewModel.PartyDate.Should().BeNull();
             viewModel.PartyStartTime.Should().BeNull();
             viewModel.PartyEndTime.Should().BeNull();
         }
 
         [Fact]
-        public async Task When_Get_GivenIfPartyHasPartyDate_PartyTimeShouldBeMappedCorrectly()
+        public async Task PartyInformation_Get_GivenIfPartyHasPartyDate_PartyTimeShouldBeMappedCorrectly()
         {
             // ARRANGE
             var id = "PKFN";
             var startTime = DateTime.Parse("2017-10-30 13:00");
             var endTime = DateTime.Parse("2017-10-30 15:00");
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", StartTime = startTime, EndTime = endTime};
+            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle", StartTime = startTime, EndTime = endTime };
             _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
             // ACT
-            var result = await _sut.When(id);
+            var result = await _sut.PartyInformation(id);
 
             // ASSERT
-            var viewModel = GetViewModel<WhenViewModel>(result);
+            var viewModel = GetViewModel<PartyInformationViewModel>(result);
             viewModel.PartyDate.Should().Be(startTime.Date);
             viewModel.PartyStartTime.Should().Be(startTime);
             viewModel.PartyEndTime.Should().Be(endTime);
         }
-
+        
         [Fact]
-        public async Task When_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        public async Task PartyInformation_Post_GivenInvalidModel_ShouldReturnViewWithModel()
         {
             // ARRANGE
-            var model = new WhenViewModel();
+            var model = new PartyInformationViewModel();
             AddModelStateError(_sut);
 
             // ACT
-            var result = await _sut.When(model);
+            var result = await _sut.PartyInformation(model);
 
             // ASSERT
             _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
-            GetViewModel<WhenViewModel>(result).Should().Be(model);
+            GetViewModel<PartyInformationViewModel>(result).Should().Be(model);
         }
 
         [Fact]
-        public async Task When_Post_GivenValidModel_ShouldGetPartyFromRepository()
+        public async Task PartyInformation_Post_GivenValidModel_ShouldGetPartyFromRepository()
         {
             // ARRANGE
-            var model = new WhenViewModel { Id = "PKFN", PartyDate = DateTime.Parse("2017-10-17"), PartyStartTime = DateTime.Parse("2017-10-17 13:00"), PartyEndTime = DateTime.Parse("2017-10-17 15:00") };
+            var model = new PartyInformationViewModel { PartyId = "PKFN", StreetAddress = "Korsvägen 11" };
 
             // ACT
-            await _sut.When(model);
+            await _sut.PartyInformation(model);
 
             // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(model.Id), Times.Once);
+            _mockPartyRepository.Verify(m => m.GetById(model.PartyId), Times.Once);
         }
 
         [Fact]
-        public async Task When_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
+        public async Task PartyInformation_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
         {
             // ARRANGE
-            var model = new WhenViewModel { Id = "PKFN", PartyDate = DateTime.Parse("2017-10-17"), PartyStartTime = DateTime.Parse("2017-10-17 13:00"), PartyEndTime = DateTime.Parse("2017-10-17 15:00") };
+            var model = new PartyInformationViewModel { PartyId = "PKFN", StreetAddress = "Korsvägen 11" };
 
             // ACT
-            var result = await _sut.When(model);
-
-            // ASSERT
-            result.Should().BeOfType<NotFoundResult>();
-        }
-
-        [Fact]
-        public async Task When_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
-        {
-            // ARRANGE
-            var model = new WhenViewModel { Id = "PKFN", PartyDate = DateTime.Parse("2017-10-17"), PartyStartTime = DateTime.Parse("2017-10-17 13:00"), PartyEndTime = DateTime.Parse("2017-10-17 15:00") };
-            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
-            {
-                Id = model.Id,
-                StartTime = model.PartyStartTime,
-                EndTime = model.PartyEndTime
-            }));
-
-            // ACT
-            var result = await _sut.When(model);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Never);
-            result.Should().BeOfType<RedirectToActionResult>();
-        }
-
-        [Fact]
-        public async Task When_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
-        {
-            // ARRANGE
-            var model = new WhenViewModel { Id = "PKFN", PartyDate = DateTime.Parse("2017-10-17"), PartyStartTime = DateTime.Parse("2017-10-17 13:00"), PartyEndTime = DateTime.Parse("2017-10-17 15:00") };
-            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
-            {
-                Id = model.Id,
-                StartTime = model.PartyStartTime.Value.AddDays(2),
-                EndTime = model.PartyEndTime.Value.AddDays(2)
-            }));
-
-            // ACT
-            var result = await _sut.When(model);
-
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Once);
-            result.Should().BeOfType<RedirectToActionResult>();
-        }
-
-
-
-        [Fact]
-        public async Task Which_Get_GivenNullFromRepository_ShouldReturnNotFound()
-        {
-            // ARRANGE
-
-            // ACT
-            var result = await _sut.Which("PKFN");
+            var result = await _sut.PartyInformation(model);
 
             // ASSERT
             result.Should().BeOfType<NotFoundResult>();
         }
 
         [Fact]
-        public async Task Which_Get_ShouldGetPartyFromRepository()
+        public async Task PartyInformation_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
+        {
+            // ARRANGE
+            var model = new PartyInformationViewModel { PartyId = "PKFN", StreetAddress = "Korsvägen 11" };
+            _mockPartyRepository.Setup(m => m.GetById(model.PartyId)).Returns(Task.FromResult(new Party { Id = model.PartyId, StreetAddress = model.StreetAddress }));
+
+            // ACT
+            var result = await _sut.PartyInformation(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.PartyId)), Times.Never);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+        [Fact]
+        public async Task PartyInformation_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
+        {
+            // ARRANGE
+            var model = new PartyInformationViewModel { PartyId = "PKFN", StreetAddress = "Korsvägen 11" };
+            _mockPartyRepository.Setup(m => m.GetById(model.PartyId)).Returns(Task.FromResult(new Party { Id = model.PartyId }));
+
+            // ACT
+            var result = await _sut.PartyInformation(model);
+
+            // ASSERT
+            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.PartyId)), Times.Once);
+            result.Should().BeOfType<RedirectToActionResult>();
+        }
+
+
+
+        [Fact]
+        public async Task Guests_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        {
+            // ARRANGE
+
+            // ACT
+            var result = await _sut.Guests("PKFN");
+
+            // ASSERT
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task Guests_Get_ShouldGetPartyFromRepository()
         {
             // ARRANGE
             var id = "PKFN";
 
             // ACT
-            await _sut.Which(id);
+            await _sut.Guests(id);
 
             // ASSERT
             _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
         }
 
         [Fact]
-        public async Task Which_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        public async Task Guests_Get_ShouldGetPartyFromRepository_AndReturnModel()
         {
             // ARRANGE
             var id = "PKFN";
@@ -412,176 +297,179 @@ namespace UnitTests.Web.Tests.Controllers
             _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
             // ACT
-            var result = await _sut.Which(id);
+            var result = await _sut.Guests(id);
 
             // ASSERT
-            GetViewModel<WhichViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+            GetViewModel<GuestsViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
 
+        
 
 
 
-        [Fact]
-        public async Task Rsvp_Get_GivenNullFromRepository_ShouldReturnNotFound()
-        {
-            // ARRANGE
+        //[Fact]
+        //public async Task Rsvp_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        //{
+        //    // ARRANGE
 
-            // ACT
-            var result = await _sut.Rsvp("PKFN");
+        //    // ACT
+        //    var result = await _sut.Rsvp("PKFN");
 
-            // ASSERT
-            result.Should().BeOfType<NotFoundResult>();
-        }
+        //    // ASSERT
+        //    result.Should().BeOfType<NotFoundResult>();
+        //}
 
-        [Fact]
-        public async Task Rsvp_Get_ShouldGetPartyFromRepository()
-        {
-            // ARRANGE
-            var id = "PKFN";
+        //[Fact]
+        //public async Task Rsvp_Get_ShouldGetPartyFromRepository()
+        //{
+        //    // ARRANGE
+        //    var id = "PKFN";
 
-            // ACT
-            await _sut.Rsvp(id);
+        //    // ACT
+        //    await _sut.Rsvp(id);
 
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
-        }
+        //    // ASSERT
+        //    _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
+        //}
 
-        [Fact]
-        public async Task Rsvp_Get_ShouldGetPartyFromRepository_AndReturnModel()
-        {
-            // ARRANGE
-            var id = "PKFN";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
-            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+        //[Fact]
+        //public async Task Rsvp_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        //{
+        //    // ARRANGE
+        //    var id = "PKFN";
+        //    var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+        //    _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
-            // ACT
-            var result = await _sut.Rsvp(id);
+        //    // ACT
+        //    var result = await _sut.Rsvp(id);
 
-            // ASSERT
-            GetViewModel<RsvpViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
-        }
+        //    // ASSERT
+        //    GetViewModel<RsvpViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+        //}
 
-        [Fact]
-        public async Task Rsvp_Post_GivenInvalidModel_ShouldReturnViewWithModel()
-        {
-            // ARRANGE
-            var model = new RsvpViewModel();
-            AddModelStateError(_sut);
+        //[Fact]
+        //public async Task Rsvp_Post_GivenInvalidModel_ShouldReturnViewWithModel()
+        //{
+        //    // ARRANGE
+        //    var model = new RsvpViewModel();
+        //    AddModelStateError(_sut);
 
-            // ACT
-            var result = await _sut.Rsvp(model);
+        //    // ACT
+        //    var result = await _sut.Rsvp(model);
 
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
-            GetViewModel<RsvpViewModel>(result).Should().Be(model);
-        }
+        //    // ASSERT
+        //    _mockPartyRepository.Verify(m => m.AddOrUpdate(It.IsAny<Party>()), Times.Never);
+        //    GetViewModel<RsvpViewModel>(result).Should().Be(model);
+        //}
 
-        [Fact]
-        public async Task Rsvp_Post_GivenValidModel_ShouldGetPartyFromRepository()
-        {
-            // ARRANGE
-            var model = new RsvpViewModel { Id = "PKFN" };
+        //[Fact]
+        //public async Task Rsvp_Post_GivenValidModel_ShouldGetPartyFromRepository()
+        //{
+        //    // ARRANGE
+        //    var model = new RsvpViewModel { Id = "PKFN" };
 
-            // ACT
-            await _sut.Rsvp(model);
+        //    // ACT
+        //    await _sut.Rsvp(model);
 
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(model.Id), Times.Once);
-        }
+        //    // ASSERT
+        //    _mockPartyRepository.Verify(m => m.GetById(model.Id), Times.Once);
+        //}
 
-        [Fact]
-        public async Task Rsvp_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
-        {
-            // ARRANGE
-            var model = new RsvpViewModel { Id = "PKFN" };
+        //[Fact]
+        //public async Task Rsvp_Post_GivenValidModel_ButNoPartyInRepo_ShouldReturnNotFound()
+        //{
+        //    // ARRANGE
+        //    var model = new RsvpViewModel { Id = "PKFN" };
 
-            // ACT
-            var result = await _sut.Rsvp(model);
+        //    // ACT
+        //    var result = await _sut.Rsvp(model);
 
-            // ASSERT
-            result.Should().BeOfType<NotFoundResult>();
-        }
+        //    // ASSERT
+        //    result.Should().BeOfType<NotFoundResult>();
+        //}
 
-        [Fact]
-        public async Task Rsvp_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
-        {
-            // ARRANGE
-            var model = new RsvpViewModel { Id = "PKFN", RsvpDate = DateTime.Parse("2017-10-17"), RsvpDescription = "" };
-            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
-            {
-                Id = model.Id,
-                RsvpDate = model.RsvpDate,
-                RsvpDescription = model.RsvpDescription
-            }));
+        //[Fact]
+        //public async Task Rsvp_Post_GivenValidModel_ButNoChanges_ShouldNotCallRepository_ButReturnRedirect()
+        //{
+        //    // ARRANGE
+        //    var model = new RsvpViewModel { Id = "PKFN", RsvpDate = DateTime.Parse("2017-10-17"), RsvpDescription = "" };
+        //    _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
+        //    {
+        //        Id = model.Id,
+        //        RsvpDate = model.RsvpDate,
+        //        RsvpDescription = model.RsvpDescription
+        //    }));
 
-            // ACT
-            var result = await _sut.Rsvp(model);
+        //    // ACT
+        //    var result = await _sut.Rsvp(model);
 
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Never);
-            result.Should().BeOfType<RedirectToActionResult>();
-        }
+        //    // ASSERT
+        //    _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Never);
+        //    result.Should().BeOfType<RedirectToActionResult>();
+        //}
 
-        [Fact]
-        public async Task Rsvp_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
-        {
-            // ARRANGE
-            var model = new RsvpViewModel { Id = "PKFN", RsvpDate = DateTime.Parse("2017-10-17"), RsvpDescription = "" };
-            _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
-            {
-                Id = model.Id,
-                RsvpDate = model.RsvpDate.Value.AddDays(1),
-                RsvpDescription = model.RsvpDescription
-            }));
+        //[Fact]
+        //public async Task Rsvp_Post_GivenValidModel_ShouldCallRepository_AndReturnRedirect()
+        //{
+        //    // ARRANGE
+        //    var model = new RsvpViewModel { Id = "PKFN", RsvpDate = DateTime.Parse("2017-10-17"), RsvpDescription = "" };
+        //    _mockPartyRepository.Setup(m => m.GetById(model.Id)).Returns(Task.FromResult(new Party
+        //    {
+        //        Id = model.Id,
+        //        RsvpDate = model.RsvpDate.Value.AddDays(1),
+        //        RsvpDescription = model.RsvpDescription
+        //    }));
 
-            // ACT
-            var result = await _sut.Rsvp(model);
+        //    // ACT
+        //    var result = await _sut.Rsvp(model);
 
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Once);
-            result.Should().BeOfType<RedirectToActionResult>();
-        }
+        //    // ASSERT
+        //    _mockPartyRepository.Verify(m => m.AddOrUpdate(It.Is<Party>(p => p.Id == model.Id)), Times.Once);
+        //    result.Should().BeOfType<RedirectToActionResult>();
+        //}
 
 
 
-        [Fact]
-        public async Task Review_Get_GivenNullFromRepository_ShouldReturnNotFound()
-        {
-            // ARRANGE
+        //[Fact]
+        //public async Task Review_Get_GivenNullFromRepository_ShouldReturnNotFound()
+        //{
+        //    // ARRANGE
 
-            // ACT
-            var result = await _sut.Review("PKFN");
+        //    // ACT
+        //    var result = await _sut.Review("PKFN");
 
-            // ASSERT
-            result.Should().BeOfType<NotFoundResult>();
-        }
+        //    // ASSERT
+        //    result.Should().BeOfType<NotFoundResult>();
+        //}
 
-        [Fact]
-        public async Task Review_Get_ShouldGetPartyFromRepository()
-        {
-            // ARRANGE
-            var id = "PKFN";
+        //[Fact]
+        //public async Task Review_Get_ShouldGetPartyFromRepository()
+        //{
+        //    // ARRANGE
+        //    var id = "PKFN";
 
-            // ACT
-            await _sut.Review(id);
+        //    // ACT
+        //    await _sut.Review(id);
 
-            // ASSERT
-            _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
-        }
+        //    // ASSERT
+        //    _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
+        //}
 
-        [Fact]
-        public async Task Review_Get_ShouldGetPartyFromRepository_AndReturnModel()
-        {
-            // ARRANGE
-            var id = "PKFN";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
-            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
+        //[Fact]
+        //public async Task Review_Get_ShouldGetPartyFromRepository_AndReturnModel()
+        //{
+        //    // ARRANGE
+        //    var id = "PKFN";
+        //    var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
+        //    _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
 
-            // ACT
-            var result = await _sut.Review(id);
+        //    // ACT
+        //    var result = await _sut.Review(id);
 
-            // ASSERT
-            GetViewModel<ReviewViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
-        }
+        //    // ASSERT
+        //    GetViewModel<ReviewViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
+        //}
+
+
     }
 }

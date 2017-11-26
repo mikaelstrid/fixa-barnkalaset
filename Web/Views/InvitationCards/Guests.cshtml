@@ -1,17 +1,17 @@
-﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.WhichViewModel
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.GuestsViewModel
 
 @section MetaData
     {
     <meta name="robots" content="noindex">
 }
 
-<div class="ui main container pxl-public-page pxl-public-page--invitation-cards-which">
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards pxl-public-page--invitation-cards-guests invitation-cards-guests">
     <h1 class="ui medium header">Gäster</h1>
     
-    <div class="ui relaxed list">
+    <div class="ui relaxed list invitation-cards-guests__invitations" data-invitations-list>
         @foreach (var invitation in Model.Invitations)
         {
-            <div class="item">
+            <div class="item" data-invitation-id="@invitation.Id">
                 <div class="right floated content">
                     <a data-remove-invitation-button data-invitation-id="@invitation.Id"><i class="large remove icon"></i></a>
                 </div>
@@ -23,39 +23,14 @@
         }
     </div>
 
-    @*<table class="ui table" id="invitationTable">
-        <thead>
-            <tr>
-                <th>Förnamn</th>
-                <th>Efternamn</th>
-                <th>Gatuadress</th>
-                <th>Postnummer</th>
-                <th>Postort</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var invitation in Model.Invitations)
-            {
-                <tr data-invitation-id="@invitation.Id">
-                    <td>@invitation.FirstName</td>
-                    <td>@invitation.LastName</td>
-                    <td>@invitation.StreetAddress</td>
-                    <td>@invitation.PostalCode</td>
-                    <td>@invitation.PostalCity</td>
-                    <td><a data-remove-invitation-button data-invitation-id="@invitation.Id"><i class="trash outline link icon"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
     <div class="ui tiny error message hidden" id="removeErrorMessage">Det gick inte att ta bort gästen, försök igen.</div>
 
     <button class="ui positive labeled icon button" id="addGuestButton"><i class="plus icon"></i>Lägg till</button>
 
-    <a href="@Url.Action("Rsvp", null, new { partyId = Model.Id })" class="ui button right floated">Fortsätt</a>
+    <a href="@Url.Action("Rsvp", null, new { partyId = Model.PartyId })" class="ui button right floated">Fortsätt</a>
 
 
-    <div class="ui tiny modal" data-party-id="@Model.Id">
+    <div class="ui tiny modal" data-party-id="@Model.PartyId">
         <i class="close icon"></i>
         <div class="header">
             Lägg till gäst

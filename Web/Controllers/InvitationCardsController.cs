@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -36,179 +34,16 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         {
             return View();
         }
-
-
-
-        [Route("vem-fyller-ar")]
-        public IActionResult Who()
-        {
-            return View();
-        }
-
-        [Route("vem-fyller-ar")]
-        [HttpPost]
-        public async Task<IActionResult> Who(WhoViewModel model)
-        {
-            _logger.LogDebug("Who POST: called with model {Model}", JsonConvert.SerializeObject(model));
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Who POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
-                return View(model);
-            }
-
-            var party = new Party {NameOfBirthdayChild = model.NameOfBirthdayChild};
-            await _partyRepository.AddOrUpdate(party);
-            _logger.LogInformation("Who POST: Created invitation card {Party}", JsonConvert.SerializeObject(party));
-
-            return RedirectToAction("Where", new { partyId = party.Id });
-        }
-
-
-
-        [Route("{partyId}/var-ar-kalaset")]
-        public async Task<IActionResult> Where(string partyId)
-        {
-            var party = await _partyRepository.GetById(partyId);
-            if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, WhereViewModel>(party);
-            return View(viewModel);
-        }
-
-        [Route("{partyId}/var-ar-kalaset")]
-        [HttpPost]
-        public async Task<IActionResult> Where(WhereViewModel model)
-        {
-            return await UpdatePartyInformation(nameof(Where), nameof(When), model,
-                (p, m) => p.PartyType != m.LocationName
-                          || p.LocationName != m.LocationName
-                          || p.StreetAddress != m.StreetAddress
-                          || p.PostalCode != m.PostalCode
-                          || p.PostalCity != m.PostalCity,
-                (m, p) =>
-                {
-                    p.PartyType = m.PartyType;
-                    p.LocationName = m.LocationName;
-                    p.StreetAddress = m.StreetAddress;
-                    p.PostalCode = m.PostalCode;
-                    p.PostalCity = m.PostalCity;
-                }
-            );
-        }
-
-
-
-        [Route("{partyId}/nar-ar-kalaset")]
-        public async Task<IActionResult> When(string partyId)
-        {
-            var party = await _partyRepository.GetById(partyId);
-            if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, WhenViewModel>(party);
-            return View(viewModel);
-        }
-
-        [Route("{partyId}/nar-ar-kalaset")]
-        [HttpPost]
-        public async Task<IActionResult> When(WhenViewModel model)
-        {
-            return await UpdatePartyInformation(nameof(When), nameof(Which), model,
-                (p, m) => p.StartTime != ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime)
-                       || p.EndTime != ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime),
-                (m, p) =>
-                {
-                    p.StartTime = ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime);
-                    p.EndTime = ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime);
-                }
-            );
-        }
-
-        private static DateTime? ConcatenateDateAndTime(DateTime? date, DateTime? time)
-        {
-            return date.HasValue && time.HasValue
-                ? new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hour, time.Value.Minute, 0)
-                : (DateTime?) null;
-        }
         
-
-        
-        [Route("{partyId}/vilka-ska-ni-bjuda")]
-        public async Task<IActionResult> Which(string partyId)
-        {
-            var party = await _partyRepository.GetById(partyId);
-            if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, WhichViewModel>(party);
-            return View(viewModel);
-        }
-
-
-
-        [Route("{partyId}/osa")]
-        public async Task<IActionResult> Rsvp(string partyId)
-        {
-            var party = await _partyRepository.GetById(partyId);
-            if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, RsvpViewModel>(party);
-            return View(viewModel);
-        }
-
-        [Route("{partyId}/osa")]
-        [HttpPost]
-        public async Task<IActionResult> Rsvp(RsvpViewModel model)
-        {
-            return await UpdatePartyInformation(nameof(Rsvp), nameof(ChooseTemplate), model,
-                (p, m) => p.RsvpDate != m.RsvpDate
-                       || p.RsvpDescription != m.RsvpDescription,
-                (m, p) =>
-                {
-                    p.RsvpDate = m.RsvpDate;
-                    p.RsvpDescription = m.RsvpDescription;
-                }
-            );
-        }
-
-
-        [Route("{partyId}/valj-mall")]
-        public async Task<IActionResult> ChooseTemplate(string partyId)
-        {
-            var party = await _partyRepository.GetById(partyId);
-            if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, ChooseTemplateViewModel>(party);
-
-            var availableTemplates = await _invitationCardTemplateRepository.GetAll();
-            viewModel.AvailableTemplates = _mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
-            
-            return View(viewModel);
-        }
-
-        //[Route("{partyId}/valj-mall")]
-        //[HttpPost]
-        //public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
-        //{
-        //    return await UpdatePartyInformation(nameof(ChooseTemplate), nameof(Review), model,
-        //        (p, m) => p.InvitationCardTemplateId != m.SelectedTemplateId,
-        //        (m, p) => { p.InvitationCardTemplateId = m.SelectedTemplateId; }
-        //    );
-        //}
-
-
-        [Route("{partyId}/granska")]
-        public async Task<IActionResult> Review(string partyId)
-        {
-            var party = await _partyRepository.GetById(partyId);
-            if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
-            return View(viewModel);
-        }
-
-
 
 
         [Route("valj-mall")]
         public async Task<IActionResult> ChooseTemplate()
         {
-            var viewModel = new ChooseTemplateViewModel();
-            var availableTemplates = await _invitationCardTemplateRepository.GetAll();
-            viewModel.AvailableTemplates = _mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
+            var viewModel = new ChooseTemplateViewModel
+            {
+                AvailableTemplates = await GetAvailableTemplates(_invitationCardTemplateRepository, _mapper)
+            };
             return View(viewModel);
         }
 
@@ -216,35 +51,131 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
         {
-            return RedirectToAction("PartyInformation");
+            _logger.LogDebug("ChooseTemplate POST: called with model {Model}", JsonConvert.SerializeObject(model));
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("ChooseTemplate POST: Invalid model state {ModelState}", JsonConvert.SerializeObject(ModelState));
+                model.AvailableTemplates = await GetAvailableTemplates(_invitationCardTemplateRepository, _mapper);
+                return View(model);
+            }
+
+            var party = new Party { InvitationCardTemplateId = model.SelectedTemplateId };
+            await _partyRepository.AddOrUpdate(party);
+            _logger.LogInformation("ChooseTemplate POST: Created entity {Party}", JsonConvert.SerializeObject(party));
+
+            return RedirectToAction("PartyInformation", new { partyId = party.Id });
         }
 
-        [Route("kalas-info")]
-        public IActionResult PartyInformation()
+        private static async Task<IEnumerable<ChooseTemplateViewModel.TemplateViewModel>> GetAvailableTemplates(IInvitationCardTemplateRepository invitationCardTemplateRepository, IMapper mapper)
         {
-            return View();
+            var availableTemplates = await invitationCardTemplateRepository.GetAll();
+            return mapper.Map<IEnumerable<InvitationCardTemplate>, IEnumerable<ChooseTemplateViewModel.TemplateViewModel>>(availableTemplates);
         }
 
-        [Route("kalas-info")]
+
+
+        [Route("{partyId}/kalas-info")]
+        public async Task<IActionResult> PartyInformation(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, PartyInformationViewModel>(party);
+            return View(viewModel);
+        }
+
+        [Route("{partyId}/kalas-info")]
         [HttpPost]
-        public IActionResult PartyInformation(PartyInformationViewModel model)
+        public async Task<IActionResult> PartyInformation(PartyInformationViewModel model)
         {
-            return RedirectToAction("Guests");
+            return await UpdatePartyInformation(nameof(PartyInformation), nameof(Guests), model,
+                (p, m) =>
+                    p.NameOfBirthdayChild != m.NameOfBirthdayChild
+                    || p.PartyType != m.LocationName
+                    || p.LocationName != m.LocationName
+                    || p.StreetAddress != m.StreetAddress
+                    || p.PostalCode != m.PostalCode
+                    || p.PostalCity != m.PostalCity
+                    || p.StartTime != ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime)
+                    || p.EndTime != ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime),
+                (m, p) =>
+                {
+                    p.NameOfBirthdayChild = m.NameOfBirthdayChild;
+                    p.LocationName = m.LocationName;
+                    p.StreetAddress = m.StreetAddress;
+                    p.PostalCode = m.PostalCode;
+                    p.PostalCity = m.PostalCity;
+                    p.StartTime = ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime);
+                    p.EndTime = ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime);
+                }
+            );
         }
         
-        [Route("gaster")]
-        public IActionResult Guests()
+        private static DateTime? ConcatenateDateAndTime(DateTime? date, DateTime? time)
         {
-            return View(new WhichViewModel { Invitations = new List<WhichViewModel.InvitationViewModel>
-            {
-                new WhichViewModel.InvitationViewModel { Id = "1", FirstName = "Tuva", LastName = "Lindberg", StreetAddress = "Fjäderskrudsvägen 27", PostalCode = "437 38", PostalCity = "Lindome"},
-                new WhichViewModel.InvitationViewModel { Id = "1", FirstName = "Tuva", LastName = "Lindberg", StreetAddress = "Fjäderskrudsvägen 27", PostalCode = "437 38", PostalCity = "Lindome"}
-            }
-            });
+            return date.HasValue && time.HasValue
+                ? new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, time.Value.Hour, time.Value.Minute, 0)
+                : (DateTime?)null;
+        }
+
+        
+
+        [Route("{partyId}/gaster")]
+        public async Task<IActionResult> Guests(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, GuestsViewModel>(party);
+            return View(viewModel);
         }
 
 
+
+
+
+
+
+
+        //[Route("{partyId}/osa")]
+        //public async Task<IActionResult> Rsvp(string partyId)
+        //{
+        //    var party = await _partyRepository.GetById(partyId);
+        //    if (party == null) return NotFound();
+        //    var viewModel = _mapper.Map<Party, RsvpViewModel>(party);
+        //    return View(viewModel);
+        //}
+
+        //[Route("{partyId}/osa")]
+        //[HttpPost]
+        //public async Task<IActionResult> Rsvp(RsvpViewModel model)
+        //{
+        //    return await UpdatePartyInformation(nameof(Rsvp), nameof(ChooseTemplate), model,
+        //        (p, m) => p.RsvpDate != m.RsvpDate
+        //               || p.RsvpDescription != m.RsvpDescription,
+        //        (m, p) =>
+        //        {
+        //            p.RsvpDate = m.RsvpDate;
+        //            p.RsvpDescription = m.RsvpDescription;
+        //        }
+        //    );
+        //}
+
+
+
+
+        //[Route("{partyId}/granska")]
+        //public async Task<IActionResult> Review(string partyId)
+        //{
+        //    var party = await _partyRepository.GetById(partyId);
+        //    if (party == null) return NotFound();
+        //    var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
+        //    return View(viewModel);
+        //}
+
         //[Route("{id:regex([[\\w\\d]]{{4}})}")]
+
+        //[Route("kalas-info")]
+        //[HttpPost]
         //public IActionResult Index(string id)
         //{
         //    return View();
@@ -262,7 +193,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 return View(model);
             }
 
-            var existingParty = await _partyRepository.GetById(model.Id);
+            var existingParty = await _partyRepository.GetById(model.PartyId);
             if (existingParty == null)
                 return NotFound();
 

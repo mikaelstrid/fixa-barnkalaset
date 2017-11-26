@@ -1,4 +1,4 @@
-export class WhichInvitationCardsPage {
+export class GuestsInvitationCardsPage {
     initPage() {
         $('.ui.form')
             .form({
@@ -67,7 +67,7 @@ export class WhichInvitationCardsPage {
                 id: data,
                 guest: guestModel
             };
-            this.appendAddedInvitationToTable(invitation);
+            this.appendAddedInvitationToList(invitation);
             this.clearAddGuestForm();
         })
             .fail(() => {
@@ -87,20 +87,25 @@ export class WhichInvitationCardsPage {
             $('#removeErrorMessage').show();
         });
     }
-    appendAddedInvitationToTable(invitation) {
-        $('#invitationTable > tbody:last-child').append(`
-            <tr data-invitation-id='${invitation.id}'>
-                <td>${invitation.guest.firstName}</td>
-                <td>${invitation.guest.lastName}</td>
-                <td>${invitation.guest.streetAddress}</td>
-                <td>${invitation.guest.postalCode}</td> 
-                <td>${invitation.guest.postalCity}</td>
-                <td><a id="removeInvitationButton" data-invitation-id="${invitation.id}"><i class="trash outline link icon"></i></a></td>
-            </tr>
+    appendAddedInvitationToList(invitation) {
+        $('[data-invitations-list]').append(`
+            <div class="item" data-invitation-id='${invitation.id}'>
+                <div class="right floated content">
+                    <a data-remove-invitation-button data-invitation-id="${invitation.id}"><i class="large remove icon"></i></a>
+                </div>
+                <div class="content">
+                    <div class="header">${invitation.guest.firstName} ${invitation.guest.lastName}</div>
+                    <div class="description">${invitation.guest.streetAddress}, ${invitation.guest.postalCode} ${invitation.guest.postalCity}</div>
+                </div>
+            </div>
         `);
+        $(`[data-remove-invitation-button][data-invitation-id="${invitation.id}"]`).click(event => {
+            let invitationId = $(event.currentTarget).data('invitation-id');
+            this.removeInvitation(invitationId);
+        });
     }
     removeInvitationFromTable(invitationId) {
-        $('#invitationTable tr[data-invitation-id="' + invitationId + '"]').remove();
+        $('[data-invitations-list] .item[data-invitation-id="' + invitationId + '"]').remove();
     }
     clearAddGuestForm() {
         let $form = $(".ui.form");

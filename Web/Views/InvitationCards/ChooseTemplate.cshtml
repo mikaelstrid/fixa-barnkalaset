@@ -2,10 +2,10 @@
 
 @section MetaData
 {
-    <meta name="robots" content="noindex">
+    <meta name="robots" content="noindex,nofollow">
 }
 
-<div class="ui main container pxl-public-page--invitation-cards-choose-template">
+<div class="ui main container pxl-public-page--invitation-cards">
     <h1 class="ui medium header">Välj mall</h1>
 
     <div class="ui stackable grid">
@@ -20,7 +20,6 @@
                         <div class="center aligned">
                             <form method="post">
                                 <input type="hidden" name="SelectedTemplateId" value="@template.Id" />
-                                <input type="hidden" name="Id" value="@Model.Id" />
                                 <button type="submit" class="ui button">Välj mall</button>
                             </form>
                         </div>

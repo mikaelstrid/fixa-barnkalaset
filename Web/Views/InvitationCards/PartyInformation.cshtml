@@ -5,11 +5,13 @@
     <meta name="robots" content="noindex">
 }
 
-<div class="ui main container pxl-public-page pxl-public-page--invitation-cards-party-information">
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards invitation-cards-party-information">
 
     <h1 class="ui medium header">Kalasinformation</h1>
 
     <form class="ui form unstackable" asp-action="PartyInformation">
+        @Html.HiddenFor(m => m.PartyId)
+
         <div class="field" pf-validation-for="NameOfBirthdayChild" pf-validationerror-class="error">
             <label asp-for="NameOfBirthdayChild"></label>
             <input type="text" asp-for="NameOfBirthdayChild" placeholder="t.ex. Kalles eller Lisas">
@@ -21,7 +23,7 @@
             <input type="date" asp-for="PartyDate">
             <span asp-validation-for="PartyDate"></span>
         </div>
-        
+
         <div class="fields">
             <div class="six wide field" pf-validation-for="PartyStartTime" pf-validationerror-class="error">
                 <label asp-for="PartyStartTime"></label>
@@ -35,7 +37,7 @@
                 <span asp-validation-for="PartyEndTime"></span>
             </div>
         </div>
-        
+
         <div class="field" pf-validation-for="LocationName" pf-validationerror-class="error">
             <label asp-for="LocationName"></label>
             <input type="text" asp-for="LocationName" placeholder="t.ex. på Universeum">

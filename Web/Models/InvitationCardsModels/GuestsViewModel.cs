@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 {
-    public class WhichViewModel : InvitationViewModelBase
+    public class GuestsViewModel : InvitationViewModelBase
     {
         public IEnumerable<InvitationViewModel> Invitations { get; set; }
         

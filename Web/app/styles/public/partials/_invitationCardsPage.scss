@@ -1,14 +1,11 @@
 ﻿@import "../modules/_variables";
 
-.pxl-public-page--invitation-cards-choose-template,
-.pxl-public-page--invitation-cards-party-information {
+.pxl-public-page--invitation-cards {
     padding-top: 2rem;
 }
 
-.pxl-public-page--invitation-cards-party-information {
+.invitation-cards-party-information {
     @media only screen and (max-width: $largestMobileScreen) {
-        padding-top: 2rem;
-
         .ui.form .fields {
             margin-bottom: 1em;
         }
@@ -16,5 +13,21 @@
         .ui.form button[type="submit"] {
             margin-top: 2em;
         }
+    }
+}
+
+.invitation-cards-guests {
+    .ui.list.invitation-cards-guests__invitations {
+        margin-bottom: 2em;
+
+        .description {
+            @media only screen and (max-width: $largestMobileScreen) {
+                font-size: 0.8em;
+            }
+        }
+    }
+
+    .ui.modal .ui.error.message.hidden {
+        display: none;
     }
 }

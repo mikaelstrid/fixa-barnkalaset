@@ -2,12 +2,11 @@
 
 namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
 {
-    public class ChooseTemplateViewModel : InvitationViewModelBase
+    public class ChooseTemplateViewModel
     {
         public IEnumerable<TemplateViewModel> AvailableTemplates { get; set; }
 
         public int SelectedTemplateId { get; set; }
-
 
 
         public class TemplateViewModel

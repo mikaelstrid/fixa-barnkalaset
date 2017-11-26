@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44369/inbjudningskort/vem-fyller-ar",
+      "applicationUrl": "https://localhost:44369/inbjudningskort/valj-mall",
       "sslPort": 44369
     }
   },

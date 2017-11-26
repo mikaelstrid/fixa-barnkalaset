@@ -97,7 +97,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                     || p.PostalCode != m.PostalCode
                     || p.PostalCity != m.PostalCity
                     || p.StartTime != ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime)
-                    || p.EndTime != ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime),
+                    || p.EndTime != ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime)
+                    || p.RsvpDate != m.RsvpDate
+                    || p.RsvpDescription != m.RsvpDescription,
                 (m, p) =>
                 {
                     p.NameOfBirthdayChild = m.NameOfBirthdayChild;
@@ -107,6 +109,8 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                     p.PostalCity = m.PostalCity;
                     p.StartTime = ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime);
                     p.EndTime = ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime);
+                    p.RsvpDate = m.RsvpDate;
+                    p.RsvpDescription = m.RsvpDescription;
                 }
             );
         }
@@ -129,57 +133,25 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
+        
 
+        [Route("{partyId}/granska")]
+        public async Task<IActionResult> Review(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
+            var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
+            return View(viewModel);
+        }
 
+        [Route("{id:regex([[\\w\\d]]{{4}})}")]
 
-
-
-
-
-        //[Route("{partyId}/osa")]
-        //public async Task<IActionResult> Rsvp(string partyId)
-        //{
-        //    var party = await _partyRepository.GetById(partyId);
-        //    if (party == null) return NotFound();
-        //    var viewModel = _mapper.Map<Party, RsvpViewModel>(party);
-        //    return View(viewModel);
-        //}
-
-        //[Route("{partyId}/osa")]
-        //[HttpPost]
-        //public async Task<IActionResult> Rsvp(RsvpViewModel model)
-        //{
-        //    return await UpdatePartyInformation(nameof(Rsvp), nameof(ChooseTemplate), model,
-        //        (p, m) => p.RsvpDate != m.RsvpDate
-        //               || p.RsvpDescription != m.RsvpDescription,
-        //        (m, p) =>
-        //        {
-        //            p.RsvpDate = m.RsvpDate;
-        //            p.RsvpDescription = m.RsvpDescription;
-        //        }
-        //    );
-        //}
-
-
-
-
-        //[Route("{partyId}/granska")]
-        //public async Task<IActionResult> Review(string partyId)
-        //{
-        //    var party = await _partyRepository.GetById(partyId);
-        //    if (party == null) return NotFound();
-        //    var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
-        //    return View(viewModel);
-        //}
-
-        //[Route("{id:regex([[\\w\\d]]{{4}})}")]
-
-        //[Route("kalas-info")]
-        //[HttpPost]
-        //public IActionResult Index(string id)
-        //{
-        //    return View();
-        //}
+        [Route("kalas-info")]
+        [HttpPost]
+        public IActionResult Index(string id)
+        {
+            return View();
+        }
 
 
 

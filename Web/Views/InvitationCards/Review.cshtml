@@ -1,16 +1,12 @@
-﻿@*@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ReviewViewModel
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ReviewViewModel
 
-<div class="ui main container pxl-public-page">
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards">
     <div class="ui main container text">
 
-        <h1>Skicka inbjudningskort, steg 2 av X</h1>
+        <h1 class="ui medium header">Granska uppgifterna</h1>
         
-        <h2>Granska uppgifterna</h2>
-        
-        <form class="ui form" asp-action="Where" asp-route-partyId="@Model.Id">
-            @Html.HiddenFor(m => m.Id)
-
-            <button class="ui secondary button right floated" type="submit">Fortsätt</button>
+        <form class="ui form" method="get" action="@Url.Action("PartyInformation", new { partyId = Model.PartyId })">
+            <button class="ui secondary button" type="submit">Fortsätt</button>
         </form>
     </div>
-</div>*@
+</div>

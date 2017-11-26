@@ -63,6 +63,18 @@
                 <span asp-validation-for="PostalCity"></span>
             </div>
         </div>
+        
+        <div class="field" pf-validation-for="RsvpDate" pf-validationerror-class="error">
+            <label asp-for="RsvpDate"></label>
+            <input type="date" asp-for="RsvpDate">
+            <span asp-validation-for="RsvpDate"></span>
+        </div>
+
+        <div class="field" pf-validation-for="RsvpDescription" pf-validationerror-class="error">
+            <label asp-for="RsvpDescription"></label>
+            <textarea type="text" asp-for="RsvpDescription" placeholder="t.ex. &quot;via SMS 070-123 45 67&quot; eller &quot;via telefon/SMS på 070-123 45 67 eller e-post karin@@gmail.com.&quot;"></textarea>
+            <span asp-validation-for="RsvpDescription"></span>
+        </div>
 
         <button class="fluid ui button" type="submit">Fortsätt</button>
     </form>

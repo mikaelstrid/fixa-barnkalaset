@@ -19,21 +19,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
             CreateMap<BlogPost, BlogPostsIndexViewModel.BlogPostViewModel>();
             CreateMap<BlogPost, BlogPostDetailsViewModel>();
-
-            //CreateMap<Party, RsvpViewModel>();
-            //CreateMap<Party, ReviewViewModel>()
-            //    .ForMember(
-            //        dest => dest.PartyDate,
-            //        opt => opt.MapFrom(src => src.StartTime.HasValue ? src.StartTime.Value.Date : (DateTime?)null)
-            //    )
-            //    .ForMember(
-            //        dest => dest.PartyStartTime,
-            //        opt => opt.MapFrom(src => src.StartTime)
-            //    )
-            //    .ForMember(
-            //        dest => dest.PartyEndTime,
-            //        opt => opt.MapFrom(src => src.EndTime)
-            //    );
+            
             CreateMap<Party, ChooseTemplateViewModel>();
             CreateMap<InvitationCardTemplate, ChooseTemplateViewModel.TemplateViewModel>();
             CreateMap<Party, PartyInformationViewModel>()
@@ -64,6 +50,21 @@ namespace Pixel.FixaBarnkalaset.Web
                         PostalCity = i.Guest.PostalCity
                     }))
                 );
+            CreateMap<Party, ReviewViewModel>()
+                .ForMember(dest => dest.PartyId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(
+                    dest => dest.PartyDate,
+                    opt => opt.MapFrom(src => src.StartTime.HasValue ? src.StartTime.Value.Date : (DateTime?)null)
+                )
+                .ForMember(
+                    dest => dest.PartyStartTime,
+                    opt => opt.MapFrom(src => src.StartTime)
+                )
+                .ForMember(
+                    dest => dest.PartyEndTime,
+                    opt => opt.MapFrom(src => src.EndTime)
+                );
+
 
             // ADMIN
             CreateMap<Arrangement, Areas.Admin.ViewModels.ArrangementsIndexViewModel.ArrangementViewModel>();

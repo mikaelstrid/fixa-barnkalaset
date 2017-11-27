@@ -25,10 +25,9 @@ namespace Pixel.FixaBarnkalaset.Core
 
         public DateTime? RsvpDate { get; set; }
 
-        public string RsvpDescription { get; set; }
+        public string RsvpPhoneNumber { get; set; }
 
-        //public int? ArrangementId { get; set; }
-        //public Arrangement Arrangement { get; set; }
+        public string RsvpEmail { get; set; }
 
         public List<Invitation> Invitations { get; set; }
 

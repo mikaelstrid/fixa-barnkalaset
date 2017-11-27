@@ -99,7 +99,8 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                     || p.StartTime != ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime)
                     || p.EndTime != ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime)
                     || p.RsvpDate != m.RsvpDate
-                    || p.RsvpDescription != m.RsvpDescription,
+                    || p.RsvpPhoneNumber != m.RsvpPhoneNumber
+                    || p.RsvpEmail != m.RsvpEmail,
                 (m, p) =>
                 {
                     p.NameOfBirthdayChild = m.NameOfBirthdayChild;
@@ -110,7 +111,8 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                     p.StartTime = ConcatenateDateAndTime(m.PartyDate, m.PartyStartTime);
                     p.EndTime = ConcatenateDateAndTime(m.PartyDate, m.PartyEndTime);
                     p.RsvpDate = m.RsvpDate;
-                    p.RsvpDescription = m.RsvpDescription;
+                    p.RsvpPhoneNumber = m.RsvpPhoneNumber;
+                    p.RsvpEmail = m.RsvpEmail;
                 }
             );
         }

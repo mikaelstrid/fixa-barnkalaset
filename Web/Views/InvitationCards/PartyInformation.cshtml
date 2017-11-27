@@ -70,10 +70,16 @@
             <span asp-validation-for="RsvpDate"></span>
         </div>
 
-        <div class="field" pf-validation-for="RsvpDescription" pf-validationerror-class="error">
-            <label asp-for="RsvpDescription"></label>
-            <textarea type="text" asp-for="RsvpDescription" placeholder="t.ex. &quot;via SMS 070-123 45 67&quot; eller &quot;via telefon/SMS på 070-123 45 67 eller e-post karin@@gmail.com.&quot;"></textarea>
-            <span asp-validation-for="RsvpDescription"></span>
+        <div class="field" pf-validation-for="RsvpPhoneNumber" pf-validationerror-class="error">
+            <label asp-for="RsvpPhoneNumber"></label>
+            <input type="text" asp-for="RsvpPhoneNumber">
+            <span asp-validation-for="RsvpPhoneNumber"></span>
+        </div>
+
+        <div class="field" pf-validation-for="RsvpEmail" pf-validationerror-class="error">
+            <label asp-for="RsvpEmail"></label>
+            <input type="text" asp-for="RsvpEmail">
+            <span asp-validation-for="RsvpEmail"></span>
         </div>
 
         <button class="fluid ui button" type="submit">Fortsätt</button>

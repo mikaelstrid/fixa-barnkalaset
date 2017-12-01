@@ -1,12 +1,9 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ReviewViewModel
 
 <div class="ui main container pxl-public-page pxl-public-page--invitation-cards">
-    <div class="ui main container text">
+    <h1 class="ui medium header">Granska uppgifterna</h1>
 
-        <h1 class="ui medium header">Granska uppgifterna</h1>
-        
-        <form class="ui form" method="get" action="@Url.Action("PartyInformation", new { partyId = Model.PartyId })">
-            <button class="ui secondary button" type="submit">Fortsätt</button>
-        </form>
-    </div>
+    <form class="ui form" method="get" action="@Url.Action("PartyInformation", new { partyId = Model.PartyId })">
+        <button class="ui secondary button" type="submit">Fortsätt</button>
+    </form>
 </div>

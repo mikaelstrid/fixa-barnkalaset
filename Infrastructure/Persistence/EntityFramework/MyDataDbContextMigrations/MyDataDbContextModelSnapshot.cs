@@ -178,6 +178,8 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("HtmlTemplateText");
+
                     b.Property<bool>("IsRemoved");
 
                     b.Property<DateTime>("LastUpdatedUtc");

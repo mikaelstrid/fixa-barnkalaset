@@ -19,6 +19,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories
         {
             Logger.LogDebug("GetById: Get {Entity} with id {Id}", typeof(SqlPartyRepository).Name, id);
             return await DbSet
+                .Include(p => p.InvitationCardTemplate)
                 .Include(p => p.Invitations)
                 .ThenInclude(i => i.Guest)
                 .SingleOrDefaultAsync(p => p.Id == id);

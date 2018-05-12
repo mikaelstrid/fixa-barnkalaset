@@ -17,6 +17,7 @@ using Pixel.FixaBarnkalaset.Core.Interfaces;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 using Pixel.FixaBarnkalaset.Infrastructure.Identity;
+using Pixel.FixaBarnkalaset.Infrastructure.Pdf;
 using Pixel.FixaBarnkalaset.Infrastructure.Redirection;
 using Pixel.FixaBarnkalaset.Web.Utilities;
 
@@ -127,6 +128,7 @@ namespace Pixel.FixaBarnkalaset.Web
             services.AddTransient<IPartyIdGenerator, PartyIdGenerator>();
             services.AddTransient<IInvitationIdGenerator, InvitationIdGenerator>();
             services.AddTransient<IInvitationCardTemplateRepository, SqlInvitationCardTemplateRepository>();
+            services.AddTransient<IPdfService, PdfService>();
         }
 
 

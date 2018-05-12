@@ -8,7 +8,7 @@
 <div class="ui main container pxl-public-page pxl-public-page--invitation-cards pxl-public-page--invitation-cards-guests invitation-cards-guests">
     <h1 class="ui medium header">Gäster</h1>
     
-    <div class="ui relaxed list invitation-cards-guests__invitations" data-invitations-list>
+    <div class="ui relaxed list invitation-cards__invitations" data-invitations-list>
         @foreach (var invitation in Model.Invitations)
         {
             <div class="item" data-invitation-id="@invitation.Id">

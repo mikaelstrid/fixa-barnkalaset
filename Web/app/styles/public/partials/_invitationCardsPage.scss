@@ -2,6 +2,16 @@
 
 .pxl-public-page--invitation-cards {
     padding-top: 2rem;
+
+    .ui.list.invitation-cards__invitations {
+        margin-bottom: 2em;
+
+        .description {
+            @media only screen and (max-width: $largestMobileScreen) {
+                font-size: 0.8em;
+            }
+        }
+    }
 }
 
 .invitation-cards-party-information {
@@ -17,16 +27,6 @@
 }
 
 .invitation-cards-guests {
-    .ui.list.invitation-cards-guests__invitations {
-        margin-bottom: 2em;
-
-        .description {
-            @media only screen and (max-width: $largestMobileScreen) {
-                font-size: 0.8em;
-            }
-        }
-    }
-
     .ui.modal .ui.error.message.hidden {
         display: none;
     }

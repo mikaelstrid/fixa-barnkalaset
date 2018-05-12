@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,15 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         private readonly ILogger<InvitationCardsController> _logger;
         private readonly IPartyRepository _partyRepository;
         private readonly IInvitationCardTemplateRepository _invitationCardTemplateRepository;
+        private readonly IPdfService _pdfService;
 
-        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository, IInvitationCardTemplateRepository invitationCardTemplateRepository)
+        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository, IInvitationCardTemplateRepository invitationCardTemplateRepository, IPdfService pdfService)
         {
             _mapper = mapper;
             _logger = logger;
             _partyRepository = partyRepository;
             _invitationCardTemplateRepository = invitationCardTemplateRepository;
+            _pdfService = pdfService;
             ViewData["Title"] = "Inbjudningskort | Fixa barnkalaset";
             ViewData["Description"] = "Vi hjälper dig att designa, trycka och skicka inbjudningskorten.";
         }
@@ -38,6 +41,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
         [Route("valj-mall")]
+        [HttpGet]
         public async Task<IActionResult> ChooseTemplate()
         {
             var viewModel = new ChooseTemplateViewModel
@@ -142,18 +146,31 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         {
             var party = await _partyRepository.GetById(partyId);
             if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
+            var viewModel = new ReviewViewModel
+            {
+                PartyId = partyId,
+                TemplateThumbnailUrl = party.InvitationCardTemplate.ThumbnailUrl,
+                HtmlText = RenderInvitationCardTextPreview(party),
+                Invitations = _mapper.Map<IEnumerable<GuestsViewModel.InvitationViewModel>>(party.Invitations)
+            };
             return View(viewModel);
         }
 
-        [Route("{id:regex([[\\w\\d]]{{4}})}")]
+        //[Route("{partyId}/granska/ladda-ner")]
+        //public async Task<IActionResult> Download(string partyId)
+        //{
+        //    var party = await _partyRepository.GetById(partyId);
+        //    if (party == null) return NotFound();
 
-        [Route("kalas-info")]
-        [HttpPost]
-        public IActionResult Index(string id)
-        {
-            return View();
-        }
+        //    var templateBytes = System.IO.File.ReadAllBytes(party.InvitationCardTemplate.ReviewTemplateUrl, party.InvitationCardTemplate., );
+        //    var reviewPdfBytes = _pdfService.GenerateInvitations()
+
+        //    //using (var stream = _pdfService.GetInvitationCardsReviewStream(party.InvitationCardTemplate.ReviewTemplateUrl, party.Invitations))
+        //    //{
+        //    //    return File(stream, "application/pdf", $"inbjudningskort-{party.NameOfBirthdayChild}-{party.StartTime:yyMMdd}.pdf");
+        //    //}
+        //}
+
 
 
 
@@ -184,6 +201,32 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             }
 
             return RedirectToAction(redirectToAction, new { partyId = existingParty.Id });
+        }
+
+        private static string RenderInvitationCardTextPreview(Party party)
+        {
+            return party.InvitationCardTemplate.HtmlTemplateText
+                .Replace("{NameOfBirthdayChild}", party.NameOfBirthdayChild)
+                .Replace("{StartTime}", party.StartTime?.ToString("HH:mm") ?? "")
+                .Replace("{EndTime}", party.EndTime?.ToString("HH:mm") ?? "")
+                .Replace("{LocationName}", party.LocationName)
+                .Replace("{StreetAddress}", party.StreetAddress)
+                .Replace("{PostalCode}", party.PostalCode)
+                .Replace("{PostalCity}", party.PostalCity)
+                .Replace("{RsvpDate}", party.RsvpDate?.ToString("d MMMM"))
+                .Replace("{RsvpContactInformation}", RenderRsvpContactInformation(party.RsvpPhoneNumber, party.RsvpEmail));
+        }
+
+        private static string RenderRsvpContactInformation(string phoneNumber, string email)
+        {
+            if (!string.IsNullOrWhiteSpace(phoneNumber) && !string.IsNullOrWhiteSpace(email))
+                return $"{phoneNumber} eller {email}";
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+                return phoneNumber;
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (!string.IsNullOrWhiteSpace(email))
+                return email;
+            return "";
         }
     }
 }

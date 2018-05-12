@@ -32,16 +32,13 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             ViewData["Description"] = "Vi hjälper dig att designa, trycka och skicka inbjudningskorten.";
         }
 
-        [Route("")]
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
         
-
-
-        [Route("valj-mall")]
-        [HttpGet]
+        [HttpGet("valj-mall")]
         public async Task<IActionResult> ChooseTemplate()
         {
             var viewModel = new ChooseTemplateViewModel
@@ -51,8 +48,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("valj-mall")]
-        [HttpPost]
+        [HttpPost("valj-mall")]
         public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
         {
             _logger.LogDebug("ChooseTemplate POST: called with model {Model}", JsonConvert.SerializeObject(model));
@@ -79,7 +75,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
 
-        [Route("{partyId}/kalas-info")]
+        [HttpGet("{partyId}/kalas-info")]
         public async Task<IActionResult> PartyInformation(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -88,8 +84,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("{partyId}/kalas-info")]
-        [HttpPost]
+        [HttpPost("{partyId}/kalas-info")]
         public async Task<IActionResult> PartyInformation(PartyInformationViewModel model)
         {
             return await UpdatePartyInformation(nameof(PartyInformation), nameof(Guests), model,
@@ -120,7 +115,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 }
             );
         }
-        
+
         private static DateTime? ConcatenateDateAndTime(DateTime? date, DateTime? time)
         {
             return date.HasValue && time.HasValue
@@ -128,9 +123,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 : (DateTime?)null;
         }
 
-        
 
-        [Route("{partyId}/gaster")]
+
+        [HttpGet("{partyId}/gaster")]
         public async Task<IActionResult> Guests(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -139,9 +134,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        
 
-        [Route("{partyId}/granska")]
+
+        [HttpGet("{partyId}/granska")]
         public async Task<IActionResult> Review(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -156,7 +151,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        //[Route("{partyId}/granska/ladda-ner")]
+        //[HttpGet("{partyId}/granska/ladda-ner")]
         //public async Task<IActionResult> Download(string partyId)
         //{
         //    var party = await _partyRepository.GetById(partyId);

@@ -51,7 +51,7 @@ namespace Pixel.FixaBarnkalaset.Web
         }
 
         public IConfigurationRoot Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
@@ -83,7 +83,7 @@ namespace Pixel.FixaBarnkalaset.Web
                     options.SslPort = 44369;
                     options.Filters.Add(new RequireHttpsAttribute());
                 });
-            if (env.IsEnvironment("Testing"))
+            else if (env.IsEnvironment("Testing"))
                 services.AddMvc();
             else
                 services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); });
@@ -162,7 +162,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
             ConfigureIdentity(app, _env, Configuration);
             app.UseStaticFiles();
-            app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
+            app.UseMvc();
         }
 
         private static void ConfigureLogging(ILoggerFactory loggerFactory, IConfigurationRoot configuration)

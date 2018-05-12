@@ -10,6 +10,7 @@ using Pixel.FixaBarnkalaset.Web.Utilities;
 
 namespace Pixel.FixaBarnkalaset.Web.Controllers
 {
+    [Route("")]
     public class HomeController : Controller
     {
         private readonly IMapper _mapper;
@@ -29,7 +30,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             _sitemapGenerator = sitemapGenerator;
         }
 
-        [Route("")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Hitta det perfekta barnkalaset! | Fixa barnkalaset";
@@ -46,14 +47,14 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             });
         }
 
-        [Route("cookies")]
+        [HttpGet("cookies")]
         public IActionResult Cookies()
         {
             ViewData["Title"] = "Cookies | Fixa barnkalaset";
             return View();
         }
 
-        [Route("sitemap.xml")]
+        [HttpGet("sitemap.xml")]
         public async Task<ActionResult> SitemapXml()
         {
             var xml = await _sitemapGenerator.GetAsString(_cityRepository, _blogPostRepository);

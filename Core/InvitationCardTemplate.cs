@@ -10,6 +10,6 @@
 
         public string HtmlTemplateText { get; set; }
 
-        public string ReviewTemplateUrl { get; set; }
+        //public string ReviewTemplateUrl { get; set; }
     }
 }

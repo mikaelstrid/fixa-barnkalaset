@@ -184,7 +184,11 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.Property<DateTime>("LastUpdatedUtc");
 
+                    b.Property<int>("NumberOfInstances");
+
                     b.Property<string>("PreviewUrl");
+
+                    b.Property<string>("ReviewTemplateUrl");
 
                     b.Property<string>("TemplateUrl");
 

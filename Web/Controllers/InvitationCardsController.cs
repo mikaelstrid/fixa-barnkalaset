@@ -151,22 +151,17 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        //[HttpGet("{partyId}/granska/ladda-ner")]
-        //public async Task<IActionResult> Download(string partyId)
-        //{
-        //    var party = await _partyRepository.GetById(partyId);
-        //    if (party == null) return NotFound();
+        [HttpGet("{partyId}/granska/ladda-ner")]
+        public async Task<IActionResult> Download(string partyId)
+        {
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
 
-        //    var templateBytes = System.IO.File.ReadAllBytes(party.InvitationCardTemplate.ReviewTemplateUrl, party.InvitationCardTemplate., );
-        //    var reviewPdfBytes = _pdfService.GenerateInvitations()
+            var templateBytes = System.IO.File.ReadAllBytes(party.InvitationCardTemplate.ReviewTemplateUrl);
+            var reviewPdfBytes = _pdfService.GenerateInvitations(templateBytes, party.InvitationCardTemplate.NumberOfInstances, party.Invitations);
 
-        //    //using (var stream = _pdfService.GetInvitationCardsReviewStream(party.InvitationCardTemplate.ReviewTemplateUrl, party.Invitations))
-        //    //{
-        //    //    return File(stream, "application/pdf", $"inbjudningskort-{party.NameOfBirthdayChild}-{party.StartTime:yyMMdd}.pdf");
-        //    //}
-        //}
-
-
+            return File(reviewPdfBytes, "application/pdf", $"inbjudningskort-{party.NameOfBirthdayChild}-{party.StartTime:yyMMdd}.pdf");
+        }
 
 
         private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase

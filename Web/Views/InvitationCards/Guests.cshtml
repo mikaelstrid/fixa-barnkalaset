@@ -7,13 +7,13 @@
 
 <div class="ui main container pxl-public-page pxl-public-page--invitation-cards pxl-public-page--invitation-cards-guests invitation-cards-guests">
     <h1 class="ui medium header">Gäster</h1>
-    
+
     <div class="ui relaxed list invitation-cards__invitations" data-invitations-list>
         @foreach (var invitation in Model.Invitations)
         {
             <div class="item" data-invitation-id="@invitation.Id">
                 <div class="right floated content">
-                    <a data-remove-invitation-button data-invitation-id="@invitation.Id"><i class="large remove icon"></i></a>
+                    <a data-remove-invitation-button data-invitation-id="@invitation.Id"><i class="red large remove icon"></i></a>
                 </div>
                 <div class="content">
                     <div class="header">@invitation.FullName</div>
@@ -25,9 +25,24 @@
 
     <div class="ui tiny error message hidden" id="removeErrorMessage">Det gick inte att ta bort gästen, försök igen.</div>
 
-    <button class="ui positive labeled icon button" id="addGuestButton"><i class="plus icon"></i>Lägg till</button>
+    <div class="group">
+        <button class="ui right labeled icon button right floated" id="addGuestButton">
+            <i class="plus icon"></i>Lägg till gäst
+        </button>
+    </div>
 
-    <a href="@Url.Action("Review", null, new { partyId = Model.PartyId })" class="ui button right floated">Fortsätt</a>
+    @*<button class="ui positive button" id="addGuestButton">Lägg till gäst</button>*@
+
+
+    <div class="navigation-buttons group">
+        <a class="back" href="@Url.Action("PartyInformation", null, new {partyId = Model.PartyId})">Tillbaka</a>
+        <a href="@Url.Action("Review", null, new {partyId = Model.PartyId})" class="ui right labeled icon button right floated">
+            Nästa
+            <i class="right arrow icon"></i>
+        </a>
+    </div>
+
+
 
 
     <div class="ui tiny modal" data-party-id="@Model.PartyId">

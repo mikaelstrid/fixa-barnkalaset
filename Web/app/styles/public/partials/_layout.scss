@@ -25,3 +25,9 @@
         padding-bottom: 2em;
     }
 }
+
+.group:after {
+    content: "";
+    display: table;
+    clear: both;
+}

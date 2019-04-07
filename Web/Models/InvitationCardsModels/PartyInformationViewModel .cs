@@ -6,7 +6,7 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
     public class PartyInformationViewModel : InvitationViewModelBase
     {
         [Required]
-        [Display(Name = "Vems kalas är det?")]
+        [Display(Name = "Vad heter födelsedagsbarnet?")]
         public string NameOfBirthdayChild { get; set; }
 
         [Required]
@@ -35,13 +35,13 @@ namespace Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels
         [Display(Name = "Ort")]
         public string PostalCity { get; set; }
 
-        [Display(Name = "O.S.A.-datum")]
+        [Display(Name = "Datum")]
         public DateTime? RsvpDate { get; set; }
 
-        [Display(Name = "O.S.A. telefonnummer")]
+        [Display(Name = "Telefonnummer")]
         public string RsvpPhoneNumber { get; set; }
 
-        [Display(Name = "O.S.A. e-postadress")]
+        [Display(Name = "E-postadress")]
         public string RsvpEmail { get; set; }
     }
 }

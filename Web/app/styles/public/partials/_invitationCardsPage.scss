@@ -12,6 +12,14 @@
             }
         }
     }
+
+    .navigation-buttons {
+        margin-top: 3rem;
+
+        .back {
+            line-height: 38px;
+        }
+    }
 }
 
 .invitation-cards-party-information {
@@ -19,10 +27,10 @@
         .ui.form .fields {
             margin-bottom: 1em;
         }
+    }
 
-        .ui.form button[type="submit"] {
-            margin-top: 2em;
-        }
+    .ui.dividing.header {
+        margin: 3rem 0 1rem 0;
     }
 }
 

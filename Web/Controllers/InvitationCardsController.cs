@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +19,26 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
         private readonly ILogger<InvitationCardsController> _logger;
         private readonly IPartyRepository _partyRepository;
         private readonly IInvitationCardTemplateRepository _invitationCardTemplateRepository;
+        private readonly IPdfService _pdfService;
 
-        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository, IInvitationCardTemplateRepository invitationCardTemplateRepository)
+        public InvitationCardsController(IMapper mapper, ILogger<InvitationCardsController> logger, IPartyRepository partyRepository, IInvitationCardTemplateRepository invitationCardTemplateRepository, IPdfService pdfService)
         {
             _mapper = mapper;
             _logger = logger;
             _partyRepository = partyRepository;
             _invitationCardTemplateRepository = invitationCardTemplateRepository;
+            _pdfService = pdfService;
             ViewData["Title"] = "Inbjudningskort | Fixa barnkalaset";
             ViewData["Description"] = "Vi hjälper dig att designa, trycka och skicka inbjudningskorten.";
         }
 
-        [Route("")]
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
         
-
-
-        [Route("valj-mall")]
+        [HttpGet("valj-mall")]
         public async Task<IActionResult> ChooseTemplate()
         {
             var viewModel = new ChooseTemplateViewModel
@@ -47,8 +48,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("valj-mall")]
-        [HttpPost]
+        [HttpPost("valj-mall")]
         public async Task<IActionResult> ChooseTemplate(ChooseTemplateViewModel model)
         {
             _logger.LogDebug("ChooseTemplate POST: called with model {Model}", JsonConvert.SerializeObject(model));
@@ -75,7 +75,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
 
 
 
-        [Route("{partyId}/kalas-info")]
+        [HttpGet("{partyId}/kalas-info")]
         public async Task<IActionResult> PartyInformation(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -84,8 +84,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("{partyId}/kalas-info")]
-        [HttpPost]
+        [HttpPost("{partyId}/kalas-info")]
         public async Task<IActionResult> PartyInformation(PartyInformationViewModel model)
         {
             return await UpdatePartyInformation(nameof(PartyInformation), nameof(Guests), model,
@@ -116,7 +115,7 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 }
             );
         }
-        
+
         private static DateTime? ConcatenateDateAndTime(DateTime? date, DateTime? time)
         {
             return date.HasValue && time.HasValue
@@ -124,9 +123,9 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
                 : (DateTime?)null;
         }
 
-        
 
-        [Route("{partyId}/gaster")]
+
+        [HttpGet("{partyId}/gaster")]
         public async Task<IActionResult> Guests(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
@@ -135,26 +134,34 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             return View(viewModel);
         }
 
-        
 
-        [Route("{partyId}/granska")]
+
+        [HttpGet("{partyId}/granska")]
         public async Task<IActionResult> Review(string partyId)
         {
             var party = await _partyRepository.GetById(partyId);
             if (party == null) return NotFound();
-            var viewModel = _mapper.Map<Party, ReviewViewModel>(party);
+            var viewModel = new ReviewViewModel
+            {
+                PartyId = partyId,
+                TemplateThumbnailUrl = party.InvitationCardTemplate.ThumbnailUrl,
+                HtmlText = RenderInvitationCardTextPreview(party),
+                Invitations = _mapper.Map<IEnumerable<GuestsViewModel.InvitationViewModel>>(party.Invitations)
+            };
             return View(viewModel);
         }
 
-        [Route("{id:regex([[\\w\\d]]{{4}})}")]
-
-        [Route("kalas-info")]
-        [HttpPost]
-        public IActionResult Index(string id)
+        [HttpGet("{partyId}/granska/ladda-ner")]
+        public async Task<IActionResult> Download(string partyId)
         {
-            return View();
-        }
+            var party = await _partyRepository.GetById(partyId);
+            if (party == null) return NotFound();
 
+            var templateBytes = System.IO.File.ReadAllBytes(party.InvitationCardTemplate.ReviewTemplateUrl);
+            var reviewPdfBytes = _pdfService.GenerateInvitations(templateBytes, party.InvitationCardTemplate.NumberOfInstances, party.Invitations);
+
+            return File(reviewPdfBytes, "application/pdf", $"inbjudningskort-{party.NameOfBirthdayChild}-{party.StartTime:yyMMdd}.pdf");
+        }
 
 
         private async Task<IActionResult> UpdatePartyInformation<TViewModel>(string methodName, string redirectToAction, TViewModel model, Func<Party, TViewModel, bool> checkIfUpdatedFunc, Action<TViewModel, Party> updateAction) where TViewModel : InvitationViewModelBase
@@ -184,6 +191,32 @@ namespace Pixel.FixaBarnkalaset.Web.Controllers
             }
 
             return RedirectToAction(redirectToAction, new { partyId = existingParty.Id });
+        }
+
+        private static string RenderInvitationCardTextPreview(Party party)
+        {
+            return party.InvitationCardTemplate.HtmlTemplateText
+                .Replace("{NameOfBirthdayChild}", party.NameOfBirthdayChild)
+                .Replace("{StartTime}", party.StartTime?.ToString("HH:mm") ?? "")
+                .Replace("{EndTime}", party.EndTime?.ToString("HH:mm") ?? "")
+                .Replace("{LocationName}", party.LocationName)
+                .Replace("{StreetAddress}", party.StreetAddress)
+                .Replace("{PostalCode}", party.PostalCode)
+                .Replace("{PostalCity}", party.PostalCity)
+                .Replace("{RsvpDate}", party.RsvpDate?.ToString("d MMMM"))
+                .Replace("{RsvpContactInformation}", RenderRsvpContactInformation(party.RsvpPhoneNumber, party.RsvpEmail));
+        }
+
+        private static string RenderRsvpContactInformation(string phoneNumber, string email)
+        {
+            if (!string.IsNullOrWhiteSpace(phoneNumber) && !string.IsNullOrWhiteSpace(email))
+                return $"{phoneNumber} eller {email}";
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+                return phoneNumber;
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (!string.IsNullOrWhiteSpace(email))
+                return email;
+            return "";
         }
     }
 }

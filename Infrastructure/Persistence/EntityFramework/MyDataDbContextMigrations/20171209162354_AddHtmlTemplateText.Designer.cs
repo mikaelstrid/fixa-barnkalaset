@@ -11,9 +11,10 @@ using System;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDataDbContextMigrations
 {
     [DbContext(typeof(MyDataDbContext))]
-    partial class MyDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171209162354_AddHtmlTemplateText")]
+    partial class AddHtmlTemplateText
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,11 +185,7 @@ namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDat
 
                     b.Property<DateTime>("LastUpdatedUtc");
 
-                    b.Property<int>("NumberOfInstances");
-
                     b.Property<string>("PreviewUrl");
-
-                    b.Property<string>("ReviewTemplateUrl");
 
                     b.Property<string>("TemplateUrl");
 

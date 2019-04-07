@@ -9,14 +9,17 @@
 
     <h1 class="ui medium header">Kalasinformation</h1>
 
-    <form class="ui form unstackable" asp-action="PartyInformation">
+    <form class="ui form unstackable" asp-action="PartyInformation" autocomplete="off">
         @Html.HiddenFor(m => m.PartyId)
 
         <div class="field" pf-validation-for="NameOfBirthdayChild" pf-validationerror-class="error">
             <label asp-for="NameOfBirthdayChild"></label>
-            <input type="text" asp-for="NameOfBirthdayChild" placeholder="t.ex. Kalles eller Lisas">
+            <input type="text" asp-for="NameOfBirthdayChild" placeholder="t.ex. Kalle eller Lisa">
             <span asp-validation-for="NameOfBirthdayChild"></span>
         </div>
+
+
+        <h4 class="ui dividing header">Tid</h4>
 
         <div class="field" pf-validation-for="PartyDate" pf-validationerror-class="error">
             <label asp-for="PartyDate"></label>
@@ -37,6 +40,9 @@
                 <span asp-validation-for="PartyEndTime"></span>
             </div>
         </div>
+
+
+        <h4 class="ui dividing header">Plats</h4>
 
         <div class="field" pf-validation-for="LocationName" pf-validationerror-class="error">
             <label asp-for="LocationName"></label>
@@ -63,7 +69,10 @@
                 <span asp-validation-for="PostalCity"></span>
             </div>
         </div>
-        
+
+
+        <h4 class="ui dividing header">O.S.A.</h4>
+
         <div class="field" pf-validation-for="RsvpDate" pf-validationerror-class="error">
             <label asp-for="RsvpDate"></label>
             <input type="date" asp-for="RsvpDate">
@@ -82,22 +91,28 @@
             <span asp-validation-for="RsvpEmail"></span>
         </div>
 
-        <button class="fluid ui button" type="submit">Fortsätt</button>
+        <div class="navigation-buttons group">
+            <a class="back" href="#">Tillbaka</a>
+            <button class="ui right labeled icon button right floated" type="submit">
+                Nästa
+                <i class="right arrow icon"></i>
+            </button>
+        </div>
     </form>
 </div>
 
 <script>
-    //$('.ui.form')
-    //    .form({
-    //        fields: {
-    //            NameOfBirthdayChild: 'empty',
-    //            PartyDate: 'empty',
-    //            PartyStartTime: 'empty',
-    //            PartyEndTime: 'empty',
-    //            LocationName: 'empty',
-    //            StreetAddress: 'empty',
-    //            PostalCode: 'empty',
-    //            PostalCity: 'empty'
-    //        }
-    //    });
+                //$('.ui.form')
+                //    .form({
+                //        fields: {
+                //            NameOfBirthdayChild: 'empty',
+                //            PartyDate: 'empty',
+                //            PartyStartTime: 'empty',
+                //            PartyEndTime: 'empty',
+                //            LocationName: 'empty',
+                //            StreetAddress: 'empty',
+                //            PostalCode: 'empty',
+                //            PostalCity: 'empty'
+                //        }
+                //    });
 </script>

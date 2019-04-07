@@ -19,6 +19,7 @@ namespace UnitTests.Web.Tests.Controllers
     {
         private readonly Mock<IPartyRepository> _mockPartyRepository;
         private readonly Mock<IInvitationCardTemplateRepository> _mockInvitationCardTemplateRepository;
+        private readonly Mock<IPdfService> _mockPdfService;
         private readonly InvitationCardsController _sut;
 
         public InvitationCardsControllerTests()
@@ -26,7 +27,8 @@ namespace UnitTests.Web.Tests.Controllers
             var mockLogger = new Mock<ILogger<InvitationCardsController>>();
             _mockPartyRepository = new Mock<IPartyRepository>();
             _mockInvitationCardTemplateRepository = new Mock<IInvitationCardTemplateRepository>();
-            _sut = new InvitationCardsController(_mapper, mockLogger.Object, _mockPartyRepository.Object, _mockInvitationCardTemplateRepository.Object);
+            _mockPdfService = new Mock<IPdfService>();
+            _sut = new InvitationCardsController(_mapper, mockLogger.Object, _mockPartyRepository.Object, _mockInvitationCardTemplateRepository.Object, _mockPdfService.Object);
         }
 
         
@@ -328,21 +330,6 @@ namespace UnitTests.Web.Tests.Controllers
 
             // ASSERT
             _mockPartyRepository.Verify(m => m.GetById(id), Times.Once);
-        }
-
-        [Fact]
-        public async Task Review_Get_ShouldGetPartyFromRepository_AndReturnModel()
-        {
-            // ARRANGE
-            var id = "PKFN";
-            var party = new Party { Id = id, NameOfBirthdayChild = "Kalle" };
-            _mockPartyRepository.Setup(m => m.GetById(id)).Returns(Task.FromResult(party));
-
-            // ACT
-            var result = await _sut.Review(id);
-
-            // ASSERT
-            GetViewModel<ReviewViewModel>(result).ShouldBeEquivalentTo(party, opts => opts.ExcludingMissingMembers());
         }
     }
 }

@@ -11,9 +11,10 @@ using System;
 namespace Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework.MyDataDbContextMigrations
 {
     [DbContext(typeof(MyDataDbContext))]
-    partial class MyDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180513111941_AddReviewUrlAndNumberOfInstancesToTemplate")]
+    partial class AddReviewUrlAndNumberOfInstancesToTemplate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

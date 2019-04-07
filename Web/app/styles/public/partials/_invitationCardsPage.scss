@@ -2,22 +2,8 @@
 
 .pxl-public-page--invitation-cards {
     padding-top: 2rem;
-}
 
-.invitation-cards-party-information {
-    @media only screen and (max-width: $largestMobileScreen) {
-        .ui.form .fields {
-            margin-bottom: 1em;
-        }
-
-        .ui.form button[type="submit"] {
-            margin-top: 2em;
-        }
-    }
-}
-
-.invitation-cards-guests {
-    .ui.list.invitation-cards-guests__invitations {
+    .ui.list.invitation-cards__invitations {
         margin-bottom: 2em;
 
         .description {
@@ -27,6 +13,28 @@
         }
     }
 
+    .navigation-buttons {
+        margin-top: 3rem;
+
+        .back {
+            line-height: 38px;
+        }
+    }
+}
+
+.invitation-cards-party-information {
+    @media only screen and (max-width: $largestMobileScreen) {
+        .ui.form .fields {
+            margin-bottom: 1em;
+        }
+    }
+
+    .ui.dividing.header {
+        margin: 3rem 0 1rem 0;
+    }
+}
+
+.invitation-cards-guests {
     .ui.modal .ui.error.message.hidden {
         display: none;
     }

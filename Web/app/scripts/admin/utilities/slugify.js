@@ -1,5 +1,4 @@
 // https://gist.github.com/mathewbyrne/1280286
-// https://gist.github.com/mathewbyrne/1280286
 export function slugify(text) {
     const a = "àáåäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;";
     const b = "aaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------";

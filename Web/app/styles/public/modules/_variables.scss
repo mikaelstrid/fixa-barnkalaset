@@ -64,6 +64,9 @@ $violetTextColor : $violet;
 $purpleTextColor : $purple;
 $pinkTextColor : $pink;
 $brownTextColor : $brown;
+$negativeTextColor: #9F3A38; // Copied from site.variables
+$formErrorColor: $negativeTextColor; // Copied from form.variables
+
 
 /*--- Colored Border ---*/
 $redBorderColor : $redTextColor;

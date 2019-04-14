@@ -1,6 +1,6 @@
 ﻿namespace Pixel.FixaBarnkalaset.Core
 {
-    public class Arrangement : Entity
+    public class Arrangement : Entity<int>
     {
         public string Name { get; set; }
         public string Slug { get; set; }

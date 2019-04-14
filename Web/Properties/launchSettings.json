@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://localhost:44369/admin/bloggposter",
+      "applicationUrl": "https://localhost:44369/",
       "sslPort": 44369
     }
   },

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Pixel.FixaBarnkalaset.Core;
-using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
 using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 using UnitTests.Utilities.TestDataExtensions;
 using Xunit;

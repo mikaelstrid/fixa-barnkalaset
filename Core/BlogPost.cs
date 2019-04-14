@@ -2,7 +2,7 @@
 
 namespace Pixel.FixaBarnkalaset.Core
 {
-    public class BlogPost : Entity
+    public class BlogPost : Entity<int>
     {
         public string Title { get; set; }
 

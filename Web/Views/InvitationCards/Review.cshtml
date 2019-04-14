@@ -1,0 +1,41 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ReviewViewModel
+
+@section MetaData
+{
+    <meta name="robots" content="noindex,nofollow">
+}
+
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards">
+    <h1 class="ui medium header">Granska uppgifterna</h1>
+    
+    <div class="ui stackable grid">
+        <div class="six wide column">
+            <h2 class="ui small header">Mall</h2>
+            <img class="ui small image" src="@Model.TemplateThumbnailUrl">
+    
+            <h2 class="ui small header">Kalasinformation</h2>
+            <p>Så här kommer texten på inbjudningskorten se ut (fast lite snyggare):</p>
+            <div class="ui segment">
+                @Html.Raw(Model.HtmlText)
+            </div>
+        </div>
+        <div class="six wide column">
+            <h2 class="ui small header">Gäster</h2>
+            <div class="ui relaxed list invitation-cards__invitations" data-invitations-list>
+                @foreach (var invitation in Model.Invitations)
+                {
+                    <div class="item" data-invitation-id="@invitation.Id">
+                        <div class="content">
+                            <div class="header">@invitation.FullName</div>
+                            <div class="description">@invitation.FullAddress</div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <a target="_blank" href="@Url.Action("Download", null, new { partyId = Model.PartyId })" class="ui primary button">Ladda ner inbjudningskort</a>
+        </div>
+        <div class="sixteen wide column">
+            <button class="fluid ui button" type="submit">Fortsätt</button>
+        </div>
+    </div>
+</div>

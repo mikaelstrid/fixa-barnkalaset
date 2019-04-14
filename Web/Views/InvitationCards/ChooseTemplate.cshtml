@@ -1,0 +1,31 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.ChooseTemplateViewModel
+
+@section MetaData
+{
+    <meta name="robots" content="noindex,nofollow">
+}
+
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards">
+    <h1 class="ui medium header">Välj mall</h1>
+
+    <div class="ui stackable grid">
+        @foreach (var template in Model.AvailableTemplates)
+        {
+            <div class="six wide tablet four wide computer column">
+                <div class="ui fluid card">
+                    <div class="image">
+                        <img src="@template.ThumbnailUrl">
+                    </div>
+                    <div class="content">
+                        <div class="center aligned">
+                            <form method="post">
+                                <input type="hidden" name="SelectedTemplateId" value="@template.Id" />
+                                <button type="submit" class="ui button">Välj mall</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

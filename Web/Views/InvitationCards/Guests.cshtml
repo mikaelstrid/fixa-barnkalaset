@@ -1,0 +1,97 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.GuestsViewModel
+
+@section MetaData
+    {
+    <meta name="robots" content="noindex">
+}
+
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards pxl-public-page--invitation-cards-guests invitation-cards-guests">
+    <h1 class="ui medium header">Gäster</h1>
+
+    <div class="ui relaxed list invitation-cards__invitations" data-invitations-list>
+        @foreach (var invitation in Model.Invitations)
+        {
+            <div class="item" data-invitation-id="@invitation.Id">
+                <div class="right floated content">
+                    <a data-remove-invitation-button data-invitation-id="@invitation.Id"><i class="red large remove icon"></i></a>
+                </div>
+                <div class="content">
+                    <div class="header">@invitation.FullName</div>
+                    <div class="description">@invitation.FullAddress</div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="ui tiny error message hidden" id="removeErrorMessage">Det gick inte att ta bort gästen, försök igen.</div>
+
+    <div class="group">
+        <button class="ui right labeled icon button right floated" id="addGuestButton">
+            <i class="plus icon"></i>Lägg till gäst
+        </button>
+    </div>
+
+    @*<button class="ui positive button" id="addGuestButton">Lägg till gäst</button>*@
+
+
+    <div class="navigation-buttons group">
+        <a class="back" href="@Url.Action("PartyInformation", null, new {partyId = Model.PartyId})">Tillbaka</a>
+        <a href="@Url.Action("Review", null, new {partyId = Model.PartyId})" class="ui right labeled icon button right floated">
+            Nästa
+            <i class="right arrow icon"></i>
+        </a>
+    </div>
+
+
+
+
+    <div class="ui tiny modal" data-party-id="@Model.PartyId">
+        <i class="close icon"></i>
+        <div class="header">
+            Lägg till gäst
+        </div>
+        <div class="content">
+            <div class="ui tiny error message hidden">Det gick inte att lägga till gästen, försök igen.</div>
+            <form class="ui form unstackable">
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Förnamn</label>
+                            <input type="text" name="FirstName" value="Kalle">
+                        </div>
+                        <div class="field">
+                            <label>Efternamn</label>
+                            <input type="text" name="LastName" value="Karlsson">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Gatuadress</label>
+                    <input type="text" name="StreetAddress" value="Korsvägen 11">
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="four wide field">
+                            <label>Postnummer</label>
+                            <input type="text" name="PostalCode" value="302 56">
+                        </div>
+                        <div class="eight wide field">
+                            <label>Postort</label>
+                            <input type="text" name="PostalCity" value="Halmstad">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">
+                Avbryt
+            </div>
+
+            <div class="ui positive right labeled icon button">
+                Lägg till
+                <i class="plus icon"></i>
+            </div>
+        </div>
+    </div>
+</div>

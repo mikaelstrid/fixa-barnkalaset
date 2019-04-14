@@ -1,0 +1,118 @@
+﻿@model Pixel.FixaBarnkalaset.Web.Models.InvitationCardsModels.PartyInformationViewModel
+
+@section MetaData
+    {
+    <meta name="robots" content="noindex">
+}
+
+<div class="ui main container pxl-public-page pxl-public-page--invitation-cards invitation-cards-party-information">
+
+    <h1 class="ui medium header">Kalasinformation</h1>
+
+    <form class="ui form unstackable" asp-action="PartyInformation" autocomplete="off">
+        @Html.HiddenFor(m => m.PartyId)
+
+        <div class="field" pf-validation-for="NameOfBirthdayChild" pf-validationerror-class="error">
+            <label asp-for="NameOfBirthdayChild"></label>
+            <input type="text" asp-for="NameOfBirthdayChild" placeholder="t.ex. Kalle eller Lisa">
+            <span asp-validation-for="NameOfBirthdayChild"></span>
+        </div>
+
+
+        <h4 class="ui dividing header">Tid</h4>
+
+        <div class="field" pf-validation-for="PartyDate" pf-validationerror-class="error">
+            <label asp-for="PartyDate"></label>
+            <input type="date" asp-for="PartyDate">
+            <span asp-validation-for="PartyDate"></span>
+        </div>
+
+        <div class="fields">
+            <div class="six wide field" pf-validation-for="PartyStartTime" pf-validationerror-class="error">
+                <label asp-for="PartyStartTime"></label>
+                <input type="time" asp-for="PartyStartTime">
+                <span asp-validation-for="PartyStartTime"></span>
+            </div>
+
+            <div class="six wide field" pf-validation-for="PartyEndTime" pf-validationerror-class="error">
+                <label asp-for="PartyEndTime"></label>
+                <input type="time" asp-for="PartyEndTime">
+                <span asp-validation-for="PartyEndTime"></span>
+            </div>
+        </div>
+
+
+        <h4 class="ui dividing header">Plats</h4>
+
+        <div class="field" pf-validation-for="LocationName" pf-validationerror-class="error">
+            <label asp-for="LocationName"></label>
+            <input type="text" asp-for="LocationName" placeholder="t.ex. på Universeum">
+            <span asp-validation-for="LocationName"></span>
+        </div>
+
+        <div class="field" pf-validation-for="StreetAddress" pf-validationerror-class="error">
+            <label asp-for="StreetAddress"></label>
+            <input type="text" asp-for="StreetAddress">
+            <span asp-validation-for="StreetAddress"></span>
+        </div>
+
+        <div class="fields">
+            <div class="four wide field" pf-validation-for="PostalCode" pf-validationerror-class="error">
+                <label asp-for="PostalCode"></label>
+                <input type="text" asp-for="PostalCode">
+                <span asp-validation-for="PostalCode"></span>
+            </div>
+
+            <div class="eight wide field" pf-validation-for="PostalCity" pf-validationerror-class="error">
+                <label asp-for="PostalCity"></label>
+                <input type="text" asp-for="PostalCity">
+                <span asp-validation-for="PostalCity"></span>
+            </div>
+        </div>
+
+
+        <h4 class="ui dividing header">O.S.A.</h4>
+
+        <div class="field" pf-validation-for="RsvpDate" pf-validationerror-class="error">
+            <label asp-for="RsvpDate"></label>
+            <input type="date" asp-for="RsvpDate">
+            <span asp-validation-for="RsvpDate"></span>
+        </div>
+
+        <div class="field" pf-validation-for="RsvpPhoneNumber" pf-validationerror-class="error">
+            <label asp-for="RsvpPhoneNumber"></label>
+            <input type="text" asp-for="RsvpPhoneNumber">
+            <span asp-validation-for="RsvpPhoneNumber"></span>
+        </div>
+
+        <div class="field" pf-validation-for="RsvpEmail" pf-validationerror-class="error">
+            <label asp-for="RsvpEmail"></label>
+            <input type="text" asp-for="RsvpEmail">
+            <span asp-validation-for="RsvpEmail"></span>
+        </div>
+
+        <div class="navigation-buttons group">
+            <a class="back" href="#">Tillbaka</a>
+            <button class="ui right labeled icon button right floated" type="submit">
+                Nästa
+                <i class="right arrow icon"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+                //$('.ui.form')
+                //    .form({
+                //        fields: {
+                //            NameOfBirthdayChild: 'empty',
+                //            PartyDate: 'empty',
+                //            PartyStartTime: 'empty',
+                //            PartyEndTime: 'empty',
+                //            LocationName: 'empty',
+                //            StreetAddress: 'empty',
+                //            PostalCode: 'empty',
+                //            PostalCity: 'empty'
+                //        }
+                //    });
+</script>

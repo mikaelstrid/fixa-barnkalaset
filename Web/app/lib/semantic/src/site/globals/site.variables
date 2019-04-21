@@ -1,8 +1,0 @@
-/*******************************
-     User Global Variables
-*******************************/
-@emSize					: 16px;
-@fontSize				: 16px;
-@lineHeight				: 1.5em;
-@largeMonitorBreakpoint : 1100px;
-@columnCount			: 12;

@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @using Pixel.FixaBarnkalaset.Infrastructure.Identity
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
@@ -39,7 +39,7 @@
         @Html.Partial("_GoogleAnalytics")
         @Html.Partial("_FacebookAnalytics")
     }
-<link href="/dist/main.css" rel="stylesheet"></head>
+</head>
 <body>
     <!-- Page Contents -->
     <div class="pusher">
@@ -108,5 +108,5 @@
                 });
         }
     </script>
-<script type="text/javascript" src="/dist/runtime.js"></script><script type="text/javascript" src="/dist/main.js"></script></body>
+</body>
 </html>

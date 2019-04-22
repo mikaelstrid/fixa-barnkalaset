@@ -1,0 +1,34 @@
+@import "../../scss/bootstrap/pre-default";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "../../scss/colors";
+@import "../../scss/spacers";
+
+.pxl-hero {
+    background: #B993D6 !important; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #8CA6DB, #B993D6) !important; /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #8CA6DB, #B993D6) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    &__content {
+        padding-top: 2rem;
+        padding-bottom: 5rem;
+    }
+
+    &__city-selector {
+        width: 20rem;
+        max-width: 100%;
+    }
+
+    @include media-breakpoint-up(md) {
+        &__content {
+            padding-top: 8rem;
+            padding-bottom: 10rem;
+        }
+
+        &__city-selector {
+            width: 20rem;
+            max-width: 100%;
+        }
+    }
+}

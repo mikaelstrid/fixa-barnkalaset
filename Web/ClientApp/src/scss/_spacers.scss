@@ -1,0 +1,12 @@
+@import "./bootstrap/pre-default";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+//Must match spacing found in node_modules/bootstrap/scss/_variables.scss
+$spacer-0: $spacer*0;
+$spacer-1: $spacer*.25;
+$spacer-2: $spacer*.5;
+$spacer-3: $spacer;
+$spacer-4: $spacer*1.5;
+$spacer-5: $spacer*3;

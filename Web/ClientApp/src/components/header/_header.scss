@@ -1,0 +1,16 @@
+﻿@import "../../scss/bootstrap/pre-default";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "../../scss/colors";
+@import "../../scss/spacers";
+
+.navbar .navbar-brand  {
+    font-size: 1.6rem;
+    // padding: 0 !important;
+    font-family: 'Gochi Hand', cursive;
+
+    @include media-breakpoint-up(md) {
+        font-size: 2.5rem;
+    }
+}

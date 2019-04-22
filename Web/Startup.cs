@@ -98,15 +98,12 @@ namespace Pixel.FixaBarnkalaset.Web
                 options.AccessDeniedPath = "/konto/atkomst-nekad";
             });
 
-            if (!env.IsEnvironment("Testing"))
+            services.AddAuthentication()
+            .AddFacebook(options =>
             {
-                services.AddAuthentication()
-                .AddFacebook(options =>
-                {
-                    options.AppId = Configuration["Authentication:Facebook:AppId"];
-                    options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                });
-            }
+                options.AppId = Configuration["Authentication:Facebook:AppId"];
+                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
         }
 
         private static void ConfigureServicesApplication(IServiceCollection services, IHostingEnvironment env)
@@ -131,7 +128,7 @@ namespace Pixel.FixaBarnkalaset.Web
 
             ConfigureCulture();
 
-            if (env.IsDevelopment() || env.IsEnvironment("Testing"))
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -142,10 +139,7 @@ namespace Pixel.FixaBarnkalaset.Web
             }
             app.UseStatusCodePagesWithReExecute("/fel/{0}");
 
-            if (!env.IsEnvironment("Testing"))
-            {
-                ConfigureDatabaseMigration(app, env);
-            }
+            ConfigureDatabaseMigration(app, env);
 
             ConfigureIdentity(app, _env, Configuration);
             app.UseHttpsRedirection();
@@ -178,12 +172,7 @@ namespace Pixel.FixaBarnkalaset.Web
         private static void ConfigureIdentity(IApplicationBuilder app, IHostingEnvironment env, IConfigurationRoot configuration)
         {
             app.UseAuthentication();
-
             app.EnsureRolesCreated(env.EnvironmentName);
-            if (env.IsEnvironment("Testing"))
-            {
-                app.AddTestingUsers();
-            }
         }
     }
 }

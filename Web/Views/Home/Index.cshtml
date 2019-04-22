@@ -4,49 +4,48 @@
 @model HomeIndexViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
-@section Hero 
+@section Hero
 {
-    <div class="ui text container">
-    <h1 class="ui inverted huge header">Hitta det perfekta barnkalaset</h1>
-    <h3 class="ui inverted large header">Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.</h3>
-    <select id="citySelector" class="dropdown pxl-first-page-hero-city-chooser">
-        <option value="">Välj stad...</option>
-        @foreach (var city in Model.Cities)
-        {
-            <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
-        }
-    </select>
-</div>
+    <div class="pxl-hero__content text-center text-white">
+        <h1 class="display-3 mb-5">Hitta det perfekta barnkalaset</h1>
+        <p class="lead mb-5">Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.</p>
+        <select id="citySelector" class="form-control form-control-lg mx-auto pxl-hero__city-selector" aria-label="Välj stad">
+            <option value="">Välj stad...</option>
+            @foreach (var city in Model.Cities)
+            {
+                <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
+            }
+        </select>
+    </div>
 }
 
-<div class="ui vertical stripe quote segment">
-    <div class="ui equal width stackable internally celled grid">
-        <div class="center aligned row">
-            <div class="column">
-                <i class="huge mail outline icon"></i>
-                <div class="pxl-text-container">
-                    <h3 class="ui large header">Skicka riktiga inbjudningskort</h3>
-                    <p>Vill du gärna skicka inbjudningskort med posten men inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
+@*<div class="ui vertical stripe quote segment">
+        <div class="ui equal width stackable internally celled grid">
+            <div class="center aligned row">
+                <div class="column">
+                    <i class="huge mail outline icon"></i>
+                    <div class="pxl-text-container">
+                        <h3 class="ui large header">Skicka riktiga inbjudningskort</h3>
+                        <p>Vill du gärna skicka inbjudningskort med posten men inte riktigt känner att du har tid att köpa inbjudningskort, skriva adresser, klistra frimärken och lägga inbjudningskorten på posten så har vi den perfekta lösningen för dig.</p>
+                    </div>
+                    @Html.ActionLink("Läs mer", "Index", "InvitationCards", null, new { @class = "ui button" })
                 </div>
-                @Html.ActionLink("Läs mer", "Index", "InvitationCards", null, new { @class = "ui button" })
-            </div>
-            <div class="column">
-                <i class="huge checked calendar icon"></i>
-                <div class="pxl-text-container">
-                    <h3 class="ui large header">Håll reda på vilka som kommer</h3>
-                    <p>Känns det stökigt att hålla kolla på vilka som svarat och kanske lite pinsamt att påminna dem? Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa meddelande eller e-post.</p>
+                <div class="column">
+                    <i class="huge checked calendar icon"></i>
+                    <div class="pxl-text-container">
+                        <h3 class="ui large header">Håll reda på vilka som kommer</h3>
+                        <p>Känns det stökigt att hålla kolla på vilka som svarat och kanske lite pinsamt att påminna dem? Vi gör det superenkelt för dig att hålla reda på vilka som kommer till kalaset, inget mer bläddrande i inkorgen bland en massa meddelande eller e-post.</p>
+                    </div>
+                    @Html.ActionLink("Läs mer", "Index", "Rsvp", null, new { @class = "ui button"})
                 </div>
-                @Html.ActionLink("Läs mer", "Index", "Rsvp", null, new { @class = "ui button"})
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
 @section Scripts
 {
     <script>
-        $('select.dropdown').dropdown();
-        $('select#citySelector').change(function() {
+        $('select#citySelector').change(function () {
             if (window.ga) {
                 var selectedCityName = $("option:selected", $(this)).text();
                 ga('send',

@@ -1,4 +1,19 @@
-// @import "../colors";
-// @import "../font-definitions";
+@import "../colors";
 
 // See node_modules/bootstrap/scss/_variables.scss for which variables that can be overridden
+
+// Options
+// $enable-caret:                                true !default;
+// $enable-rounded:                              true !default;
+// $enable-shadows:                              false !default;
+// $enable-gradients:                            false !default;
+// $enable-transitions:                          true !default;
+// $enable-prefers-reduced-motion-media-query:   true !default;
+// $enable-grid-classes:                         true !default;
+// $enable-pointer-cursor-for-buttons:           true !default;
+// $enable-print-styles:                         true !default;
+$enable-responsive-font-sizes:                true;
+
+// Typography
+$font-family-sans-serif:      'Lato', 'Helvetica Neue', Arial,Helvetica, sans-serif;
+$font-family-base:            'Lato', 'Helvetica Neue', Arial,Helvetica, sans-serif;

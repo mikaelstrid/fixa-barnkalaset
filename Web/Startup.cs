@@ -82,7 +82,7 @@ namespace Pixel.FixaBarnkalaset.Web
             });
 
             services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         private void ConfigureServicesIdentity(IServiceCollection services, IHostingEnvironment env)
@@ -129,8 +129,6 @@ namespace Pixel.FixaBarnkalaset.Web
             app.UseRewriter(new RewriteOptions().AddRedirect("^blogg$", "barnkalasbloggen", 301));
             app.UseRewriter(new RewriteOptions().AddRedirect("^blogg/(.*)", "barnkalasbloggen/$1", 301));
 
-            ConfigureLogging(loggerFactory, Configuration);
-
             ConfigureCulture();
 
             if (env.IsDevelopment() || env.IsEnvironment("Testing"))
@@ -154,12 +152,6 @@ namespace Pixel.FixaBarnkalaset.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
-        }
-
-        private static void ConfigureLogging(ILoggerFactory loggerFactory, IConfigurationRoot configuration)
-        {
-            loggerFactory.AddConsole(configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
         }
 
         private static void ConfigureCulture()

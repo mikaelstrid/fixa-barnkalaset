@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>c5600757-86c6-46ef-834b-8542453ec33a</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,19 +13,11 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/1f2f77c6-c627-4309-9830-f97ceb26d8a9/resourcegroups/Group-Fixa-Barnkalaset-LOCAL/providers/microsoft.insights/components/ai-fbk-local</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(NCrunch)' == '1'">
-    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-  </PropertyGroup>
-
   <ItemGroup>
-    <Compile Remove="ClientApp\**" />
-    <Compile Remove="wwwroot\**" />
-    <Content Remove="ClientApp\**" />
-    <Content Remove="wwwroot\**" />
-    <EmbeddedResource Remove="ClientApp\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="ClientApp\**" />
     <None Remove="wwwroot\**" />
+    <None Remove="fixa-barnkalaset.code-workspace" />
+    <None Remove="Web.v3.ncrunchproject" />
   </ItemGroup>
 
   <ItemGroup>

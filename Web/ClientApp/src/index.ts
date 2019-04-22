@@ -14,6 +14,7 @@ import './layouts/main-layout';
 // Regular 'components'
 import './components/header/header';
 import './components/footer/footer';
+import './components/cookie-info/cookie-info';
 import './components/hero/hero';
 
 import './bootstrapper';

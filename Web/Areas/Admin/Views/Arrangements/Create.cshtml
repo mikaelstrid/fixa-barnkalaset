@@ -16,7 +16,7 @@
 
     <form class="ui form" asp-action="Create">
 
-        @Html.Partial("_CreateOrEdit", Model)
+        @Html.PartialAsync("_CreateOrEdit", Model)
 
         <button class="ui secondary button" type="submit">Spara</button>
     </form>

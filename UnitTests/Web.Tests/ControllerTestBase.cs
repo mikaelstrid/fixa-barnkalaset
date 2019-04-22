@@ -38,10 +38,10 @@ namespace UnitTests.Web.Tests
             );
         }
 
-        protected static T GetViewModel<T>(IActionResult result) where T : class
+        protected static T2 GetViewModel<T2>(IActionResult result) where T2 : class
         {
             result.Should().BeOfType<ViewResult>();
-            return (result as ViewResult).Model as T;
+            return (result as ViewResult).Model as T2;
         }
     }
 }

@@ -61,16 +61,9 @@ namespace Pixel.FixaBarnkalaset.Web
 
         private static void ConfigureServicesDatabase(IServiceCollection services, IHostingEnvironment env, IConfigurationRoot configuration)
         {
-            if (env.IsEnvironment("Testing"))
-            {
-                // The database DI is configured in the TestFixture
-            }
-            else
-            {
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-                services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
-                services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
-            }
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyIdentityDbContext>(options => options.UseSqlServer(connectionString));
         }
 
         private static void ConfigureServicesMvc(IServiceCollection services, IHostingEnvironment env)
@@ -81,10 +74,15 @@ namespace Pixel.FixaBarnkalaset.Web
                     options.SslPort = 44369;
                     options.Filters.Add(new RequireHttpsAttribute());
                 });
-            if (env.IsEnvironment("Testing"))
-                services.AddMvc();
-            else
-                services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         private void ConfigureServicesIdentity(IServiceCollection services, IHostingEnvironment env)
@@ -138,11 +136,11 @@ namespace Pixel.FixaBarnkalaset.Web
             if (env.IsDevelopment() || env.IsEnvironment("Testing"))
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/fel");
+                app.UseHsts();
             }
             app.UseStatusCodePagesWithReExecute("/fel/{0}");
 
@@ -152,7 +150,9 @@ namespace Pixel.FixaBarnkalaset.Web
             }
 
             ConfigureIdentity(app, _env, Configuration);
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}"));
         }
 

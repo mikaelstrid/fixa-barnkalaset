@@ -12,6 +12,7 @@ import './layouts/main-layout';
 import './pages/arrangements-index-page/arrangements-index-page';
 import './pages/arrangements-details-page/arrangements-details-page';
 import './pages/blog-posts-index-page/blog-posts-index-page';
+import './pages/blog-posts-details-page/blog-posts-details-page';
 
 // Regular 'components'
 import './components/header/header';

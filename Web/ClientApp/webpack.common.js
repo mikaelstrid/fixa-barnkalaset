@@ -89,6 +89,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: path.resolve(__dirname, '../Views/Shared/_Layout.cshtml'),
             template: path.resolve(__dirname, '../Views/Shared/_Layout_Template.cshtml')
+        }),
+        new HtmlWebpackPlugin({
+            filename: path.resolve(__dirname, '../Areas/Admin/Views/Shared/_Layout.cshtml'),
+            template: path.resolve(__dirname, '../Areas/Admin/Views/Shared/_Layout_Template.cshtml')
         })
     ]
 };

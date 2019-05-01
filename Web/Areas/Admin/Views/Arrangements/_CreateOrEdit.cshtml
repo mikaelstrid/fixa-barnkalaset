@@ -1,149 +1,141 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Areas.Admin.ViewModels.CreateOrEditArrangementViewModel
 
-<h3 class="ui top attached header">
-    Allmänt
-</h3>
-<div class="ui bottom attached segment">
-    <div class="field" pf-validation-for="Name" pf-validationerror-class="error">
-        <label asp-for="Name"></label>
-        <input type="text" asp-for="Name">
-        <span asp-validation-for="Name"></span>
-    </div>
-    <div class="field">
-        <button class="ui basic button" type="button" id="btnGetInformationFromGooglePlaces">Hämta info från Google Places</button>
-        <span id="GooglePlacesName"></span>
-    </div>
-    <div class="field" pf-validation-for="Slug" pf-validationerror-class="error">
-        <label asp-for="Slug"></label>
-        <input type="text" asp-for="Slug">
-        <span asp-validation-for="Slug"></span>
-    </div>
-    <div class="field" pf-validation-for="CitySlug" pf-validationerror-class="error">
-        <label asp-for="CitySlug"></label>
-        <select asp-for="CitySlug" asp-items="Model.Cities"></select>
-        <span asp-validation-for="CitySlug"></span>
-    </div>
-    <div class="field" pf-validation-for="Type" pf-validationerror-class="error">
-        <label asp-for="Type"></label>
-        <input type="text" asp-for="Type">
-        <span asp-validation-for="Type"></span>
-    </div>
-    <div class="field" pf-validation-for="GooglePlacesId" pf-validationerror-class="error">
-        <label asp-for="GooglePlacesId"></label>
-        <input type="text" asp-for="GooglePlacesId">
-        <span asp-validation-for="GooglePlacesId"></span>
-    </div>
-    <div class="field" pf-validation-for="CoverImage" pf-validationerror-class="error">
-        <label asp-for="CoverImage"></label>
-        <input type="text" asp-for="CoverImage">
-        <span asp-validation-for="CoverImage"></span>
-    </div>
-    <div class="field" pf-validation-for="CoverImageAttributions" pf-validationerror-class="error">
-        <label asp-for="CoverImageAttributions"></label>
-        <input type="text" asp-for="CoverImageAttributions">
-        <span asp-validation-for="CoverImageAttributions"></span>
-    </div>
-    <div class="field">
-        <button class="ui basic button" type="button" id="btnOpenCoverImage">Visa bilden i egen flik</button>
-        <button class="ui basic button" type="button" id="btnGetImagesFromGooglePlaces">Hämta bilder från Google Places</button>
-    </div>
-    <div class="field">
-        <div class="ui small images hidden" id="lstImagesFromGooglePlaces"></div>
-    </div>
-</div>
-
-<h3 class="ui top attached header">
-    Beskrivning
-</h3>
-<div class="ui bottom attached segment">
-    <div class="field" pf-validation-for="Pitch" pf-validationerror-class="error">
-        <label asp-for="Pitch"></label>
-        <textarea rows="2" asp-for="Pitch"></textarea>
-        <span asp-validation-for="Pitch"></span>
-    </div>
-    <div class="field" pf-validation-for="Description" pf-validationerror-class="error">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description"></textarea>
-        <span asp-validation-for="Description"></span>
-    </div>
-    <div class="field" pf-validation-for="BookingConditions" pf-validationerror-class="error">
-        <label asp-for="BookingConditions"></label>
-        <textarea asp-for="BookingConditions"></textarea>
-        <span asp-validation-for="BookingConditions"></span>
-    </div>
-    <div class="field" pf-validation-for="PriceInformation" pf-validationerror-class="error">
-        <label asp-for="PriceInformation"></label>
-        <textarea asp-for="PriceInformation"></textarea>
-        <span asp-validation-for="PriceInformation"></span>
-    </div>
-</div>
-
-<h3 class="ui top attached header">
-    Adress och kontaktuppgifter
-</h3>
-<div class="ui bottom attached segment">
-    <div class="field" pf-validation-for="StreetAddress" pf-validationerror-class="error">
-        <label asp-for="StreetAddress"></label>
-        <input type="text" asp-for="StreetAddress">
-        <span asp-validation-for="StreetAddress"></span>
-    </div>
-    <div class="fields">
-        <div class="four wide field" pf-validation-for="PostalCode" pf-validationerror-class="error">
-            <label asp-for="PostalCode"></label>
-            <input type="text" asp-for="PostalCode">
-            <span asp-validation-for="PostalCode"></span>
-        </div>
-        <div class="twelve wide field" pf-validation-for="PostalCity" pf-validationerror-class="error">
-            <label asp-for="PostalCity"></label>
-            <input type="text" asp-for="PostalCity">
-            <span asp-validation-for="PostalCity"></span>
-        </div>
-    </div>
-    <div class="field" pf-validation-for="PhoneNumber" pf-validationerror-class="error">
-        <label asp-for="PhoneNumber"></label>
-        <input type="text" asp-for="PhoneNumber">
-        <span asp-validation-for="PhoneNumber"></span>
-    </div>
-    <div class="field" pf-validation-for="EmailAddress" pf-validationerror-class="error">
-        <label asp-for="EmailAddress"></label>
-        <input type="text" asp-for="EmailAddress">
-        <span asp-validation-for="EmailAddress"></span>
-    </div>
-    <div class="field" pf-validation-for="Website" pf-validationerror-class="error">
-        <label asp-for="Website"></label>
-        <input type="text" asp-for="Website">
-        <span asp-validation-for="Website"></span>
-    </div>
-    <div class="field">
-        <button class="ui basic button" type="button" id="btnOpenWebsite">Öppna hemsida</button>
-    </div>
-</div>
-
-<h3 class="ui top attached header">
-    Karta
-</h3>
-<div class="ui bottom attached segment">
-    <div class="ui grid">
-        <div class="six wide column">
-            <div class="field" pf-validation-for="Latitude" pf-validationerror-class="error">
-                <label asp-for="Latitude"></label>
-                <input type="text" asp-for="Latitude">
-                <span asp-validation-for="Latitude"></span>
+    <div class="arrangements-create-or-edit-page-base">
+        <div class="mb-4">
+            <h4>Allmänt</h4>
+            <div class="form-group" pf-validation-for="Name" pf-validationerror-class="error">
+                <label asp-for="Name"></label>
+                <input class="form-control" type="text" asp-for="Name">
+                <span asp-validation-for="Name"></span>
             </div>
-            <div class="field" pf-validation-for="Longitude" pf-validationerror-class="error">
-                <label asp-for="Longitude"></label>
-                <input type="text" asp-for="Longitude">
-                <span asp-validation-for="Longitude"></span>
+            <div class="form-group">
+                <button class="btn btn-outline-primary" type="button" id="btnGetInformationFromGooglePlaces">Hämta info från Google Places</button>
+                <span id="GooglePlacesName"></span>
             </div>
-            <button class="ui basic button" type="button" id="btnGetCoordinatesFromAddress">Hämta från adress</button>
+            <div class="form-group" pf-validation-for="Slug" pf-validationerror-class="error">
+                <label asp-for="Slug"></label>
+                <input class="form-control" type="text" asp-for="Slug">
+                <span asp-validation-for="Slug"></span>
+            </div>
+            <div class="form-group" pf-validation-for="CitySlug" pf-validationerror-class="error">
+                <label asp-for="CitySlug"></label>
+                <select class="form-control" asp-for="CitySlug" asp-items="Model.Cities"></select>
+                <span asp-validation-for="CitySlug"></span>
+            </div>
+            <div class="form-group" pf-validation-for="Type" pf-validationerror-class="error">
+                <label asp-for="Type"></label>
+                <input class="form-control" type="text" asp-for="Type">
+                <span asp-validation-for="Type"></span>
+            </div>
+            <div class="form-group" pf-validation-for="GooglePlacesId" pf-validationerror-class="error">
+                <label asp-for="GooglePlacesId"></label>
+                <input class="form-control" type="text" asp-for="GooglePlacesId">
+                <span asp-validation-for="GooglePlacesId"></span>
+            </div>
+            <div class="form-group" pf-validation-for="CoverImage" pf-validationerror-class="error">
+                <label asp-for="CoverImage"></label>
+                <input class="form-control" type="text" asp-for="CoverImage">
+                <span asp-validation-for="CoverImage"></span>
+            </div>
+            <div class="form-group" pf-validation-for="CoverImageAttributions" pf-validationerror-class="error">
+                <label asp-for="CoverImageAttributions"></label>
+                <input class="form-control" type="text" asp-for="CoverImageAttributions">
+                <span asp-validation-for="CoverImageAttributions"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-primary" type="button" id="btnOpenCoverImage">Visa bilden i egen flik</button>
+                <button class="btn btn-outline-primary" type="button" id="btnGetImagesFromGooglePlaces">Hämta bilder från Google Places</button>
+            </div>
+            <div>
+                <div class="arrangements-create-or-edit-page-base__images-from-google-places d-none" id="lstImagesFromGooglePlaces"></div>
+            </div>
         </div>
-        <div class="ten wide column">
-            <div id="map"></div>
+
+        <div class="mb-4">
+            <h4>Beskrivning</h4>
+            <div class="form-group" pf-validation-for="Pitch" pf-validationerror-class="error">
+                <label asp-for="Pitch"></label>
+                <textarea class="form-control" rows="2" asp-for="Pitch"></textarea>
+                <span asp-validation-for="Pitch"></span>
+            </div>
+            <div class="form-group" pf-validation-for="Description" pf-validationerror-class="error">
+                <label asp-for="Description"></label>
+                <textarea class="form-control" asp-for="Description"></textarea>
+                <span asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group" pf-validation-for="BookingConditions" pf-validationerror-class="error">
+                <label asp-for="BookingConditions"></label>
+                <textarea class="form-control" asp-for="BookingConditions"></textarea>
+                <span asp-validation-for="BookingConditions"></span>
+            </div>
+            <div class="form-group" pf-validation-for="PriceInformation" pf-validationerror-class="error">
+                <label asp-for="PriceInformation"></label>
+                <textarea class="form-control" asp-for="PriceInformation"></textarea>
+                <span asp-validation-for="PriceInformation"></span>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h4>Adress och kontaktuppgifter</h4>
+            <div class="form-group" pf-validation-for="StreetAddress" pf-validationerror-class="error">
+                <label asp-for="StreetAddress"></label>
+                <input class="form-control" type="text" asp-for="StreetAddress">
+                <span asp-validation-for="StreetAddress"></span>
+            </div>
+            <div class="form-group" pf-validation-for="PostalCode" pf-validationerror-class="error">
+                <label asp-for="PostalCode"></label>
+                <input class="form-control" type="text" asp-for="PostalCode">
+                <span asp-validation-for="PostalCode"></span>
+            </div>
+            <div class="form-group" pf-validation-for="PostalCity" pf-validationerror-class="error">
+                <label asp-for="PostalCity"></label>
+                <input class="form-control" type="text" asp-for="PostalCity">
+                <span asp-validation-for="PostalCity"></span>
+            </div>
+            <div class="form-group" pf-validation-for="PhoneNumber" pf-validationerror-class="error">
+                <label asp-for="PhoneNumber"></label>
+                <input class="form-control" type="text" asp-for="PhoneNumber">
+                <span asp-validation-for="PhoneNumber"></span>
+            </div>
+            <div class="form-group" pf-validation-for="EmailAddress" pf-validationerror-class="error">
+                <label asp-for="EmailAddress"></label>
+                <input class="form-control" type="text" asp-for="EmailAddress">
+                <span asp-validation-for="EmailAddress"></span>
+            </div>
+            <div class="form-group" pf-validation-for="Website" pf-validationerror-class="error">
+                <label asp-for="Website"></label>
+                <input class="form-control" type="text" asp-for="Website">
+                <span asp-validation-for="Website"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-primary" type="button" id="btnOpenWebsite">Öppna hemsida</button>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h4>Karta</h4>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="form-group" pf-validation-for="Latitude" pf-validationerror-class="error">
+                        <label asp-for="Latitude"></label>
+                        <input class="form-control" type="text" asp-for="Latitude">
+                        <span asp-validation-for="Latitude"></span>
+                    </div>
+                    <div class="form-group" pf-validation-for="Longitude" pf-validationerror-class="error">
+                        <label asp-for="Longitude"></label>
+                        <input class="form-control" type="text" asp-for="Longitude">
+                        <span asp-validation-for="Longitude"></span>
+                    </div>
+                    <button class="btn btn-outline-primary" type="button" id="btnGetCoordinatesFromAddress">Hämta från adress</button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div id="map"></div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
+@*<script>
     $('.ui.form')
         .form({
             fields: {
@@ -154,4 +146,4 @@
                 Longitude: 'regExp[/^-?\\d+,?\\d*$/]'
             }
         });
-</script>
+</script>*@

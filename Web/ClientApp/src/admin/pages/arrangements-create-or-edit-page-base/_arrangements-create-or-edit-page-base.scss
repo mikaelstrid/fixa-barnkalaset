@@ -1,0 +1,13 @@
+@import '../../../scss/spacers';
+
+.arrangements-create-or-edit-page-base {
+    &__images-from-google-places {
+        img {
+            max-width: 150px;
+            max-height: 150px;
+            display: inline-block;
+            margin-right: $spacer-2;
+            margin-bottom: $spacer-2;
+        }
+    }
+}

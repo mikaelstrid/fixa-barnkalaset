@@ -1,4 +1,4 @@
-﻿import { CreateOrEditArrangementPageBase } from "./createOrEditArrangementPageBase";
+﻿import { CreateOrEditArrangementPageBase } from "../../../admin/pages/arrangements-create-or-edit-page-base/arrangements-create-or-edit-page-base";
 import { slugify } from "../utilities/slugify";
 
 export class EditArrangementPage extends CreateOrEditArrangementPageBase {

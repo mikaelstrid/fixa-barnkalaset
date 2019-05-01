@@ -10,15 +10,15 @@
     </style>
 }
 
-<div class="ui main container text pxl-admin-page pxl-admin-page--arrangements-create">
+<div class="ui main container text pxl-admin-page pxl-arrangements-create-page mb-5">
 
-    <h1>Lägg till nytt arrangemang</h1>
+    <h1 class="mb-3">Lägg till nytt arrangemang</h1>
 
-    <form class="ui form" asp-action="Create">
+    <form asp-action="Create">
 
-        @Html.PartialAsync("_CreateOrEdit", Model)
+        <partial name="_CreateOrEdit" model="Model" />
 
-        <button class="ui secondary button" type="submit">Spara</button>
+        <button class="btn btn-secondary" type="submit">Spara</button>
     </form>
 </div>
 

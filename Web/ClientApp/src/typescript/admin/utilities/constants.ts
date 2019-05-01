@@ -1,3 +1,3 @@
 ﻿export class Constants {
-    static locale = "sv";
+    public static locale = 'sv';
 }

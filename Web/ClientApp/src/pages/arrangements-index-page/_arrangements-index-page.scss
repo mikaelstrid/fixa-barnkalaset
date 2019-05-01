@@ -1,0 +1,41 @@
+@import "../../scss/bootstrap/pre-default";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "../../scss/colors";
+@import "../../scss/spacers";
+
+.pxl-arrangements-index-page {
+    &__arrangements {
+        a {
+            color: inherit;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        .card .image {
+            background-size: cover;
+            height: 200px;
+        }
+
+        .pxl-html-attribution {
+            font-size: 10px;
+        }
+
+        @include media-breakpoint-up(md) {
+            .card .card-text {
+                height: 48px;
+                overflow: hidden;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            .card .card-text {
+                height: 72px;
+                overflow: hidden;
+            }
+        }
+    }
+}

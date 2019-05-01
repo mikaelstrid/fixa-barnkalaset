@@ -9,7 +9,7 @@ import './scss/bootstrap/_config.scss';
 import './layouts/main-layout';
 
 // Pages
-// import './pages/start-page/start-page';
+import './pages/arrangements-index-page/arrangements-index-page';
 
 // Regular 'components'
 import './components/header/header';

@@ -11,6 +11,7 @@ import './layouts/main-layout';
 // Pages
 import './pages/arrangements-index-page/arrangements-index-page';
 import './pages/arrangements-details-page/arrangements-details-page';
+import './pages/blog-posts-index-page/blog-posts-index-page';
 
 // Regular 'components'
 import './components/header/header';

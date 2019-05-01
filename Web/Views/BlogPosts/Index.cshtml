@@ -1,23 +1,26 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.BlogPostsIndexViewModel
 
-<div class="ui main text container pxl-public-page pxl-public-page--blog-posts-index">
-    <div class="ui breadcrumb">
-        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
-        <i class="right angle icon divider"></i>
-        <div class="active section">Barnkalasbloggen</div>
-    </div>
+<div class="container pxl-public-page pxl-blog-posts-index-page">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Hem</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Barnkalasbloggen</li>
+        </ol>
+    </nav>
 
-    <h1 class="ui huge header center aligned">Barnkalasbloggen</h1>
+    <h1 class="text-center mb-4 mb-md-5">Barnkalasbloggen</h1>
 
-    <div class="ui items" itemscope itemtype="http://schema.org/Blog">
+    <div class="items" itemscope itemtype="http://schema.org/Blog">
         @foreach (var blogPost in Model.BlogPosts)
         {
-            <article class="item" itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting">
+            <article class="item mb-5" itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="content">
-                    @Html.ActionLink(blogPost.Title, "Details", new {slug = blogPost.Slug}, new {@class = "header center aligned", itemprop = "name" })
+                    <h2 class="text-center">
+                        @Html.ActionLink(blogPost.Title, "Details", new { slug = blogPost.Slug }, new { @class = "", itemprop = "name" })
+                    </h2>
                     @if (blogPost.PublishedUtc.HasValue)
                     {
-                        <p class="published-date center aligned" itemprop="datePublished">@blogPost.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
+                        <p class="text-center" itemprop="datePublished">@blogPost.PublishedUtc.Value.ToLocalTime().ToString("dd MMMM yyyy")</p>
                     }
                     <div class="description" itemprop="articleBody">
                         @Html.Raw(blogPost.Body)

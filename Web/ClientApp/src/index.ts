@@ -10,6 +10,7 @@ import './layouts/main-layout';
 
 // Pages
 import './pages/arrangements-index-page/arrangements-index-page';
+import './pages/arrangements-details-page/arrangements-details-page';
 
 // Regular 'components'
 import './components/header/header';

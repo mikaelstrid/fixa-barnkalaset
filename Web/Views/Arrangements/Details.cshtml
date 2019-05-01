@@ -1,94 +1,72 @@
 ﻿@model Pixel.FixaBarnkalaset.Web.Models.ArrangementDetailsViewModel
 
-<div class="ui main container pxl-public-page pxl-public-page--arrangements-details">
-    <div class="ui breadcrumb">
-        <a class="section" href="@Url.Action("Index", "Home")">Hem</a>
-        <i class="right angle icon divider"></i>
-        <a class="section" href="@Url.Action("Index", new { citySlug = Model.CitySlug })">@Model.CityName</a>
-        <i class="right angle icon divider"></i>
-        <div class="active section">@Model.Name</div>
-    </div>
-    <h1 class="ui huge header">Barnkalas på @Html.DisplayFor(m => m.Name)</h1>
-    @*<p class="ui small">Senast uppdaterad: @Model.LastUpdatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>*@
+<div class="container pxl-public-page pxl-arrangements-details-page">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Hem</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", new { citySlug = Model.CitySlug })">@Model.CityName</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <h1>Barnkalas på @Html.DisplayFor(m => m.Name)</h1>
     @if (!string.IsNullOrWhiteSpace(Model.Pitch))
     {
-        <p class="pxl-preamble">@Html.DisplayFor(m => m.Pitch)</p>
+        <p class="lead mb-4">@Html.DisplayFor(m => m.Pitch)</p>
     }
 
-    <div class="ui stackable two column grid">
-        <div class="row">
-            <div class="seven wide tablet eight wide computer column">
-                <img class="ui fluid rounded image" src="@Model.CoverImage" />
-                @if (!string.IsNullOrWhiteSpace(Model.CoverImageAttributions))
-                {
-                    <div class="attributions">Foto: @Html.Raw(Model.CoverImageAttributions)</div>
-                }
-                
-                <h3 class="ui medium header">Om barnkalaset</h3>
-                @Html.Raw(Model.Description)
+    <div class="row">
+        <div class="col-12 col-md-7 col-lg-8">
+            <img class="img-fluid rounded" src="@Model.CoverImage" />
+            @if (!string.IsNullOrWhiteSpace(Model.CoverImageAttributions))
+            {
+                <div class="small">Foto: @Html.Raw(Model.CoverImageAttributions)</div>
+            }
 
-                <h3 class="ui medium header">Bokningsvillkor</h3>
-                @*@if (!string.IsNullOrWhiteSpace(Model.BookingConditions))
-                {
-                    @Html.Raw(Model.BookingConditions)
-                }*@
-                <p>Kontakta arrangören för mer information.</p>
+            <h3 class="h4 mt-3">Om barnkalaset</h3>
+            @Html.Raw(Model.Description)
 
-                <h3 class="ui medium header">Prisinformation</h3>
-                @*@if (!string.IsNullOrWhiteSpace(Model.PriceInformation))
-                {
-                    @Html.Raw(Model.PriceInformation)
-                }*@
-                <p>Kontakta arrangören för mer information.</p>
-            </div>
-            <div class="five wide tablet four wide computer column">
-                <div class="ui segment">
-                    <iframe height="250"
-                            width="100%"
-                            frameborder="0"
-                            style="border: 0"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
-                            allowfullscreen></iframe>
-                    <div class="ui header">Kontaktuppgifter</div>
+            <h3 class="h4">Bokningsvillkor</h3>
+            <p>Kontakta arrangören för mer information.</p>
 
-                    <div class="ui relaxed list">
-                        @if (!string.IsNullOrWhiteSpace(Model.StreetAddress) || !string.IsNullOrWhiteSpace(Model.PostalCode) || !string.IsNullOrWhiteSpace(Model.PostalCity))
-                        {
-                            <div class="item">
-                                <i class="marker icon"></i>
-                                <div class="content">
-                                    @Html.DisplayFor(m => m.StreetAddress), @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)
-                                </div>
-                            </div>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
-                        {
-                            <div class="item">
-                                <i class="phone icon"></i>
-                                <div class="content">
-                                    @Html.DisplayFor(m => m.PhoneNumber)
-                                </div>
-                            </div>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(Model.EmailAddress))
-                        {
-                            <div class="item">
-                                <i class="mail icon"></i>
-                                <div class="content">
-                                    <a id="emailAddressLink" href="mailto:@Model.EmailAddress">@Html.DisplayFor(m => m.EmailAddress)</a>
-                                </div>
-                            </div>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(Model.Website))
-                        {
-                            <div class="item">
-                                <i class="linkify icon"></i>
-                                <div class="content">
-                                    <a id="externalWebsiteLink" href="@Model.Website">@Html.DisplayFor(m => m.Website)</a>
-                                </div>
-                            </div>
-                        }
-                    </div>
+            <h3 class="h4">Prisinformation</h3>
+            <p>Kontakta arrangören för mer information.</p>
+        </div>
+        <div class="col-12 col-md-5 col-lg-4">
+            <div class="card p-3 rounded">
+                <iframe height="250"
+                        width="100%"
+                        frameborder="0"
+                        style="border: 0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBLKgpfR9yUKR-Fwwb7yBGDoFVgRzFIxZ4&q=@Model.Latitude.ToString().Replace(",", "."),@Model.Longitude.ToString().Replace(",", ".")"
+                        allowfullscreen></iframe>
+                <h4 class="h5 mt-3">Kontaktuppgifter</h4>
+
+                <div>
+                    @if (!string.IsNullOrWhiteSpace(Model.StreetAddress) || !string.IsNullOrWhiteSpace(Model.PostalCode) || !string.IsNullOrWhiteSpace(Model.PostalCity))
+                    {
+                        <div>
+                            @Html.DisplayFor(m => m.StreetAddress), @Html.DisplayFor(m => m.PostalCode) @Html.DisplayFor(m => m.PostalCity)
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+                    {
+                        <div>
+                            @Html.DisplayFor(m => m.PhoneNumber)
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.EmailAddress))
+                    {
+                        <div>
+                            <a id="emailAddressLink" href="mailto:@Model.EmailAddress">@Html.DisplayFor(m => m.EmailAddress)</a>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Website))
+                    {
+                        <div>
+                            <a id="externalWebsiteLink" href="@Model.Website">@Html.DisplayFor(m => m.Website)</a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

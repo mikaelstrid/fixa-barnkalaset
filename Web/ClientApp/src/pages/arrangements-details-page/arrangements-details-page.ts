@@ -1,19 +1,19 @@
-export class DetailsArrangementPage {
-    initPage() {
-        console.log("DetailsArrangementPage.initPage");
-        $("#emailAddressLink").click(function (event) {
+﻿export class DetailsArrangementPage {
+    public initPage() {
+        $('#emailAddressLink').click(() => {
             ga('send', 'event', {
                 eventCategory: 'Contact',
                 eventAction: 'mail',
-                eventLabel: $(this).attr("href"),
+                eventLabel: $(this).attr('href'),
                 transport: 'beacon'
             });
         });
-        $("#externalWebsiteLink").click(function (event) {
+
+        $('#externalWebsiteLink').click(() => {
             ga('send', 'event', {
                 eventCategory: 'Outbound Link',
                 eventAction: 'click',
-                eventLabel: $(this).attr("href"),
+                eventLabel: $(this).attr('href'),
                 transport: 'beacon'
             });
         });

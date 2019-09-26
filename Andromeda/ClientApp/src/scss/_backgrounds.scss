@@ -1,0 +1,13 @@
+@import "./bootstrap/pre-default";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "./colors";
+
+.bg-blue {
+    background-color: $blue-01 !important;
+}
+
+.bg-green {
+    background-color: $green-01 !important;
+}

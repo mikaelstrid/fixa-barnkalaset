@@ -1,0 +1,9 @@
+@import "./bootstrap/pre-default";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "./colors";
+
+.fg-white {
+    color: $white-01 !important;
+}

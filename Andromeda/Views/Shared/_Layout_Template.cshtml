@@ -3,41 +3,61 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Andromeda</title>
+    <title>Andromeda</title>
+    <link href="https://fonts.googleapis.com/css?family=Gochi+Hand|Lato" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Andromeda</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div id="pxl-cookie-info" class="text-center small p-3" style="display: none;">
+        Cookies hjälper oss att leverera våra tjänster. Genom att använda tjänsterna, accepterar du att vi använder cookies. @Html.ActionLink("Läs mer", "Cookies", "Home")<button id="closeCookieInfoButton" type="button" class="btn btn-secondary btn-sm ml-3">OK</button>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*<header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Andromeda</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
         <div class="container">
-            &copy; 2019 - Andromeda - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>*@
+
+    @RenderBody()
+
+    <footer class="border-top mt-5">
+        <div class="container text-center text-muted py-4">
+            &copy; 2019 - Fixa barnkalaset<br />
+            Med reservation för inaktuella och/eller felaktiga uppgifter.
         </div>
     </footer>
     @RenderSection("Scripts", required: false)
+
+    <script>
+        if (document.cookie.indexOf('pxlca') === -1) {
+            document.getElementById('pxl-cookie-info').style.display = 'block';
+            document.getElementById('closeCookieInfoButton').addEventListener('click', function () {
+                document.getElementById('pxl-cookie-info').style.display = 'none';
+                var d = new Date();
+                d.setFullYear(d.getFullYear() + 1);
+                document.cookie = 'pxlca=1;expires=' + d.toUTCString();
+            });
+        }
+    </script>
 </body>
 </html>

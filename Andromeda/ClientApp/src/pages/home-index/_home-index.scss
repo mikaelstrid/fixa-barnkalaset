@@ -1,0 +1,26 @@
+@import "../../scss/colors";
+@import "../../scss/foregrounds";
+
+.home-index {
+   .hero {
+      // background: url("../../assets/images/blue-background.jpg") no-repeat;
+      background:
+         linear-gradient(to top, rgba(0, 0, 0, .4) 30%, transparent 40%),
+         url("../../assets/images/party-guinea-pig-opti.jpg") no-repeat;
+      background-size: cover;
+
+      &__logo {
+         font-family: 'Gochi Hand', cursive;
+      }
+   }
+
+   h1 {
+      padding-top: 150px;
+      text-shadow: 2px 2px 2px #333;
+   }
+
+   .city-selector {
+      width: 25rem;
+      max-width: 100%;
+   }
+}

@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "ClientApp"
+		},
+		{
+			"path": "C:\\source\\personal\\fixa-barnkalaset\\Web\\ClientApp"
 		}
 	],
 	"settings": {

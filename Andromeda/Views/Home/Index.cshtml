@@ -1,21 +1,25 @@
-﻿<div class="home-index">
-    <div class="hero p-3 mb-3">
-        <div class="hero__logo position-absolute fg-white">Fixa barnkalaset</div>
-@*        <h1 class="h2 mb-0 fg-white">Lorem sit sitametsa consecteturum.</h1>*@
-        <h1 class="h3 mb-0 fg-white">Hitta det perfekta barnkalaset.</h1>
-    </div>
-    
-    <div class="container">
-        @*<p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.</p>*@
-        <p class="lead">Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.</p>
-        <select id="citySelector" class="form-control form-control-lg mx-auto city-selector" aria-label="Välj stad">
-            <option value="">Välj stad...</option>
-            <option value="goteborg">Göteborg</option>
-            <option value="halmstad">Halmstad</option>
-            @*@foreach (var city in Model.Cities)
-            {
-                <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
-            }*@
-        </select>
-    </div>
+@model HomeIndexViewModel
+
+<div class="home-index">
+   <div class="hero p-3 mb-3">
+      <div class="hero__logo position-absolute fg-white">Fixa barnkalaset</div>
+      @*<h1 class="h2 mb-0 fg-white">Lorem sit sitametsa consecteturum.</h1>*@
+      <h1 class="h3 mb-0 fg-white">Hitta det perfekta barnkalaset.</h1>
+   </div>
+
+   <div class="container">
+      <p class="lead">@*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.*@</p>
+      <p class="lead">Vi har samlat en massa bra ställen som erbjuder nya spännande barnkalas för era barn och deras kompisar.</p>
+      <select id="citySelector" class="form-control form-control-lg mb-5 mx-auto city-selector" aria-label="Välj stad">
+         <option value="">Välj stad...</option>
+         @*<option value="goteborg">Göteborg</option>
+            <option value="halmstad">Halmstad</option>*@
+         @foreach (var city in Model.Cities)
+         {
+            <option value="@Url.Action("Index", "Arrangements", new { citySlug = city.Slug })">@city.Name</option>
+         }
+      </select>
+      <h2 class="h4">Inspiration</h2>
+      <div id="inspiration-app"></div>
+   </div>
 </div>

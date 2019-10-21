@@ -1,11 +1,11 @@
 import Vue from 'vue';
-import AppComponent from './app/app.component.vue';
+import InspirationAppComponent from './app/inspiration-app.component.vue';
 
-if (document.getElementById('app') != null) {
+if (document.getElementById('inspiration-app') != null) {
     // tslint:disable-next-line: no-unused-expression
     new Vue({
-        el: '#app',
-        components: { AppComponent },
-        template: '<AppComponent />'
+        el: '#inspiration-app',
+        components: { InspirationAppComponent },
+        template: '<InspirationAppComponent />'
     });
 }

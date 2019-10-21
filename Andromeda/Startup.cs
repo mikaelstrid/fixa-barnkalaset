@@ -4,9 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Pixel.FixaBarnkalaset.Core.Interfaces;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.EntityFramework;
+using Pixel.FixaBarnkalaset.Infrastructure.Persistence.Repositories;
 
 namespace Andromeda
 {
@@ -23,7 +28,11 @@ namespace Andromeda
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-        }
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MyDataDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ICityRepository, SqlCityRepository>();
+      }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

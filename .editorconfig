@@ -1,0 +1,34 @@
+# Editor configuration, see http://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 3
+tab_width = 3
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+[*.js]
+max_line_length = off
+quote_type = single
+editor.formatOnSave = true
+
+[*.ts]
+max_line_length = off
+quote_type = single
+editor.formatOnSave = true
+
+[*.html]
+max_line_length = off
+
+[*.scss]
+quote_type = single
+
+[*.cs]
+indent_size = 4
+tab_width = 4

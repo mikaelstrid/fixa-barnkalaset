@@ -1,0 +1,15 @@
+<div class="inspiration-app">
+   <div class="row">
+      <div class="col-6 inspiration-app__arrangement mb-3" v-for="arrangement in arrangements">
+         <img class="w-100 mw-100 mb-1 inspiration-app__image" :src="arrangement.coverImage" />
+         <div>
+            <div class="inspiration-app__category-city font-weight-bold text-muted text-uppercase text-truncate">
+               {{arrangement.type}} | {{arrangement.cityName}}
+            </div>
+            <div class="inspiration-app__name font-weight-bold overflow-hidden">
+               {{arrangement.name}}
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

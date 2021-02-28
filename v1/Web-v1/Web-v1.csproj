@@ -42,7 +42,6 @@
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core-v1\Core-v1.csproj" />
     <ProjectReference Include="..\Infrastructure-v1\Infrastructure-v1.csproj" />
   </ItemGroup>
   <ItemGroup>

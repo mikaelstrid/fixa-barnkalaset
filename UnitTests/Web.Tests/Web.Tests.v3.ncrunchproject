@@ -1,8 +1,0 @@
-﻿<ProjectConfiguration>
-  <Settings>
-    <FilesExcludedFromAutoBuild>
-      <Value>*.ts</Value>
-    </FilesExcludedFromAutoBuild>
-    <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
-  </Settings>
-</ProjectConfiguration>

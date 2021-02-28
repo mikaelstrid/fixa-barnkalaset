@@ -12,7 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{9A0B96
 		Assets\logo-1024x1024.jpg = Assets\logo-1024x1024.jpg
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{FBC01D74-7175-4017-A55F-D95BD29C48A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{FBC01D74-7175-4017-A55F-D95BD29C48A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devops", "Devops", "{3A0A9C55-2C3A-4780-AE45-BB6C555C9EF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kubernetes", "Kubernetes", "{C22EC975-7D04-4890-8DFA-292F50192BF5}"
+	ProjectSection(SolutionItems) = preProject
+		Devops\Kubernetes\fixabarnkalaset.yaml = Devops\Kubernetes\fixabarnkalaset.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +34,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C22EC975-7D04-4890-8DFA-292F50192BF5} = {3A0A9C55-2C3A-4780-AE45-BB6C555C9EF2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D886003-21C1-454C-8C62-7DBE0E381ADA}

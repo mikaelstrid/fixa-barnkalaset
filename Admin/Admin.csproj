@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssemblyName>Pixel.FixaBarnkalaset.Admin</AssemblyName>
+    <RootNamespace>Pixel.FixaBarnkalaset.Admin</RootNamespace>
   </PropertyGroup>
 
 </Project>

@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{9A0B96
 		Assets\logo-1024x1024.jpg = Assets\logo-1024x1024.jpg
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{FBC01D74-7175-4017-A55F-D95BD29C48A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin", "Admin\Admin.csproj", "{FBC01D74-7175-4017-A55F-D95BD29C48A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{591878DC-0DCB-4C7C-8596-6122FDF61001}"
 EndProject

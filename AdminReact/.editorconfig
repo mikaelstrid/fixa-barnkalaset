@@ -1,0 +1,6 @@
+# Editor configuration, see http://editorconfig.org
+root = true
+
+[*]
+indent_size = 2
+tab_width = 2

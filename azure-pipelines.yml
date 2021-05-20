@@ -34,6 +34,5 @@ stages:
         containerRegistry: '$(dockerRegistryServiceConnection)'
         repository: '$(imageRepository)'
         command: 'buildAndPush'
-        Dockerfile: 'AdminReact/Dockerfile'
-        buildContext: 'AdminReact'
+        Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
